@@ -59,18 +59,18 @@ describe('parseDType', () => {
       parseDType({
         class: 6,
         size: 4,
-        members: { foo: { class: 1, size: 4, order: 0 } },
+        members: [{ name: 'foo', class: 1, size: 4, order: 0 }],
       }),
-    ).toStrictEqual(compoundType({ foo: floatType() }));
+    ).toStrictEqual(compoundType([['foo', floatType()]]));
 
     expect(
       parseDType({
         class: 6,
         size: 8,
-        members: {
-          r: { class: 1, size: 4, order: 0 },
-          i: { class: 1, size: 4, order: 0 },
-        },
+        members: [
+          { name: 'r', class: 1, size: 4, order: 0 },
+          { name: 'i', class: 1, size: 4, order: 0 },
+        ],
       }),
     ).toStrictEqual(cplxType(floatType(), floatType()));
   });

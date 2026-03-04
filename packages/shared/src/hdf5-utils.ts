@@ -26,7 +26,6 @@ import {
   type NullShape,
   type NumericType,
   type OpaqueType,
-  type PrintableType,
   type ReferenceType,
   type ScalarShape,
   type Shape,
@@ -145,24 +144,23 @@ export function cplxType(
   return { class: DTypeClass.Complex, realType, imagType };
 }
 
-export function compoundType<T extends DType>(
-  fields: Record<string, T>,
-): CompoundType<T> {
-  return { class: DTypeClass.Compound, fields };
+export function compoundType(fields: [string, DType][]): CompoundType {
+  return { class: DTypeClass.Compound, fields: new Map(fields) };
 }
 
-export const printableCompoundType = compoundType<PrintableType>;
+export function compoundOrCplxType(
+  fields: [string, DType][],
+): CompoundType | ComplexType {
+  const fieldsMap = new Map(fields);
 
-export function compoundOrCplxType<T extends DType>(
-  fields: Record<string, T>,
-): CompoundType<T> | ComplexType {
-  const { r, i } = fields;
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const r = fieldsMap.get('r');
+  const i = fieldsMap.get('i');
+
   if (r && isNumericType(r) && i && isNumericType(i)) {
     return cplxType(r, i);
   }
 
-  return compoundType(fields);
+  return { class: DTypeClass.Compound, fields: fieldsMap };
 }
 
 export function vlenType<T extends DType>(baseType: T): VLenType<T> {

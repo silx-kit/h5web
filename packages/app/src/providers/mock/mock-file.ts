@@ -12,7 +12,6 @@ import {
   intType,
   nullShape,
   opaqueType,
-  printableCompoundType,
   scalarShape,
   strType,
   unknownType,
@@ -54,7 +53,7 @@ export function makeMockFile(): GroupWithChildren {
       group('entities', [
         group('empty_group'),
         dataset('empty_dataset', nullShape(), unknownType(), null),
-        datatype('datatype', compoundType({ int: intType() })),
+        datatype('datatype', compoundType([['int', intType()]])),
         scalar('raw', { int: 42 }),
         scalar('raw_large', undefined), // generated dynamically by `MockProvider`
         dataset('raw_png', scalarShape(), opaqueType(), PNG_RED_DOT),
@@ -72,16 +71,16 @@ export function makeMockFile(): GroupWithChildren {
           attributes: [scalarAttr('attr', cplx(1, 5))],
         }),
         scalar('scalar_compound', ['foo', 2], {
-          type: compoundType({
-            str: strType(H5T_CSET.ASCII, H5T_STR.NULLPAD, 3),
-            int: intType(true, 8),
-          }),
+          type: compoundType([
+            ['str', strType(H5T_CSET.ASCII, H5T_STR.NULLPAD, 3)],
+            ['int', intType(true, 8)],
+          ]),
           attributes: [
             scalarAttr('attr', ['foo', 2], {
-              type: compoundType({
-                str: strType(H5T_CSET.UTF8),
-                int: intType(true, 8),
-              }),
+              type: compoundType([
+                ['str', strType(H5T_CSET.UTF8)],
+                ['int', intType(true, 8)],
+              ]),
             }),
           ],
         }),
@@ -120,13 +119,13 @@ export function makeMockFile(): GroupWithChildren {
         array('oneD_bigint'),
         array('oneD_cplx'),
         array('oneD_compound', {
-          type: printableCompoundType({
-            string: strType(),
-            int: intType(),
-            float: floatType(),
-            bool: boolType(intType(true, 8)),
-            complex: cplxType(floatType()),
-          }),
+          type: compoundType([
+            ['string', strType()],
+            ['int', intType()],
+            ['float', floatType()],
+            ['bool', boolType(intType(true, 8))],
+            ['complex', cplxType(floatType())],
+          ]),
         }),
         array('oneD_bool'),
         array('oneD_enum', {
@@ -137,13 +136,13 @@ export function makeMockFile(): GroupWithChildren {
         array('twoD_bigint'),
         array('twoD_cplx'),
         array('twoD_compound', {
-          type: printableCompoundType({
-            string: strType(),
-            int: intType(),
-            float: floatType(),
-            bool: boolType(intType(true, 8)),
-            complex: cplxType(floatType()),
-          }),
+          type: compoundType([
+            ['string', strType()],
+            ['int', intType()],
+            ['float', floatType()],
+            ['bool', boolType(intType(true, 8))],
+            ['complex', cplxType(floatType())],
+          ]),
         }),
         array('twoD_bool'),
         array('twoD_enum', {

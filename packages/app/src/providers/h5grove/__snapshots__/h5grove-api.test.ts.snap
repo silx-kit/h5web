@@ -1032,20 +1032,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": "<c8",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": "<f4",
+          "name": "r",
           "order": 0,
           "size": 4,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": "<f4",
+          "name": "i",
           "order": 0,
           "size": 4,
         },
-      },
+      ],
       "size": 8,
     },
     "shape": {
@@ -1075,20 +1077,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": "<c8",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": "<f4",
+          "name": "r",
           "order": 0,
           "size": 4,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": "<f4",
+          "name": "i",
           "order": 0,
           "size": 4,
         },
-      },
+      ],
       "size": 8,
     },
     "shape": {
@@ -1135,20 +1139,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": "<c16",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": "<f8",
+          "name": "r",
           "order": 0,
           "size": 8,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": "<f8",
+          "name": "i",
           "order": 0,
           "size": 8,
         },
-      },
+      ],
       "size": 16,
     },
     "shape": {
@@ -1178,20 +1184,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": ">c16",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": ">f8",
+          "name": "r",
           "order": 1,
           "size": 8,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": ">f8",
+          "name": "i",
           "order": 1,
           "size": 8,
         },
-      },
+      ],
       "size": 16,
     },
     "shape": {
@@ -1221,20 +1229,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": "<c16",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": "<f8",
+          "name": "r",
           "order": 0,
           "size": 8,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": "<f8",
+          "name": "i",
           "order": 0,
           "size": 8,
         },
-      },
+      ],
       "size": 16,
     },
     "shape": {
@@ -1281,20 +1291,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": "<c32",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": "<f16",
+          "name": "r",
           "order": 0,
           "size": 16,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": "<f16",
+          "name": "i",
           "order": 0,
           "size": 16,
         },
-      },
+      ],
       "size": 32,
     },
     "shape": {
@@ -1324,20 +1336,22 @@ exports[`test file matches snapshot 1`] = `
     "rawType": {
       "class": 6,
       "dtype": "<c32",
-      "members": {
-        "i": {
+      "members": [
+        {
           "class": 1,
           "dtype": "<f16",
+          "name": "r",
           "order": 0,
           "size": 16,
         },
-        "r": {
+        {
           "class": 1,
           "dtype": "<f16",
+          "name": "i",
           "order": 0,
           "size": 16,
         },
-      },
+      ],
       "size": 32,
     },
     "shape": {
@@ -1388,29 +1402,32 @@ exports[`test file matches snapshot 1`] = `
         "double": "<f8",
         "utf-8": "|O",
       },
-      "members": {
-        "bigint": {
+      "members": [
+        {
           "class": 0,
           "dtype": "<i8",
+          "name": "bigint",
           "order": 0,
           "sign": 1,
           "size": 8,
         },
-        "double": {
+        {
           "class": 1,
           "dtype": "<f8",
+          "name": "double",
           "order": 0,
           "size": 8,
         },
-        "utf-8": {
+        {
           "class": 3,
           "cset": 1,
           "dtype": "|O",
+          "name": "utf-8",
           "size": 8,
           "strpad": 0,
           "vlen": true,
         },
-      },
+      ],
       "size": 24,
     },
     "shape": {
@@ -1419,19 +1436,19 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "bigint": {
+      "fields": Map {
+        "bigint" => {
           "class": "Integer",
           "endianness": "little-endian",
           "signed": true,
           "size": 64,
         },
-        "double": {
+        "double" => {
           "class": "Float",
           "endianness": "little-endian",
           "size": 64,
         },
-        "utf-8": {
+        "utf-8" => {
           "charSet": "UTF-8",
           "class": "String",
           "strPad": "null-terminated",
@@ -1453,8 +1470,25 @@ exports[`test file matches snapshot 1`] = `
         "1": "<i8",
         "2": "|O",
       },
-      "members": {
-        "0": {
+      "members": [
+        {
+          "class": 0,
+          "dtype": "<i8",
+          "name": "1",
+          "order": 0,
+          "sign": 1,
+          "size": 8,
+        },
+        {
+          "class": 3,
+          "cset": 1,
+          "dtype": "|O",
+          "name": "2",
+          "size": 8,
+          "strpad": 0,
+          "vlen": true,
+        },
+        {
           "base": {
             "class": 0,
             "dtype": "|i1",
@@ -1468,24 +1502,10 @@ exports[`test file matches snapshot 1`] = `
             "FALSE": 0,
             "TRUE": 1,
           },
+          "name": "0",
           "size": 1,
         },
-        "1": {
-          "class": 0,
-          "dtype": "<i8",
-          "order": 0,
-          "sign": 1,
-          "size": 8,
-        },
-        "2": {
-          "class": 3,
-          "cset": 1,
-          "dtype": "|O",
-          "size": 8,
-          "strpad": 0,
-          "vlen": true,
-        },
-      },
+      ],
       "size": 17,
     },
     "shape": {
@@ -1494,8 +1514,19 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "0": {
+      "fields": Map {
+        "1" => {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "2" => {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+        "0" => {
           "base": {
             "class": "Integer",
             "endianness": "little-endian",
@@ -1503,17 +1534,6 @@ exports[`test file matches snapshot 1`] = `
             "size": 8,
           },
           "class": "Boolean",
-        },
-        "1": {
-          "class": "Integer",
-          "endianness": "little-endian",
-          "signed": true,
-          "size": 64,
-        },
-        "2": {
-          "charSet": "UTF-8",
-          "class": "String",
-          "strPad": "null-terminated",
         },
       },
     },
@@ -1532,29 +1552,32 @@ exports[`test file matches snapshot 1`] = `
         "double": "<f8",
         "utf-8": "|O",
       },
-      "members": {
-        "bigint": {
+      "members": [
+        {
           "class": 0,
           "dtype": "<i8",
+          "name": "bigint",
           "order": 0,
           "sign": 1,
           "size": 8,
         },
-        "double": {
+        {
           "class": 1,
           "dtype": "<f8",
+          "name": "double",
           "order": 0,
           "size": 8,
         },
-        "utf-8": {
+        {
           "class": 3,
           "cset": 1,
           "dtype": "|O",
+          "name": "utf-8",
           "size": 8,
           "strpad": 0,
           "vlen": true,
         },
-      },
+      ],
       "size": 24,
     },
     "shape": {
@@ -1565,19 +1588,19 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "bigint": {
+      "fields": Map {
+        "bigint" => {
           "class": "Integer",
           "endianness": "little-endian",
           "signed": true,
           "size": 64,
         },
-        "double": {
+        "double" => {
           "class": "Float",
           "endianness": "little-endian",
           "size": 64,
         },
-        "utf-8": {
+        "utf-8" => {
           "charSet": "UTF-8",
           "class": "String",
           "strPad": "null-terminated",
@@ -1613,23 +1636,16 @@ exports[`test file matches snapshot 1`] = `
           "cplx": "<c8",
         },
       },
-      "members": {
-        "nested": {
+      "members": [
+        {
           "class": 6,
           "dtype": {
             "bigint": "<i8",
             "bool": "|b1",
             "cplx": "<c8",
           },
-          "members": {
-            "bigint": {
-              "class": 0,
-              "dtype": "<i8",
-              "order": 0,
-              "sign": 1,
-              "size": 8,
-            },
-            "bool": {
+          "members": [
+            {
               "base": {
                 "class": 0,
                 "dtype": "|i1",
@@ -1643,31 +1659,44 @@ exports[`test file matches snapshot 1`] = `
                 "FALSE": 0,
                 "TRUE": 1,
               },
+              "name": "bool",
               "size": 1,
             },
-            "cplx": {
+            {
               "class": 6,
               "dtype": "<c8",
-              "members": {
-                "i": {
+              "members": [
+                {
                   "class": 1,
                   "dtype": "<f4",
+                  "name": "r",
                   "order": 0,
                   "size": 4,
                 },
-                "r": {
+                {
                   "class": 1,
                   "dtype": "<f4",
+                  "name": "i",
                   "order": 0,
                   "size": 4,
                 },
-              },
+              ],
+              "name": "cplx",
               "size": 8,
             },
-          },
+            {
+              "class": 0,
+              "dtype": "<i8",
+              "name": "bigint",
+              "order": 0,
+              "sign": 1,
+              "size": 8,
+            },
+          ],
+          "name": "nested",
           "size": 17,
         },
-      },
+      ],
       "size": 17,
     },
     "shape": {
@@ -1676,17 +1705,11 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "nested": {
+      "fields": Map {
+        "nested" => {
           "class": "Compound",
-          "fields": {
-            "bigint": {
-              "class": "Integer",
-              "endianness": "little-endian",
-              "signed": true,
-              "size": 64,
-            },
-            "bool": {
+          "fields": Map {
+            "bool" => {
               "base": {
                 "class": "Integer",
                 "endianness": "little-endian",
@@ -1695,7 +1718,7 @@ exports[`test file matches snapshot 1`] = `
               },
               "class": "Boolean",
             },
-            "cplx": {
+            "cplx" => {
               "class": "Complex",
               "imagType": {
                 "class": "Float",
@@ -1707,6 +1730,12 @@ exports[`test file matches snapshot 1`] = `
                 "endianness": "little-endian",
                 "size": 32,
               },
+            },
+            "bigint" => {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
             },
           },
         },
@@ -1731,8 +1760,8 @@ exports[`test file matches snapshot 1`] = `
         "arr": "|V8",
         "vlen": "|O",
       },
-      "members": {
-        "arr": {
+      "members": [
+        {
           "base": {
             "class": 1,
             "dtype": "<f4",
@@ -1744,9 +1773,10 @@ exports[`test file matches snapshot 1`] = `
             2,
           ],
           "dtype": "|V8",
+          "name": "arr",
           "size": 8,
         },
-        "vlen": {
+        {
           "base": {
             "class": 0,
             "dtype": "<u8",
@@ -1756,9 +1786,10 @@ exports[`test file matches snapshot 1`] = `
           },
           "class": 9,
           "dtype": "|O",
+          "name": "vlen",
           "size": 16,
         },
-      },
+      ],
       "size": 24,
     },
     "shape": {
@@ -1769,8 +1800,8 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "arr": {
+      "fields": Map {
+        "arr" => {
           "base": {
             "class": "Float",
             "endianness": "little-endian",
@@ -1781,7 +1812,7 @@ exports[`test file matches snapshot 1`] = `
             2,
           ],
         },
-        "vlen": {
+        "vlen" => {
           "base": {
             "class": "Integer",
             "endianness": "little-endian",

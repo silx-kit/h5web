@@ -4,8 +4,6 @@ import {
   type ArrayShape,
   type Attribute,
   type BooleanType,
-  type ComplexType,
-  type CompoundType,
   type Dataset,
   type DType,
   type Entity,
@@ -18,8 +16,7 @@ import {
 import {
   arrayShape,
   arrayType,
-  compoundType,
-  cplxType,
+  compoundOrCplxType,
   enumOrBoolType,
   floatType,
   intType,
@@ -32,7 +29,6 @@ import {
 
 import {
   type HsdsAttribute,
-  type HsdsCompoundType,
   type HsdsEntity,
   type HsdsEnumType,
   type HsdsNumericType,
@@ -103,27 +99,6 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   return intType(sign === 'I', size, h5tOrder);
 }
 
-function convertHsdsCompoundType(
-  hsdsType: HsdsCompoundType,
-): CompoundType | ComplexType {
-  const { fields } = hsdsType;
-
-  if (fields.length === 2 && fields[0].name === 'r' && fields[1].name === 'i') {
-    const [{ type: realType }, { type: imagType }] = fields;
-    assertHsdsNumericType(realType);
-    assertHsdsNumericType(imagType);
-
-    return cplxType(
-      convertHsdsNumericType(realType),
-      convertHsdsNumericType(imagType),
-    );
-  }
-
-  return compoundType(
-    Object.fromEntries(fields.map((v) => [v.name, convertHsdsType(v.type)])),
-  );
-}
-
 function convertHsdsEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
   const { base, mapping } = hsdsType;
   assertHsdsNumericType(base);
@@ -137,7 +112,9 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
       return convertHsdsNumericType(hsdsType);
 
     case 'H5T_COMPOUND':
-      return convertHsdsCompoundType(hsdsType);
+      return compoundOrCplxType(
+        hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)]),
+      );
 
     case 'H5T_STRING': {
       const { charSet, strPad, length } = hsdsType;
