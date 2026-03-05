@@ -34,10 +34,4 @@ export default defineProject({
     },
     sourcemap: true,
   },
-  test: {
-    setupFiles: ['src/setupTests.ts'],
-    environment: 'jsdom',
-    restoreMocks: true,
-    testTimeout: 15_000,
-  },
 });
