@@ -7,7 +7,6 @@ import {
 } from '@h5web/shared/guards';
 import { beforeAll, expect, test } from 'vitest';
 
-import { assertListeningAt } from '../../test-utils';
 import { getValueOrError } from '../utils';
 import { H5GroveApi } from './h5grove-api';
 
@@ -18,7 +17,13 @@ assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
 assertEnvVar(TEST_FILE, 'VITE_TEST_FILE');
 
 beforeAll(async () => {
-  await assertListeningAt(H5GROVE_URL);
+  try {
+    await fetch(H5GROVE_URL);
+  } catch (error) {
+    throw new Error(`Expected server listening at ${H5GROVE_URL}`, {
+      cause: error,
+    });
+  }
 });
 
 test.skipIf(SKIP)('test file matches snapshot', async () => {

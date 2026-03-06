@@ -1,3 +1,4 @@
+import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -5,12 +6,15 @@ export default defineConfig({
     projects: [
       {
         test: {
-          name: 'jsdom',
+          name: 'browser',
           include: ['packages/app/src/__tests__/**/*.test.{ts,tsx}'],
-          setupFiles: ['packages/app/src/setupTests.ts'],
-          environment: 'jsdom',
-          restoreMocks: true,
-          testTimeout: 15_000,
+          setupFiles: 'packages/app/src/setupTests.ts',
+          browser: {
+            provider: playwright(),
+            enabled: true,
+            instances: [{ browser: 'firefox' }],
+            viewport: { width: 1920, height: 1080 },
+          },
         },
       },
       {

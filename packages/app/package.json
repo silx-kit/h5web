@@ -75,10 +75,6 @@
     "@esrf/eslint-config": "2.2.2",
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "6.0.0",
-    "@testing-library/dom": "10.4.1",
-    "@testing-library/jest-dom": "6.9.1",
-    "@testing-library/react": "16.3.2",
-    "@testing-library/user-event": "14.6.1",
     "@types/node": "^24.10.13",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
@@ -96,6 +92,7 @@
     "typescript": "5.9.3",
     "vite": "7.3.1",
     "vite-css-modules": "1.12.0",
-    "vitest": "4.0.18"
+    "vitest": "4.0.18",
+    "vitest-browser-react": "2.0.5"
   }
 }

@@ -1,82 +1,84 @@
-import { screen } from '@testing-library/react';
 import { expect, test, vi } from 'vitest';
+import { page } from 'vitest/browser';
 
 import { getExplorerItem, renderApp } from '../test-utils';
 
 test('toggle sidebar', async () => {
-  const { user } = await renderApp();
+  await renderApp();
 
   // Open by default
-  const toggleBtn = screen.getByRole('button', { name: 'Toggle sidebar' });
-  expect(toggleBtn).toBePressed();
+  const toggleBtn = page.getByRole('button', { name: 'Toggle sidebar' });
+  expect(toggleBtn).toHaveAttribute('aria-pressed', 'true');
   expect(getExplorerItem('source.h5')).toBeVisible();
 
   // Hide
-  await user.click(toggleBtn);
-  expect(toggleBtn).not.toBePressed();
-  expect(screen.queryByRole('treeitem', { name: 'source.h5' })).toBeNull();
+  await toggleBtn.click();
+  expect(toggleBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(
+    page.getByRole('treeitem', { name: 'source.h5' }),
+  ).not.toBeInTheDocument();
 
   // Show
-  await user.click(toggleBtn);
-  expect(toggleBtn).toBePressed();
+  await toggleBtn.click();
+  expect(toggleBtn).toHaveAttribute('aria-pressed', 'true');
   expect(getExplorerItem('source.h5')).toBeVisible();
 });
 
 test('switch between "display" and "inspect" modes', async () => {
-  const { user } = await renderApp();
+  await renderApp();
 
   // Switch to "inspect" mode
-  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
-  expect(screen.getByRole('row', { name: /^Path/ })).toBeVisible();
+  await page.getByRole('tab', { name: 'Inspect' }).click();
+  expect(page.getByRole('row', { name: /^Path/ })).toBeVisible();
 
   // Switch back to "display" mode
-  await user.click(screen.getByRole('tab', { name: 'Display' }));
-  expect(screen.queryByRole('row', { name: /^Path/ })).not.toBeInTheDocument();
+  await page.getByRole('tab', { name: 'Display' }).click();
+  expect(page.getByRole('row', { name: /^Path/ })).not.toBeInTheDocument();
 });
 
 test('navigate with breadcrumbs', async () => {
-  const { user, selectExplorerNode } = await renderApp();
-  expect(screen.getByRole('heading', { name: 'source.h5' })).toBeVisible();
+  const { selectExplorerNode } = await renderApp();
+  expect(page.getByRole('heading', { name: 'source.h5' })).toBeVisible();
 
   // Select group
   await selectExplorerNode('entities');
-  expect(screen.getByRole('heading', { name: 'entities' })).toBeVisible(); // no root crumb when sidebar is open
+  expect(page.getByRole('heading', { name: 'entities' })).toBeVisible(); // no root crumb when sidebar is open
 
   // Select child
   await selectExplorerNode('empty_dataset');
   expect(
-    screen.getByRole('heading', { name: 'entities / empty_dataset' }),
+    page.getByRole('heading', { name: 'entities / empty_dataset' }),
   ).toBeVisible();
 
   // Hide sidebar to show root crumb
-  const toggleBtn = screen.getByRole('button', { name: 'Toggle sidebar' });
-  await user.click(toggleBtn);
+  const toggleBtn = page.getByRole('button', { name: 'Toggle sidebar' });
+  await toggleBtn.click();
   expect(
-    screen.getByRole('heading', {
+    page.getByRole('heading', {
       name: 'source.h5 / entities / empty_dataset',
     }),
   ).toBeVisible();
 
   // Select parent crumb
-  await user.click(screen.getByRole('button', { name: 'entities' }));
+  await page.getByRole('button', { name: 'entities' }).click();
   expect(
-    screen.getByRole('heading', { name: 'source.h5 / entities' }),
+    page.getByRole('heading', { name: 'source.h5 / entities' }),
   ).toBeVisible();
 
   // Select root crumb
-  await user.click(screen.getByRole('button', { name: 'source.h5' }));
-  expect(screen.getByRole('heading', { name: 'source.h5' })).toBeVisible();
+  await page.getByRole('button', { name: 'source.h5' }).click();
+  expect(page.getByRole('heading', { name: 'source.h5' })).toBeVisible();
 });
 
 test('copy path to clipboard', async () => {
-  const { user } = await renderApp({ initialPath: '/entities/empty_dataset' });
+  await renderApp({ initialPath: '/entities/empty_dataset' });
 
-  const lastCrumb = screen.getByRole('button', {
+  const lastCrumb = page.getByRole('button', {
     name: 'empty_dataset (copy path)',
   });
   expect(lastCrumb).toBeVisible();
 
   const mock = vi.spyOn(navigator.clipboard, 'writeText');
-  await user.click(lastCrumb);
+  await lastCrumb.click();
   expect(mock).toHaveBeenCalledWith('/entities/empty_dataset');
 });

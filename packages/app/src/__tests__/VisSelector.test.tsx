@@ -1,36 +1,36 @@
-import { screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
+import { page } from 'vitest/browser';
 
 import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 import { NxDataVis } from '../vis-packs/nexus/visualizations';
 
 test('switch between visualizations', async () => {
-  const { user } = await renderApp('/nD_datasets/oneD');
+  await renderApp('/nD_datasets/oneD');
 
-  const lineTab = screen.getByRole('tab', { name: 'Line' });
+  const lineTab = page.getByRole('tab', { name: 'Line' });
   expect(lineTab).toBeVisible();
   expect(lineTab).toHaveAttribute('aria-selected', 'true');
 
-  const matrixTab = screen.getByRole('tab', { name: 'Matrix' });
+  const matrixTab = page.getByRole('tab', { name: 'Matrix' });
   expect(matrixTab).toBeVisible();
   expect(matrixTab).toHaveAttribute('aria-selected', 'false');
 
   // Switch to Matrix visualization
-  await user.click(matrixTab);
+  await matrixTab.click();
   expect(matrixTab).toHaveAttribute('aria-selected', 'true');
   expect(lineTab).toHaveAttribute('aria-selected', 'false');
 });
 
 test('restore active visualization when switching to inspect mode and back', async () => {
-  const { user, selectVisTab } = await renderApp('/nD_datasets/twoD');
+  const { selectVisTab } = await renderApp('/nD_datasets/twoD');
 
   // Switch to Line visualization
   await selectVisTab(Vis.Line);
 
   // Switch to inspect mode and back
-  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
-  await user.click(screen.getByRole('tab', { name: 'Display' }));
+  await page.getByRole('tab', { name: 'Inspect' }).click();
+  await page.getByRole('tab', { name: 'Display' }).click();
 
   // Ensure Line visualization is active
   expect(getSelectedVisTab()).toBe('Line');
@@ -92,7 +92,7 @@ test('prioritize primary over preferred visualization', async () => {
   expect(getSelectedVisTab()).toBe(NxDataVis.NxLine);
 
   // Select NXdata group with `image` interpretation
-  await selectExplorerNode('image');
+  await selectExplorerNode('image', true);
 
   // Check that the preferred visualization is NOT restored
   expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);
