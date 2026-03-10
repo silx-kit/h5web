@@ -1,7 +1,7 @@
 import { isTypedArray } from '@h5web/shared/guards';
 import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { expose, transfer } from 'comlink';
-import { Attribute, Dataset } from 'h5wasm';
+import { Attribute, Dataset, File as H5WasmFile } from 'h5wasm';
 
 import {
   getAvailableFileName,
@@ -23,7 +23,8 @@ async function openFileBuffer(buffer: ArrayBuffer): Promise<bigint> {
 
   FS.writeFile(fileName, new Uint8Array(buffer), { flags: 'w+' });
 
-  return h5wasm.open(fileName);
+  const { file_id } = new H5WasmFile(fileName);
+  return file_id;
 }
 
 async function openLocalFile(file: File): Promise<bigint> {
@@ -37,10 +38,8 @@ async function openLocalFile(file: File): Promise<bigint> {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   WORKERFS.createNode(rootNode, fileName, WORKERFS.FILE_MODE, 0, file);
 
-  return h5wasm.open(
-    `${WORKERFS_FOLDER}/${fileName}`,
-    h5wasm.H5F_ACC_SWMR_READ, // in case file is opened for writing in a concurrent process
-  );
+  const { file_id } = new H5WasmFile(`${WORKERFS_FOLDER}/${fileName}`, 'Sr'); // SWMR in case file is opened for writing in a concurrent process
+  return file_id;
 }
 
 async function closeFile(fileId: bigint): Promise<number> {
