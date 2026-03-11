@@ -108,6 +108,21 @@ const threeD_rgb = () =>
     [3, 3, 3],
   );
 
+const threeD_rgba = () =>
+  ndarray(
+    [
+      [
+        [255, 0, 0, 50],
+        [0, 255, 0, 100],
+      ],
+      [
+        [0, 0, 255, 150],
+        [128, 128, 128, 200],
+      ],
+    ].flat(2),
+    [2, 2, 4],
+  );
+
 export const mockValues = {
   oneD,
   oneD_linear: () => ndarray(range1()),
@@ -206,6 +221,7 @@ export const mockValues = {
       [2, 3, 4],
     ),
   threeD_rgb,
+  threeD_rgba,
   fourD: () => {
     const { data: dataThreeD } = threeD();
     return ndarray(

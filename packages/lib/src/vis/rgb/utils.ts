@@ -36,9 +36,9 @@ export function toRgbSafeNdArray(
 export function getData3DTexture(
   values: NdArray<Uint8Array | Uint8ClampedArray | Float32Array>,
 ): Data3DTexture {
-  const [rows, cols] = values.shape;
+  const [rows, cols, channels] = values.shape;
 
-  const texture = new Data3DTexture(values.data, 3, cols, rows);
+  const texture = new Data3DTexture(values.data, channels, cols, rows);
   texture.format = RedFormat;
   texture.type = values.dtype === 'float32' ? FloatType : UnsignedByteType;
   texture.needsUpdate = true;
