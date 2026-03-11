@@ -303,7 +303,7 @@ describe('/mock', () => {
     }
   });
 
-  it('visualize image dataset as RGB', () => {
+  it.only('visualize image dataset as RGB/BGR or RGBA/BGRA', () => {
     cy.selectExplorerNode('nD_datasets');
     cy.selectExplorerNode('threeD_rgb');
 
@@ -322,6 +322,24 @@ describe('/mock', () => {
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('bgr_image');
+    }
+
+    cy.selectExplorerNode('threeD_rgba');
+    cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
+    cy.findByRole('figure', { name: 'threeD_rgba' }).should('be.visible');
+    cy.findByRole('heading', { name: 'nD_datasets / threeD_rgba' }).should(
+      'be.visible',
+    );
+
+    if (takeSnapshots) {
+      cy.matchImageSnapshot('bgra_image');
+    }
+
+    cy.findByRole('radio', { name: 'RGB' }).click();
+    cy.waitForStableDOM();
+
+    if (takeSnapshots) {
+      cy.matchImageSnapshot('rgba_image');
     }
   });
 
@@ -527,12 +545,12 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize dataset with "rgb-image" interpretation as NxRGB', () => {
+    it('visualize signals with "rgb-image" and "rgba-image" interpretations as NxRGB', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('rgb-image');
 
       cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
-      cy.findByRole('figure', { name: 'RGB CMY DGW' }).should('be.visible');
+      cy.findByRole('figure', { name: 'RGB' }).should('be.visible');
       cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
         'be.visible',
       );
@@ -540,6 +558,18 @@ describe('/mock', () => {
 
       if (takeSnapshots) {
         cy.matchImageSnapshot('nxrgb');
+      }
+
+      cy.selectExplorerNode('rgba-image');
+      cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
+      cy.findByRole('figure', { name: 'RGBA' }).should('be.visible');
+      cy.findByRole('heading', { name: 'nexus_entry / rgba-image' }).should(
+        'be.visible',
+      );
+      cy.waitForStableDOM();
+
+      if (takeSnapshots) {
+        cy.matchImageSnapshot('nxrgba');
       }
     });
 

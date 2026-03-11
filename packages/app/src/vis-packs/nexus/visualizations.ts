@@ -94,11 +94,14 @@ export const NX_DATA_VIS = {
     supports: (_, signal, interpretation, attrValuesStore) => {
       const classAttr = findScalarStrAttr(signal, 'CLASS');
       const classVal = getAttributeValue(signal, classAttr, attrValuesStore);
+      const lastDim = signal.shape.dims[signal.shape.dims.length - 1];
 
       return (
-        (interpretation === NxInterpretation.RGB || classVal === 'IMAGE') &&
-        hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
-        signal.shape.dims[signal.shape.dims.length - 1] === 3 && // 3 channels
+        (interpretation === NxInterpretation.RGB ||
+          interpretation === NxInterpretation.RGBA ||
+          classVal === 'IMAGE') &&
+        hasMinDims(signal, 3) && // 2 for axes + 1 for RGB(A) channels
+        (lastDim === 3 || lastDim === 4) && // 3 or 4 channels
         hasNumericType(signal)
       );
     },
