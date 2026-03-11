@@ -4,6 +4,7 @@ export enum NxInterpretation {
   Spectrum = 'spectrum',
   Image = 'image',
   RGB = 'rgb-image',
+  RGBA = 'rgba-image',
 }
 
 export interface SilxStyle {

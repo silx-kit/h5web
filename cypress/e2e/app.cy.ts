@@ -527,12 +527,12 @@ describe('/mock', () => {
       }
     });
 
-    it('visualize dataset with "rgb-image" interpretation as NxRGB', () => {
+    it('visualize signals with "rgb-image" and "rgba-image" interpretations as NxRGB', () => {
       cy.selectExplorerNode('nexus_entry');
       cy.selectExplorerNode('rgb-image');
 
       cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
-      cy.findByRole('figure', { name: 'RGB CMY DGW' }).should('be.visible');
+      cy.findByRole('figure', { name: 'RGB' }).should('be.visible');
       cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
         'be.visible',
       );
@@ -540,6 +540,18 @@ describe('/mock', () => {
 
       if (takeSnapshots) {
         cy.matchImageSnapshot('nxrgb');
+      }
+
+      cy.selectExplorerNode('rgba-image');
+      cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
+      cy.findByRole('figure', { name: 'RGBA' }).should('be.visible');
+      cy.findByRole('heading', { name: 'nexus_entry / rgba-image' }).should(
+        'be.visible',
+      );
+      cy.waitForStableDOM();
+
+      if (takeSnapshots) {
+        cy.matchImageSnapshot('nxrgba');
       }
     });
 

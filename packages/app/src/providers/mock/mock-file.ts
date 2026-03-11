@@ -155,6 +155,7 @@ export function makeMockFile(): GroupWithChildren {
         array('threeD_bool'),
         array('threeD_cplx'),
         withImageAttr(array('threeD_rgb')),
+        withImageAttr(array('threeD_rgba')),
         array('fourD'),
       ]),
       group('typed_arrays', [
@@ -267,12 +268,20 @@ export function makeMockFile(): GroupWithChildren {
           nxData('rgb-image', {
             signal: withImageAttr(
               withNxAttr(array('fourD_rgb'), {
-                longName: 'RGB CMY DGW',
+                longName: 'RGB',
                 interpretation: 'rgb-image',
               }),
             ),
             axes: { X_rgb: array('X_rgb'), Y_rgb: array('Y_rgb') },
             axesAttr: ['.', 'Y_rgb', 'X_rgb'],
+          }),
+          nxData('rgba-image', {
+            signal: withImageAttr(
+              withNxAttr(array('threeD_rgba'), {
+                longName: 'RGBA',
+                interpretation: 'rgba-image',
+              }),
+            ),
           }),
           nxData('descending-axes', {
             signal: array('twoD'),

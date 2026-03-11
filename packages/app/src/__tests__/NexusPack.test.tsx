@@ -44,7 +44,19 @@ test('visualize NXdata group with explicit signal interpretation', async () => {
   ]);
   expect(getSelectedVisTab()).toBe(NxDataVis.NxRGB);
   expect(
-    screen.getByRole('figure', { name: 'RGB CMY DGW' }), // `long_name` attribute
+    screen.getByRole('figure', { name: 'RGB' }), // `long_name` attribute
+  ).toBeVisible();
+
+  // Signal with "rgba-image" interpretation
+  await selectExplorerNode('rgba-image');
+  expect(getVisTabs()).toEqual([
+    NxDataVis.NxLine,
+    NxDataVis.NxHeatmap,
+    NxDataVis.NxRGB,
+  ]);
+  expect(getSelectedVisTab()).toBe(NxDataVis.NxRGB);
+  expect(
+    screen.getByRole('figure', { name: 'RGBA' }), // `long_name` attribute
   ).toBeVisible();
 });
 

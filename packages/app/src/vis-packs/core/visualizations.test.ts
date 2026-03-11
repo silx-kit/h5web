@@ -77,14 +77,20 @@ const twoDCompound = dataset(
   compoundType([['int', intType()]]),
 );
 
-const image = withImageAttr(
-  dataset('image', arrayShape([256, 256, 3]), intType()),
+const imageInt3 = withImageAttr(
+  dataset('image_int_3', arrayShape([256, 256, 3]), intType()),
 );
-const imageFloat = withImageAttr(
-  dataset('image_float', arrayShape([256, 256, 3]), floatType()),
+const imageInt4 = withImageAttr(
+  dataset('image_int_4', arrayShape([256, 256, 4]), intType()),
 );
-const imageStr = withImageAttr(
-  dataset('image_str', arrayShape([256, 256, 3]), strType()),
+const imageInt5 = withImageAttr(
+  dataset('image_int_5', arrayShape([256, 256, 5]), intType()),
+);
+const imageFloat3 = withImageAttr(
+  dataset('image_float_3', arrayShape([256, 256, 3]), floatType()),
+);
+const imageStr3 = withImageAttr(
+  dataset('image_str_3', arrayShape([256, 256, 3]), strType()),
 );
 const imageScalar = withImageAttr(
   dataset('image_scalar', scalarShape(), intType()),
@@ -238,19 +244,28 @@ describe('Complex Heatmap', () => {
 describe('RGB', () => {
   const { supportsDataset } = CORE_VIS.RGB;
 
-  it('should support array dataset with IMAGE attribute and numeric type', () => {
-    expect(supportsDataset(image, mockStore as AttrValuesStore)).toBe(true);
-    expect(supportsDataset(imageFloat, mockStore as AttrValuesStore)).toBe(
+  it('should support array dataset with IMAGE attribute, numeric type, and last dimension of size 3 or 4', () => {
+    expect(supportsDataset(imageInt3, mockStore as AttrValuesStore)).toBe(true);
+    expect(supportsDataset(imageInt4, mockStore as AttrValuesStore)).toBe(true);
+    expect(supportsDataset(imageFloat3, mockStore as AttrValuesStore)).toBe(
       true,
     );
   });
 
   it('should not support dataset with non-numeric type', () => {
-    expect(supportsDataset(imageStr, mockStore as AttrValuesStore)).toBe(false);
+    expect(supportsDataset(imageStr3, mockStore as AttrValuesStore)).toBe(
+      false,
+    );
   });
 
   it('should not support dataset with non-array shape', () => {
     expect(supportsDataset(imageScalar, mockStore as AttrValuesStore)).toBe(
+      false,
+    );
+  });
+
+  it('should not support dataset with last dimension of size other than 3 or 4', () => {
+    expect(supportsDataset(imageInt5, mockStore as AttrValuesStore)).toBe(
       false,
     );
   });
