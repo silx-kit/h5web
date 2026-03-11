@@ -1,14 +1,58 @@
-import { assertDefined, assertNonNull, isGroup } from '@h5web/shared/guards';
+import {
+  assertDefined,
+  assertNonNull,
+  hasArrayShape,
+  hasScalarShape,
+  isDataset,
+  isDatatype,
+  isGroup,
+} from '@h5web/shared/guards';
 import { type ChildEntity } from '@h5web/shared/hdf5-models';
 import { type KeyboardEvent } from 'react';
+import { type IconType } from 'react-icons';
+import {
+  FiChevronDown,
+  FiChevronRight,
+  FiHash,
+  FiLayers,
+  FiLink,
+} from 'react-icons/fi';
+import { PiEmptyBold, PiGridFourBold } from 'react-icons/pi';
+import { RxDotFilled } from 'react-icons/rx';
+import { TbCube, TbTimeline } from 'react-icons/tb';
 
 import { type AttrValuesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
 import { getNxClass } from '../vis-packs/nexus/utils';
 
+const ARRAY_ICONS = [undefined, TbTimeline, PiGridFourBold, TbCube];
 const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);
 
 export const EXPLORER_ID = 'h5web-explorer-tree';
+
+export function getIcon(entity: ChildEntity, isExpanded: boolean): IconType {
+  if (isGroup(entity)) {
+    return isExpanded ? FiChevronDown : FiChevronRight;
+  }
+
+  if (isDataset(entity)) {
+    if (hasArrayShape(entity)) {
+      return ARRAY_ICONS[entity.shape.dims.length] || FiLayers;
+    }
+
+    if (hasScalarShape(entity)) {
+      return RxDotFilled;
+    }
+
+    return PiEmptyBold;
+  }
+
+  if (isDatatype(entity)) {
+    return FiHash;
+  }
+
+  return FiLink;
+}
 
 export function needsNxBadge(
   entity: ChildEntity,

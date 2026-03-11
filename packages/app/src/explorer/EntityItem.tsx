@@ -15,7 +15,6 @@ import { FiRefreshCw } from 'react-icons/fi';
 
 import EntityList from './EntityList';
 import styles from './Explorer.module.css';
-import Icon from './Icon';
 import NxBadge from './NxBadge';
 import {
   focusFirst,
@@ -23,6 +22,7 @@ import {
   focusNext,
   focusParent,
   focusPrevious,
+  getIcon,
 } from './utils';
 
 interface Props {
@@ -103,6 +103,8 @@ function EntityItem(props: Props) {
     [entity, isExpanded, toggleExpanded],
   );
 
+  const Icon = getIcon(entity, isExpanded);
+
   return (
     <li
       className={styles.entity}
@@ -127,7 +129,7 @@ function EntityItem(props: Props) {
         }}
         onKeyDown={handleKeyDown}
       >
-        <Icon entity={entity} isExpanded={isExpanded} />
+        <Icon className={styles.icon} />
         <span className={styles.name}>{entity.name}</span>
 
         <ErrorBoundary fallback={null}>
