@@ -1565,19 +1565,19 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "bigint": {
+      "fields": Map {
+        "bigint" => {
           "class": "Integer",
           "endianness": "little-endian",
           "signed": true,
           "size": 64,
         },
-        "double": {
+        "double" => {
           "class": "Float",
           "endianness": "little-endian",
           "size": 64,
         },
-        "utf-8": {
+        "utf-8" => {
           "charSet": "UTF-8",
           "class": "String",
           "strPad": "null-terminated",
@@ -1651,8 +1651,19 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "0": {
+      "fields": Map {
+        "1" => {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "2" => {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+        "0" => {
           "base": {
             "class": "Integer",
             "endianness": "little-endian",
@@ -1660,17 +1671,6 @@ exports[`test file matches snapshot 1`] = `
             "size": 8,
           },
           "class": "Boolean",
-        },
-        "1": {
-          "class": "Integer",
-          "endianness": "little-endian",
-          "signed": true,
-          "size": 64,
-        },
-        "2": {
-          "charSet": "UTF-8",
-          "class": "String",
-          "strPad": "null-terminated",
         },
       },
     },
@@ -1735,19 +1735,19 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "bigint": {
+      "fields": Map {
+        "bigint" => {
           "class": "Integer",
           "endianness": "little-endian",
           "signed": true,
           "size": 64,
         },
-        "double": {
+        "double" => {
           "class": "Float",
           "endianness": "little-endian",
           "size": 64,
         },
-        "utf-8": {
+        "utf-8" => {
           "charSet": "UTF-8",
           "class": "String",
           "strPad": "null-terminated",
@@ -1871,17 +1871,11 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "nested": {
+      "fields": Map {
+        "nested" => {
           "class": "Compound",
-          "fields": {
-            "bigint": {
-              "class": "Integer",
-              "endianness": "little-endian",
-              "signed": true,
-              "size": 64,
-            },
-            "bool": {
+          "fields": Map {
+            "bool" => {
               "base": {
                 "class": "Integer",
                 "endianness": "little-endian",
@@ -1890,7 +1884,7 @@ exports[`test file matches snapshot 1`] = `
               },
               "class": "Boolean",
             },
-            "cplx": {
+            "cplx" => {
               "class": "Complex",
               "imagType": {
                 "class": "Float",
@@ -1902,6 +1896,12 @@ exports[`test file matches snapshot 1`] = `
                 "endianness": "little-endian",
                 "size": 32,
               },
+            },
+            "bigint" => {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
             },
           },
         },
@@ -1979,8 +1979,8 @@ exports[`test file matches snapshot 1`] = `
     },
     "type": {
       "class": "Compound",
-      "fields": {
-        "arr": {
+      "fields": Map {
+        "arr" => {
           "base": {
             "class": "Float",
             "endianness": "little-endian",
@@ -1991,7 +1991,7 @@ exports[`test file matches snapshot 1`] = `
             2,
           ],
         },
-        "vlen": {
+        "vlen" => {
           "base": {
             "class": "Integer",
             "endianness": "little-endian",

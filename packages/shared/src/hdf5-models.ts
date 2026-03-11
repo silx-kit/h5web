@@ -231,7 +231,9 @@ export interface StringType {
 
 export interface CompoundType<T extends DType = DType> {
   class: DTypeClass.Compound;
-  fields: Record<string, T>;
+  /* Store fields in Map to maintain strict ordering, including for number-like keys (e.g. "0")
+   * https://github.com/silx-kit/h5web/issues/1765 */
+  fields: Map<string, T>;
 }
 
 export interface ArrayType<T extends DType = DType> {

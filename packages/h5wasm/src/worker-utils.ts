@@ -252,12 +252,10 @@ function parseDType(metadata: Metadata): DType {
     assertDefined(compound_type);
 
     return compoundOrCplxType(
-      Object.fromEntries(
-        compound_type.members.map((member) => [
-          member.name,
-          parseDType(member),
-        ]),
-      ),
+      compound_type.members.map(({ name, ...mType }) => [
+        name,
+        parseDType(mType),
+      ]),
     );
   }
 
