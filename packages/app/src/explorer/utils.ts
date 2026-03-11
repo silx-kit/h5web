@@ -1,8 +1,7 @@
 import {
   assertDefined,
   assertNonNull,
-  hasArrayShape,
-  hasScalarShape,
+  hasNonNullShape,
   isDataset,
   isDatatype,
   isGroup,
@@ -25,7 +24,7 @@ import { type AttrValuesStore } from '../providers/models';
 import { hasAttribute } from '../utils';
 import { getNxClass } from '../vis-packs/nexus/utils';
 
-const ARRAY_ICONS = [undefined, TbTimeline, PiGridFourBold, TbCube];
+const DATASET_ICONS = [RxDotFilled, TbTimeline, PiGridFourBold, TbCube];
 const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);
 
 export const EXPLORER_ID = 'h5web-explorer-tree';
@@ -36,12 +35,8 @@ export function getIcon(entity: ChildEntity, isExpanded: boolean): IconType {
   }
 
   if (isDataset(entity)) {
-    if (hasArrayShape(entity)) {
-      return ARRAY_ICONS[entity.shape.dims.length] || FiLayers;
-    }
-
-    if (hasScalarShape(entity)) {
-      return RxDotFilled;
+    if (hasNonNullShape(entity)) {
+      return DATASET_ICONS[entity.shape.dims.length] || FiLayers;
     }
 
     return PiEmptyBold;
