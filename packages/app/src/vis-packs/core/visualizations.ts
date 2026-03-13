@@ -147,16 +147,23 @@ export const CORE_VIS = {
     Container: RgbVisContainer,
     ConfigProvider: RgbConfigProvider,
     supportsDataset: (dataset, attrValuesStore) => {
-      const classAttr = findScalarStrAttr(dataset, 'CLASS');
-      const classVal = getAttributeValue(dataset, classAttr, attrValuesStore);
+      if (
+        !hasArrayShape(dataset) ||
+        !hasMinDims(dataset, 3) || // 2 for axes + 1 for RGB(A) channels
+        !hasNumericType(dataset)
+      ) {
+        return false;
+      }
 
-      return (
-        classVal === 'IMAGE' &&
-        hasArrayShape(dataset) &&
-        hasMinDims(dataset, 3) && // 2 for axes + 1 for RGB channels
-        dataset.shape.dims[dataset.shape.dims.length - 1] === 3 && // 3 channels on last dim
-        hasNumericType(dataset)
-      );
+      // Check number of channels: 3 for RGB/BGR, 4 for RGBA/BGRA
+      const lastDim = dataset.shape.dims[dataset.shape.dims.length - 1];
+      if (lastDim < 3 || lastDim > 4) {
+        return false;
+      }
+
+      // Check for `CLASS=IMAGE` attribute
+      const classAttr = findScalarStrAttr(dataset, 'CLASS');
+      return getAttributeValue(dataset, classAttr, attrValuesStore) === 'IMAGE';
     },
   },
 

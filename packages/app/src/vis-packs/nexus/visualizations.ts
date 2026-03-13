@@ -92,14 +92,25 @@ export const NX_DATA_VIS = {
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
     supports: (_, signal, interpretation, attrValuesStore) => {
-      const classAttr = findScalarStrAttr(signal, 'CLASS');
-      const classVal = getAttributeValue(signal, classAttr, attrValuesStore);
+      if (
+        !hasMinDims(signal, 3) || // 2 for axes + 1 for RGB(A) channels
+        !hasNumericType(signal)
+      ) {
+        return false;
+      }
 
+      // Check number of channels: 3 for RGB/BGR, 4 for RGBA/BGRA
+      const lastDim = signal.shape.dims[signal.shape.dims.length - 1];
+      if (lastDim < 3 || lastDim > 4) {
+        return false;
+      }
+
+      // Check for `rgb(a)-image` interpretation or `CLASS=IMAGE` attribute
+      const classAttr = findScalarStrAttr(signal, 'CLASS');
       return (
-        (interpretation === NxInterpretation.RGB || classVal === 'IMAGE') &&
-        hasMinDims(signal, 3) && // 2 for axes + 1 for RGB channels
-        signal.shape.dims[signal.shape.dims.length - 1] === 3 && // 3 channels
-        hasNumericType(signal)
+        interpretation === NxInterpretation.RGB ||
+        interpretation === NxInterpretation.RGBA ||
+        getAttributeValue(signal, classAttr, attrValuesStore) === 'IMAGE'
       );
     },
     isPrimary: () => true, // always primary if supported
