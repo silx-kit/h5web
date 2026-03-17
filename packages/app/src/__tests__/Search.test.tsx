@@ -1,32 +1,30 @@
-import { screen } from '@testing-library/react';
 import { expect, test } from 'vitest';
+import { page } from 'vitest/browser';
 
 import { renderApp } from '../test-utils';
 
 test('search for entities', async () => {
-  const { user } = await renderApp();
+  await renderApp();
 
   // Select "Search" tab
-  await user.click(screen.getByRole('tab', { name: 'Search' }));
-  expect(screen.queryByRole('treeitem')).toBeNull(); // no results yet
+  await page.getByRole('tab', { name: 'Search' }).click();
+  expect(page.getByRole('treeitem')).not.toBeInTheDocument(); // no results yet
 
   // Type search text
-  await user.type(screen.getByLabelText('Path to search'), 'empty');
-  expect(screen.getAllByRole('treeitem')).toHaveLength(2); // two results
+  await page.getByLabelText('Path to search').fill('empty');
+  expect(page.getByRole('treeitem')).toHaveLength(2); // two results
 
   // Select a result
-  const itemToSelect = screen.getByRole('treeitem', {
+  const itemToSelect = page.getByRole('treeitem', {
     name: '/entities/empty_group',
   });
-  await user.click(itemToSelect);
+  await itemToSelect.click();
   expect(itemToSelect).toHaveAttribute('aria-selected', 'true');
 
   // Switch back to explorer and make sure result is still selected and visible
-  await user.click(screen.getByRole('tab', { name: 'Explorer' }));
+  await page.getByRole('tab', { name: 'Explorer' }).click();
 
-  const selectedItem = await screen.findByRole('treeitem', {
-    name: 'empty_group',
-  });
-  expect(selectedItem).toHaveAttribute('aria-selected', 'true');
+  const selectedItem = page.getByRole('treeitem', { name: 'empty_group' });
   expect(selectedItem).toBeVisible();
+  expect(selectedItem).toHaveAttribute('aria-selected', 'true');
 });

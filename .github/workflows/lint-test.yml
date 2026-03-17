@@ -67,12 +67,14 @@ jobs:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
             ~/.cache/Cypress
+            ~/.cache/ms-playwright
           key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
+          restore-keys: ${{ runner.os }}-
 
       - name: Install dependencies ⚙️
-        run: pnpm install
+        run: |
+          pnpm install
+          pnpm exec playwright install chromium
 
       - name: Set up Python 🕹️
         id: setup-python
@@ -107,7 +109,14 @@ jobs:
         run: pnpm support:h5grove & pnpm wait-on http://localhost:8888 -t 1m
 
       - name: Test 👓
-        run: pnpm test
+        run: pnpm test:headless
+
+      - name: Upload debug screenshots on failure 🖼️
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: vitest
+          path: packages/app/src/__tests__/__screenshots__/
 
   packages:
     runs-on: ubuntu-latest

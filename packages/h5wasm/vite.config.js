@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import react from '@vitejs/plugin-react-swc';
-import { defineProject } from 'vitest/config';
+import { defineConfig } from 'vite';
 
 const [pkg, appPkg, sharedPkg] = ['.', '../app', '../shared']
   .map((prefix) => path.resolve(import.meta.dirname, `${prefix}/package.json`))
@@ -16,7 +16,7 @@ export const externals = new Set([
   ...Object.keys(pkg.peerDependencies),
 ]);
 
-export default defineProject({
+export default defineConfig({
   plugins: [react()],
   build: {
     lib: {

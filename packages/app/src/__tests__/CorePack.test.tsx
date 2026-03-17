@@ -1,5 +1,5 @@
-import { screen, within } from '@testing-library/react';
 import { expect, test } from 'vitest';
+import { page } from 'vitest/browser';
 
 import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
@@ -9,10 +9,10 @@ test('visualize raw dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Raw]);
   expect(getSelectedVisTab()).toBe(Vis.Raw);
-  expect(screen.getByText(/"int": 42/)).toBeVisible();
+  expect(page.getByText('"int": 42')).toBeVisible();
 
   await selectExplorerNode('raw_large');
-  expect(screen.getByText(/Too big to display/)).toBeVisible();
+  expect(page.getByText('Too big to display')).toBeVisible();
 });
 
 test('visualize raw image dataset', async () => {
@@ -20,7 +20,7 @@ test('visualize raw image dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Raw]);
   expect(getSelectedVisTab()).toBe(Vis.Raw);
-  expect(screen.getByAltText('raw_png')).toBeVisible();
+  expect(page.getByAltText('raw_png')).toBeVisible();
 });
 
 test('visualize scalar dataset', async () => {
@@ -29,14 +29,14 @@ test('visualize scalar dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
-  expect(screen.getByText('0')).toBeVisible();
+  expect(page.getByText('0')).toBeVisible();
 
   // String scalar
   await selectExplorerNode('scalar_str');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
-  expect(screen.getByText('foo')).toBeVisible();
+  expect(page.getByText('foo')).toBeVisible();
 });
 
 test('visualize scalar compound dataset', async () => {
@@ -44,7 +44,7 @@ test('visualize scalar compound dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Compound]);
   expect(getSelectedVisTab()).toBe(Vis.Compound);
-  expect(screen.getByText('foo')).toBeVisible();
+  expect(page.getByText('foo')).toBeVisible();
 });
 
 test('visualize 1D dataset', async () => {
@@ -52,7 +52,7 @@ test('visualize 1D dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(screen.getByRole('figure', { name: 'oneD' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'oneD' })).toBeVisible();
 });
 
 test('visualize 1D dataset as matrix', async () => {
@@ -60,8 +60,8 @@ test('visualize 1D dataset as matrix', async () => {
   await selectVisTab(Vis.Matrix);
 
   expect(getSelectedVisTab()).toBe(Vis.Matrix);
-  expect(screen.getByText('4.000e+2')).toBeVisible();
-  expect(screen.getByText('3.610e+2')).toBeVisible();
+  expect(page.getByText('4.000e+2').first()).toBeVisible();
+  expect(page.getByText('3.610e+2').first()).toBeVisible();
 });
 
 test('visualize 1D boolean dataset', async () => {
@@ -69,7 +69,7 @@ test('visualize 1D boolean dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(screen.getByRole('figure', { name: 'oneD_bool' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'oneD_bool' })).toBeVisible();
 });
 
 test('visualize 1D enum dataset', async () => {
@@ -77,7 +77,7 @@ test('visualize 1D enum dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(screen.getByRole('figure', { name: 'oneD_enum' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'oneD_enum' })).toBeVisible();
 });
 
 test('visualize 1D complex dataset', async () => {
@@ -85,7 +85,7 @@ test('visualize 1D complex dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(screen.getByRole('figure', { name: 'oneD_cplx' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'oneD_cplx' })).toBeVisible();
 });
 
 test('visualize 1D compound dataset', async () => {
@@ -93,7 +93,7 @@ test('visualize 1D compound dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Compound]);
   expect(getSelectedVisTab()).toBe(Vis.Compound);
-  expect(screen.getByText('Argon')).toBeVisible();
+  expect(page.getByText('Argon')).toBeVisible();
 });
 
 test('visualize 2D dataset', async () => {
@@ -102,9 +102,9 @@ test('visualize 2D dataset', async () => {
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = screen.getByRole('figure', { name: 'twoD' });
+  const figure = page.getByRole('figure', { name: 'twoD' });
   expect(figure).toBeVisible();
-  expect(within(figure).getByText('4e+2')).toBeVisible(); // color bar limit
+  expect(figure.getByLabelText('Max: 4e+2')).toBeVisible();
 });
 
 test('visualize 2D dataset as line', async () => {
@@ -112,7 +112,7 @@ test('visualize 2D dataset as line', async () => {
   await selectVisTab(Vis.Line);
 
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(screen.getByRole('figure', { name: 'twoD' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'twoD' })).toBeVisible();
 });
 
 test('visualize 2D dataset as matrix', async () => {
@@ -120,8 +120,8 @@ test('visualize 2D dataset as matrix', async () => {
   await selectVisTab(Vis.Matrix);
 
   expect(getSelectedVisTab()).toBe(Vis.Matrix);
-  expect(screen.getByText('4.000e+2')).toBeVisible();
-  expect(screen.getByText('3.950e+2')).toBeVisible();
+  expect(page.getByText('4.000e+2')).toBeVisible();
+  expect(page.getByText('3.950e+2')).toBeVisible();
 });
 
 test('visualize 2D boolean dataset', async () => {
@@ -130,9 +130,9 @@ test('visualize 2D boolean dataset', async () => {
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = screen.getByRole('figure', { name: 'twoD_bool' });
+  const figure = page.getByRole('figure', { name: 'twoD_bool' });
   expect(figure).toBeVisible();
-  expect(within(figure).getByText('1e+0')).toBeVisible(); // color bar limit
+  expect(figure.getByLabelText('Max: 1e+0')).toBeVisible();
 });
 
 test('visualize 2D enum dataset', async () => {
@@ -141,58 +141,54 @@ test('visualize 2D enum dataset', async () => {
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = screen.getByRole('figure', { name: 'twoD_enum' });
+  const figure = page.getByRole('figure', { name: 'twoD_enum' });
   expect(figure).toBeVisible();
-  expect(within(figure).getByText('2e+0')).toBeVisible(); // color bar limit
+  expect(figure.getByLabelText('Max: 2e+0')).toBeVisible();
 });
 
 test('visualize 2D complex dataset', async () => {
-  const { user } = await renderApp('/nD_datasets/twoD_cplx');
+  await renderApp('/nD_datasets/twoD_cplx');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = screen.getByRole('figure', { name: 'twoD_cplx (amplitude)' });
+  const figure = page.getByRole('figure', { name: 'twoD_cplx (amplitude)' });
   expect(figure).toBeVisible();
-  expect(within(figure).getByText('5e+0')).toBeVisible(); // color bar limit
+  expect(figure.getByLabelText('Max: 5e+0')).toBeVisible();
 
-  const selector = screen.getByRole('combobox', { name: '𝓐 Amplitude' });
-  await user.click(selector);
-  const phaseItem = screen.getByRole('option', { name: 'φ Phase' });
-  await user.click(phaseItem);
+  const selector = page.getByRole('combobox', { name: '𝓐 Amplitude' });
+  await selector.click();
+  const phaseItem = page.getByRole('option', { name: 'φ Phase' });
+  await phaseItem.click();
 
-  expect(
-    screen.getByRole('figure', { name: 'twoD_cplx (phase)' }),
-  ).toBeVisible();
+  expect(page.getByRole('figure', { name: 'twoD_cplx (phase)' })).toBeVisible();
 });
 
 test('show interactions help for heatmap according to "keep ratio"', async () => {
-  const { user } = await renderApp();
+  await renderApp();
 
-  const helpBtn = await screen.findByRole('button', { name: 'Show help' });
-  const keepRatioBtn = await screen.findByRole('button', {
-    name: 'Keep ratio',
-  });
+  const helpBtn = page.getByRole('button', { name: 'Show help' });
+  const keepRatioBtn = page.getByRole('button', { name: 'Keep ratio' });
 
   // By default, "keep ratio" should be enabled
-  expect(keepRatioBtn).toBePressed();
+  expect(keepRatioBtn).toHaveAttribute('aria-pressed', 'true');
 
   // Since "keep ratio" is enabled, only basic interactions should be available (no axial-zoom interactions)
-  await user.click(helpBtn);
+  await helpBtn.click();
 
-  await expect(screen.findByText('Pan')).resolves.toBeVisible();
-  await expect(screen.findByText('Select to zoom')).resolves.toBeVisible();
-  await expect(screen.findByText('Zoom')).resolves.toBeVisible();
+  expect(page.getByText('Pan')).toBeVisible();
+  expect(page.getByText('Select to zoom')).toBeVisible();
+  expect(page.getByText('Zoom', { exact: true })).toBeVisible();
 
-  expect(screen.queryByText(/zoom in x/i)).not.toBeInTheDocument();
-  expect(screen.queryByText(/zoom in y/i)).not.toBeInTheDocument();
+  expect(page.getByText('Zoom in X')).not.toBeInTheDocument();
+  expect(page.getByText('Zoom in Y')).not.toBeInTheDocument();
 
   // Toggle "keep ratio" and check that axial-zoom interactions are now available
-  await user.click(keepRatioBtn);
-  await user.click(helpBtn);
+  await keepRatioBtn.click();
+  await helpBtn.click();
 
-  await expect(screen.findByText('Zoom in X')).resolves.toBeVisible();
-  await expect(screen.findByText('Zoom in Y')).resolves.toBeVisible();
-  await expect(screen.findByText('Select to zoom in X')).resolves.toBeVisible();
-  await expect(screen.findByText('Select to zoom in Y')).resolves.toBeVisible();
+  expect(page.getByText('Zoom in X', { exact: true })).toBeVisible();
+  expect(page.getByText('Zoom in Y', { exact: true })).toBeVisible();
+  expect(page.getByText('Select to zoom in X')).toBeVisible();
+  expect(page.getByText('Select to zoom in Y')).toBeVisible();
 });

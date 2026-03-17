@@ -14,8 +14,8 @@
   - [Fixing and formatting](#fixing-and-formatting)
   - [Editor integration](#editor-integration)
 - [Testing](#testing)
-  - [Feature tests](#feature-tests)
-    - [Fake timers](#fake-timers)
+  - [Browser tests](#browser-tests)
+    - [Loading interfaces](#loading-interfaces)
     - [Debugging](#debugging)
   - [Providers](#providers)
   - [Visual regression](#visual-regression)
@@ -296,90 +296,104 @@ install the recommended extensions.
 
 ## Testing
 
-- `pnpm test` - run unit and feature tests with [Vitest](https://vitest.dev/) in
-  watch mode (or once when on the CI)
-  > For the providers test to work, the sample HDF5 file must first be created
-  > and the h5grove support server must be running in a separate terminal; see
-  > `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
-- `pnpm test run` - run unit and feature tests once
-- `pnpm test [run] <filter>` - run tests matching the given filter
-- `pnpm test --project <project-name>` - run Vitest on a specific project
-- `pnpm test --coverage` measure coverage
-- `pnpm test --ui [--coverage]` - run tests in Vitest UI (with or without
-  coverage)
+- `pnpm test` - run unit, browser and providers tests with
+  [Vitest](https://vitest.dev/) in watch mode (or once when on the CI)
+
+> Vitest is able to run on the entire monorepo thanks to the
+> [projects configuration](https://vitest.dev/guide/workspace.html) defined in
+> the root `vitest.config.ts`. It then uses each project's Vite or Vitest
+> configuration to decide how to run the tests.
+
+> For the browser tests to work, a browser must first be installed with
+> Playwright; see [_Browser tests_](#browser-tests) section.
+
+> For the providers tests to work, the sample HDF5 file must first be created
+> and the h5grove support server must be running in a separate terminal; see
+> `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
+
+- `pnpm test:headless` - use headless mode for browser tests, typically in the
+  CI
+- `pnpm test[:headless] run` - run unit and browser tests once
+- `pnpm test[:headless] [run] <filter>` - run tests matching the given filter
+- `pnpm test[:headless] --project <project-name>` - run Vitest on a specific
+  project
+- `pnpm test[:headless] --coverage` measure coverage
+- `pnpm test[:headless] --ui [--coverage]` - run tests in Vitest UI (with or
+  without coverage)
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
 - `pnpm support:sample` - create `sample.h5`
 - `pnpm support:h5grove` - start h5grove support server
+
+We also use Cypress to run end-to-end and visual regression testing:
+
 - `pnpm cypress` - open the
   [Cypress](https://docs.cypress.io/guides/overview/why-cypress.html) end-to-end
   test runner (local dev server must be running in separate terminal)
 - `pnpm cypress:run` - run end-to-end tests once (local dev server must be
   running in separate terminal)
 
-> Vitest is able to run on the entire monorepo thanks to the
-> [workspace configuration](https://vitest.dev/guide/workspace.html) defined in
-> `vitest.workspace.ts`. It then uses each project's Vite configuration to
-> decide how to run the tests.
+### Browser tests
 
-### Feature tests
+The `@h5web/app` package includes tests written for Vitest's
+[Browser Mode](https://vitest.dev/guide/browser/). They are located under
+`src/__tests__`. Each file covers a particular subtree of components of H5Web.
 
-The `@h5web/app` package includes feature tests written with
-[React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
-and running in a [JSDOM environment](https://vitest.dev/guide/environment.html).
-They are located under `src/__tests__`. Each file covers a particular subtree of
-components of H5Web.
+For the browser tests to work, you must first install the browser specified in
+environment variable `VITE_TEST_BROWSER` with Playwright:
 
-H5Web's feature tests typically consist in rendering the entire app with mock
+```bash
+pnpm exec playwright install <firefox,chromium,...>
+```
+
+H5Web's browser tests typically consist in rendering the entire app with mock
 data (i.e. inside `MockProvider`), executing an action like a real user would
 (e.g. clicking on a button, pressing a key, etc.), and then expecting something
-to happen in the DOM as a result. Most tests, perform multiple actions and
+to happen in the DOM as a result. Most tests perform multiple actions and
 expectations consecutively to minimise the overhead of rendering the entire app
 again and again.
 
-`MockProvider` resolves most requests instantaneously to save time in tests, but
-its API's methods are still called asynchronously like other providers. This
-means that during tests, `Suspense` loading fallbacks render just like they
-would normally; they just don't stick around in the DOM for long.
-
-This adds a bit of complexity when testing, as React doesn't like when something
-happens after a test has completed. In fact, we have to ensure that every
-component that suspends inside a test **finishes loading before the end of that
-test**. To do so, you can use Testing Library's asynchronous APIs for
-[finding elements](https://testing-library.com/docs/dom-testing-library/api-async/#findby-queries)
-and [interacting with them](https://testing-library.com/docs/user-event), as
-well as Vitest's [`waitFor``](https://vitest.dev/api/vi.html#vi-waitfor-0-34-5)
-utility.
-
-#### Fake timers
+#### Loading interfaces
 
 To allow developing and testing loading interfaces, as well as features like
 cancel/retry, `MockProvider` adds an artificial delay of 3s (`SLOW_TIMEOUT`) to
 some requests, notably to value requests for datasets prefixed with `slow_`.
 
-In order for this artificial delay to not slow down feature tests, we must use
-[fake timers](https://testing-library.com/docs/using-fake-timers/). This is done
-by setting the `withFakeTimers` option when calling `renderApp()`:
+Here is an example of how to test a loading interface in Vitest's Browser Mode,
+while also avoiding the long timeout:
 
 ```ts
-renderApp({ withFakeTimers: true });
+// Mock the `delay` utility used by `MockProvider` (i.e. keep promises in pending state until we're ready to resolve them)
+const runAll = mockDelay();
+
+// Render the app but don't wait for loaders to disappear (since the promises are pending, we would wait indefinitely)
+await renderApp({ waitForLoaders: false });
+
+// Test the loading interface
+await expect.element(page.getByText('Loading data...')).toBeVisible();
+
+// Run all mock delays (i.e. resolve pending promises)
+runAll();
+
+// Test the final interface
+await expect.element(page.getByRole('figure')).toBeVisible();
 ```
 
 #### Debugging
 
-You can use Testing Library's
-[`prettyDOM` utility](https://testing-library.com/docs/dom-testing-library/api-debugging#prettydom)
-to log the state of the DOM anywhere in your tests:
+You can use Vitest's
+[`debug` utility](https://vitest.dev/api/browser/context.html#utils) to log a
+given DOM element or [locator](https://vitest.dev/api/browser/locators.html)
+anywhere in your tests:
 
 ```ts
-console.debug(prettyDOM()); // if you use `console.log` without mocking it, the test will fail
-console.debug(prettyDOM(screen.getByText('foo'))); // you can also print out a specific element
+utils.debug(page.getByRole('figure'));
 ```
 
-To ensure that the entire DOM is printed out in the terminal, you may have to
-set environment variable `DEBUG_PRINT_LIMIT`
+To ensure that the entire DOM is printed out in the terminal, environment
+variable `DEBUG_PRINT_LIMIT` has to be set
 [to a large value](https://testing-library.com/docs/dom-testing-library/api-debugging#automatic-logging)
-when calling `pnpm test`.
+when calling `pnpm test` (cf. `.env.test` and your own `.env.test.local`).
 
 ### Providers
 

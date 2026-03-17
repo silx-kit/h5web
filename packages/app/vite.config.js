@@ -2,8 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
 import { patchCssModules } from 'vite-css-modules';
-import { defineProject } from 'vitest/config';
 
 const [pkg, libPkg, sharedPkg] = ['.', '../lib', '../shared']
   .map((prefix) => path.resolve(import.meta.dirname, `${prefix}/package.json`))
@@ -17,7 +17,7 @@ export const externals = new Set([
   ...Object.keys(pkg.peerDependencies),
 ]);
 
-export default defineProject({
+export default defineConfig({
   plugins: [react(), patchCssModules()],
   build: {
     lib: {
@@ -33,11 +33,5 @@ export default defineProject({
       output: { interop: 'compat' }, // for compatibility with Jest in consumer projects (default changed in Rollup 3/Vite 4: https://rollupjs.org/migration/#changed-defaults)
     },
     sourcemap: true,
-  },
-  test: {
-    setupFiles: ['src/setupTests.ts'],
-    environment: 'jsdom',
-    restoreMocks: true,
-    testTimeout: 15_000,
   },
 });

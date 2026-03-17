@@ -1,68 +1,68 @@
-import { screen, within } from '@testing-library/react';
 import { expect, test } from 'vitest';
+import { page } from 'vitest/browser';
 
 import { getDimMappingBtn, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
-  const { user } = await renderApp({
+  await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Line,
   });
 
   // Ensure that only one dimension mapper for X is visible
-  const xRadioGroup = screen.getByLabelText('Dimension as x axis');
-  const yRadioGroup = screen.queryByLabelText('Dimension as y axis');
+  const xRadioGroup = page.getByLabelText('Dimension as x axis');
+  const yRadioGroup = page.getByLabelText('Dimension as y axis');
   expect(xRadioGroup).toBeVisible();
   expect(yRadioGroup).not.toBeInTheDocument();
 
   // Ensure that the default mapping is [0, 'x']
-  const xDimsButtons = within(xRadioGroup).getAllByRole('radio');
+  const xDimsButtons = xRadioGroup.getByRole('radio');
   expect(xDimsButtons).toHaveLength(2);
-  expect(xDimsButtons[0]).not.toBeChecked();
-  expect(xDimsButtons[1]).toBeChecked();
+  expect(xDimsButtons.nth(0)).not.toBeChecked();
+  expect(xDimsButtons.nth(1)).toBeChecked();
 
   // Ensure that only one dimension slider for D0 is visible
-  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  const d0Slider = page.getByRole('slider', { name: 'D0' });
   expect(d0Slider).toBeVisible();
   expect(d0Slider).toHaveValue(0);
-  expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
+  expect(page.getByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 
   // Change mapping from [0, 'x'] to ['x', 0]
-  await user.click(xDimsButtons[0]);
-  expect(xDimsButtons[0]).toBeChecked();
-  expect(xDimsButtons[1]).not.toBeChecked();
+  await xDimsButtons.first().click();
+  expect(xDimsButtons.nth(0)).toBeChecked();
+  expect(xDimsButtons.nth(1)).not.toBeChecked();
 
   // Ensure that the dimension slider is now for D1
-  const d1Slider = screen.getByRole('slider', { name: 'D1' });
+  const d1Slider = page.getByRole('slider', { name: 'D1' });
   expect(d1Slider).toBeVisible();
   expect(d1Slider).toHaveValue(0);
-  expect(screen.queryByRole('slider', { name: 'D0' })).not.toBeInTheDocument();
+  expect(page.getByRole('slider', { name: 'D0' })).not.toBeInTheDocument();
 });
 
 test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
-  const { user } = await renderApp({
+  await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Heatmap,
   });
 
   // Ensure that two dimension mappers for X and Y are visible
-  const xRadioGroup = screen.getByLabelText('Dimension as x axis');
-  const yRadioGroup = screen.getByLabelText('Dimension as y axis');
+  const xRadioGroup = page.getByLabelText('Dimension as x axis');
+  const yRadioGroup = page.getByLabelText('Dimension as y axis');
   expect(xRadioGroup).toBeVisible();
   expect(yRadioGroup).toBeVisible();
 
-  const xD0Button = within(xRadioGroup).getByRole('radio', { name: 'D0' });
-  const xD1Button = within(xRadioGroup).getByRole('radio', { name: 'D1' });
-  const yD0Button = within(yRadioGroup).getByRole('radio', { name: 'D0' });
-  const yD1Button = within(yRadioGroup).getByRole('radio', { name: 'D1' });
+  const xD0Button = xRadioGroup.getByRole('radio', { name: 'D0' });
+  const xD1Button = xRadioGroup.getByRole('radio', { name: 'D1' });
+  const yD0Button = yRadioGroup.getByRole('radio', { name: 'D0' });
+  const yD1Button = yRadioGroup.getByRole('radio', { name: 'D1' });
 
   // Ensure that the default mapping is ['y', 'x']
   expect(xD1Button).toBeChecked();
   expect(yD0Button).toBeChecked();
 
   // Change mapping from ['y', 'x'] to ['x', 'y']
-  await user.click(xD0Button);
+  await xD0Button.click();
   expect(xD0Button).toBeChecked();
   expect(xD1Button).not.toBeChecked();
   expect(yD0Button).not.toBeChecked();
@@ -76,24 +76,23 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
   });
 
   // Ensure that two dimension mappers for X and Y are visible
-  const xRadioGroup = await screen.findByLabelText('Dimension as x axis');
+  const xRadioGroup = page.getByLabelText('Dimension as x axis');
+  const xDimsButtons = xRadioGroup.getByRole('radio');
   expect(xRadioGroup).toBeVisible();
-  const xDimsButtons = within(xRadioGroup).getAllByRole('radio');
   expect(xDimsButtons).toHaveLength(3);
 
-  const yRadioGroup = screen.getByLabelText('Dimension as y axis');
+  const yRadioGroup = page.getByLabelText('Dimension as y axis');
+  const yDimsButtons = yRadioGroup.getByRole('radio');
   expect(yRadioGroup).toBeVisible();
-  const yDimsButtons = within(yRadioGroup).getAllByRole('radio');
   expect(yDimsButtons).toHaveLength(3);
 
   // Ensure that the default mapping is [0, 'y', 'x']
-  expect(xDimsButtons[2]).toBeChecked();
-  expect(yDimsButtons[1]).toBeChecked();
+  expect(xDimsButtons.nth(2)).toBeChecked();
+  expect(yDimsButtons.nth(1)).toBeChecked();
 
   // Ensure that only one dimension slider for D0 is visible
-  const d0Slider = screen.getByRole('slider', { name: 'D0' });
-  expect(d0Slider).toHaveValue(0);
-  expect(screen.queryByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 });
 
 test('slice through 2D dataset', async () => {
@@ -103,37 +102,37 @@ test('slice through 2D dataset', async () => {
   });
 
   // Move to next slice with keyboard
-  const d0Slider = screen.getByRole('slider', { name: 'D0' });
+  const d0Slider = page.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
 
   expect(d0Slider).toHaveValue(1);
 });
 
 test('maintain mapping when switching to inspect mode and back', async () => {
-  const { user } = await renderApp({
+  await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Heatmap,
   });
 
   // Swap axes for D0 and D1
-  await user.click(getDimMappingBtn('x', 0));
+  await getDimMappingBtn('x', 0).click();
 
   // Toggle inspect mode
-  await user.click(screen.getByRole('tab', { name: 'Inspect' }));
-  await user.click(screen.getByRole('tab', { name: 'Display' }));
+  await page.getByRole('tab', { name: 'Inspect' }).click();
+  await page.getByRole('tab', { name: 'Display' }).click();
 
   expect(getDimMappingBtn('x', 0)).toBeChecked();
   expect(getDimMappingBtn('x', 1)).not.toBeChecked();
 });
 
 test('maintain mapping when switching to visualization with same axes count', async () => {
-  const { user, selectVisTab } = await renderApp({
+  const { selectVisTab } = await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Heatmap,
   });
 
   // Swap axes for D0 and D1
-  await user.click(getDimMappingBtn('x', 0));
+  await getDimMappingBtn('x', 0).click();
 
   // Switch to Matrix visualization
   await selectVisTab(Vis.Matrix);
@@ -143,13 +142,13 @@ test('maintain mapping when switching to visualization with same axes count', as
 });
 
 test('maintain mapping when switching to dataset with same dimensions', async () => {
-  const { user, selectExplorerNode } = await renderApp({
+  const { selectExplorerNode } = await renderApp({
     initialPath: '/nD_datasets/twoD_bool',
     preferredVis: Vis.Line,
   });
 
   // Swap axes for D0 and D1
-  await user.click(getDimMappingBtn('x', 0));
+  await getDimMappingBtn('x', 0).click();
 
   // Switch to dataset with same dimensions
   await selectExplorerNode('twoD_enum');
@@ -159,13 +158,13 @@ test('maintain mapping when switching to dataset with same dimensions', async ()
 });
 
 test('reset mapping when switching to visualization with different axes count', async () => {
-  const { user, selectVisTab } = await renderApp({
+  const { selectVisTab } = await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Heatmap,
   });
 
   // Swap axes for D0 and D1
-  await user.click(getDimMappingBtn('x', 0));
+  await getDimMappingBtn('x', 0).click();
 
   // Switch to Line visualization
   await selectVisTab(Vis.Line);
@@ -175,13 +174,13 @@ test('reset mapping when switching to visualization with different axes count', 
 });
 
 test('reset mapping when switching to dataset with different dimensions', async () => {
-  const { user, selectExplorerNode } = await renderApp({
+  const { selectExplorerNode } = await renderApp({
     initialPath: '/nD_datasets/twoD',
     preferredVis: Vis.Heatmap,
   });
 
   // Swap axes for D0 and D1
-  await user.click(getDimMappingBtn('x', 0));
+  await getDimMappingBtn('x', 0).click();
 
   // Switch to dataset with different dimensions
   await selectExplorerNode('twoD_cplx');
