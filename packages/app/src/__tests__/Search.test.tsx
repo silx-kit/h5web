@@ -25,6 +25,6 @@ test('search for entities', async () => {
   await page.getByRole('tab', { name: 'Explorer' }).click();
 
   const selectedItem = page.getByRole('treeitem', { name: 'empty_group' });
-  expect(selectedItem).toBeVisible();
+  await expect.element(selectedItem).toBeVisible();
   expect(selectedItem).toHaveAttribute('aria-selected', 'true');
 });
