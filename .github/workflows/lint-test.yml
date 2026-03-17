@@ -91,15 +91,13 @@ jobs:
         with:
           version: 2.2.1
 
-      - name: Restore Poetry environments 📌
-        id: poetry-venvs
+      - name: Restore Poetry cache 📌
         uses: actions/cache@v4
         with:
-          path: ~/.cache/pypoetry/virtualenvs
-          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-11 # increment to reset cache
+          path: ~/.cache/pypoetry
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-1 # increment to reset cache
 
       - name: Create Poetry environments 📜
-        if: steps.poetry-venvs.outputs.cache-hit != 'true'
         run: pnpm support:setup
 
       - name: Create sample HDF5 file 🎨
