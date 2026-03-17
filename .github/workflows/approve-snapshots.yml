@@ -24,7 +24,7 @@ jobs:
           pr-id: ${{ github.event.issue.number }}
 
       - name: Checkout 🏷️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ steps.getBranchName && steps.getBranchName.outputs.branch || github.event.ref }}
 
@@ -34,10 +34,10 @@ jobs:
           node-version-file: 'package.json'
 
       - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
 
       - name: Restore cache 📌
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -62,7 +62,7 @@ jobs:
         run: pnpm cypress:run --env updateSnapshots=true --expose takeSnapshots=true
 
       - name: Upload debug screenshots and diffs on failure 🖼️
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: cypress
@@ -72,7 +72,7 @@ jobs:
             cypress/snapshots/**/__received_output__/
 
       - name: Open PR to update reference snapshots 🎁
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.USER_TOKEN }}
           branch: update-snapshots

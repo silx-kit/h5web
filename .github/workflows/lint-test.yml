@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node 🕹️
         uses: actions/setup-node@v6
@@ -26,10 +26,10 @@ jobs:
           node-version-file: 'package.json'
 
       - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
 
       - name: Restore cache 📌
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node 🕹️
         uses: actions/setup-node@v6
@@ -59,10 +59,10 @@ jobs:
           node-version-file: 'package.json'
 
       - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
 
       - name: Restore cache 📌
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -79,10 +79,12 @@ jobs:
       - name: Set up Python 🕹️
         id: setup-python
         uses: actions/setup-python@v6
+        with:
+          python-version-file: '.python-version'
 
       - name: Restore Poetry installation 📌
         id: poetry
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.local
           key: poetry-5 # increment to reset cache
@@ -94,7 +96,7 @@ jobs:
           version: 2.2.1
 
       - name: Restore Poetry cache 📌
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/pypoetry
           key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}-1 # increment to reset cache
@@ -112,7 +114,7 @@ jobs:
         run: pnpm test:headless
 
       - name: Upload debug screenshots on failure 🖼️
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: vitest
@@ -125,7 +127,7 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node 🕹️
         uses: actions/setup-node@v6
@@ -133,10 +135,10 @@ jobs:
           node-version-file: 'package.json'
 
       - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
 
       - name: Restore cache 📌
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -158,7 +160,7 @@ jobs:
 
     steps:
       - name: Checkout 🏷️
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Node 🕹️
         uses: actions/setup-node@v6
@@ -166,10 +168,10 @@ jobs:
           node-version-file: 'package.json'
 
       - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
 
       - name: Restore cache 📌
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/setup-pnpm/node_modules/.bin/store
@@ -191,7 +193,7 @@ jobs:
         run: pnpm cypress:run --env requireSnapshots=true --expose takeSnapshots=true
 
       - name: Upload debug screenshots and diffs on failure 🖼️
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: cypress
