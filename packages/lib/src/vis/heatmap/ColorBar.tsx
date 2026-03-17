@@ -38,6 +38,8 @@ function ColorBar(props: Props) {
 
   const Axis = horizontal ? AxisBottom : AxisRight;
   const isEmptyDomain = domain[0] === domain[1];
+  const minBound = isEmptyDomain ? '−∞' : formatBound(domain[0]);
+  const maxBound = isEmptyDomain ? '+∞' : formatBound(domain[1]);
 
   const axisScale = createScale(scaleType, {
     domain,
@@ -50,11 +52,11 @@ function ColorBar(props: Props) {
     <div className={styles.colorBar} data-horizontal={horizontal || undefined}>
       {withBounds && (
         <>
-          <p className={styles.minBound}>
-            {isEmptyDomain ? '−∞' : formatBound(domain[0])}
+          <p className={styles.minBound} aria-label={`Min: ${minBound}`}>
+            {minBound}
           </p>
-          <p className={styles.maxBound}>
-            {isEmptyDomain ? '+∞' : formatBound(domain[1])}
+          <p className={styles.maxBound} aria-label={`Max: ${maxBound}`}>
+            {maxBound}
           </p>
         </>
       )}

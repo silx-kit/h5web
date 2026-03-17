@@ -79,8 +79,8 @@ export function getChildrenPaths(
   );
 }
 
-export async function cancellableDelay(
-  abortSignal: AbortSignal,
+export async function delay(
+  abortSignal = new AbortController().signal,
 ): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {

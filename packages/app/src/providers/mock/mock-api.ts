@@ -20,13 +20,7 @@ import {
 import { DataProviderApi } from '../api';
 import { type ValuesStoreParams } from '../models';
 import { makeMockFile } from './mock-file';
-import {
-  cancellableDelay,
-  findMockEntity,
-  getChildrenPaths,
-  sliceValue,
-  SLOW_TIMEOUT,
-} from './utils';
+import { delay, findMockEntity, getChildrenPaths, sliceValue } from './utils';
 
 export class MockApi extends DataProviderApi {
   private readonly mockFile: GroupWithChildren;
@@ -42,9 +36,7 @@ export class MockApi extends DataProviderApi {
 
   public override async getEntity(path: string): Promise<ProvidedEntity> {
     if (path.includes('slow_metadata')) {
-      await new Promise<void>((resolve) => {
-        setTimeout(() => resolve(), SLOW_TIMEOUT);
-      });
+      await delay();
     }
 
     const entity = findMockEntity(this.mockFile, path);
@@ -68,7 +60,7 @@ export class MockApi extends DataProviderApi {
     }
 
     if (dataset.name.startsWith('slow') && abortSignal) {
-      await cancellableDelay(abortSignal);
+      await delay(abortSignal);
     }
 
     const { value } = dataset;
