@@ -1,6 +1,7 @@
 import { useEventListener } from '@react-hookz/web';
 import { useThree } from '@react-three/fiber';
 
+import { IS_MAC } from '../toolbar/utils';
 import { useInteractionsContext } from './InteractionsProvider';
 import { MouseButton } from './models';
 
@@ -17,7 +18,9 @@ function PreventDefaultContextMenu(props: Props) {
   useEventListener(domElement, 'contextmenu', (evt: PointerEvent) => {
     if (
       when === 'always' ||
-      (when === 'as-needed' && getInteractions(MouseButton.Right).length > 0)
+      (when === 'as-needed' &&
+        (getInteractions(MouseButton.Right).length > 0 ||
+          (IS_MAC && getInteractions(MouseButton.Left, 'Control').length > 0))) // Ctrl+left click triggers context menu on MacOS
     ) {
       evt.preventDefault();
     }

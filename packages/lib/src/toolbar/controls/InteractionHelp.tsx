@@ -12,13 +12,10 @@ import { FiHelpCircle } from 'react-icons/fi';
 
 import { type InteractionInfo } from '../../interactions/models';
 import toolbarStyles from '../Toolbar.module.css';
+import { IS_MAC } from '../utils';
 import Btn from './Btn';
 import { POPOVER_CLEARANCE, useFloatingDismiss } from './hooks';
 import styles from './InteractionHelp.module.css';
-
-// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/platform
-const IS_MAC =
-  'navigator' in globalThis && globalThis.navigator.platform.startsWith('Mac'); // eslint-disable-line @typescript-eslint/no-deprecated
 
 interface Props {
   interactions: InteractionInfo[];
