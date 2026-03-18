@@ -317,7 +317,9 @@ install the recommended extensions.
 - `pnpm test[:headless] [run] <filter>` - run tests matching the given filter
 - `pnpm test[:headless] --project <project-name>` - run Vitest on a specific
   project
-- `pnpm test[:headless] --coverage` measure coverage
+- `pnpm test[:headless] --coverage` measure coverage (environment variable
+  `VITE_TEST_BROWSER` must be set to `chromium` in `.env.test.local` and this
+  browser must be installed with Playwright)
 - `pnpm test[:headless] --ui [--coverage]` - run tests in Vitest UI (with or
   without coverage)
 - `pnpm support:setup` - create/update Poetry environments required for
