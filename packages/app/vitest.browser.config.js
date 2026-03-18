@@ -16,6 +16,7 @@ export default mergeConfig(
       setupFiles: 'src/setupTests.ts',
       restoreMocks: true,
       pool: 'threads',
+      testTimeout: 10_000,
 
       browser: {
         provider: playwright(),

@@ -28,7 +28,7 @@ function Sidebar(props: Props) {
   }
 
   return (
-    <div>
+    <>
       <div className={styles.tabBar}>
         <button
           className={styles.tab}
@@ -63,7 +63,7 @@ function Sidebar(props: Props) {
           getSearchablePaths={getSearchablePaths}
         />
       )}
-    </div>
+    </>
   );
 }
 
