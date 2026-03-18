@@ -4,6 +4,7 @@ import InteractionsProvider from '../../interactions/InteractionsProvider';
 import { type Aspect, type AxisConfig } from '../models';
 import { getAxisOffsets, getVisRatio } from '../utils';
 import AxisSystem from './AxisSystem';
+import DisposeOnUnmount from './DisposeOnUnmount';
 import R3FCanvas from './R3FCanvas';
 import RatioEnforcer from './RatioEnforcer';
 import ThresholdAdjuster from './ThresholdAdjuster';
@@ -79,6 +80,8 @@ function VisCanvas(props: PropsWithChildren<Props>) {
               <ThresholdAdjuster value={raycasterThreshold} />
             )}
           </VisCanvasProvider>
+
+          <DisposeOnUnmount />
         </R3FCanvas>
 
         <svg
