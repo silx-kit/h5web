@@ -13,15 +13,15 @@ test('toggle sidebar', async () => {
 
   // Hide
   await toggleBtn.click();
+  await expect
+    .element(page.getByRole('treeitem', { name: 'source.h5' }))
+    .not.toBeInTheDocument();
   expect(toggleBtn).toHaveAttribute('aria-pressed', 'false');
-  expect(
-    page.getByRole('treeitem', { name: 'source.h5' }),
-  ).not.toBeInTheDocument();
 
   // Show
   await toggleBtn.click();
+  await expect.element(getExplorerItem('source.h5')).toBeVisible();
   expect(toggleBtn).toHaveAttribute('aria-pressed', 'true');
-  expect(getExplorerItem('source.h5')).toBeVisible();
 });
 
 test('switch between "display" and "inspect" modes', async () => {
@@ -53,11 +53,13 @@ test('navigate with breadcrumbs', async () => {
   // Hide sidebar to show root crumb
   const toggleBtn = page.getByRole('button', { name: 'Toggle sidebar' });
   await toggleBtn.click();
-  expect(
-    page.getByRole('heading', {
-      name: 'source.h5 / entities / empty_dataset',
-    }),
-  ).toBeVisible();
+  await expect
+    .element(
+      page.getByRole('heading', {
+        name: 'source.h5 / entities / empty_dataset',
+      }),
+    )
+    .toBeVisible();
 
   // Select parent crumb
   await page.getByRole('button', { name: 'entities' }).click();
