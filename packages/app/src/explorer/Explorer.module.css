@@ -24,11 +24,11 @@
 }
 
 .btn:hover,
-.btn:focus {
+.btn:focus-visible {
   background-color: var(--primary-light);
 }
 
-.btn:focus {
+.btn:focus-visible {
   outline: 1px solid var(--primary-dark);
   outline-offset: -1px;
 }

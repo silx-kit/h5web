@@ -28,12 +28,53 @@ test('toggle sidebar', async () => {
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
 
   await sidebarBtn.click();
-  expect(getExplorerItem('source.h5')).not.toBeInTheDocument();
+  await expect.element(getExplorerItem('source.h5')).not.toBeInTheDocument();
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'false');
 
   await sidebarBtn.click();
-  expect(getExplorerItem('source.h5')).toBeVisible();
+  await expect.element(getExplorerItem('source.h5')).toBeVisible();
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('resize and collapse/expand sidebar with keyboard', async () => {
+  const { user } = await renderApp();
+
+  const splitter = page.getByRole('separator');
+  expect(splitter).toHaveAttribute('aria-valuenow', '25');
+
+  // Resize sidebar to minimum width
+  await user.type(splitter, '{ArrowLeft}{ArrowLeft}{ArrowLeft}{ArrowLeft}');
+  expect(splitter).toHaveAttribute('aria-valuenow', '7.817'); // min size (150px) / viewport (1920px)
+
+  // Collapse
+  await user.type(splitter, '{ArrowLeft}');
+  expect(splitter).toHaveAttribute('aria-valuenow', '0'); // collapsed
+  await expect.element(getExplorerItem('source.h5')).not.toBeInTheDocument();
+
+  // Expand
+  await user.type(splitter, '{ArrowRight}');
+  expect(splitter).toHaveAttribute('aria-valuenow', '7.817');
+  await expect.element(getExplorerItem('source.h5')).toBeVisible();
+});
+
+test('remember sidebar width when toggling', async () => {
+  const { user } = await renderApp();
+
+  const splitter = page.getByRole('separator');
+  expect(splitter).toHaveAttribute('aria-valuenow', '25');
+
+  // Resize sidebar
+  await user.type(splitter, '{ArrowRight}');
+  expect(splitter).toHaveAttribute('aria-valuenow', '30');
+
+  // Collapse
+  const sidebarBtn = page.getByRole('button', { name: 'Toggle sidebar' });
+  await sidebarBtn.click();
+  expect(splitter).toHaveAttribute('aria-valuenow', '0');
+
+  // Expand
+  await sidebarBtn.click();
+  expect(splitter).toHaveAttribute('aria-valuenow', '30');
 });
 
 test('navigate groups in explorer', async () => {

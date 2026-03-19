@@ -1,10 +1,15 @@
 import '@h5web/lib'; // eslint-disable-line import/no-duplicates -- make sure lib styles come first in CSS bundle
 
 import { KeepZoomProvider } from '@h5web/lib'; // eslint-disable-line import/no-duplicates
-import { useToggle } from '@react-hookz/web';
 import { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
+import {
+  Group,
+  Panel,
+  Separator,
+  useDefaultLayout,
+  usePanelRef,
+} from 'react-resizable-panels';
 
 import styles from './App.module.css';
 import BreadcrumbsBar from './breadcrumbs/BreadcrumbsBar';
@@ -17,6 +22,10 @@ import { useDataContext } from './providers/DataProvider';
 import Sidebar from './Sidebar';
 import VisConfigProvider from './VisConfigProvider';
 import Visualizer from './visualizer/Visualizer';
+
+const SIDEBAR_ID = 'h5w-sidebar';
+const MAIN_AREA_ID = 'h5w-main-area';
+const RESIZE_TARGET_MIN_SIZE = { coarse: 6, fine: 6 }; // match CSS width (.splitter::before)
 
 interface Props {
   sidebarOpen?: boolean;
@@ -36,7 +45,6 @@ function App(props: Props) {
   } = props;
 
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
-  const [isSidebarOpen, toggleSidebarOpen] = useToggle(initialSidebarOpen);
   const [isInspecting, setInspecting] = useState(false);
 
   const { valuesStore } = useDataContext();
@@ -44,6 +52,17 @@ function App(props: Props) {
     setSelectedPath(path);
     valuesStore.abortAll('entity changed', true);
   }
+
+  const { defaultLayout, onLayoutChanged } = useDefaultLayout({
+    id: 'h5web:layout',
+  });
+
+  const sidebarPanelRef = usePanelRef();
+  const [isSidebarOpen, setSidebarOpen] = useState(
+    initialSidebarOpen
+      ? !defaultLayout || defaultLayout[SIDEBAR_ID] > 0
+      : false,
+  );
 
   return (
     <ErrorBoundary
@@ -54,32 +73,49 @@ function App(props: Props) {
         }
       }}
     >
-      <ReflexContainer
+      <Group
         className={styles.root}
+        resizeTargetMinimumSize={RESIZE_TARGET_MIN_SIZE}
+        defaultLayout={initialSidebarOpen ? defaultLayout : undefined}
+        onLayoutChanged={onLayoutChanged}
         data-fullscreen-root
         data-allow-dark-mode={disableDarkMode ? undefined : ''}
-        orientation="vertical"
+        data-sidebar-collapsed={!isSidebarOpen || undefined}
       >
-        <ReflexElement
+        <Panel
+          id={SIDEBAR_ID}
           className={styles.sidebarArea}
-          style={{ display: isSidebarOpen ? undefined : 'none' }}
-          flex={25}
+          panelRef={sidebarPanelRef}
+          defaultSize={initialSidebarOpen ? '25%' : '0%'}
           minSize={150}
+          collapsible
+          onResize={({ inPixels: size }) => {
+            const isNowOpen = size > 0;
+            if (
+              (isNowOpen && !isSidebarOpen) ||
+              (!isNowOpen && isSidebarOpen)
+            ) {
+              setSidebarOpen(isNowOpen);
+            }
+          }}
         >
           <Sidebar selectedPath={selectedPath} onSelect={onSelectPath} />
-        </ReflexElement>
+        </Panel>
 
-        <ReflexSplitter
-          className={styles.splitter}
-          style={{ display: isSidebarOpen ? undefined : 'none' }}
-        />
+        <Separator className={styles.splitter} />
 
-        <ReflexElement className={styles.mainArea} flex={75} minSize={500}>
+        <Panel id={MAIN_AREA_ID} className={styles.mainArea} minSize={500}>
           <BreadcrumbsBar
             path={selectedPath}
             isSidebarOpen={isSidebarOpen}
             isInspecting={isInspecting}
-            onToggleSidebar={toggleSidebarOpen}
+            onToggleSidebar={() => {
+              if (isSidebarOpen) {
+                sidebarPanelRef.current?.collapse();
+              } else {
+                sidebarPanelRef.current?.expand();
+              }
+            }}
             onChangeInspecting={setInspecting}
             onSelectPath={onSelectPath}
             getFeedbackURL={getFeedbackURL}
@@ -107,8 +143,8 @@ function App(props: Props) {
               </KeepZoomProvider>
             </DimMappingProvider>
           </VisConfigProvider>
-        </ReflexElement>
-      </ReflexContainer>
+        </Panel>
+      </Group>
     </ErrorBoundary>
   );
 }
