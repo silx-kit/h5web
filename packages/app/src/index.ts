@@ -148,6 +148,7 @@ export {
   isComplexType,
   isPrintableType,
   isCompoundType,
+  isArrayOrVlenType,
   hasType,
   hasStringType,
   hasIntegerType,

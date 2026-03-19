@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { assertScalarValue, assertValue } from './guards';
 import {
   arrayShape,
+  arrayType,
   boolType,
   compoundType,
   cplxType,
@@ -11,6 +12,7 @@ import {
   intType,
   scalarShape,
   strType,
+  vlenType,
 } from './hdf5-utils';
 import { dataset } from './mock-utils';
 
@@ -39,11 +41,20 @@ describe('assertScalarValue', () => {
     ).not.toThrowError();
 
     expect(() =>
+      assertScalarValue([0, 0], arrayType(intType(), [2])),
+    ).not.toThrowError();
+
+    expect(() =>
+      assertScalarValue([0], vlenType(floatType())),
+    ).not.toThrowError();
+
+    expect(() =>
       assertScalarValue(
-        [0, ''],
+        [0, '', [[]]],
         compoundType([
           ['int', intType()],
           ['str', strType()],
+          ['nested', compoundType([['vlen', vlenType(floatType())]])],
         ]),
       ),
     ).not.toThrowError();
