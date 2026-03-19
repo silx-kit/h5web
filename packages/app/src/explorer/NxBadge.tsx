@@ -1,19 +1,29 @@
-import { type ChildEntity } from '@h5web/shared/hdf5-models';
+import { type Group } from '@h5web/shared/hdf5-models';
 
 import { useDataContext } from '../providers/DataProvider';
+import { resolvePath } from '../visualizer/utils';
 import styles from './Explorer.module.css';
-import { needsNxBadge } from './utils';
 
 interface Props {
-  entity: ChildEntity;
+  group: Group;
 }
 
 function NxBadge(props: Props) {
-  const { entity } = props;
-  const { attrValuesStore } = useDataContext();
+  const { group } = props;
+  const { entitiesStore, attrValuesStore } = useDataContext();
 
-  if (!needsNxBadge(entity, attrValuesStore)) {
-    return null;
+  try {
+    const resolution = resolvePath(group.path, entitiesStore, attrValuesStore);
+
+    if (!resolution?.supportedVis.some((vis) => vis.name.startsWith('NX'))) {
+      return null;
+    }
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return null; // no badge if malformed NeXus metadata
+    }
+
+    throw error; // most likely a promise; rethrow to trigger Suspense boundary
   }
 
   return (

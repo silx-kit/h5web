@@ -4,6 +4,12 @@ import { page } from 'vitest/browser';
 import { mockConsoleMethod, mockDelay, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
+test('visualize default dataset', async () => {
+  const { selectExplorerNode } = await renderApp('/entities');
+  await selectExplorerNode('default_dataset');
+  expect(page.getByText('foo')).toBeVisible();
+});
+
 test('show fallback message when no visualization is supported', async () => {
   await renderApp('/entities'); // simple group
   expect(page.getByText('Nothing to display')).toBeVisible();
@@ -23,8 +29,14 @@ test('show loader while fetching dataset value', async () => {
 });
 
 test("show error when dataset value can't be fetched", async () => {
+  const runAll = mockDelay();
   const errorSpy = mockConsoleMethod('error');
-  const { selectExplorerNode } = await renderApp('/resilience/error_value');
+
+  const { selectExplorerNode } = await renderApp({
+    initialPath: '/resilience/error_value',
+    waitForLoaders: false,
+  });
+  runAll();
 
   expect(page.getByText('error', { exact: true })).toBeVisible();
   errorSpy.mockRestore();

@@ -3,6 +3,7 @@ import { page } from 'vitest/browser';
 
 import {
   getExplorerItem,
+  getNexusExplorerItem,
   mockDelay,
   renderApp,
   waitForAllLoaders,
@@ -162,7 +163,7 @@ test('navigate with arrow keys', async () => {
   expect(emptyGroupItem).toHaveFocus();
   expect(emptyGroupItem).toHaveAttribute('aria-expanded', 'true');
 
-  await user.keyboard('{ArrowDown}{ArrowRight}');
+  await user.keyboard('{ArrowDown}{ArrowDown}{ArrowRight}');
   expect(getExplorerItem('empty_dataset')).toHaveFocus();
 
   // Arrow left to give focus to parent group
@@ -193,7 +194,7 @@ test('select explorer items with enter key', async () => {
   expect(entitiesItem).toHaveAttribute('aria-selected', 'true');
   expect(entitiesItem).toHaveAttribute('aria-expanded', 'true');
 
-  await user.keyboard('{ArrowDown}{ArrowDown}');
+  await user.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
   const emptyDatasetItem = getExplorerItem('empty_dataset');
   expect(emptyDatasetItem).toHaveFocus();
 
@@ -202,7 +203,7 @@ test('select explorer items with enter key', async () => {
   await waitForAllLoaders();
   expect(emptyDatasetItem).toHaveAttribute('aria-selected', 'true');
 
-  await user.keyboard('{ArrowUp}{ArrowUp}');
+  await user.keyboard('{ArrowUp}{ArrowUp}{ArrowUp}');
   expect(entitiesItem).toHaveFocus();
 
   // Enter to re-select expanded group
@@ -219,7 +220,7 @@ test('navigate with home and end keys', async () => {
   const { user } = await renderApp();
 
   const root = getExplorerItem('source.h5');
-  const lastItem = getExplorerItem('resilience');
+  const lastItem = getNexusExplorerItem('resilience');
 
   // From root to last item
   await user.keyboard('{End}');

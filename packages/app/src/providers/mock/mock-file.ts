@@ -52,6 +52,9 @@ export function makeMockFile(): GroupWithChildren {
     children: [
       group('entities', [
         group('empty_group'),
+        group('default_dataset', [scalar('scalar_str', 'foo')], {
+          attributes: [scalarAttr('default', 'scalar_str')],
+        }),
         dataset('empty_dataset', nullShape(), unknownType(), null),
         datatype('datatype', compoundType([['int', intType()]])),
         scalar('raw', { int: 42 }),

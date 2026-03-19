@@ -20,12 +20,7 @@ import { PiEmptyBold, PiGridFourBold } from 'react-icons/pi';
 import { RxDotFilled } from 'react-icons/rx';
 import { TbCube, TbTimeline } from 'react-icons/tb';
 
-import { type AttrValuesStore } from '../providers/models';
-import { hasAttribute } from '../utils';
-import { getNxClass } from '../vis-packs/nexus/utils';
-
 const DATASET_ICONS = [RxDotFilled, TbTimeline, PiGridFourBold, TbCube];
-const SUPPORTED_NX_CLASSES = new Set(['NXdata', 'NXentry', 'NXprocess']);
 
 export const EXPLORER_ID = 'h5web-explorer-tree';
 
@@ -47,22 +42,6 @@ export function getIcon(entity: ChildEntity, isExpanded: boolean): IconType {
   }
 
   return FiLink;
-}
-
-export function needsNxBadge(
-  entity: ChildEntity,
-  attrValuesStore: AttrValuesStore,
-): boolean {
-  if (!isGroup(entity)) {
-    return false;
-  }
-
-  if (hasAttribute(entity, 'default')) {
-    return true;
-  }
-
-  const nxClass = getNxClass(entity, attrValuesStore);
-  return !!nxClass && SUPPORTED_NX_CLASSES.has(nxClass);
 }
 
 function getButtonList(

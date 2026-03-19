@@ -72,7 +72,7 @@ export async function renderApp(
     ...renderResult,
 
     selectExplorerNode: async (name) => {
-      await page.getByRole('treeitem', { name, exact: true }).click();
+      await getExplorerItem(name).click();
 
       if (waitForLoaders) {
         await waitForAllLoaders();
@@ -80,9 +80,7 @@ export async function renderApp(
     },
 
     selectNexusExplorerNode: async (name) => {
-      await page
-        .getByRole('treeitem', { name: `${name} (NeXus group)`, exact: true })
-        .click();
+      await getNexusExplorerItem(name).click();
 
       if (waitForLoaders) {
         await waitForAllLoaders();
@@ -104,7 +102,14 @@ export async function waitForAllLoaders(): Promise<void> {
 }
 
 export function getExplorerItem(name: string): Locator {
-  return page.getByRole('treeitem', { name });
+  return page.getByRole('treeitem', { name, exact: true });
+}
+
+export function getNexusExplorerItem(name: string): Locator {
+  return page.getByRole('treeitem', {
+    name: `${name} (NeXus group)`,
+    exact: true,
+  });
 }
 
 function getVisSelector(): Locator {
