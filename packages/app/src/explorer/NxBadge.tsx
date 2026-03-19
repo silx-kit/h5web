@@ -23,7 +23,7 @@ function NxBadge(props: Props) {
       return null; // no badge if malformed NeXus metadata
     }
 
-    throw error; // Suspense promises
+    throw error; // most likely a promise; rethrow to trigger Suspense boundary
   }
 
   return (
