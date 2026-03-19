@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { mockConsoleMethod, renderApp } from '../test-utils';
+import { mockConsoleMethod, mockDelay, renderApp } from '../test-utils';
 
 test('inspect group', async () => {
   await renderApp('/entities');
@@ -138,8 +138,14 @@ test('follow path attributes', async () => {
 });
 
 test("show error when attribute values can't be fetched", async () => {
+  const runAll = mockDelay();
   const errorSpy = mockConsoleMethod('error');
-  await renderApp('/resilience/error_value');
+
+  await renderApp({
+    initialPath: '/resilience/error_value',
+    waitForLoaders: false,
+  });
+  runAll();
 
   await page.getByRole('tab', { name: 'Inspect' }).click();
   expect(page.getByText('some error')).toBeVisible();

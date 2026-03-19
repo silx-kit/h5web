@@ -184,47 +184,47 @@ test('handle unknown/incompatible interpretation gracefully', async () => {
 
 test('show error/fallback for malformed NeXus entity', async () => {
   const errorSpy = mockConsoleMethod('error');
-  const { selectNexusExplorerNode } = await renderApp('/nexus_malformed');
+  const { selectExplorerNode } = await renderApp('/nexus_malformed');
 
   // `default` attribute points to non-existant entity
-  await selectNexusExplorerNode('default_not_found');
+  await selectExplorerNode('default_not_found');
   expect(page.getByText('No entity found at /test')).toBeVisible();
   errorSpy.mockClear();
 
   // No `signal` attribute
-  await selectNexusExplorerNode('no_signal');
+  await selectExplorerNode('no_signal');
   expect(page.getByText('Nothing to display')).toBeInTheDocument();
   expect(errorSpy).not.toHaveBeenCalled();
   errorSpy.mockClear();
 
   // `signal` attribute points to non-existant dataset
-  await selectNexusExplorerNode('signal_not_found');
+  await selectExplorerNode('signal_not_found');
   expect(
     page.getByText('Expected "unknown" signal entity to exist'),
   ).toBeVisible();
   errorSpy.mockClear();
 
   // Signal entity is not a dataset
-  await selectNexusExplorerNode('signal_not_dataset');
+  await selectExplorerNode('signal_not_dataset');
   expect(
     page.getByText('Expected "some_group" signal to be a dataset'),
   ).toBeVisible();
   errorSpy.mockClear();
 
   // Old-style signal entity is not a dataset
-  await selectNexusExplorerNode('signal_old-style_not_dataset');
+  await selectExplorerNode('signal_old-style_not_dataset');
   expect(
     page.getByText('Expected old-style "some_group" signal to be a dataset'),
   ).toBeVisible();
   errorSpy.mockClear();
 
   // Shape of signal dataset is not array
-  await selectNexusExplorerNode('signal_not_array');
+  await selectExplorerNode('signal_not_array');
   expect(page.getByText('Expected array shape')).toBeVisible();
   errorSpy.mockClear();
 
   // Type of signal dataset is not numeric
-  await selectNexusExplorerNode('signal_not_numeric');
+  await selectExplorerNode('signal_not_numeric');
   expect(
     page.getByText('Expected numeric, boolean, enum or complex type'),
   ).toBeVisible();
@@ -392,4 +392,9 @@ test('retry fetching automatically when selecting other NxHeatmap slice', async 
   // Let fetch of first slice succeed
   runAll();
   await expect.element(page.getByRole('figure')).toBeVisible();
+});
+
+test('visualize NXnote group', async () => {
+  await renderApp('/nexus_note');
+  expect(page.getByText('"energy": 10.2')).toBeVisible();
 });

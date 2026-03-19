@@ -10,7 +10,6 @@ import {
   useLayoutEffect,
   useRef,
 } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 import { FiRefreshCw } from 'react-icons/fi';
 
 import EntityList from './EntityList';
@@ -132,11 +131,11 @@ function EntityItem(props: Props) {
         <Icon className={styles.icon} />
         <span className={styles.name}>{entity.name}</span>
 
-        <ErrorBoundary fallback={null}>
+        {isGroup(entity) && (
           <Suspense fallback={<span data-testid="LoadingNxBadge" />}>
-            <NxBadge entity={entity} />
+            <NxBadge group={entity} />
           </Suspense>
-        </ErrorBoundary>
+        )}
       </button>
 
       {isGroup(entity) && isExpanded && (
