@@ -79,7 +79,7 @@ export const CORE_VIS = {
     Icon: FiCode,
     Container: ScalarVisContainer,
     supportsDataset: (dataset) => {
-      return hasPrintableType(dataset) && hasScalarShape(dataset);
+      return hasScalarShape(dataset) && hasPrintableType(dataset);
     },
   },
 
@@ -89,7 +89,7 @@ export const CORE_VIS = {
     Container: MatrixVisContainer,
     ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
-      return hasPrintableType(dataset) && hasArrayShape(dataset);
+      return hasArrayShape(dataset) && hasPrintableType(dataset);
     },
   },
 
@@ -99,7 +99,7 @@ export const CORE_VIS = {
     Container: LineVisContainer,
     ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
-      return hasNumericLikeType(dataset) && hasArrayShape(dataset);
+      return hasArrayShape(dataset) && hasNumericLikeType(dataset);
     },
   },
 
@@ -109,7 +109,7 @@ export const CORE_VIS = {
     Container: ComplexLineVisContainer,
     ConfigProvider: LineConfigProvider,
     supportsDataset: (dataset) => {
-      return hasComplexType(dataset) && hasArrayShape(dataset);
+      return hasArrayShape(dataset) && hasComplexType(dataset);
     },
   },
 
@@ -120,9 +120,9 @@ export const CORE_VIS = {
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
-        hasNumericLikeType(dataset) &&
         hasArrayShape(dataset) &&
-        hasMinDims(dataset, 2)
+        hasMinDims(dataset, 2) &&
+        hasNumericLikeType(dataset)
       );
     },
   },
@@ -134,9 +134,9 @@ export const CORE_VIS = {
     ConfigProvider: HeatmapConfigProvider,
     supportsDataset: (dataset) => {
       return (
-        hasComplexType(dataset) &&
         hasArrayShape(dataset) &&
-        hasMinDims(dataset, 2)
+        hasMinDims(dataset, 2) &&
+        hasComplexType(dataset)
       );
     },
   },
@@ -174,9 +174,9 @@ export const CORE_VIS = {
     ConfigProvider: MatrixConfigProvider,
     supportsDataset: (dataset) => {
       return (
+        hasNonNullShape(dataset) &&
         hasCompoundType(dataset) &&
-        hasPrintableCompoundType(dataset) &&
-        hasNonNullShape(dataset)
+        hasPrintableCompoundType(dataset)
       );
     },
   },
@@ -192,9 +192,9 @@ export const CORE_VIS = {
 
       return (
         enableSurfaceVis &&
-        hasNumericType(dataset) &&
         hasArrayShape(dataset) &&
-        hasMinDims(dataset, 2)
+        hasMinDims(dataset, 2) &&
+        hasNumericType(dataset)
       );
     },
   },
