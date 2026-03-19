@@ -6,6 +6,7 @@ import {
   cplxType,
   floatType,
   intType,
+  nullShape,
   scalarShape,
   strType,
 } from '@h5web/shared/hdf5-utils';
@@ -30,6 +31,8 @@ const mockStore = {
   },
 };
 
+const nullInt = dataset('null', nullShape(), intType());
+
 const scalarInt = dataset('int', scalarShape(), intType());
 const scalarUint = dataset('uint', scalarShape(), intType(false));
 const scalarBigInt = dataset('bigint', scalarShape(), intType(true, 64));
@@ -42,6 +45,7 @@ const scalarCompound = dataset(
   scalarShape(),
   compoundType([['int', intType()]]),
 );
+
 const oneDInt = dataset('int_1d', arrayShape([5]), intType());
 const oneDUint = dataset('uint_1d', arrayShape([5]), intType(false));
 const oneDBigUint = dataset('biguint_1d', arrayShape([5]), intType(false, 64));
@@ -56,6 +60,7 @@ const oneDCompound = dataset(
   arrayShape([5]),
   compoundType([['int', intType()]]),
 );
+
 const twoDInt = dataset('int_2d', arrayShape([5, 3]), intType());
 const twoDUint = dataset('uint_2d', arrayShape([5, 3]), intType(false));
 const twoDBool = dataset(
@@ -65,16 +70,17 @@ const twoDBool = dataset(
 );
 const twoDCplx = dataset('cplx_2d', arrayShape([2, 2]), cplxType(floatType()));
 const twoDStr = dataset('str_2d', arrayShape([5, 3]), strType());
+const twoDCompound = dataset(
+  'comp_2d',
+  arrayShape([5, 3]),
+  compoundType([['int', intType()]]),
+);
+
 const threeDFloat = dataset('float_3d', arrayShape([5, 3, 1]), intType());
 const threeDCplx = dataset(
   'cplx_3d',
   arrayShape([5, 2, 2]),
   cplxType(floatType()),
-);
-const twoDCompound = dataset(
-  'comp_2d',
-  arrayShape([5, 3]),
-  compoundType([['int', intType()]]),
 );
 
 const imageInt3 = withImageAttr(
@@ -105,9 +111,13 @@ const nestedCompound = dataset(
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
 
-  it('should support any dataset', () => {
+  it('should support dataset with scalar or array shape', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
     expect(supportsDataset(twoDStr)).toBe(true);
+  });
+
+  it('should not support dataset with null shape', () => {
+    expect(supportsDataset(nullInt)).toBe(false);
   });
 });
 
