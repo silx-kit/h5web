@@ -69,13 +69,20 @@ function ScatterVis(props: PropsWithChildren<Props>) {
     label: ordinateLabel,
     scaleType: ordinateScaleType,
   } = ordinateParams;
-
   assertLength(abscissas, dataArray.size, 'abscissa');
   assertLength(ordinates, dataArray.size, 'ordinates');
 
-  const abscissaDomain = useAxisDomain(abscissas, abscissaScaleType, 0.01);
+  const abscissaDomain = useAxisDomain(abscissas, {
+    scaleType: abscissaScaleType,
+    extensionFactor: 0.01,
+    forceAscending: true,
+  });
+  const ordinateDomain = useAxisDomain(ordinates, {
+    scaleType: ordinateScaleType,
+    extensionFactor: 0.01,
+    forceAscending: true,
+  });
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
-  const ordinateDomain = useAxisDomain(ordinates, ordinateScaleType, 0.01);
   assertDefined(ordinateDomain, 'Ordinates have undefined domain');
 
   const {

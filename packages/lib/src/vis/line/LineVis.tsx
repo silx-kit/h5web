@@ -89,7 +89,10 @@ function LineVis(props: PropsWithChildren<Props>) {
   const abscissas = useAxisValues(abscissaValue, dataArray.size);
   const abscissaToIndex = useValueToIndexScale(abscissas, true);
 
-  const abscissaDomain = useAxisDomain(abscissas, abscissaScaleType, 0.01);
+  const abscissaDomain = useAxisDomain(abscissas, {
+    scaleType: abscissaScaleType,
+    extensionFactor: 0.01,
+  });
   assertDefined(abscissaDomain, 'Abscissas have undefined domain');
 
   const dataDomain = useMemo(() => {

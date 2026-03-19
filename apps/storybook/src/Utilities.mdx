@@ -170,18 +170,23 @@ getAxisValues([0, 1], 3); // Throws error as 2 != 3
 
 #### getAxisDomain
 
-Find the ascending or descending domain of an axis given its values and scale. Optionally extend the domain by a given factor.
+Find the ascending or descending domain of an axis given its values and scale. Optionally extend the domain by a given factor or force ascending domain.
 
 ```ts
 getAxisDomain(
   axisValues: number[],
-  scaleType: ScaleType = ScaleType.Linear,
-  extensionFactor = 0
+  opts: {
+    scaleType?: AxisScaleType, // default: ScaleType.Linear
+    extensionFactor?: number, // default: 0
+    forceAscending?: boolean, // default: false
+  }
 ): Domain | undefined
 
 getAxisDomain([-1, 0, 1]); // [-1, 1]
-getAxisDomain([4, 2, 0, -2], ScaleType.Log); // [4, 2]);
-getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5); // [6, -2])
+getAxisDomain([4, 2, 0]); // [4, 0]
+getAxisDomain([4, 2, 0], { scaleType: ScaleType.Log }); // [4, 2]);
+getAxisDomain([4, 2, 0], { extensionFactor: 0.5 }); // [6, -2])
+getAxisDomain([4, 2, 0], { forceAscending: true }); // [0, 4])
 ```
 
 #### toTypedNdArray

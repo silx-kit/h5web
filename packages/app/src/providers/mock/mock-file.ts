@@ -290,8 +290,8 @@ export function makeMockFile(): GroupWithChildren {
           }),
           nxData('scatter', {
             signal: array('scatter_data'),
-            axes: { X: array('X'), Y_scatter: array('Y_scatter') },
-            axesAttr: ['X', 'Y_scatter'],
+            axes: { X_desc: array('X_desc'), Y_scatter: array('Y_scatter') },
+            axesAttr: ['X_desc', 'Y_scatter'],
           }),
           nxData('bigint', {
             signal: array('twoD_bigint'),
