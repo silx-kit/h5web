@@ -405,13 +405,32 @@ describe('getAxisDomain', () => {
   });
 
   it('should respect given scale', () => {
-    expect(getAxisDomain([-1, 0, 1], ScaleType.Log)).toEqual([1, 1]);
-    expect(getAxisDomain([4, 2, 0, -2], ScaleType.Log)).toEqual([4, 2]);
+    expect(getAxisDomain([-1, 0, 1], { scaleType: ScaleType.Log })).toEqual([
+      1, 1,
+    ]);
+    expect(getAxisDomain([4, 2, 0, -2], { scaleType: ScaleType.Log })).toEqual([
+      4, 2,
+    ]);
   });
 
   it('should allow extending domain', () => {
-    expect(getAxisDomain([4, 2, 0], ScaleType.Linear, 0.5)).toEqual([6, -2]);
-    expect(getAxisDomain([-1, 0, 1], ScaleType.Log, 1)).toEqual([0.1, 10]);
+    expect(
+      getAxisDomain([4, 2, 0], {
+        scaleType: ScaleType.Linear,
+        extensionFactor: 0.5,
+      }),
+    ).toEqual([6, -2]);
+
+    expect(
+      getAxisDomain([-1, 0, 1], {
+        scaleType: ScaleType.Log,
+        extensionFactor: 1,
+      }),
+    ).toEqual([0.1, 10]);
+  });
+
+  it('should allow forcing ascending domain', () => {
+    expect(getAxisDomain([4, 2, 0], { forceAscending: true })).toEqual([0, 4]);
   });
 
   it('should return undefined when values array is empty', () => {

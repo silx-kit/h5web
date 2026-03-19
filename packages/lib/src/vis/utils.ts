@@ -357,16 +357,25 @@ function isDescending(array: NumArray): boolean {
 
 export function getAxisDomain(
   axisValues: NumArray,
-  scaleType: AxisScaleType = ScaleType.Linear,
-  extensionFactor = 0,
+  opts: {
+    scaleType?: AxisScaleType;
+    extensionFactor?: number;
+    forceAscending?: boolean;
+  } = {},
 ): Domain | undefined {
+  const {
+    scaleType = ScaleType.Linear,
+    extensionFactor = 0,
+    forceAscending = false,
+  } = opts;
+
   const rawDomain = getDomain(axisValues, { scaleType });
   if (!rawDomain) {
     return undefined;
   }
 
   const extendedDomain = extendDomain(rawDomain, extensionFactor, scaleType);
-  return isDescending(axisValues)
+  return isDescending(axisValues) && !forceAscending
     ? [extendedDomain[1], extendedDomain[0]]
     : extendedDomain;
 }
