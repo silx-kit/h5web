@@ -2,7 +2,7 @@ import { format } from 'd3-format';
 import ndarray, { type NdArray } from 'ndarray';
 import { assign } from 'ndarray-ops';
 
-import { assertLength, isNdArray } from './guards';
+import { assertLength, isNdArray, isTypedArray } from './guards';
 import {
   type ArrayValue,
   type BooleanType,
@@ -79,6 +79,14 @@ export function createEnumFormatter(
   mapping: Record<number, string>,
 ): (val: ScalarValue<EnumType>) => string {
   return (value) => (value in mapping ? mapping[value] : value.toString());
+}
+
+export function formatRaw(value: unknown): string {
+  if (isTypedArray(value)) {
+    return `${value.constructor.name} [ ${value.toString()} ]`;
+  }
+
+  return JSON.stringify(value, null, 2);
 }
 
 export function getValues(arr: AnyNumArray): NumArray {

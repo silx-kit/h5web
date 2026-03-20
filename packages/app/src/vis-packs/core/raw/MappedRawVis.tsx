@@ -4,6 +4,7 @@ import {
   type Dataset,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
+import { formatRaw } from '@h5web/shared/vis-utils';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
@@ -48,7 +49,7 @@ function MappedRawVis(props: Props) {
           fit={config.fitImage}
         />
       ) : (
-        <RawVis className={visualizerStyles.vis} value={value} />
+        <RawVis className={visualizerStyles.vis} value={formatRaw(value)} />
       )}
     </>
   );
