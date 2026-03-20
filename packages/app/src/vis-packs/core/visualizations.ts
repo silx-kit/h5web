@@ -8,12 +8,10 @@ import {
   hasNumericType,
   hasPrintableCompoundType,
   hasPrintableType,
-  hasScalarShape,
 } from '@h5web/shared/guards';
 import { type Dataset } from '@h5web/shared/hdf5-models';
 import {
   FiActivity,
-  FiCode,
   FiCpu,
   FiGrid,
   FiImage,
@@ -40,14 +38,12 @@ import {
   MatrixVisContainer,
   RawVisContainer,
   RgbVisContainer,
-  ScalarVisContainer,
 } from './containers';
 import { SurfaceConfigProvider } from './surface/config';
 import SurfaceVisContainer from './surface/SurfaceVisContainer';
 
 export enum Vis {
   Raw = 'Raw',
-  Scalar = 'Scalar',
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
@@ -72,15 +68,6 @@ export const CORE_VIS = {
     Container: RawVisContainer,
     ConfigProvider: RawConfigProvider,
     supportsDataset: hasNonNullShape,
-  },
-
-  [Vis.Scalar]: {
-    name: Vis.Scalar,
-    Icon: FiCode,
-    Container: ScalarVisContainer,
-    supportsDataset: (dataset) => {
-      return hasScalarShape(dataset) && hasPrintableType(dataset);
-    },
   },
 
   [Vis.Matrix]: {

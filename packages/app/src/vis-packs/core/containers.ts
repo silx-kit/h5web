@@ -1,5 +1,4 @@
 export { default as RawVisContainer } from './raw/RawVisContainer';
-export { default as ScalarVisContainer } from './scalar/ScalarVisContainer';
 export { default as MatrixVisContainer } from './matrix/MatrixVisContainer';
 export { default as LineVisContainer } from './line/LineVisContainer';
 export { default as ComplexLineVisContainer } from './complex/ComplexLineVisContainer';

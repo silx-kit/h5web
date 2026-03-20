@@ -36,7 +36,7 @@ function RawVisContainer(props: VisContainerProps) {
           onChange={setDimMapping}
         />
       )}
-      <VisBoundary resetKey={dimMapping} isSlice>
+      <VisBoundary resetKey={dimMapping} isSlice={dims.length > 0}>
         <ScalarFetcher
           dataset={entity}
           selection={selection}

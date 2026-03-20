@@ -27,15 +27,15 @@ test('visualize scalar dataset', async () => {
   // Integer scalar
   const { selectExplorerNode } = await renderApp('/entities/scalar_num');
 
-  expect(getVisTabs()).toEqual([Vis.Scalar]);
-  expect(getSelectedVisTab()).toBe(Vis.Scalar);
+  expect(getVisTabs()).toEqual([Vis.Raw]);
+  expect(getSelectedVisTab()).toBe(Vis.Raw);
   expect(page.getByText('0')).toBeVisible();
 
   // String scalar
   await selectExplorerNode('scalar_str');
 
-  expect(getVisTabs()).toEqual([Vis.Scalar]);
-  expect(getSelectedVisTab()).toBe(Vis.Scalar);
+  expect(getVisTabs()).toEqual([Vis.Raw]);
+  expect(getSelectedVisTab()).toBe(Vis.Raw);
   expect(page.getByText('foo')).toBeVisible();
 });
 

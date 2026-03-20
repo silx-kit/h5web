@@ -4,14 +4,13 @@ import {
   type Dataset,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { formatRaw } from '@h5web/shared/vis-utils';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useExportEntries } from '../hooks';
 import { type RawConfig } from './config';
 import RawToolbar from './RawToolbar';
-import { isBinaryImage } from './utils';
+import { getFormatter, isBinaryImage } from './utils';
 
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape>;
@@ -24,6 +23,7 @@ function MappedRawVis(props: Props) {
   const { dataset, value, toolbarContainer, config } = props;
 
   const isImage = value instanceof Uint8Array && isBinaryImage(value);
+  const formatter = getFormatter(dataset.type);
 
   const exportEntries = useExportEntries(['json'], dataset, undefined, {
     json: () => JSON.stringify(value, null, 2),
@@ -49,7 +49,7 @@ function MappedRawVis(props: Props) {
           fit={config.fitImage}
         />
       ) : (
-        <RawVis className={visualizerStyles.vis} value={formatRaw(value)} />
+        <RawVis className={visualizerStyles.vis} value={formatter(value)} />
       )}
     </>
   );

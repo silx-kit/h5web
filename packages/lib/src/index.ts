@@ -236,7 +236,6 @@ export { default as ExportMenu } from './toolbar/controls/ExportMenu';
 export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
 export { default as RawVis } from './vis/raw/RawVis';
 export { default as RawImageVis } from './vis/raw/RawImageVis';
-export { default as ScalarVis } from './vis/scalar/ScalarVis';
 export { default as RgbVis } from './vis/rgb/RgbVis';
 export { default as VisMesh } from './vis/shared/VisMesh';
 export { default as ScatterPoints } from './vis/scatter/ScatterPoints';
