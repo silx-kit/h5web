@@ -1,5 +1,5 @@
 import { type ClassStyleAttrs } from '../models';
-import styles from './RawImageVis.module.css';
+import styles from './BinaryImageVis.module.css';
 
 interface Props extends ClassStyleAttrs {
   value: Uint8Array;
@@ -7,7 +7,7 @@ interface Props extends ClassStyleAttrs {
   fit?: boolean;
 }
 
-function RawImageVis(props: Props) {
+function BinaryImageVis(props: Props) {
   const { value, title, fit, className = '', style } = props;
 
   return (
@@ -23,4 +23,4 @@ function RawImageVis(props: Props) {
   );
 }
 
-export default RawImageVis;
+export default BinaryImageVis;

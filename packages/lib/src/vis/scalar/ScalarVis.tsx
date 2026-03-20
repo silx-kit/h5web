@@ -1,5 +1,5 @@
 import { type ClassStyleAttrs } from '../models';
-import styles from './RawVis.module.css';
+import styles from './ScalarVis.module.css';
 
 const LARGE_THRESHOLD = 1_000_000;
 
@@ -7,13 +7,13 @@ interface Props extends ClassStyleAttrs {
   value: string;
 }
 
-function RawVis(props: Props) {
+function ScalarVis(props: Props) {
   const { value, className = '', style } = props;
 
   return (
     <div className={`${styles.root} ${className}`} style={style}>
       {value.length < LARGE_THRESHOLD ? (
-        <pre className={styles.raw}>{value}</pre>
+        <pre className={styles.value}>{value}</pre>
       ) : (
         <p className={styles.fallback}>Too big to display</p>
       )}
@@ -21,4 +21,4 @@ function RawVis(props: Props) {
   );
 }
 
-export default RawVis;
+export default ScalarVis;

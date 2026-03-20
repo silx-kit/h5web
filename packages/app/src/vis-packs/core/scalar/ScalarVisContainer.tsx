@@ -6,11 +6,11 @@ import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import { useRawConfig } from './config';
-import MappedRawVis from './MappedRawVis';
+import { useScalarConfig } from './config';
+import MappedScalarVis from './MappedScalarVis';
 import ScalarFetcher from './ScalarFetcher';
 
-function RawVisContainer(props: VisContainerProps) {
+function ScalarVisContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
   assertDataset(entity);
   assertNonNullShape(entity);
@@ -21,7 +21,7 @@ function RawVisContainer(props: VisContainerProps) {
     axesCount: 0, // slicing only
   });
 
-  const config = useRawConfig();
+  const config = useScalarConfig();
   const selection = getSliceSelection(dimMapping);
   const canSliceFast = useValuesInCache(entity);
 
@@ -41,7 +41,7 @@ function RawVisContainer(props: VisContainerProps) {
           dataset={entity}
           selection={selection}
           render={(value) => (
-            <MappedRawVis
+            <MappedScalarVis
               dataset={entity}
               value={value}
               toolbarContainer={toolbarContainer}
@@ -54,4 +54,4 @@ function RawVisContainer(props: VisContainerProps) {
   );
 }
 
-export default RawVisContainer;
+export default ScalarVisContainer;

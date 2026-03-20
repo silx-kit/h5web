@@ -4,7 +4,7 @@
   scrollbar-width: thin;
 }
 
-.raw {
+.value {
   min-width: fit-content; /* fix missing padding-right */
   margin: 0;
   padding: 1rem 1.5rem !important; /* overridden by JupyterLab if not !important */

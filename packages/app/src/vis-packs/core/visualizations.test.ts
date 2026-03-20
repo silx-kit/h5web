@@ -106,8 +106,8 @@ const nestedCompound = dataset(
   compoundType([['comp', compoundType([['int', intType()]])]]),
 );
 
-describe('Raw', () => {
-  const { supportsDataset } = CORE_VIS.Raw;
+describe('Scalar', () => {
+  const { supportsDataset } = CORE_VIS.Scalar;
 
   it('should support dataset with non-null shape', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
