@@ -14,7 +14,10 @@ import {
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
 import { type Domain, type NumArray } from '@h5web/shared/vis-models';
-import { createArrayFromView } from '@h5web/shared/vis-utils';
+import {
+  createArrayFromView,
+  SCALAR_SELECTION_REGEXP,
+} from '@h5web/shared/vis-utils';
 import ndarray, { type NdArray } from 'ndarray';
 
 export const DEFAULT_DOMAIN: Domain = [0.1, 1];
@@ -133,4 +136,8 @@ export function formatNumLikeType(type: NumericLikeType): string {
   const unsignedPrefix = isIntegerType(type) && !type.signed ? 'u' : '';
   const sizeSuffix = isNumericType(type) ? type.size : '';
   return `${unsignedPrefix}${TYPE_STRINGS[type.class]}${sizeSuffix}`;
+}
+
+export function isScalarSelection(selection: string): boolean {
+  return SCALAR_SELECTION_REGEXP.test(selection);
 }

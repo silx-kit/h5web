@@ -1626,42 +1626,59 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
-    "name": "compound_nested_scalar",
+    "name": "compound_mixed_1D",
     "rawType": {
       "class": 6,
       "dtype": {
+        "arr": "|V8",
+        "bool": "|b1",
         "nested": {
           "bigint": "<i8",
-          "bool": "|b1",
           "cplx": "<c8",
+          "vlen": "|O",
         },
       },
       "members": [
         {
+          "base": {
+            "class": 0,
+            "dtype": "|i1",
+            "order": 0,
+            "sign": 1,
+            "size": 1,
+          },
+          "class": 8,
+          "dtype": "|b1",
+          "members": {
+            "FALSE": 0,
+            "TRUE": 1,
+          },
+          "name": "bool",
+          "size": 1,
+        },
+        {
+          "base": {
+            "class": 1,
+            "dtype": "<f4",
+            "order": 0,
+            "size": 4,
+          },
+          "class": 10,
+          "dims": [
+            2,
+          ],
+          "dtype": "|V8",
+          "name": "arr",
+          "size": 8,
+        },
+        {
           "class": 6,
           "dtype": {
             "bigint": "<i8",
-            "bool": "|b1",
             "cplx": "<c8",
+            "vlen": "|O",
           },
           "members": [
-            {
-              "base": {
-                "class": 0,
-                "dtype": "|i1",
-                "order": 0,
-                "sign": 1,
-                "size": 1,
-              },
-              "class": 8,
-              "dtype": "|b1",
-              "members": {
-                "FALSE": 0,
-                "TRUE": 1,
-              },
-              "name": "bool",
-              "size": 1,
-            },
             {
               "class": 6,
               "dtype": "<c8",
@@ -1692,32 +1709,58 @@ exports[`test file matches snapshot 1`] = `
               "sign": 1,
               "size": 8,
             },
+            {
+              "base": {
+                "class": 0,
+                "dtype": "<u8",
+                "order": 0,
+                "sign": 0,
+                "size": 8,
+              },
+              "class": 9,
+              "dtype": "|O",
+              "name": "vlen",
+              "size": 16,
+            },
           ],
           "name": "nested",
-          "size": 17,
+          "size": 32,
         },
       ],
-      "size": 17,
+      "size": 41,
     },
     "shape": {
-      "class": "Scalar",
-      "dims": [],
+      "class": "Array",
+      "dims": [
+        2,
+      ],
     },
     "type": {
       "class": "Compound",
       "fields": Map {
+        "bool" => {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+        "arr" => {
+          "base": {
+            "class": "Float",
+            "endianness": "little-endian",
+            "size": 32,
+          },
+          "class": "Array",
+          "dims": [
+            2,
+          ],
+        },
         "nested" => {
           "class": "Compound",
           "fields": Map {
-            "bool" => {
-              "base": {
-                "class": "Integer",
-                "endianness": "little-endian",
-                "signed": true,
-                "size": 8,
-              },
-              "class": "Boolean",
-            },
             "cplx" => {
               "class": "Complex",
               "imagType": {
@@ -1737,6 +1780,15 @@ exports[`test file matches snapshot 1`] = `
               "signed": true,
               "size": 64,
             },
+            "vlen" => {
+              "base": {
+                "class": "Integer",
+                "endianness": "little-endian",
+                "signed": false,
+                "size": 64,
+              },
+              "class": "Array (variable length)",
+            },
           },
         },
       },
@@ -1745,113 +1797,33 @@ exports[`test file matches snapshot 1`] = `
       [
         true,
         [
-          1,
-          2,
-        ],
-        3,
-      ],
-    ],
-  },
-  {
-    "name": "compound_array_vlen_1D",
-    "rawType": {
-      "class": 6,
-      "dtype": {
-        "arr": "|V8",
-        "vlen": "|O",
-      },
-      "members": [
-        {
-          "base": {
-            "class": 1,
-            "dtype": "<f4",
-            "order": 0,
-            "size": 4,
-          },
-          "class": 10,
-          "dims": [
-            2,
-          ],
-          "dtype": "|V8",
-          "name": "arr",
-          "size": 8,
-        },
-        {
-          "base": {
-            "class": 0,
-            "dtype": "<u8",
-            "order": 0,
-            "sign": 0,
-            "size": 8,
-          },
-          "class": 9,
-          "dtype": "|O",
-          "name": "vlen",
-          "size": 16,
-        },
-      ],
-      "size": 24,
-    },
-    "shape": {
-      "class": "Array",
-      "dims": [
-        3,
-      ],
-    },
-    "type": {
-      "class": "Compound",
-      "fields": Map {
-        "arr" => {
-          "base": {
-            "class": "Float",
-            "endianness": "little-endian",
-            "size": 32,
-          },
-          "class": "Array",
-          "dims": [
-            2,
-          ],
-        },
-        "vlen" => {
-          "base": {
-            "class": "Integer",
-            "endianness": "little-endian",
-            "signed": false,
-            "size": 64,
-          },
-          "class": "Array (variable length)",
-        },
-      },
-    },
-    "value": [
-      [
-        [
           0,
           1,
         ],
         [
-          0,
+          [
+            1,
+            2,
+          ],
+          3,
+          [],
         ],
       ],
       [
+        false,
         [
           2,
           3,
         ],
         [
-          0,
-          1,
-        ],
-      ],
-      [
-        [
-          4,
-          5,
-        ],
-        [
-          0,
-          1,
-          2,
+          [
+            4,
+            5,
+          ],
+          6,
+          [
+            42,
+          ],
         ],
       ],
     ],

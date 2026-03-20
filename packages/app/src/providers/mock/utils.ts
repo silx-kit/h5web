@@ -11,11 +11,12 @@ import {
   type GroupWithChildren,
   type ProvidedEntity,
   type ScalarShape,
-  type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
 import ndarray from 'ndarray';
+
+import { isScalarSelection } from '../../vis-packs/core/utils';
 
 export const SLOW_TIMEOUT = 3000;
 
@@ -46,18 +47,22 @@ export function findMockEntity(
 }
 
 export function sliceValue<T extends DType>(
-  value: unknown,
+  value: unknown[],
   dataset: Dataset<ArrayShape | ScalarShape, T>,
   selection: string,
-): ScalarValue<T>[] {
+): unknown {
   const { dims } = dataset.shape;
-  const dataArray = ndarray(value as ScalarValue<typeof dataset.type>[], dims);
+  const dataArray = ndarray(value, dims);
 
   const slicingState = selection
     .split(',')
     .map((s) => (s === ':' ? null : Number.parseInt(s)));
 
-  return createArrayFromView(dataArray.pick(...slicingState)).data;
+  const slicedArray = createArrayFromView(dataArray.pick(...slicingState));
+
+  return selection && isScalarSelection(selection)
+    ? slicedArray.get(0) // unwrap scalar slice
+    : slicedArray.data;
 }
 
 export function getChildrenPaths(

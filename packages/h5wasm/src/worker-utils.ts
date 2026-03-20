@@ -30,10 +30,10 @@ import {
   unknownType,
   vlenType,
 } from '@h5web/shared/hdf5-utils';
+import { SCALAR_SELECTION_REGEXP } from '@h5web/shared/vis-utils';
 import {
   type Dataset as H5WasmDataset,
   type Metadata,
-  type OutputData,
   ready as h5wasmReady,
 } from 'h5wasm';
 import { nanoid } from 'nanoid';
@@ -303,7 +303,7 @@ function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
 export function readSelectedValue(
   h5wDataset: H5WasmDataset,
   selection: string | undefined,
-): OutputData | null {
+): unknown {
   if (!selection) {
     return h5wDataset.value;
   }
@@ -320,5 +320,13 @@ export function readSelectedValue(
     return [Number(member), Number(member) + 1];
   });
 
-  return h5wDataset.slice(ranges);
+  const slicedValue = h5wDataset.slice(ranges);
+
+  /* h5wasm unwraps scalar slices inconsistently - e.g. it does so for opaque
+   * datasets but not for compound, vlen, etc. */
+  if (SCALAR_SELECTION_REGEXP.test(selection) && Array.isArray(slicedValue)) {
+    return slicedValue[0];
+  }
+
+  return slicedValue;
 }

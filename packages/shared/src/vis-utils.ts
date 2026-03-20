@@ -22,6 +22,8 @@ import {
   type TypedArrayConstructor,
 } from './vis-models';
 
+export const SCALAR_SELECTION_REGEXP = /^\d+(?:,\d+)*$/u;
+
 export const AXIS_SCALE_TYPES: AxisScaleType[] = [
   ScaleType.Linear,
   ScaleType.Log,

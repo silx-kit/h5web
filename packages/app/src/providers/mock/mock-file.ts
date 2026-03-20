@@ -130,10 +130,34 @@ export function makeMockFile(): GroupWithChildren {
             ['complex', cplxType(floatType())],
           ]),
         }),
+        dataset(
+          'oneD_compound_mixed',
+          arrayShape([1]),
+          compoundType([
+            ['opaque', opaqueType()],
+            ['arr', arrayType(intType(), [2])],
+            [
+              'nested',
+              compoundType([
+                ['bool', boolType(intType(true, 8))],
+                ['vlen', vlenType(intType())],
+              ]),
+            ],
+          ]),
+          [[{ int: 42 }, [1, 2], [true, [0]]]],
+        ),
         array('oneD_bool'),
         array('oneD_enum', {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
+        dataset('oneD_opaque', arrayShape([2]), opaqueType(), [
+          'foo',
+          { int: 42 },
+        ]),
+        dataset('oneD_opaque_png', arrayShape([2]), opaqueType(), [
+          PNG_RED_DOT,
+          PNG_RED_DOT,
+        ]),
         array('twoD'),
         array('twoD_neg'),
         array('twoD_bigint'),
@@ -151,6 +175,7 @@ export function makeMockFile(): GroupWithChildren {
         array('twoD_enum', {
           type: enumType(intType(false, 8), ENUM_MAPPING),
         }),
+        array('twoD_opaque', { type: opaqueType() }),
         array('threeD', {
           chunks: [1, 20, 41],
           filters: [{ id: 12_345, name: 'Some filter' }],
