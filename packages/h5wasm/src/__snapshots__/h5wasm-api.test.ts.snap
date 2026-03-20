@@ -1773,31 +1773,52 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
-    "name": "compound_nested_scalar",
+    "name": "compound_mixed_1D",
     "rawType": {
       "compound_type": {
         "members": [
           {
+            "enum_type": {
+              "members": {
+                "FALSE": 0,
+                "TRUE": 1,
+              },
+              "nmembers": 2,
+              "type": 0,
+            },
+            "littleEndian": true,
+            "name": "bool",
+            "offset": 0,
+            "shape": [],
+            "signed": true,
+            "size": 1,
+            "type": 8,
+            "vlen": false,
+          },
+          {
+            "array_type": {
+              "littleEndian": true,
+              "shape": [
+                2,
+              ],
+              "signed": false,
+              "size": 4,
+              "total_size": 2,
+              "type": 1,
+              "vlen": false,
+            },
+            "littleEndian": true,
+            "name": "arr",
+            "offset": 1,
+            "shape": [],
+            "signed": false,
+            "size": 8,
+            "type": 10,
+            "vlen": false,
+          },
+          {
             "compound_type": {
               "members": [
-                {
-                  "enum_type": {
-                    "members": {
-                      "FALSE": 0,
-                      "TRUE": 1,
-                    },
-                    "nmembers": 2,
-                    "type": 0,
-                  },
-                  "littleEndian": true,
-                  "name": "bool",
-                  "offset": 0,
-                  "shape": [],
-                  "signed": true,
-                  "size": 1,
-                  "type": 8,
-                  "vlen": false,
-                },
                 {
                   "compound_type": {
                     "members": [
@@ -1826,7 +1847,7 @@ exports[`test file matches snapshot 1`] = `
                   },
                   "littleEndian": true,
                   "name": "cplx",
-                  "offset": 1,
+                  "offset": 0,
                   "shape": [],
                   "signed": false,
                   "size": 8,
@@ -1836,54 +1857,84 @@ exports[`test file matches snapshot 1`] = `
                 {
                   "littleEndian": true,
                   "name": "bigint",
-                  "offset": 9,
+                  "offset": 8,
                   "shape": [],
                   "signed": true,
                   "size": 8,
                   "type": 0,
                   "vlen": false,
                 },
+                {
+                  "littleEndian": true,
+                  "name": "vlen",
+                  "offset": 16,
+                  "shape": [],
+                  "signed": false,
+                  "size": 8,
+                  "type": 9,
+                  "vlen": false,
+                  "vlen_type": {
+                    "littleEndian": true,
+                    "signed": false,
+                    "size": 8,
+                    "type": 0,
+                    "vlen": false,
+                  },
+                },
               ],
               "nmembers": 3,
             },
             "littleEndian": true,
             "name": "nested",
-            "offset": 0,
+            "offset": 9,
             "shape": [],
             "signed": false,
-            "size": 17,
+            "size": 24,
             "type": 6,
             "vlen": false,
           },
         ],
-        "nmembers": 1,
+        "nmembers": 3,
       },
       "littleEndian": true,
       "signed": false,
-      "size": 17,
-      "total_size": 1,
+      "size": 33,
+      "total_size": 2,
       "type": 6,
       "vlen": false,
     },
     "shape": {
-      "class": "Scalar",
-      "dims": [],
+      "class": "Array",
+      "dims": [
+        2,
+      ],
     },
     "type": {
       "class": "Compound",
       "fields": Map {
+        "bool" => {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+        "arr" => {
+          "base": {
+            "class": "Float",
+            "endianness": "little-endian",
+            "size": 32,
+          },
+          "class": "Array",
+          "dims": [
+            2,
+          ],
+        },
         "nested" => {
           "class": "Compound",
           "fields": Map {
-            "bool" => {
-              "base": {
-                "class": "Integer",
-                "endianness": "little-endian",
-                "signed": true,
-                "size": 8,
-              },
-              "class": "Boolean",
-            },
             "cplx" => {
               "class": "Complex",
               "imagType": {
@@ -1903,6 +1954,15 @@ exports[`test file matches snapshot 1`] = `
               "signed": true,
               "size": 64,
             },
+            "vlen" => {
+              "base": {
+                "class": "Integer",
+                "endianness": "little-endian",
+                "signed": false,
+                "size": 64,
+              },
+              "class": "Array (variable length)",
+            },
           },
         },
       },
@@ -1911,127 +1971,34 @@ exports[`test file matches snapshot 1`] = `
       [
         1,
         [
-          1,
-          2,
-        ],
-        3n,
-      ],
-    ],
-  },
-  {
-    "name": "compound_array_vlen_1D",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "array_type": {
-              "littleEndian": true,
-              "shape": [
-                2,
-              ],
-              "signed": false,
-              "size": 4,
-              "total_size": 2,
-              "type": 1,
-              "vlen": false,
-            },
-            "littleEndian": true,
-            "name": "arr",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 10,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "vlen",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 9,
-            "vlen": false,
-            "vlen_type": {
-              "littleEndian": true,
-              "signed": false,
-              "size": 8,
-              "type": 0,
-              "vlen": false,
-            },
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 16,
-      "total_size": 3,
-      "type": 6,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Array",
-      "dims": [
-        3,
-      ],
-    },
-    "type": {
-      "class": "Compound",
-      "fields": Map {
-        "arr" => {
-          "base": {
-            "class": "Float",
-            "endianness": "little-endian",
-            "size": 32,
-          },
-          "class": "Array",
-          "dims": [
-            2,
-          ],
-        },
-        "vlen" => {
-          "base": {
-            "class": "Integer",
-            "endianness": "little-endian",
-            "signed": false,
-            "size": 64,
-          },
-          "class": "Array (variable length)",
-        },
-      },
-    },
-    "value": [
-      [
-        [
           0,
           1,
         ],
-        BigUint64Array {
-          "0": 0n,
-        },
+        [
+          [
+            1,
+            2,
+          ],
+          3n,
+          BigUint64Array {},
+        ],
       ],
       [
+        0,
         [
           2,
           3,
         ],
-        BigUint64Array {
-          "0": 0n,
-          "1": 1n,
-        },
-      ],
-      [
         [
-          4,
-          5,
+          [
+            4,
+            5,
+          ],
+          6n,
+          BigUint64Array {
+            "0": 42n,
+          },
         ],
-        BigUint64Array {
-          "0": 0n,
-          "1": 1n,
-          "2": 2n,
-        },
       ],
     ],
   },

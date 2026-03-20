@@ -183,41 +183,42 @@ with h5py.File(os.path.join(DIST_PATH, "sample.h5"), "w") as h5:
             ],
         ),
     )
-    add_scalar(
-        h5,
-        "compound_nested",
-        ((True, 1 + 2j, 3),),
-        [
-            (
-                "nested",
-                [
-                    ("bool", np.bool_),
-                    ("cplx", np.complex64),
-                    ("bigint", np.int64),
-                ],
-            )
-        ],
-    )
-
     add_array(
         h5,
-        "compound_array_vlen",
+        "compound_mixed",
         np.array(
             [
                 (
+                    True,
                     np.array([0, 1], np.float32),
-                    np.array([0], np.uint64),
+                    (
+                        1 + 2j,
+                        3,
+                        np.array([], np.uint64),
+                    ),
                 ),
                 (
+                    False,
                     np.array([2, 3], np.float32),
-                    np.array([0, 1], np.uint64),
-                ),
-                (
-                    np.array([4, 5], np.float32),
-                    np.array([0, 1, 2], np.uint64),
+                    (
+                        4 + 5j,
+                        6,
+                        np.array([42], np.uint64),
+                    ),
                 ),
             ],
-            [("arr", np.float32, (2,)), ("vlen", h5py.vlen_dtype(np.uint64))],
+            [
+                ("bool", np.bool_),
+                ("arr", np.float32, (2,)),
+                (
+                    "nested",
+                    [
+                        ("cplx", np.complex64),
+                        ("bigint", np.int64),
+                        ("vlen", h5py.vlen_dtype(np.uint64)),
+                    ],
+                ),
+            ],
         ),
     )
 

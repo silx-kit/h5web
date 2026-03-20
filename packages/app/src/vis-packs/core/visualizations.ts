@@ -20,6 +20,7 @@ import {
   FiMap,
   FiPackage,
 } from 'react-icons/fi';
+import { MdDataArray } from 'react-icons/md';
 
 import { type AttrValuesStore } from '../../providers/models';
 import { findScalarStrAttr, getAttributeValue } from '../../utils';
@@ -32,6 +33,7 @@ import {
   RgbConfigProvider,
 } from './configs';
 import {
+  ArrayVisContainer,
   ComplexHeatmapVisContainer,
   ComplexLineVisContainer,
   CompoundVisContainer,
@@ -48,6 +50,7 @@ import SurfaceVisContainer from './surface/SurfaceVisContainer';
 export enum Vis {
   Raw = 'Raw',
   Scalar = 'Scalar',
+  Array = 'Array',
   Matrix = 'Matrix',
   Line = 'Line',
   Heatmap = 'Heatmap',
@@ -71,7 +74,7 @@ export const CORE_VIS = {
     Icon: FiCpu,
     Container: RawVisContainer,
     ConfigProvider: RawConfigProvider,
-    supportsDataset: hasNonNullShape,
+    supportsDataset: hasScalarShape,
   },
 
   [Vis.Scalar]: {
@@ -81,6 +84,14 @@ export const CORE_VIS = {
     supportsDataset: (dataset) => {
       return hasScalarShape(dataset) && hasPrintableType(dataset);
     },
+  },
+
+  [Vis.Array]: {
+    name: Vis.Array,
+    Icon: MdDataArray,
+    Container: ArrayVisContainer,
+    ConfigProvider: RawConfigProvider,
+    supportsDataset: hasArrayShape,
   },
 
   [Vis.Matrix]: {

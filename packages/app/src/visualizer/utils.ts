@@ -23,6 +23,8 @@ import {
 } from '../vis-packs/nexus/utils';
 import { NX_DATA_VIS, NX_NOTE_VIS } from '../vis-packs/nexus/visualizations';
 
+const FALLBACK_VIS = new Set([Vis.Raw, Vis.Array]);
+
 export function resolvePath(
   path: string,
   entitiesStore: EntitiesStore,
@@ -86,7 +88,7 @@ function getSupportedCoreVis(
 
   // Remove `Raw` vis unless it's the only supported vis
   return supportedVis.length > 1
-    ? supportedVis.filter((vis) => vis.name !== Vis.Raw)
+    ? supportedVis.filter((vis) => !FALLBACK_VIS.has(vis.name))
     : supportedVis;
 }
 

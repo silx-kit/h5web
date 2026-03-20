@@ -1,7 +1,8 @@
 import {
+  assertArray,
   assertDefined,
   assertGroup,
-  hasArrayShape,
+  hasScalarShape,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -23,6 +24,7 @@ import {
   type ExportURL,
 } from '@h5web/shared/vis-models';
 
+import { isScalarSelection } from '../../vis-packs/core/utils';
 import { DataProviderApi } from '../api';
 import { type Fetcher, type ValuesStoreParams } from '../models';
 import { FetcherError, toJSON } from '../utils';
@@ -48,7 +50,6 @@ import {
   convertHsdsAttributes,
   convertHsdsShape,
   convertHsdsType,
-  flattenValue,
   isHsdsGroup,
   toExtendedJSON,
 } from './utils';
@@ -113,7 +114,7 @@ export class HsdsApi extends DataProviderApi {
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
-    const { dataset } = params;
+    const { dataset, selection } = params;
     assertHsdsDataset(dataset);
 
     const value = await this.fetchValue(
@@ -123,10 +124,18 @@ export class HsdsApi extends DataProviderApi {
       onProgress,
     );
 
-    /* HSDS doesn't reduce the number of dimensions when selecting indices,
-     * so the flattening must be done on all dimensions regardless of the selection.
-     * https://github.com/HDFGroup/hsds/issues/88 */
-    return hasArrayShape(dataset) ? flattenValue(value, dataset) : value;
+    if (hasScalarShape(dataset)) {
+      return value;
+    }
+
+    // HSDS doesn't reduce the number of dimensions correctly when slicing
+    // https://github.com/HDFGroup/hsds/issues/88
+    assertArray(value);
+    const flattened = value.flat(dataset.shape.dims.length - 1);
+
+    return selection && isScalarSelection(selection)
+      ? flattened[0] // unwrap scalar slice from flattened array
+      : flattened;
   }
 
   public override async getAttrValues(

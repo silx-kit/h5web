@@ -134,3 +134,7 @@ export function formatNumLikeType(type: NumericLikeType): string {
   const sizeSuffix = isNumericType(type) ? type.size : '';
   return `${unsignedPrefix}${TYPE_STRINGS[type.class]}${sizeSuffix}`;
 }
+
+export function isScalarSelection(selection: string): boolean {
+  return /^\d+(?:,\d+)*$/u.test(selection);
+}

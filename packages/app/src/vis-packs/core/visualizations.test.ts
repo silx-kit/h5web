@@ -7,6 +7,7 @@ import {
   floatType,
   intType,
   nullShape,
+  opaqueType,
   scalarShape,
   strType,
 } from '@h5web/shared/hdf5-utils';
@@ -45,6 +46,7 @@ const scalarCompound = dataset(
   scalarShape(),
   compoundType([['int', intType()]]),
 );
+const scalarOpaque = dataset('opaque', scalarShape(), opaqueType());
 
 const oneDInt = dataset('int_1d', arrayShape([5]), intType());
 const oneDUint = dataset('uint_1d', arrayShape([5]), intType(false));
@@ -60,6 +62,7 @@ const oneDCompound = dataset(
   arrayShape([5]),
   compoundType([['int', intType()]]),
 );
+const oneDOpaque = dataset('opaque_1d', arrayShape([5]), opaqueType());
 
 const twoDInt = dataset('int_2d', arrayShape([5, 3]), intType());
 const twoDUint = dataset('uint_2d', arrayShape([5, 3]), intType(false));
@@ -111,13 +114,14 @@ const nestedCompound = dataset(
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
 
-  it('should support dataset with scalar or array shape', () => {
+  it('should support dataset with scalar shape', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
-    expect(supportsDataset(twoDStr)).toBe(true);
+    expect(supportsDataset(scalarOpaque)).toBe(true);
   });
 
-  it('should not support dataset with null shape', () => {
+  it('should not support dataset with non-scalar shape', () => {
     expect(supportsDataset(nullInt)).toBe(false);
+    expect(supportsDataset(twoDStr)).toBe(false);
   });
 });
 
@@ -140,6 +144,21 @@ describe('Scalar', () => {
 
   it('should not support dataset with non-scalar shape', () => {
     expect(supportsDataset(oneDInt)).toBe(false);
+  });
+});
+
+describe('Array', () => {
+  const { supportsDataset } = CORE_VIS.Array;
+
+  it('should support dataset with array shape', () => {
+    expect(supportsDataset(oneDBigUint)).toBe(true);
+    expect(supportsDataset(oneDOpaque)).toBe(true);
+  });
+
+  it('should not support dataset with non-array shape', () => {
+    expect(supportsDataset(nullInt)).toBe(false);
+    expect(supportsDataset(scalarUint)).toBe(false);
+    expect(supportsDataset(scalarOpaque)).toBe(false);
   });
 });
 

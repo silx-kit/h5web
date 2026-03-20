@@ -187,6 +187,16 @@ export const mockValues = {
     );
   },
   twoD_neg: () => ndarray(range(-10, 0), [1, 10]),
+  twoD_opaque: () =>
+    ndarray(
+      [
+        new Uint8Array([0, 1]),
+        new Uint8Array([2, 3]),
+        new Uint8Array([4, 5]),
+        new Uint8Array([6, 7]),
+      ],
+      [2, 2],
+    ),
   threeD,
   threeD_cplx: () =>
     ndarray(
