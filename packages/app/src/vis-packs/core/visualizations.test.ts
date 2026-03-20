@@ -7,6 +7,7 @@ import {
   floatType,
   intType,
   nullShape,
+  opaqueType,
   scalarShape,
   strType,
 } from '@h5web/shared/hdf5-utils';
@@ -45,6 +46,7 @@ const scalarCompound = dataset(
   scalarShape(),
   compoundType([['int', intType()]]),
 );
+const scalarOpaque = dataset('opaque', scalarShape(), opaqueType());
 
 const oneDInt = dataset('int_1d', arrayShape([5]), intType());
 const oneDUint = dataset('uint_1d', arrayShape([5]), intType(false));
@@ -60,6 +62,7 @@ const oneDCompound = dataset(
   arrayShape([5]),
   compoundType([['int', intType()]]),
 );
+const oneDOpaque = dataset('opaque_1d', arrayShape([5]), opaqueType());
 
 const twoDInt = dataset('int_2d', arrayShape([5, 3]), intType());
 const twoDUint = dataset('uint_2d', arrayShape([5, 3]), intType(false));
@@ -111,8 +114,11 @@ const nestedCompound = dataset(
 describe('Raw', () => {
   const { supportsDataset } = CORE_VIS.Raw;
 
-  it('should support dataset with scalar or array shape', () => {
+  it('should support dataset with non-null shape', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
+    expect(supportsDataset(scalarOpaque)).toBe(true);
+    expect(supportsDataset(oneDBigUint)).toBe(true);
+    expect(supportsDataset(oneDOpaque)).toBe(true);
     expect(supportsDataset(twoDStr)).toBe(true);
   });
 
