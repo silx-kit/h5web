@@ -4,35 +4,35 @@ import { page } from 'vitest/browser';
 import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
-test('visualize raw dataset', async () => {
-  const { selectExplorerNode } = await renderApp('/entities/raw');
+test('visualize unknown dataset', async () => {
+  const { selectExplorerNode } = await renderApp('/scalars/unknown');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByText('"int": 42')).toBeVisible();
 
-  await selectExplorerNode('raw_large');
+  await selectExplorerNode('unknown_large');
   expect(page.getByText('Too big to display')).toBeVisible();
 });
 
-test('visualize raw image dataset', async () => {
-  await renderApp('/entities/raw_png');
+test('visualize opaque binary image dataset', async () => {
+  await renderApp('/scalars/opaque_png');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
-  expect(page.getByAltText('raw_png')).toBeVisible();
+  expect(page.getByAltText('opaque_png')).toBeVisible();
 });
 
 test('visualize scalar dataset', async () => {
   // Integer scalar
-  const { selectExplorerNode } = await renderApp('/entities/scalar_num');
+  const { selectExplorerNode } = await renderApp('/scalars/number');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByText('0')).toBeVisible();
 
   // String scalar
-  await selectExplorerNode('scalar_str');
+  await selectExplorerNode('string');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
@@ -40,7 +40,7 @@ test('visualize scalar dataset', async () => {
 });
 
 test('visualize scalar compound dataset', async () => {
-  await renderApp('/entities/scalar_compound');
+  await renderApp('/scalars/compound');
 
   expect(getVisTabs()).toEqual([Vis.Compound]);
   expect(getSelectedVisTab()).toBe(Vis.Compound);
@@ -48,7 +48,7 @@ test('visualize scalar compound dataset', async () => {
 });
 
 test('visualize 1D dataset', async () => {
-  await renderApp('/nD_datasets/oneD');
+  await renderApp('/arrays/oneD');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
@@ -56,7 +56,7 @@ test('visualize 1D dataset', async () => {
 });
 
 test('visualize 1D dataset as matrix', async () => {
-  const { selectVisTab } = await renderApp('/nD_datasets/oneD');
+  const { selectVisTab } = await renderApp('/arrays/oneD');
   await selectVisTab(Vis.Matrix);
 
   expect(getSelectedVisTab()).toBe(Vis.Matrix);
@@ -65,15 +65,15 @@ test('visualize 1D dataset as matrix', async () => {
 });
 
 test('visualize 1D boolean dataset', async () => {
-  await renderApp('/nD_datasets/oneD_bool');
+  await renderApp('/arrays/oneD_boolean');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(page.getByRole('figure', { name: 'oneD_bool' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'oneD_boolean' })).toBeVisible();
 });
 
 test('visualize 1D enum dataset', async () => {
-  await renderApp('/nD_datasets/oneD_enum');
+  await renderApp('/arrays/oneD_enum');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
@@ -81,15 +81,15 @@ test('visualize 1D enum dataset', async () => {
 });
 
 test('visualize 1D complex dataset', async () => {
-  await renderApp('/nD_datasets/oneD_cplx');
+  await renderApp('/arrays/oneD_complex');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
-  expect(page.getByRole('figure', { name: 'oneD_cplx' })).toBeVisible();
+  expect(page.getByRole('figure', { name: 'oneD_complex' })).toBeVisible();
 });
 
 test('visualize 1D compound dataset', async () => {
-  await renderApp('/nD_datasets/oneD_compound');
+  await renderApp('/arrays/oneD_compound');
 
   expect(getVisTabs()).toEqual([Vis.Compound]);
   expect(getSelectedVisTab()).toBe(Vis.Compound);
@@ -97,7 +97,7 @@ test('visualize 1D compound dataset', async () => {
 });
 
 test('visualize 1D mixed compound dataset', async () => {
-  await renderApp('/nD_datasets/oneD_compound_mixed');
+  await renderApp('/arrays/oneD_compound_mixed');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
@@ -105,7 +105,7 @@ test('visualize 1D mixed compound dataset', async () => {
 });
 
 test('visualize 1D opaque dataset', async () => {
-  await renderApp('/nD_datasets/oneD_opaque');
+  await renderApp('/arrays/oneD_opaque');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
@@ -113,7 +113,7 @@ test('visualize 1D opaque dataset', async () => {
 });
 
 test('visualize 2D dataset', async () => {
-  await renderApp('/nD_datasets/twoD');
+  await renderApp('/arrays/twoD');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
@@ -124,7 +124,7 @@ test('visualize 2D dataset', async () => {
 });
 
 test('visualize 2D dataset as line', async () => {
-  const { selectVisTab } = await renderApp('/nD_datasets/twoD');
+  const { selectVisTab } = await renderApp('/arrays/twoD');
   await selectVisTab(Vis.Line);
 
   expect(getSelectedVisTab()).toBe(Vis.Line);
@@ -132,7 +132,7 @@ test('visualize 2D dataset as line', async () => {
 });
 
 test('visualize 2D dataset as matrix', async () => {
-  const { selectVisTab } = await renderApp('/nD_datasets/twoD');
+  const { selectVisTab } = await renderApp('/arrays/twoD');
   await selectVisTab(Vis.Matrix);
 
   expect(getSelectedVisTab()).toBe(Vis.Matrix);
@@ -141,18 +141,18 @@ test('visualize 2D dataset as matrix', async () => {
 });
 
 test('visualize 2D boolean dataset', async () => {
-  await renderApp('/nD_datasets/twoD_bool');
+  await renderApp('/arrays/twoD_boolean');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = page.getByRole('figure', { name: 'twoD_bool' });
+  const figure = page.getByRole('figure', { name: 'twoD_boolean' });
   expect(figure).toBeVisible();
   expect(figure.getByLabelText('Max: 1e+0')).toBeVisible();
 });
 
 test('visualize 2D enum dataset', async () => {
-  await renderApp('/nD_datasets/twoD_enum');
+  await renderApp('/arrays/twoD_enum');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
@@ -163,12 +163,12 @@ test('visualize 2D enum dataset', async () => {
 });
 
 test('visualize 2D complex dataset', async () => {
-  await renderApp('/nD_datasets/twoD_cplx');
+  await renderApp('/arrays/twoD_complex');
 
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
   expect(getSelectedVisTab()).toBe(Vis.Heatmap);
 
-  const figure = page.getByRole('figure', { name: 'twoD_cplx (amplitude)' });
+  const figure = page.getByRole('figure', { name: 'twoD_complex (amplitude)' });
   expect(figure).toBeVisible();
   expect(figure.getByLabelText('Max: 5e+0')).toBeVisible();
 
@@ -177,11 +177,13 @@ test('visualize 2D complex dataset', async () => {
   const phaseItem = page.getByRole('option', { name: 'φ Phase' });
   await phaseItem.click();
 
-  expect(page.getByRole('figure', { name: 'twoD_cplx (phase)' })).toBeVisible();
+  expect(
+    page.getByRole('figure', { name: 'twoD_complex (phase)' }),
+  ).toBeVisible();
 });
 
 test('visualize 2D opaque dataset', async () => {
-  await renderApp('/nD_datasets/twoD_opaque');
+  await renderApp('/arrays/twoD_opaque');
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);

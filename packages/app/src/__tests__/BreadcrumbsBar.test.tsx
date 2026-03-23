@@ -45,9 +45,9 @@ test('navigate with breadcrumbs', async () => {
   expect(page.getByRole('heading', { name: 'entities' })).toBeVisible(); // no root crumb when sidebar is open
 
   // Select child
-  await selectExplorerNode('empty_dataset');
+  await selectExplorerNode('dataset_empty');
   expect(
-    page.getByRole('heading', { name: 'entities / empty_dataset' }),
+    page.getByRole('heading', { name: 'entities / dataset_empty' }),
   ).toBeVisible();
 
   // Hide sidebar to show root crumb
@@ -56,7 +56,7 @@ test('navigate with breadcrumbs', async () => {
   await expect
     .element(
       page.getByRole('heading', {
-        name: 'source.h5 / entities / empty_dataset',
+        name: 'source.h5 / entities / dataset_empty',
       }),
     )
     .toBeVisible();
@@ -73,14 +73,14 @@ test('navigate with breadcrumbs', async () => {
 });
 
 test('copy path to clipboard', async () => {
-  await renderApp({ initialPath: '/entities/empty_dataset' });
+  await renderApp({ initialPath: '/entities/dataset_empty' });
 
   const lastCrumb = page.getByRole('button', {
-    name: 'empty_dataset (copy path)',
+    name: 'dataset_empty (copy path)',
   });
   expect(lastCrumb).toBeVisible();
 
   const mock = vi.spyOn(navigator.clipboard, 'writeText');
   await lastCrumb.click();
-  expect(mock).toHaveBeenCalledWith('/entities/empty_dataset');
+  expect(mock).toHaveBeenCalledWith('/entities/dataset_empty');
 });

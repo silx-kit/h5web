@@ -34,7 +34,7 @@ test('visualize NXdata group with explicit signal interpretation', async () => {
   expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);
   expect(getSelectedVisTab()).toBe(NxDataVis.NxLine);
   expect(
-    page.getByRole('figure', { name: 'twoD_cplx' }), // signal name (complex vis type is displayed as ordinate label)
+    page.getByRole('figure', { name: 'twoD_complex' }), // signal name (complex vis type is displayed as ordinate label)
   ).toBeVisible();
 
   // Signal with "rgb-image" interpretation
@@ -81,7 +81,7 @@ test('visualize NXdata group without explicit signal interpretation', async () =
   expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);
   expect(getSelectedVisTab()).toBe(NxDataVis.NxHeatmap);
   expect(
-    page.getByRole('figure', { name: 'twoD_cplx (amplitude)' }), // signal name + complex visualization type
+    page.getByRole('figure', { name: 'twoD_complex (amplitude)' }), // signal name + complex visualization type
   ).toBeVisible();
 
   // 2D signal and two 1D axes of same length (implicit scatter interpretation)
@@ -103,7 +103,7 @@ test('visualize NXdata group with boolean signal', async () => {
   await renderApp('/nexus_entry/numeric-like/bool');
   expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);
   expect(
-    page.getByRole('figure', { name: 'twoD_bool' }), // name of dataset with `signal` attribute
+    page.getByRole('figure', { name: 'twoD_boolean' }), // name of dataset with `signal` attribute
   ).toBeVisible();
 });
 

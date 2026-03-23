@@ -17,7 +17,7 @@ test('inspect group', async () => {
 });
 
 test('inspect scalar datasets', async () => {
-  const { selectExplorerNode } = await renderApp('/entities/scalar_num');
+  const { selectExplorerNode } = await renderApp('/scalars/number');
   await page.getByRole('tab', { name: 'Inspect' }).click();
 
   const column = page.getByRole('columnheader', { name: /dataset/ });
@@ -28,29 +28,29 @@ test('inspect scalar datasets', async () => {
   const attrRow = page.getByRole('row', { name: /^attr/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/scalar_num$/);
-  expect(pathRow).toHaveTextContent(/\/entities\/scalar_num$/);
+  expect(nameRow).toHaveTextContent(/number$/);
+  expect(pathRow).toHaveTextContent(/\/scalars\/number$/);
   expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian$/);
   expect(shapeRow).toHaveTextContent(/Scalar$/);
   expect(attrRow).toHaveTextContent(/0$/);
 
-  await selectExplorerNode('scalar_bigint');
+  await selectExplorerNode('bigint');
   expect(typeRow).toHaveTextContent(
     /Integer \(signed\), 64-bit, little-endian$/,
   );
   expect(attrRow).toHaveTextContent(/"9007199254740992n"$/);
 
-  await selectExplorerNode('scalar_str');
+  await selectExplorerNode('string');
   expect(typeRow).toHaveTextContent(/ASCII string, variable length$/);
   expect(attrRow).toHaveTextContent(/"foo"$/);
 
-  await selectExplorerNode('scalar_cplx');
+  await selectExplorerNode('complex');
   expect(typeRow).toHaveTextContent(/Complex$/);
   expect(attrRow).toHaveTextContent(/1 \+ 5 i$/);
 });
 
 test('inspect array dataset', async () => {
-  await renderApp('/nD_datasets/threeD');
+  await renderApp('/arrays/threeD');
   await page.getByRole('tab', { name: 'Inspect' }).click();
 
   const shapeRow = page.getByRole('row', { name: /^Shape/ });
@@ -64,7 +64,7 @@ test('inspect array dataset', async () => {
 });
 
 test('inspect empty dataset', async () => {
-  await renderApp('/entities/empty_dataset');
+  await renderApp('/entities/dataset_empty');
   await page.getByRole('tab', { name: 'Inspect' }).click();
 
   const shapeRow = page.getByRole('row', { name: /^Shape/ });

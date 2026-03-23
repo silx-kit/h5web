@@ -51,29 +51,44 @@ export function makeMockFile(): GroupWithChildren {
     defaultPath: 'nexus_entry',
     children: [
       group('entities', [
-        group('empty_group'),
-        group('default_dataset', [scalar('scalar_str', 'foo')], {
-          attributes: [scalarAttr('default', 'scalar_str')],
+        group('group_empty'),
+        group('group_default_dataset', [scalar('data', 'foo')], {
+          attributes: [scalarAttr('default', 'data')],
         }),
-        dataset('empty_dataset', nullShape(), unknownType(), null),
+        dataset('dataset_empty', nullShape(), unknownType(), null),
         datatype('datatype', compoundType([['int', intType()]])),
-        scalar('raw', { int: 42 }),
-        scalar('raw_large', undefined), // generated dynamically by `MockProvider`
-        dataset('raw_png', scalarShape(), opaqueType(), PNG_RED_DOT),
-        scalar('scalar_num', 0, { attributes: [scalarAttr('attr', 0)] }),
-        scalar('scalar_bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n, {
+        unresolved('unresolved_hard_link', 'Hard'),
+        unresolved('unresolved_soft_link', 'Soft', '/foo'),
+        unresolved(
+          'unresolved_external_link',
+          'External',
+          'entry_000/dataset',
+          'my_file.h5',
+        ),
+      ]),
+      group('scalars', [
+        scalar('number', 0, { attributes: [scalarAttr('attr', 0)] }),
+        scalar('bigint', BigInt(Number.MAX_SAFE_INTEGER) + 1n, {
           attributes: [
             scalarAttr('attr', BigInt(Number.MAX_SAFE_INTEGER) + 1n),
           ],
         }),
-        scalar('scalar_str', 'foo', {
+        scalar('string', 'foo', {
           attributes: [scalarAttr('attr', 'foo')],
         }),
-        scalar('scalar_bool', true, { attributes: [scalarAttr('attr', true)] }),
-        scalar('scalar_cplx', [1, 5], {
+        scalar('boolean', true, { attributes: [scalarAttr('attr', true)] }),
+        scalar('enum', 2, {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+          attributes: [
+            scalarAttr('attr', 2, {
+              type: enumType(intType(false, 8), ENUM_MAPPING),
+            }),
+          ],
+        }),
+        scalar('complex', [1, 5], {
           attributes: [scalarAttr('attr', cplx(1, 5))],
         }),
-        scalar('scalar_compound', ['foo', 2], {
+        scalar('compound', ['foo', 2], {
           type: compoundType([
             ['str', strType(H5T_CSET.ASCII, H5T_STR.NULLPAD, 3)],
             ['int', intType(true, 8)],
@@ -87,40 +102,31 @@ export function makeMockFile(): GroupWithChildren {
             }),
           ],
         }),
-        scalar('scalar_array', [1, 2], {
+        scalar('array', [1, 2], {
           type: arrayType(intType(), [2]),
           attributes: [
             scalarAttr('attr', [1, 2], { type: arrayType(intType(), [2]) }),
           ],
         }),
-        scalar('scalar_vlen', [1, 2, 3], {
+        scalar('vlen', [1, 2, 3], {
           type: vlenType(intType()),
           attributes: [
             scalarAttr('attr', [1, 2, 3], { type: vlenType(intType()) }),
           ],
         }),
-        scalar('scalar_enum', 2, {
-          type: enumType(intType(false, 8), ENUM_MAPPING),
-          attributes: [
-            scalarAttr('attr', 2, {
-              type: enumType(intType(false, 8), ENUM_MAPPING),
-            }),
-          ],
-        }),
-        unresolved('unresolved_hard_link', 'Hard'),
-        unresolved('unresolved_soft_link', 'Soft', '/foo'),
-        unresolved(
-          'unresolved_external_link',
-          'External',
-          'entry_000/dataset',
-          'my_file.h5',
-        ),
+        dataset('opaque_png', scalarShape(), opaqueType(), PNG_RED_DOT),
+        scalar('unknown', { int: 42 }),
+        scalar('unknown_large', undefined), // generated dynamically by `MockProvider`
       ]),
-      group('nD_datasets', [
-        array('oneD_linear'),
+      group('arrays', [
         array('oneD'),
+        array('oneD_linear'),
         array('oneD_bigint'),
-        array('oneD_cplx'),
+        array('oneD_boolean'),
+        array('oneD_enum', {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+        }),
+        array('oneD_complex'),
         array('oneD_compound', {
           type: compoundType([
             ['string', strType()],
@@ -146,10 +152,6 @@ export function makeMockFile(): GroupWithChildren {
           ]),
           [[{ int: 42 }, [1, 2], [true, [0]]]],
         ),
-        array('oneD_bool'),
-        array('oneD_enum', {
-          type: enumType(intType(false, 8), ENUM_MAPPING),
-        }),
         dataset('oneD_opaque', arrayShape([2]), opaqueType(), [
           'foo',
           { int: 42 },
@@ -159,9 +161,13 @@ export function makeMockFile(): GroupWithChildren {
           PNG_RED_DOT,
         ]),
         array('twoD'),
-        array('twoD_neg'),
+        array('twoD_negative'),
         array('twoD_bigint'),
-        array('twoD_cplx'),
+        array('twoD_boolean'),
+        array('twoD_enum', {
+          type: enumType(intType(false, 8), ENUM_MAPPING),
+        }),
+        array('twoD_complex'),
         array('twoD_compound', {
           type: compoundType([
             ['string', strType()],
@@ -171,17 +177,13 @@ export function makeMockFile(): GroupWithChildren {
             ['complex', cplxType(floatType())],
           ]),
         }),
-        array('twoD_bool'),
-        array('twoD_enum', {
-          type: enumType(intType(false, 8), ENUM_MAPPING),
-        }),
         array('twoD_opaque', { type: opaqueType() }),
         array('threeD', {
           chunks: [1, 20, 41],
           filters: [{ id: 12_345, name: 'Some filter' }],
         }),
-        array('threeD_bool'),
-        array('threeD_cplx'),
+        array('threeD_boolean'),
+        array('threeD_complex'),
         withImageAttr(array('threeD_rgb')),
         withImageAttr(array('threeD_rgba')),
         array('fourD'),
@@ -274,7 +276,7 @@ export function makeMockFile(): GroupWithChildren {
             auxAttr: ['secondary', 'tertiary'],
           }),
           nxData('complex_spectrum', {
-            signal: withNxAttr(array('twoD_cplx'), {
+            signal: withNxAttr(array('twoD_complex'), {
               interpretation: 'spectrum',
             }),
             auxiliary: {
@@ -284,7 +286,7 @@ export function makeMockFile(): GroupWithChildren {
             auxAttr: ['secondary_cplx', 'tertiary_float'],
           }),
           nxData('complex_image', {
-            signal: array('twoD_cplx'),
+            signal: array('twoD_complex'),
             axes: { position: array('position') },
             axesAttr: ['.', 'position'],
             auxiliary: {
@@ -346,9 +348,9 @@ export function makeMockFile(): GroupWithChildren {
           nxGroup('numeric-like', 'NXprocess', {
             children: [
               nxData('bool', {
-                signal: array('twoD_bool'),
-                auxiliary: { secondary_bool: array('secondary_bool') },
-                auxAttr: ['secondary_bool'],
+                signal: array('twoD_boolean'),
+                auxiliary: { secondary_boolean: array('secondary_boolean') },
+                auxAttr: ['secondary_boolean'],
               }),
               nxData('enum', {
                 signal: array('twoD_enum', {

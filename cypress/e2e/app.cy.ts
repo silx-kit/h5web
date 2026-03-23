@@ -11,14 +11,12 @@ describe('/mock', () => {
   });
 
   it('visualize 1D dataset as Line', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
 
     cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'oneD' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / oneD' }).should(
-      'be.visible',
-    );
+    cy.findByRole('heading', { name: 'arrays / oneD' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('line_1D');
@@ -35,12 +33,12 @@ describe('/mock', () => {
   });
 
   it('visualize 1D complex dataset as Line', () => {
-    cy.selectExplorerNode('nD_datasets');
-    cy.selectExplorerNode('oneD_cplx');
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('oneD_complex');
 
     cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'oneD_cplx' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / oneD_cplx' }).should(
+    cy.findByRole('figure', { name: 'oneD_complex' }).should('be.visible');
+    cy.findByRole('heading', { name: 'arrays / oneD_complex' }).should(
       'be.visible',
     );
 
@@ -50,7 +48,7 @@ describe('/mock', () => {
   });
 
   it('visualize 1D dataset as Matrix', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
     cy.selectVisTab('Matrix');
 
@@ -70,7 +68,7 @@ describe('/mock', () => {
   });
 
   it('visualize 1D compound dataset', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD_compound');
     cy.selectVisTab('Compound');
 
@@ -95,14 +93,12 @@ describe('/mock', () => {
   });
 
   it('visualize 2D dataset as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
 
     cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / twoD' }).should(
-      'be.visible',
-    );
+    cy.findByRole('heading', { name: 'arrays / twoD' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_2D');
@@ -118,14 +114,14 @@ describe('/mock', () => {
   });
 
   it('visualize 2D complex dataset as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
-    cy.selectExplorerNode('twoD_cplx');
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('twoD_complex');
 
     cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'twoD_cplx (amplitude)' }).should(
+    cy.findByRole('figure', { name: 'twoD_complex (amplitude)' }).should(
       'be.visible',
     );
-    cy.findByRole('heading', { name: 'nD_datasets / twoD_cplx' }).should(
+    cy.findByRole('heading', { name: 'arrays / twoD_complex' }).should(
       'be.visible',
     );
 
@@ -153,7 +149,7 @@ describe('/mock', () => {
   });
 
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('fourD');
 
     cy.findByTitle('Number of elements in each dimension')
@@ -198,7 +194,7 @@ describe('/mock', () => {
   });
 
   it('slice through 4D dataset when visualized as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('fourD');
 
     cy.findByRole('figure', { name: 'fourD' }).as('vis').should('be.visible');
@@ -239,7 +235,7 @@ describe('/mock', () => {
   });
 
   it('visualize line with constant interpolation', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
 
     cy.findByRole('button', { name: 'More controls' }).click();
@@ -251,7 +247,7 @@ describe('/mock', () => {
       cy.matchImageSnapshot('line_constant');
     }
 
-    cy.selectExplorerNode('oneD_cplx');
+    cy.selectExplorerNode('oneD_complex');
     cy.waitForStableDOM();
 
     if (takeSnapshots) {
@@ -260,7 +256,7 @@ describe('/mock', () => {
   });
 
   it('edit heatmap color map limits', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
 
     cy.findByRole('button', { name: 'Edit domain' })
@@ -304,12 +300,12 @@ describe('/mock', () => {
   });
 
   it('visualize image dataset as RGB/BGR or RGBA/BGRA', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('threeD_rgb');
 
     cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'threeD_rgb' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / threeD_rgb' }).should(
+    cy.findByRole('heading', { name: 'arrays / threeD_rgb' }).should(
       'be.visible',
     );
 
@@ -327,7 +323,7 @@ describe('/mock', () => {
     cy.selectExplorerNode('threeD_rgba');
     cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'threeD_rgba' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / threeD_rgba' }).should(
+    cy.findByRole('heading', { name: 'arrays / threeD_rgba' }).should(
       'be.visible',
     );
 
