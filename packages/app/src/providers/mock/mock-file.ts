@@ -48,7 +48,7 @@ const ENUM_MAPPING = { FOO: 0, BAR: 1, BAZ: 2 };
 export function makeMockFile(): GroupWithChildren {
   return nxGroup('source.h5', 'NXroot', {
     isRoot: true,
-    defaultPath: 'nexus_entry',
+    defaultPath: 'nexus',
     children: [
       group('entities', [
         group('group_empty'),
@@ -119,6 +119,17 @@ export function makeMockFile(): GroupWithChildren {
         scalar('unknown_large', undefined), // generated dynamically by `MockProvider`
       ]),
       group('arrays', [
+        group('typed', [
+          array('uint8', { type: intType(false, 8) }),
+          array('int16', { type: intType(true, 16) }),
+          array('int64', { type: intType(true, 64) }),
+          array('float32', { type: floatType(32) }),
+          array('float64', { type: floatType(64) }),
+          withImageAttr(array('uint8_rgb', { type: intType(false, 8) })),
+          withImageAttr(array('int8_rgb', { type: intType(true, 8) })),
+          withImageAttr(array('int32_rgb', { type: intType(true, 32) })),
+          withImageAttr(array('float32_rgb', { type: floatType(32) })),
+        ]),
         array('oneD'),
         array('oneD_linear'),
         array('oneD_bigint'),
@@ -188,30 +199,34 @@ export function makeMockFile(): GroupWithChildren {
         withImageAttr(array('threeD_rgba')),
         array('fourD'),
       ]),
-      group('typed_arrays', [
-        array('uint8', { type: intType(false, 8) }),
-        array('int16', { type: intType(true, 16) }),
-        array('int64', { type: intType(true, 64) }),
-        array('float32', { type: floatType(32) }),
-        array('float64', { type: floatType(64) }),
-        withImageAttr(array('uint8_rgb', { type: intType(false, 8) })),
-        withImageAttr(array('int8_rgb', { type: intType(true, 8) })),
-        withImageAttr(array('int32_rgb', { type: intType(true, 32) })),
-        withImageAttr(array('float32_rgb', { type: floatType(32) })),
-      ]),
-      nxGroup('nexus_entry', 'NXentry', {
-        defaultPath: 'nx_process/nx_data',
+      nxGroup('nexus', 'NXentry', {
+        defaultPath: 'NXdata',
         children: [
-          nxGroup('nx_process', 'NXprocess', {
+          nxData('NXdata', {
+            signal: array('twoD'),
+            silxStyle: { signalScaleType: ScaleType.SymLog },
+            title: scalar('title', 'NeXus 2D'),
+          }),
+          nxGroup('NXnote', 'NXnote', {
             children: [
-              nxData('nx_data', {
-                signal: array('twoD'),
-                silxStyle: { signalScaleType: ScaleType.SymLog },
-                title: scalar('title', 'NeXus 2D'),
-              }),
-              nxGroup('absolute_default_path', 'NXentry', {
-                defaultPath: '/nexus_entry/nx_process/nx_data',
-              }),
+              scalar(
+                'data',
+                JSON.stringify({
+                  energy: 10.2,
+                  geometry: { dist: 0.1, rot: 0.074 },
+                }),
+              ),
+              scalar('type', 'application/json'),
+            ],
+          }),
+          nxGroup('default_absolute', 'NXentry', {
+            defaultPath: '/nexus/NXdata',
+          }),
+          nxGroup('default_implicit', 'NXprocess', {
+            defaultPath: undefined,
+            children: [
+              nxGroup('ignore_me', 'NXentry'),
+              nxData('spectrum', { signal: array('oneD') }),
             ],
           }),
           nxData('spectrum', {
@@ -222,31 +237,6 @@ export function makeMockFile(): GroupWithChildren {
             errors: array('errors', { valueId: 'twoD_errors' }),
             axes: { X: withNxAttr(array('X'), { units: 'nm' }) },
             axesAttr: ['.', 'X'],
-          }),
-          nxData('image', {
-            signal: withNxAttr(array('fourD'), {
-              longName: 'Interference fringes',
-              interpretation: 'image',
-            }),
-            axes: {
-              X: withNxAttr(array('X'), { units: 'nm' }),
-              Y: withNxAttr(array('Y'), {
-                units: 'deg',
-                longName: 'Angle (degrees)',
-              }),
-            },
-            axesAttr: ['.', '.', 'Y', 'X'],
-            silxStyle: { signalScaleType: ScaleType.Log },
-          }),
-          nxData('log_spectrum', {
-            signal: array('oneD'),
-            errors: array('oneD_errors'),
-            axes: { X_log: array('X_log') },
-            axesAttr: ['X_log'],
-            silxStyle: {
-              signalScaleType: ScaleType.Log,
-              axisScaleTypes: [ScaleType.Log],
-            },
           }),
           nxData('spectrum_with_aux', {
             signal: withNxAttr(array('twoD'), {
@@ -263,6 +253,41 @@ export function makeMockFile(): GroupWithChildren {
             auxAttr: ['secondary', 'tertiary_cplx'],
             children: [array('secondary_errors', { valueId: 'twoD_errors' })],
           }),
+          nxData('spectrum_log', {
+            signal: array('oneD'),
+            errors: array('oneD_errors'),
+            axes: { X_log: array('X_log') },
+            axesAttr: ['X_log'],
+            silxStyle: {
+              signalScaleType: ScaleType.Log,
+              axisScaleTypes: [ScaleType.Log],
+            },
+          }),
+          nxData('spectrum_complex', {
+            signal: withNxAttr(array('twoD_complex'), {
+              interpretation: 'spectrum',
+            }),
+            auxiliary: {
+              secondary_cplx: array('secondary_cplx'),
+              tertiary_float: array('tertiary_float'),
+            },
+            auxAttr: ['secondary_cplx', 'tertiary_float'],
+          }),
+          nxData('image', {
+            signal: withNxAttr(array('fourD'), {
+              longName: 'Interference fringes',
+              interpretation: 'image',
+            }),
+            axes: {
+              X: withNxAttr(array('X'), { units: 'nm' }),
+              Y: withNxAttr(array('Y'), {
+                units: 'deg',
+                longName: 'Angle (degrees)',
+              }),
+            },
+            axesAttr: ['.', '.', 'Y', 'X'],
+            silxStyle: { signalScaleType: ScaleType.Log },
+          }),
           nxData('image_with_aux', {
             signal: withNxAttr(array('twoD'), {
               interpretation: 'image',
@@ -275,17 +300,7 @@ export function makeMockFile(): GroupWithChildren {
             },
             auxAttr: ['secondary', 'tertiary'],
           }),
-          nxData('complex_spectrum', {
-            signal: withNxAttr(array('twoD_complex'), {
-              interpretation: 'spectrum',
-            }),
-            auxiliary: {
-              secondary_cplx: array('secondary_cplx'),
-              tertiary_float: array('tertiary_float'),
-            },
-            auxAttr: ['secondary_cplx', 'tertiary_float'],
-          }),
-          nxData('complex_image', {
+          nxData('image_complex', {
             signal: array('twoD_complex'),
             axes: { position: array('position') },
             axesAttr: ['.', 'position'],
@@ -369,103 +384,88 @@ export function makeMockFile(): GroupWithChildren {
             signal: array('fourD'),
             attributes: [arrayAttr('default_slice', ['1', '.', '2', '.'])],
           }),
-        ],
-      }),
-      nxGroup('nexus_note', 'NXnote', {
-        children: [
-          scalar(
-            'data',
-            JSON.stringify({
-              energy: 10.2,
-              geometry: { dist: 0.1, rot: 0.074 },
+          group('malformed', [
+            group('default_not_found', [], {
+              attributes: [scalarAttr('default', '/test')],
             }),
-          ),
-          scalar('type', 'application/json'),
-        ],
-      }),
-      nxGroup('nexus_no_default', 'NXprocess', {
-        defaultPath: undefined,
-        children: [
-          nxGroup('ignore_me', 'NXentry'),
-          nxData('spectrum', { signal: array('oneD') }),
-        ],
-      }),
-      group('nexus_malformed', [
-        group('default_not_found', [], {
-          attributes: [scalarAttr('default', '/test')],
-        }),
-        group('no_signal', [], {
-          attributes: [scalarAttr('NX_class', 'NXdata')],
-        }),
-        group('signal_not_found', [], {
-          attributes: [
-            scalarAttr('NX_class', 'NXdata'),
-            scalarAttr('signal', 'unknown'),
-          ],
-        }),
-        nxGroup('signal_not_dataset', 'NXdata', {
-          children: [group('some_group')],
-          attributes: [scalarAttr('signal', 'some_group')],
-        }),
-        nxGroup('signal_old-style_not_dataset', 'NXdata', {
-          children: [
-            group('some_group', [], { attributes: [scalarAttr('signal', 1)] }),
-          ],
-        }),
-        nxGroup('signal_not_array', 'NXdata', {
-          children: [scalar('some_scalar', 0)],
-          attributes: [scalarAttr('signal', 'some_scalar')],
-        }),
-        nxGroup('signal_not_numeric', 'NXdata', {
-          children: [array('oneD_str')],
-          attributes: [scalarAttr('signal', 'oneD_str')],
-        }),
-        nxData('interpretation_unknown', {
-          signal: withNxAttr(array('fourD'), { interpretation: 'unknown' }),
-        }),
-        nxData('rgb-image_incompatible', {
-          signal: withNxAttr(array('oneD'), { interpretation: 'rgb-image' }),
-        }),
-        nxData('default_slice_wrong_length', {
-          signal: array('fourD'),
-          attributes: [arrayAttr('default_slice', ['1', '.', '2'])],
-        }),
-        nxData('default_slice_out_of_bounds', {
-          signal: array('fourD'),
-          attributes: [arrayAttr('default_slice', ['3', '.', '2', '.'])], // slicing index for first dimension should be within [0, 2]
-        }),
-        nxData('silx_style_unknown', {
-          signal: array('oneD'),
-          axes: { X: array('X') },
-          axesAttr: ['X'],
-          attributes: [
-            scalarAttr(
-              'SILX_style',
-              JSON.stringify({
-                unknown: ScaleType.Log,
-                signal_scale_type: 'invalid',
-                axes_scale_type: ['invalid'],
+            group('no_signal', [], {
+              attributes: [scalarAttr('NX_class', 'NXdata')],
+            }),
+            group('signal_not_found', [], {
+              attributes: [
+                scalarAttr('NX_class', 'NXdata'),
+                scalarAttr('signal', 'unknown'),
+              ],
+            }),
+            nxGroup('signal_not_dataset', 'NXdata', {
+              children: [group('some_group')],
+              attributes: [scalarAttr('signal', 'some_group')],
+            }),
+            nxGroup('signal_old-style_not_dataset', 'NXdata', {
+              children: [
+                group('some_group', [], {
+                  attributes: [scalarAttr('signal', 1)],
+                }),
+              ],
+            }),
+            nxGroup('signal_not_array', 'NXdata', {
+              children: [scalar('some_scalar', 0)],
+              attributes: [scalarAttr('signal', 'some_scalar')],
+            }),
+            nxGroup('signal_not_numeric', 'NXdata', {
+              children: [array('oneD_str')],
+              attributes: [scalarAttr('signal', 'oneD_str')],
+            }),
+            nxData('interpretation_unknown', {
+              signal: withNxAttr(array('fourD'), { interpretation: 'unknown' }),
+            }),
+            nxData('rgb-image_incompatible', {
+              signal: withNxAttr(array('oneD'), {
+                interpretation: 'rgb-image',
               }),
-            ),
-          ],
-        }),
-        nxData('silx_style_malformed', {
-          signal: array('oneD'),
-          attributes: [scalarAttr('SILX_style', '{')],
-        }),
-        nxGroup('note_invalid_json', 'NXnote', {
-          children: [
-            scalar('data', "{foo: 'bar'}"),
-            scalar('type', 'application/json'),
-          ],
-        }),
-        nxGroup('note_unknown_mime_type', 'NXnote', {
-          children: [
-            scalar('data', 'foo: bar'),
-            scalar('type', 'application/yaml'),
-          ],
-        }),
-      ]),
+            }),
+            nxData('default_slice_wrong_length', {
+              signal: array('fourD'),
+              attributes: [arrayAttr('default_slice', ['1', '.', '2'])],
+            }),
+            nxData('default_slice_out_of_bounds', {
+              signal: array('fourD'),
+              attributes: [arrayAttr('default_slice', ['3', '.', '2', '.'])], // slicing index for first dimension should be within [0, 2]
+            }),
+            nxData('SILX_style_unknown', {
+              signal: array('oneD'),
+              axes: { X: array('X') },
+              axesAttr: ['X'],
+              attributes: [
+                scalarAttr(
+                  'SILX_style',
+                  JSON.stringify({
+                    unknown: ScaleType.Log,
+                    signal_scale_type: 'invalid',
+                    axes_scale_type: ['invalid'],
+                  }),
+                ),
+              ],
+            }),
+            nxData('SILX_style_malformed', {
+              signal: array('oneD'),
+              attributes: [scalarAttr('SILX_style', '{')],
+            }),
+            nxGroup('NXnote_invalid_json', 'NXnote', {
+              children: [
+                scalar('data', "{foo: 'bar'}"),
+                scalar('type', 'application/json'),
+              ],
+            }),
+            nxGroup('NXnote_unknown_mime_type', 'NXnote', {
+              children: [
+                scalar('data', 'foo: bar'),
+                scalar('type', 'application/yaml'),
+              ],
+            }),
+          ]),
+        ],
+      }),
       group('netcdf', [
         array('valid_min', {
           valueId: 'twoD',

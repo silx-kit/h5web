@@ -118,21 +118,18 @@ test('follow path attributes', async () => {
   await page.getByRole('tab', { name: 'Inspect' }).click();
 
   // Follow relative `default` attribute
-  await page.getByRole('button', { name: 'Inspect nexus_entry' }).click();
+  await page.getByRole('button', { name: 'Inspect nexus' }).click();
 
-  const nxEntry = page.getByRole('treeitem', { name: /^nexus_entry / });
+  const nxEntry = page.getByRole('treeitem', { name: /^nexus / });
   expect(nxEntry).toHaveAttribute('aria-selected', 'true');
   expect(nxEntry).toHaveAttribute('aria-expanded', 'true');
 
-  await selectNexusExplorerNode('nx_process');
-  await selectNexusExplorerNode('absolute_default_path');
+  await selectNexusExplorerNode('default_absolute');
 
   // Follow absolute `default` attribute
-  await page
-    .getByRole('button', { name: 'Inspect /nexus_entry/nx_process/nx_data' })
-    .click();
+  await page.getByRole('button', { name: 'Inspect /nexus/NXdata' }).click();
 
-  const nxData = page.getByRole('treeitem', { name: /nx_data/ });
+  const nxData = page.getByRole('treeitem', { name: /NXdata/ });
   expect(nxData).toHaveAttribute('aria-selected', 'true');
   expect(nxData).toHaveAttribute('aria-expanded', 'true');
 });
