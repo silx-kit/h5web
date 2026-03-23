@@ -35,11 +35,6 @@ const mockStore = {
 const nullInt = dataset('null', nullShape(), intType());
 
 const scalarInt = dataset('int', scalarShape(), intType());
-const scalarUint = dataset('uint', scalarShape(), intType(false));
-const scalarBigInt = dataset('bigint', scalarShape(), intType(true, 64));
-const scalarFloat = dataset('float', scalarShape(), floatType());
-const scalarStr = dataset('float', scalarShape(), strType());
-const scalarBool = dataset('bool', scalarShape(), boolType(intType(true, 8)));
 const scalarCplx = dataset('cplx', scalarShape(), cplxType(floatType()));
 const scalarCompound = dataset(
   'comp',
@@ -111,41 +106,23 @@ const nestedCompound = dataset(
   compoundType([['comp', compoundType([['int', intType()]])]]),
 );
 
-describe('Raw', () => {
-  const { supportsDataset } = CORE_VIS.Raw;
+describe('Scalar', () => {
+  const { supportsDataset } = CORE_VIS.Scalar;
 
   it('should support dataset with non-null shape', () => {
     expect(supportsDataset(scalarInt)).toBe(true);
+    expect(supportsDataset(scalarCplx)).toBe(true);
+    expect(supportsDataset(scalarCompound)).toBe(true);
     expect(supportsDataset(scalarOpaque)).toBe(true);
+
     expect(supportsDataset(oneDBigUint)).toBe(true);
     expect(supportsDataset(oneDOpaque)).toBe(true);
+
     expect(supportsDataset(twoDStr)).toBe(true);
   });
 
   it('should not support dataset with null shape', () => {
     expect(supportsDataset(nullInt)).toBe(false);
-  });
-});
-
-describe('Scalar', () => {
-  const { supportsDataset } = CORE_VIS.Scalar;
-
-  it('should support dataset with printable type and scalar shape', () => {
-    expect(supportsDataset(scalarInt)).toBe(true);
-    expect(supportsDataset(scalarUint)).toBe(true);
-    expect(supportsDataset(scalarBigInt)).toBe(true);
-    expect(supportsDataset(scalarFloat)).toBe(true);
-    expect(supportsDataset(scalarStr)).toBe(true);
-    expect(supportsDataset(scalarBool)).toBe(true);
-    expect(supportsDataset(scalarCplx)).toBe(true);
-  });
-
-  it('should not support dataset with non-printable type', () => {
-    expect(supportsDataset(scalarCompound)).toBe(false);
-  });
-
-  it('should not support dataset with non-scalar shape', () => {
-    expect(supportsDataset(oneDInt)).toBe(false);
   });
 });
 

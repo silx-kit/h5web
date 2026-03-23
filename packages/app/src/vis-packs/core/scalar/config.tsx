@@ -8,38 +8,38 @@ import {
 import { createStore, type StoreApi, useStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export interface RawConfig {
+export interface ScalarConfig {
   fitImage: boolean;
   setFitImage: (fitImage: boolean) => void;
 }
 
-function createRawConfigStore() {
-  return createStore<RawConfig>()(
+function createScalarConfigStore() {
+  return createStore<ScalarConfig>()(
     persist(
-      (set): RawConfig => ({
+      (set): ScalarConfig => ({
         fitImage: true,
         setFitImage: (fitImage) => set({ fitImage }),
       }),
       {
-        name: 'h5web:raw',
+        name: 'h5web:scalar',
         version: 1,
       },
     ),
   );
 }
 
-const StoreContext = createContext({} as StoreApi<RawConfig>);
+const StoreContext = createContext({} as StoreApi<ScalarConfig>);
 
-export function RawConfigProvider(props: PropsWithChildren<NoProps>) {
+export function ScalarConfigProvider(props: PropsWithChildren<NoProps>) {
   const { children } = props;
 
-  const [store] = useState(createRawConfigStore);
+  const [store] = useState(createScalarConfigStore);
 
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );
 }
 
-export function useRawConfig(): RawConfig {
+export function useScalarConfig(): ScalarConfig {
   return useStore(useContext(StoreContext));
 }

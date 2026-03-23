@@ -6,7 +6,7 @@ import { createRoot } from 'react-dom/client';
 
 import DemoApp from './DemoApp';
 
-enableBigIntSerialization(); // for `RawVis` and `MetadataViewer`
+enableBigIntSerialization(); // for `ScalarVis` and `MetadataViewer`
 
 const rootElem = document.querySelector('#root');
 assertNonNull(rootElem);

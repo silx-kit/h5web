@@ -84,9 +84,9 @@ function getSupportedCoreVis(
     vis.supportsDataset(dataset, attrValuesStore),
   );
 
-  // Remove `Raw` vis unless it's the only supported vis
+  // Remove `Scalar` vis unless it's the only supported vis
   return supportedVis.length > 1
-    ? supportedVis.filter((vis) => vis.name !== Vis.Raw)
+    ? supportedVis.filter((vis) => vis.name !== Vis.Scalar)
     : supportedVis;
 }
 

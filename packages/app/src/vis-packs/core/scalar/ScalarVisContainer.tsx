@@ -1,36 +1,56 @@
-import { ScalarVis } from '@h5web/lib';
-import {
-  assertDataset,
-  assertPrintableType,
-  assertScalarShape,
-} from '@h5web/shared/guards';
+import { DimensionMapper, getSliceSelection } from '@h5web/lib';
+import { assertDataset, assertNonNullShape } from '@h5web/shared/guards';
 
+import { useDimMappingState } from '../../../dim-mapping-store';
+import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import ValueFetcher from '../ValueFetcher';
-import { getFormatter } from './utils';
+import { useScalarConfig } from './config';
+import MappedScalarVis from './MappedScalarVis';
+import ScalarFetcher from './ScalarFetcher';
 
 function ScalarVisContainer(props: VisContainerProps) {
-  const { entity } = props;
+  const { entity, toolbarContainer } = props;
   assertDataset(entity);
-  assertScalarShape(entity);
-  assertPrintableType(entity);
+  assertNonNullShape(entity);
 
-  const formatter = getFormatter(entity);
+  const { dims } = entity.shape;
+  const [dimMapping, setDimMapping] = useDimMappingState({
+    dims,
+    axesCount: 0, // slicing only
+  });
+
+  const config = useScalarConfig();
+  const selection = getSliceSelection(dimMapping);
+  const canSliceFast = useValuesInCache(entity);
 
   return (
-    <VisBoundary>
-      <ValueFetcher
-        dataset={entity}
-        render={(value) => (
-          <ScalarVis
-            className={visualizerStyles.vis}
-            value={formatter(value)}
-          />
-        )}
-      />
-    </VisBoundary>
+    <>
+      {dims.length > 0 && (
+        <DimensionMapper
+          className={visualizerStyles.dimMapper}
+          dims={dims}
+          dimMapping={dimMapping}
+          canSliceFast={canSliceFast}
+          onChange={setDimMapping}
+        />
+      )}
+      <VisBoundary resetKey={dimMapping} isSlice={dims.length > 0}>
+        <ScalarFetcher
+          dataset={entity}
+          selection={selection}
+          render={(value) => (
+            <MappedScalarVis
+              dataset={entity}
+              value={value}
+              toolbarContainer={toolbarContainer}
+              config={config}
+            />
+          )}
+        />
+      </VisBoundary>
+    </>
   );
 }
 

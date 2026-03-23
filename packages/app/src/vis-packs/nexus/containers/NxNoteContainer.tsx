@@ -1,4 +1,4 @@
-import { RawVis } from '@h5web/lib';
+import { ScalarVis } from '@h5web/lib';
 import {
   assertDataset,
   assertDefined,
@@ -7,6 +7,7 @@ import {
   assertStringType,
 } from '@h5web/shared/guards';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
+import { formatRaw } from '@h5web/shared/vis-utils';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
@@ -47,7 +48,10 @@ function NxNoteContainer(props: VisContainerProps) {
           }
 
           return (
-            <RawVis className={visualizerStyles.vis} value={parseJson(value)} />
+            <ScalarVis
+              className={visualizerStyles.vis}
+              value={formatRaw(parseJson(value))}
+            />
           );
         }}
       />

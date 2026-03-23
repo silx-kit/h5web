@@ -452,7 +452,7 @@ import { getFeedbackMailto } from '@h5web/app';
 
 #### `enableBigIntSerialization: () => void`
 
-Invoke this function before rendering your application to allow the _Raw_
+Invoke this function before rendering your application to allow the _Scalar_
 visualization and metadata inspector to serialize and display
 [big integers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#bigint_type):
 
@@ -465,7 +465,7 @@ This is recommended if you work with a provider that supports 64-bit integers â€
 i.e. one that may provide dataset and attribute values that include primitive
 `bigint` numbers â€” currently only [`MockProvider`](#mockprovider).
 
-The _Raw_ visualization and metadata inspector rely on `JSON.stringify()` to
+The _Scalar_ visualization and metadata inspector rely on `JSON.stringify()` to
 render dataset and attribute values. By default, `JSON.stringify()` does not
 know how to serialize `bigint` numbers and throws an error if it encounters one.
 `enableBigIntSerialization()` teaches `JSON.stringify()` to convert big integers

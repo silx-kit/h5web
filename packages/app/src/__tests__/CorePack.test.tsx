@@ -7,8 +7,8 @@ import { Vis } from '../vis-packs/core/visualizations';
 test('visualize raw dataset', async () => {
   const { selectExplorerNode } = await renderApp('/entities/raw');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByText('"int": 42')).toBeVisible();
 
   await selectExplorerNode('raw_large');
@@ -18,8 +18,8 @@ test('visualize raw dataset', async () => {
 test('visualize raw image dataset', async () => {
   await renderApp('/entities/raw_png');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByAltText('raw_png')).toBeVisible();
 });
 
@@ -99,16 +99,16 @@ test('visualize 1D compound dataset', async () => {
 test('visualize 1D mixed compound dataset', async () => {
   await renderApp('/nD_datasets/oneD_compound_mixed');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByText('"int": 42')).toBeVisible();
 });
 
 test('visualize 1D opaque dataset', async () => {
   await renderApp('/nD_datasets/oneD_opaque');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByText('"foo"')).toBeVisible();
 });
 
@@ -183,8 +183,8 @@ test('visualize 2D complex dataset', async () => {
 test('visualize 2D opaque dataset', async () => {
   await renderApp('/nD_datasets/twoD_opaque');
 
-  expect(getVisTabs()).toEqual([Vis.Raw]);
-  expect(getSelectedVisTab()).toBe(Vis.Raw);
+  expect(getVisTabs()).toEqual([Vis.Scalar]);
+  expect(getSelectedVisTab()).toBe(Vis.Scalar);
   expect(page.getByText('Uint8Array [ 0,1 ]')).toBeVisible();
 });
 
