@@ -20,26 +20,8 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
 
-      - name: Set up Node 🕹️
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-
-      - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v5
-
-      - name: Restore cache 📌
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/setup-pnpm/node_modules/.bin/store
-            ~/.cache/Cypress
-          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Install dependencies ⚙️
-        run: pnpm install
+      - name: Install ⚙️
+        uses: ./.github/actions/install
 
       - name: Lint 🤓
         run: pnpm lint
@@ -53,28 +35,18 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
 
-      - name: Set up Node 🕹️
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
+      - name: Install ⚙️
+        uses: ./.github/actions/install
 
-      - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v5
-
-      - name: Restore cache 📌
+      - name: Restore Playwright cache 📌
         uses: actions/cache@v5
         with:
-          path: |
-            ~/setup-pnpm/node_modules/.bin/store
-            ~/.cache/Cypress
-            ~/.cache/ms-playwright
-          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-
 
-      - name: Install dependencies ⚙️
-        run: |
-          pnpm install
-          pnpm exec playwright install chromium
+      - name: Install Playwright browser ⚙️
+        run: pnpm exec playwright install chromium
 
       - name: Set up Python 🕹️
         id: setup-python
@@ -129,26 +101,8 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
 
-      - name: Set up Node 🕹️
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-
-      - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v5
-
-      - name: Restore cache 📌
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/setup-pnpm/node_modules/.bin/store
-            ~/.cache/Cypress
-          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Install dependencies ⚙️
-        run: pnpm install
+      - name: Install ⚙️
+        uses: ./.github/actions/install
 
       - name: Build packages 📦
         run: pnpm packages
@@ -162,26 +116,8 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
 
-      - name: Set up Node 🕹️
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: 'package.json'
-
-      - name: Install pnpm ⚙️
-        uses: pnpm/action-setup@v5
-
-      - name: Restore cache 📌
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/setup-pnpm/node_modules/.bin/store
-            ~/.cache/Cypress
-          key: cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Install dependencies ⚙️
-        run: pnpm install
+      - name: Install ⚙️
+        uses: ./.github/actions/install
 
       - name: Build demo 🛠️
         run: pnpm build
