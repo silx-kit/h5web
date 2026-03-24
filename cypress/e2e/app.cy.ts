@@ -11,14 +11,12 @@ describe('/mock', () => {
   });
 
   it('visualize 1D dataset as Line', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
 
     cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'oneD' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / oneD' }).should(
-      'be.visible',
-    );
+    cy.findByRole('heading', { name: 'arrays / oneD' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('line_1D');
@@ -35,12 +33,12 @@ describe('/mock', () => {
   });
 
   it('visualize 1D complex dataset as Line', () => {
-    cy.selectExplorerNode('nD_datasets');
-    cy.selectExplorerNode('oneD_cplx');
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('oneD_complex');
 
     cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'oneD_cplx' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / oneD_cplx' }).should(
+    cy.findByRole('figure', { name: 'oneD_complex' }).should('be.visible');
+    cy.findByRole('heading', { name: 'arrays / oneD_complex' }).should(
       'be.visible',
     );
 
@@ -50,7 +48,7 @@ describe('/mock', () => {
   });
 
   it('visualize 1D dataset as Matrix', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
     cy.selectVisTab('Matrix');
 
@@ -70,7 +68,7 @@ describe('/mock', () => {
   });
 
   it('visualize 1D compound dataset', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD_compound');
     cy.selectVisTab('Compound');
 
@@ -95,14 +93,12 @@ describe('/mock', () => {
   });
 
   it('visualize 2D dataset as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
 
     cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / twoD' }).should(
-      'be.visible',
-    );
+    cy.findByRole('heading', { name: 'arrays / twoD' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_2D');
@@ -118,14 +114,14 @@ describe('/mock', () => {
   });
 
   it('visualize 2D complex dataset as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
-    cy.selectExplorerNode('twoD_cplx');
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('twoD_complex');
 
     cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'twoD_cplx (amplitude)' }).should(
+    cy.findByRole('figure', { name: 'twoD_complex (amplitude)' }).should(
       'be.visible',
     );
-    cy.findByRole('heading', { name: 'nD_datasets / twoD_cplx' }).should(
+    cy.findByRole('heading', { name: 'arrays / twoD_complex' }).should(
       'be.visible',
     );
 
@@ -153,7 +149,7 @@ describe('/mock', () => {
   });
 
   it('map dimensions of 4D dataset when visualized as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('fourD');
 
     cy.findByTitle('Number of elements in each dimension')
@@ -198,7 +194,7 @@ describe('/mock', () => {
   });
 
   it('slice through 4D dataset when visualized as Heatmap', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('fourD');
 
     cy.findByRole('figure', { name: 'fourD' }).as('vis').should('be.visible');
@@ -239,7 +235,7 @@ describe('/mock', () => {
   });
 
   it('visualize line with constant interpolation', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
 
     cy.findByRole('button', { name: 'More controls' }).click();
@@ -251,7 +247,7 @@ describe('/mock', () => {
       cy.matchImageSnapshot('line_constant');
     }
 
-    cy.selectExplorerNode('oneD_cplx');
+    cy.selectExplorerNode('oneD_complex');
     cy.waitForStableDOM();
 
     if (takeSnapshots) {
@@ -260,7 +256,7 @@ describe('/mock', () => {
   });
 
   it('edit heatmap color map limits', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
 
     cy.findByRole('button', { name: 'Edit domain' })
@@ -283,7 +279,8 @@ describe('/mock', () => {
   });
 
   it('flip heatmap', () => {
-    cy.selectExplorerNode('typed_arrays');
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('typed');
     cy.selectExplorerNode('uint8');
 
     cy.findByRole('button', { name: 'More controls' }).click();
@@ -304,12 +301,12 @@ describe('/mock', () => {
   });
 
   it('visualize image dataset as RGB/BGR or RGBA/BGRA', () => {
-    cy.selectExplorerNode('nD_datasets');
+    cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('threeD_rgb');
 
     cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'threeD_rgb' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / threeD_rgb' }).should(
+    cy.findByRole('heading', { name: 'arrays / threeD_rgb' }).should(
       'be.visible',
     );
 
@@ -327,7 +324,7 @@ describe('/mock', () => {
     cy.selectExplorerNode('threeD_rgba');
     cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
     cy.findByRole('figure', { name: 'threeD_rgba' }).should('be.visible');
-    cy.findByRole('heading', { name: 'nD_datasets / threeD_rgba' }).should(
+    cy.findByRole('heading', { name: 'arrays / threeD_rgba' }).should(
       'be.visible',
     );
 
@@ -352,7 +349,7 @@ describe('/mock', () => {
       .should('have.length', 3)
       .each((e) => expect(e).to.contain('scatter'));
 
-    cy.findByRole('treeitem', { name: '/nexus_entry/scatter' }).click();
+    cy.findByRole('treeitem', { name: '/nexus/scatter' }).click();
     cy.waitForStableDOM();
 
     cy.findByRole('figure', { name: 'scatter_data' }).should('be.visible');
@@ -381,11 +378,11 @@ describe('/mock', () => {
     });
 
     it('visualize dataset with "spectrum" interpretation as NxLine', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('spectrum');
 
       cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus_entry / spectrum' }).should(
+      cy.findByRole('heading', { name: 'nexus / spectrum' }).should(
         'be.visible',
       );
       cy.findByRole('figure', { name: 'twoD (arb. units)' }).should(
@@ -400,13 +397,11 @@ describe('/mock', () => {
     });
 
     it('visualize dataset with "image" interpretation as NxHeatmap', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('image');
 
       cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus_entry / image' }).should(
-        'be.visible',
-      );
+      cy.findByRole('heading', { name: 'nexus / image' }).should('be.visible');
       cy.findByRole('figure', { name: 'Interference fringes' }).should(
         'be.visible',
       );
@@ -422,7 +417,7 @@ describe('/mock', () => {
     });
 
     it('use axis values to compute axis ticks', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('image');
 
       cy.get('svg[data-type="abscissa"] .visx-axis-tick').should(
@@ -432,11 +427,11 @@ describe('/mock', () => {
     });
 
     it('visualize dataset with default slice', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('default_slice');
 
       cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus_entry / default_slice' }).should(
+      cy.findByRole('heading', { name: 'nexus / default_slice' }).should(
         'be.visible',
       );
 
@@ -458,11 +453,11 @@ describe('/mock', () => {
     });
 
     it('visualize dataset with log scales on both axes on NxLine with SILX_style', () => {
-      cy.selectExplorerNode('nexus_entry');
-      cy.selectExplorerNode('log_spectrum');
+      cy.selectExplorerNode('nexus');
+      cy.selectExplorerNode('spectrum_log');
 
       cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus_entry / log_spectrum' }).should(
+      cy.findByRole('heading', { name: 'nexus / spectrum_log' }).should(
         'be.visible',
       );
 
@@ -470,16 +465,16 @@ describe('/mock', () => {
 
       if (takeSnapshots) {
         cy.waitForStableDOM();
-        cy.matchImageSnapshot('logspectrum');
+        cy.matchImageSnapshot('nxline_log');
       }
     });
 
     it('visualize signal and auxiliary signals datasets as NxLine', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('spectrum_with_aux');
 
       cy.findByRole('heading', {
-        name: 'nexus_entry / spectrum_with_aux',
+        name: 'nexus / spectrum_with_aux',
       }).should('be.visible');
 
       if (takeSnapshots) {
@@ -488,11 +483,11 @@ describe('/mock', () => {
     });
 
     it('visualize auxiliary signal datasets as NxHeatmap', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('image_with_aux');
 
       cy.findByRole('heading', {
-        name: 'nexus_entry / image_with_aux',
+        name: 'nexus / image_with_aux',
       }).should('be.visible');
       cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
 
@@ -509,11 +504,11 @@ describe('/mock', () => {
     });
 
     it('visualize 2D complex signal with "spectrum" interpretation and auxiliaries as NxLine', () => {
-      cy.selectExplorerNode('nexus_entry');
-      cy.selectExplorerNode('complex_spectrum');
+      cy.selectExplorerNode('nexus');
+      cy.selectExplorerNode('spectrum_complex');
 
       cy.findByRole('heading', {
-        name: 'nexus_entry / complex_spectrum',
+        name: 'nexus / spectrum_complex',
       }).should('be.visible');
 
       if (takeSnapshots) {
@@ -522,11 +517,11 @@ describe('/mock', () => {
     });
 
     it('visualize 2D complex signal as NxHeatmap', () => {
-      cy.selectExplorerNode('nexus_entry');
-      cy.selectExplorerNode('complex_image');
+      cy.selectExplorerNode('nexus');
+      cy.selectExplorerNode('image_complex');
 
       cy.findByRole('heading', {
-        name: 'nexus_entry / complex_image',
+        name: 'nexus / image_complex',
       }).should('be.visible');
 
       if (takeSnapshots) {
@@ -546,12 +541,12 @@ describe('/mock', () => {
     });
 
     it('visualize signals with "rgb-image" and "rgba-image" interpretations as NxRGB', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('rgb-image');
 
       cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
       cy.findByRole('figure', { name: 'RGB' }).should('be.visible');
-      cy.findByRole('heading', { name: 'nexus_entry / rgb-image' }).should(
+      cy.findByRole('heading', { name: 'nexus / rgb-image' }).should(
         'be.visible',
       );
       cy.waitForStableDOM();
@@ -563,7 +558,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('rgba-image');
       cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
       cy.findByRole('figure', { name: 'RGBA' }).should('be.visible');
-      cy.findByRole('heading', { name: 'nexus_entry / rgba-image' }).should(
+      cy.findByRole('heading', { name: 'nexus / rgba-image' }).should(
         'be.visible',
       );
       cy.waitForStableDOM();
@@ -574,12 +569,12 @@ describe('/mock', () => {
     });
 
     it('visualize dataset with 1D signal and two 1D axes of same length as NxScatter', () => {
-      cy.selectExplorerNode('nexus_entry');
+      cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('scatter');
 
       cy.findByRole('tab', { name: 'NX Scatter' }).should(...BE_SELECTED);
       cy.findByRole('figure', { name: 'scatter_data' }).should('be.visible');
-      cy.findByRole('heading', { name: 'nexus_entry / scatter' }).should(
+      cy.findByRole('heading', { name: 'nexus / scatter' }).should(
         'be.visible',
       );
 

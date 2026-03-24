@@ -16,7 +16,7 @@ test('search for entities', async () => {
 
   // Select a result
   const itemToSelect = page.getByRole('treeitem', {
-    name: '/entities/empty_group',
+    name: '/entities/group_empty',
   });
   await itemToSelect.click();
   expect(itemToSelect).toHaveAttribute('aria-selected', 'true');
@@ -24,7 +24,7 @@ test('search for entities', async () => {
   // Switch back to explorer and make sure result is still selected and visible
   await page.getByRole('tab', { name: 'Explorer' }).click();
 
-  const selectedItem = page.getByRole('treeitem', { name: 'empty_group' });
+  const selectedItem = page.getByRole('treeitem', { name: 'group_empty' });
   await expect.element(selectedItem).toBeVisible();
   expect(selectedItem).toHaveAttribute('aria-selected', 'true');
 });

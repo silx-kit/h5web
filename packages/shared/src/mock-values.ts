@@ -22,12 +22,12 @@ const oneD_bigint = () =>
     range8().map((_, i) => BigInt(Number.MAX_SAFE_INTEGER) + BigInt(i - 5)),
   );
 
-const oneD_bool = () =>
+const oneD_boolean = () =>
   ndarray([true, false, false, true, true, true, false, true, false, false]);
 
 const oneD_enum = () => ndarray([0, 2, 2, 1, 1, 0, 2, 2, 1, 1]);
 
-const oneD_cplx = () =>
+const oneD_complex = () =>
   ndarray(
     range9().map((val) =>
       cplx(val * Math.cos(val * 3.14), val * Math.sin(val * 3.14)),
@@ -36,7 +36,7 @@ const oneD_cplx = () =>
 
 const oneD_compound = () => {
   const arrOneD = oneD();
-  const arrOneDComplex = oneD_cplx();
+  const arrOneDComplex = oneD_complex();
   return ndarray(
     ['Hydrogen', 'Lithum', 'Carbon', 'Sodium', 'Argon'].map<
       [string, number, number, boolean, H5WebComplex]
@@ -68,8 +68,8 @@ const twoD_bigint = () => {
   );
 };
 
-const twoD_bool = () => {
-  const { data: dataOneDBool } = oneD_bool();
+const twoD_boolean = () => {
+  const { data: dataOneDBool } = oneD_boolean();
   return ndarray(
     dataOneDBool.flatMap((rowBool) =>
       dataOneDBool.map((colBool) => (rowBool ? colBool : !colBool)),
@@ -127,9 +127,9 @@ export const mockValues = {
   oneD,
   oneD_linear: () => ndarray(range1()),
   oneD_bigint,
-  oneD_cplx,
+  oneD_complex,
   oneD_compound,
-  oneD_bool,
+  oneD_boolean,
   oneD_enum,
   oneD_errors: () => ndarray(oneD().data.map((val) => Math.abs(val) / 10)),
   oneD_str: () => ndarray(['foo', 'bar']),
@@ -142,7 +142,7 @@ export const mockValues = {
     );
   },
   twoD_bigint,
-  twoD_cplx: () =>
+  twoD_complex: () =>
     ndarray(
       [
         [cplx(0, -5), cplx(-2.1, -2)],
@@ -152,7 +152,7 @@ export const mockValues = {
     ),
   twoD_compound: () => {
     const arrOneD = oneD();
-    const arrOneDComplex = oneD_cplx();
+    const arrOneDComplex = oneD_complex();
     return ndarray(
       [
         ...oneD_compound().data,
@@ -169,7 +169,7 @@ export const mockValues = {
       [2, 5],
     );
   },
-  twoD_bool,
+  twoD_boolean,
   twoD_enum: () => {
     const { data: dataOneDEnum } = oneD_enum();
     return ndarray(
@@ -186,7 +186,7 @@ export const mockValues = {
       [20, 41],
     );
   },
-  twoD_neg: () => ndarray(range(-10, 0), [1, 10]),
+  twoD_negative: () => ndarray(range(-10, 0), [1, 10]),
   twoD_opaque: () =>
     ndarray(
       [
@@ -198,7 +198,7 @@ export const mockValues = {
       [2, 2],
     ),
   threeD,
-  threeD_cplx: () =>
+  threeD_complex: () =>
     ndarray(
       [
         [
@@ -214,7 +214,7 @@ export const mockValues = {
       ].flat(2),
       [2, 3, 4],
     ),
-  threeD_bool: () =>
+  threeD_boolean: () =>
     ndarray(
       [
         [
@@ -303,8 +303,8 @@ export const mockValues = {
       shapeTwoDBigInt,
     );
   },
-  secondary_bool: () => {
-    const { data: dataTwoDBool, shape: shapeTwoDBool } = twoD_bool();
+  secondary_boolean: () => {
+    const { data: dataTwoDBool, shape: shapeTwoDBool } = twoD_boolean();
     return ndarray(
       dataTwoDBool.map((val) => !val),
       shapeTwoDBool,

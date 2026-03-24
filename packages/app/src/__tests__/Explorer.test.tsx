@@ -90,19 +90,19 @@ test('navigate groups in explorer', async () => {
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  const childGroupBtn = getExplorerItem('empty_group');
+  const childGroupBtn = getExplorerItem('group_empty');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'false');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
-  // Expand `empty_group` child group
-  await selectExplorerNode('empty_group');
+  // Expand `group_empty` child group
+  await selectExplorerNode('group_empty');
   expect(groupBtn).toHaveAttribute('aria-selected', 'false');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'true');
 
-  // Collapse `empty_group` child group
-  await selectExplorerNode('empty_group');
+  // Collapse `group_empty` child group
+  await selectExplorerNode('group_empty');
   expect(childGroupBtn).toHaveAttribute('aria-selected', 'true');
   expect(childGroupBtn).toHaveAttribute('aria-expanded', 'false');
 
@@ -115,7 +115,7 @@ test('navigate groups in explorer', async () => {
   // Collapse `entities` group
   await selectExplorerNode('entities');
   expect(
-    page.getByRole('treeitem', { name: 'empty_group' }),
+    page.getByRole('treeitem', { name: 'group_empty' }),
   ).not.toBeInTheDocument();
   expect(groupBtn).toHaveAttribute('aria-selected', 'true');
   expect(groupBtn).toHaveAttribute('aria-expanded', 'false');
@@ -133,7 +133,7 @@ test('navigate with arrow keys', async () => {
 
   // Up/down arrows to move focus
   await user.keyboard('{ArrowDown}{ArrowDown}');
-  expect(getExplorerItem('nD_datasets')).toHaveFocus();
+  expect(getExplorerItem('scalars')).toHaveFocus();
 
   await user.keyboard('{ArrowUp}{ArrowUp}');
   expect(rootItem).toHaveFocus();
@@ -151,7 +151,7 @@ test('navigate with arrow keys', async () => {
   expect(entitiesItem).toHaveAttribute('aria-expanded', 'true'); // now expanded
 
   await user.keyboard('{ArrowRight}');
-  const emptyGroupItem = getExplorerItem('empty_group');
+  const emptyGroupItem = getExplorerItem('group_empty');
   expect(emptyGroupItem).toHaveFocus();
 
   await user.keyboard('{ArrowRight}');
@@ -164,7 +164,7 @@ test('navigate with arrow keys', async () => {
   expect(emptyGroupItem).toHaveAttribute('aria-expanded', 'true');
 
   await user.keyboard('{ArrowDown}{ArrowDown}{ArrowRight}');
-  expect(getExplorerItem('empty_dataset')).toHaveFocus();
+  expect(getExplorerItem('dataset_empty')).toHaveFocus();
 
   // Arrow left to give focus to parent group
   await user.keyboard('{ArrowLeft}');
@@ -195,7 +195,7 @@ test('select explorer items with enter key', async () => {
   expect(entitiesItem).toHaveAttribute('aria-expanded', 'true');
 
   await user.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}');
-  const emptyDatasetItem = getExplorerItem('empty_dataset');
+  const emptyDatasetItem = getExplorerItem('dataset_empty');
   expect(emptyDatasetItem).toHaveFocus();
 
   // Enter to select dataset

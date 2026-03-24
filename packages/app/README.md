@@ -104,7 +104,7 @@ to `'/'`.
 
 ```tsx
 <MockProvider>
-  <App initialPath="/nD_datasets/threeD" />
+  <App initialPath="/arrays/threeD" />
 </MockProvider>
 ```
 
@@ -566,7 +566,7 @@ large number of type guards and assertion functions to narrow down the
 kind/shape/type of HDF5 entities returned by `useEntity`.
 
 ```tsx
-const entity = useEntity('/nD_datasets/twoD'); // ProvidedEntity
+const entity = useEntity('/arrays/twoD'); // ProvidedEntity
 assertDataset(entity); // Dataset
 assertArrayShape(entity); // Dataset<ArrayShape>
 assertFloatType(entity); // Dataset<ArrayShape, FloatType>

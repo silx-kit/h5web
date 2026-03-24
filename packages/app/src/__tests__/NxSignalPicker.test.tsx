@@ -5,7 +5,7 @@ import { getSelectedVisTab, renderApp, waitForAllLoaders } from '../test-utils';
 import { NxDataVis } from '../vis-packs/nexus/visualizations';
 
 test('pick auxiliary signal on NX Line', async () => {
-  await renderApp('/nexus_entry/spectrum_with_aux');
+  await renderApp('/nexus/spectrum_with_aux');
   expect(getSelectedVisTab()).toBe(NxDataVis.NxLine);
   expect(page.getByRole('figure', { name: 'twoD (arb. units)' })).toBeVisible();
 
@@ -20,7 +20,7 @@ test('pick auxiliary signal on NX Line', async () => {
 });
 
 test('pick auxiliary signal on NX Heatmap', async () => {
-  await renderApp('/nexus_entry/image_with_aux');
+  await renderApp('/nexus/image_with_aux');
   expect(getSelectedVisTab()).toBe(NxDataVis.NxHeatmap);
   expect(page.getByRole('figure', { name: 'twoD' })).toBeVisible();
 

@@ -10,7 +10,7 @@ import FillHeight from './decorators/FillHeight';
 
 const twoD = mockValues.twoD();
 const typedTwoD = toTypedNdArray(twoD, Float32Array);
-const cplxTwoD = mockValues.twoD_cplx();
+const cplxTwoD = mockValues.twoD_complex();
 
 const formatNum = format('.3e');
 const formatCplx = createComplexFormatter(format('.2e'));

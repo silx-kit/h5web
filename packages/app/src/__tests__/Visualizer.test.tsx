@@ -6,7 +6,7 @@ import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualize default dataset', async () => {
   const { selectExplorerNode } = await renderApp('/entities');
-  await selectExplorerNode('default_dataset');
+  await selectExplorerNode('group_default_dataset');
   expect(page.getByText('foo')).toBeVisible();
 });
 

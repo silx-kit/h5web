@@ -55,7 +55,7 @@ export class MockApi extends DataProviderApi {
     const { dataset, selection } = params;
     assertMockDataset(dataset);
 
-    if (dataset.name === 'raw_large') {
+    if (dataset.name === 'unknown_large') {
       return { str: '.'.repeat(1_000_000) };
     }
 
