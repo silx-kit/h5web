@@ -6,7 +6,7 @@ import { Vis } from '../vis-packs/core/visualizations';
 import { NxDataVis } from '../vis-packs/nexus/visualizations';
 
 test('switch between visualizations', async () => {
-  await renderApp('/nD_datasets/oneD');
+  await renderApp('/arrays/oneD');
 
   const lineTab = page.getByRole('tab', { name: 'Line' });
   expect(lineTab).toBeVisible();
@@ -23,7 +23,7 @@ test('switch between visualizations', async () => {
 });
 
 test('restore active visualization when switching to inspect mode and back', async () => {
-  const { selectVisTab } = await renderApp('/nD_datasets/twoD');
+  const { selectVisTab } = await renderApp('/arrays/twoD');
 
   // Switch to Line visualization
   await selectVisTab(Vis.Line);
@@ -37,7 +37,7 @@ test('restore active visualization when switching to inspect mode and back', asy
 });
 
 test('choose most advanced visualization when switching between datasets', async () => {
-  const { selectExplorerNode } = await renderApp('/nD_datasets/oneD');
+  const { selectExplorerNode } = await renderApp('/arrays/oneD');
 
   expect(getSelectedVisTab()).toBe('Line');
 
@@ -52,8 +52,7 @@ test('choose most advanced visualization when switching between datasets', async
 });
 
 test('remember preferred visualization when switching between datasets', async () => {
-  const { selectExplorerNode, selectVisTab } =
-    await renderApp('/nD_datasets/twoD');
+  const { selectExplorerNode, selectVisTab } = await renderApp('/arrays/twoD');
 
   /* Switch to Matrix vis. Since this is _not_ the most advanced visualization
    * for `twoD`, it becomes the preferred visualization. */

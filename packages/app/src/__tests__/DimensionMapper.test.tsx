@@ -6,7 +6,7 @@ import { Vis } from '../vis-packs/core/visualizations';
 
 test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
   await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Line,
   });
 
@@ -42,7 +42,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
 
 test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
   await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -71,7 +71,7 @@ test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', 
 
 test('display one slider and two mappers when visualizing 3D dataset as Matrix', async () => {
   await renderApp({
-    initialPath: '/nD_datasets/threeD',
+    initialPath: '/arrays/threeD',
     preferredVis: Vis.Matrix,
   });
 
@@ -97,7 +97,7 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
 
 test('slice through 2D dataset', async () => {
   const { user } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Line,
   });
 
@@ -109,7 +109,7 @@ test('slice through 2D dataset', async () => {
 });
 
 test('slice through 2D opaque dataset', async () => {
-  const { user } = await renderApp('/nD_datasets/twoD_opaque');
+  const { user } = await renderApp('/arrays/twoD_opaque');
 
   expect(page.getByText('Uint8Array [ 0,1 ]')).toBeVisible();
 
@@ -123,7 +123,7 @@ test('slice through 2D opaque dataset', async () => {
 
 test('maintain mapping when switching to inspect mode and back', async () => {
   await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -140,7 +140,7 @@ test('maintain mapping when switching to inspect mode and back', async () => {
 
 test('maintain mapping when switching to visualization with same axes count', async () => {
   const { selectVisTab } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -156,7 +156,7 @@ test('maintain mapping when switching to visualization with same axes count', as
 
 test('maintain mapping when switching to dataset with same dimensions', async () => {
   const { selectExplorerNode } = await renderApp({
-    initialPath: '/nD_datasets/twoD_bool',
+    initialPath: '/arrays/twoD_boolean',
     preferredVis: Vis.Line,
   });
 
@@ -172,7 +172,7 @@ test('maintain mapping when switching to dataset with same dimensions', async ()
 
 test('reset mapping when switching to visualization with different axes count', async () => {
   const { selectVisTab } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -188,7 +188,7 @@ test('reset mapping when switching to visualization with different axes count', 
 
 test('reset mapping when switching to dataset with different dimensions', async () => {
   const { selectExplorerNode } = await renderApp({
-    initialPath: '/nD_datasets/twoD',
+    initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
   });
 
@@ -196,7 +196,7 @@ test('reset mapping when switching to dataset with different dimensions', async 
   await getDimMappingBtn('x', 0).click();
 
   // Switch to dataset with different dimensions
-  await selectExplorerNode('twoD_cplx');
+  await selectExplorerNode('twoD_complex');
 
   expect(getDimMappingBtn('x', 0)).not.toBeChecked();
   expect(getDimMappingBtn('x', 1)).toBeChecked();
