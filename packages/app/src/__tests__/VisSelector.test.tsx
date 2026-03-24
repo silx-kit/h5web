@@ -78,9 +78,8 @@ test('remember preferred visualization when switching between datasets', async (
 
 test('prioritize primary over preferred visualization', async () => {
   // Visualize NXdata group with 2D signal but no interpretation
-  const { selectNexusExplorerNode, selectVisTab } = await renderApp(
-    '/nexus_entry/nx_process/nx_data',
-  );
+  const { selectNexusExplorerNode, selectVisTab } =
+    await renderApp('/nexus/NXdata');
 
   // Check that both NxLine and NxHeatmap are supported
   expect(getVisTabs()).toEqual([NxDataVis.NxLine, NxDataVis.NxHeatmap]);

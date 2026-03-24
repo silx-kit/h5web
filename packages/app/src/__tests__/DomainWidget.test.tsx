@@ -4,7 +4,7 @@ import { page } from 'vitest/browser';
 import { renderApp } from '../test-utils';
 
 test('show slider with two thumbs and reveal popup on hover', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus/NXdata');
 
   const thumbs = page.getByRole('slider');
   expect(thumbs).toHaveLength(2);
@@ -37,7 +37,7 @@ test('show slider with two thumbs and reveal popup on hover', async () => {
 });
 
 test('show min/max and data range in popup', async () => {
-  await renderApp('/nexus_entry/nx_process/nx_data');
+  await renderApp('/nexus/NXdata');
 
   // Hover edit button to reveal tooltip
   await page.getByRole('button', { name: 'Edit domain' }).hover();
@@ -57,7 +57,7 @@ test('show min/max and data range in popup', async () => {
 });
 
 test('move thumbs with keyboard to update domain', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus/NXdata');
 
   // Hover min thumb to reveal tooltip
   const minThumb = page.getByRole('slider', { name: /min/ });
@@ -95,7 +95,7 @@ test('move thumbs with keyboard to update domain', async () => {
 });
 
 test('edit bounds manually', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus/NXdata');
 
   const editBtn = page.getByRole('button', { name: 'Edit domain' });
   expect(editBtn).toHaveAttribute('aria-pressed', 'false');
@@ -138,7 +138,7 @@ test('edit bounds manually', async () => {
 });
 
 test('clamp domain in symlog scale', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus/NXdata');
 
   await page.getByRole('button', { name: 'Edit domain' }).click();
   const minThumb = page.getByRole('slider', { name: /min/ });
@@ -162,7 +162,7 @@ test('clamp domain in symlog scale', async () => {
 });
 
 test('control min/max autoscale behaviour', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus/NXdata');
 
   const minThumb = page.getByRole('slider', { name: /min/ });
   await minThumb.hover();
@@ -194,7 +194,7 @@ test('control min/max autoscale behaviour', async () => {
 });
 
 test('handle empty domain', async () => {
-  const { user } = await renderApp('/nexus_entry/nx_process/nx_data');
+  const { user } = await renderApp('/nexus/NXdata');
 
   await page.getByRole('button', { name: 'Edit domain' }).click();
   const minInput = page.getByLabelText('min', { exact: true });
@@ -225,7 +225,7 @@ test('handle empty domain', async () => {
 });
 
 test('handle min > max', async () => {
-  await renderApp('/nexus_entry/nx_process/nx_data');
+  await renderApp('/nexus/NXdata');
 
   await page.getByRole('button', { name: 'Edit domain' }).click();
   const minInput = page.getByLabelText('min', { exact: true });
@@ -248,7 +248,7 @@ test('handle min > max', async () => {
 });
 
 test('handle min or max <= 0 in log scale', async () => {
-  await renderApp('/nexus_entry/image');
+  await renderApp('/nexus/image');
 
   // Ensure the scale type is log
   expect(page.getByRole('combobox', { name: 'Log' })).toBeVisible();
@@ -277,7 +277,7 @@ test('handle min or max <= 0 in log scale', async () => {
 });
 
 test('handle min <= 0 with custom max fallback in log scale', async () => {
-  await renderApp('/nexus_entry/image');
+  await renderApp('/nexus/image');
 
   // Ensure the scale type is log
   expect(page.getByRole('combobox', { name: 'Log' })).toBeVisible();
