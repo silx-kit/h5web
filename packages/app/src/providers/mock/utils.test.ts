@@ -15,7 +15,7 @@ describe('findMockEntity', () => {
   });
 
   it('should throw if path is relative', () => {
-    expect(() => findMockEntity(mockGroup, 'child')).toThrowError(
+    expect(() => findMockEntity(mockGroup, 'child')).toThrow(
       /path to start with '\/'/,
     );
   });

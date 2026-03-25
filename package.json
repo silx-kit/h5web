@@ -40,7 +40,7 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "2.2.2",
+    "@esrf/eslint-config": "2.3.0",
     "@simonsmith/cypress-image-snapshot": "10.0.3",
     "@testing-library/cypress": "10.1.0",
     "@types/node": "^24.10.13",

@@ -11,18 +11,19 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      name: '@h5web/app (browser)',
-      include: ['src/__tests__/**/*.test.tsx'],
+      name: 'Browser tests',
+      include: ['src/**/*.browser.test.tsx'],
       setupFiles: 'src/setupTests.ts',
       restoreMocks: true,
       pool: 'threads',
       testTimeout: 10_000,
 
       browser: {
-        provider: playwright(),
         enabled: true,
+        provider: playwright(),
         instances: [{ browser }],
         viewport: { width: 1920, height: 1080 },
+        ui: false,
       },
     },
   }),

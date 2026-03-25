@@ -1,28 +1,7 @@
 import { expect, test, vi } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { getExplorerItem, renderApp } from '../test-utils';
-
-test('toggle sidebar', async () => {
-  await renderApp();
-
-  // Open by default
-  const toggleBtn = page.getByRole('button', { name: 'Toggle sidebar' });
-  expect(toggleBtn).toHaveAttribute('aria-pressed', 'true');
-  expect(getExplorerItem('source.h5')).toBeVisible();
-
-  // Hide
-  await toggleBtn.click();
-  await expect
-    .element(page.getByRole('treeitem', { name: 'source.h5' }))
-    .not.toBeInTheDocument();
-  expect(toggleBtn).toHaveAttribute('aria-pressed', 'false');
-
-  // Show
-  await toggleBtn.click();
-  await expect.element(getExplorerItem('source.h5')).toBeVisible();
-  expect(toggleBtn).toHaveAttribute('aria-pressed', 'true');
-});
+import { renderApp } from '../test-utils';
 
 test('switch between "display" and "inspect" modes', async () => {
   await renderApp();

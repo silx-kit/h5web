@@ -73,7 +73,7 @@ test('move thumbs with keyboard to update domain', async () => {
 
   // Move min thumb five steps to the left (in a single press)
   await user.type(minThumb, '{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
-  expect(minInput).toHaveValue('−2.30818e+2');
+  await expect.element(minInput).toHaveValue('−2.30818e+2');
   expect(page.getByLabelText('Min: −2.308e+2')).toBeVisible();
 
   expect(minThumb).toHaveValue(20); // still at original position

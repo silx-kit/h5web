@@ -300,15 +300,16 @@ install the recommended extensions.
   [Vitest](https://vitest.dev/) in watch mode (or once when on the CI)
 
 > Vitest is able to run on the entire monorepo thanks to the
-> [projects configuration](https://vitest.dev/guide/workspace.html) defined in
-> the root `vitest.config.ts`. It then uses each project's Vite or Vitest
+> [`projects` configuration](https://vitest.dev/guide/workspace.html) in the
+> root `vitest.config.ts`. It then uses each project's Vite or Vitest
 > configuration to decide how to run the tests.
 
-> For the browser tests to work, a browser must first be installed with
-> Playwright; see [_Browser tests_](#browser-tests) section.
+> For the browser tests to work (`*.browser.test.ts`), a browser must first be
+> installed with Playwright; see [_Browser tests_](#browser-tests) section.
 
-> For the providers tests to work, the sample HDF5 file must first be created
-> and the h5grove support server must be running in a separate terminal; see
+> For the providers tests to work (`h5grove-api.test.ts` and
+> `h5wasm-api.test.ts`), the sample HDF5 file must first be created and the
+> h5grove support server must be running in a separate terminal; see
 > `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
 
 - `pnpm test:headless` - use headless mode for browser tests, typically in the
@@ -339,7 +340,8 @@ We also use Cypress to run end-to-end and visual regression testing:
 
 The `@h5web/app` package includes tests written for Vitest's
 [Browser Mode](https://vitest.dev/guide/browser/). They are located under
-`src/__tests__`. Each file covers a particular subtree of components of H5Web.
+`src/__tests__` and are suffixed with `*.browser.test.ts`. Each file covers a
+particular subtree of components of H5Web.
 
 For the browser tests to work, you must first install the browser specified in
 environment variable `VITE_TEST_BROWSER` with Playwright:
