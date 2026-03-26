@@ -64,5 +64,6 @@ jobs:
           token: ${{ secrets.USER_TOKEN }}
           branch: update-snapshots
           delete-branch: true
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com> # https://github.com/peter-evans/create-pull-request/blob/v8/action.yml#L27
           title: 'Update Cypress reference snapshots'
           commit-message: 'Update Cypress reference snapshots'
