@@ -14,8 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || github.event.issue.pull_request && github.event.comment.body == '/approve'
 
+    concurrency:
+      # One run at a time per PR (for `issue_comment` events) or branch name (for `workflow_dispatch`)
+      group: approve-snapshots_${{ github.event.issue.number || github.ref_name }}
+      cancel-in-progress: true
+
     steps:
-      - name: Get branch name for PR
+      - name: Get branch name for PR 🔍
         if: github.event_name == 'issue_comment'
         uses: andrevalentin/get-branch-name-by-pr@v1
         id: getBranchName
@@ -26,7 +31,7 @@ jobs:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
         with:
-          ref: ${{ steps.getBranchName && steps.getBranchName.outputs.branch || github.event.ref }}
+          ref: ${{ steps.getBranchName.outputs.branch || github.event.ref }}
 
       - name: Install ⚙️
         uses: ./.github/actions/install
