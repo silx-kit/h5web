@@ -24,7 +24,7 @@ import VisConfigProvider from './VisConfigProvider';
 import Visualizer from './visualizer/Visualizer';
 
 const SIDEBAR_ID = 'h5w-sidebar';
-const MAIN_AREA_ID = 'h5w-main-area';
+export const MAIN_AREA_ID = 'h5w-main-area';
 const RESIZE_TARGET_MIN_SIZE = { coarse: 6, fine: 6 }; // match CSS width (.splitter::before)
 
 interface Props {
