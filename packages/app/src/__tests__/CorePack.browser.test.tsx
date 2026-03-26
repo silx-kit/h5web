@@ -53,6 +53,10 @@ test('visualize 1D dataset', async () => {
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
   expect(page.getByRole('figure', { name: 'oneD' })).toBeVisible();
+
+  if (import.meta.env.TAKE_SCREENSHOTS) {
+    await expect(page).toMatchScreenshot();
+  }
 });
 
 test('visualize 1D dataset as matrix', async () => {

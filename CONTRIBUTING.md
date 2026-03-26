@@ -312,17 +312,15 @@ install the recommended extensions.
 > h5grove support server must be running in a separate terminal; see
 > `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
 
-- `pnpm test:headless` - use headless mode for browser tests, typically in the
-  CI
-- `pnpm test[:headless] run` - run unit and browser tests once
-- `pnpm test[:headless] [run] <filter>` - run tests matching the given filter
-- `pnpm test[:headless] --project <project-name>` - run Vitest on a specific
-  project
-- `pnpm test[:headless] --coverage` measure coverage (environment variable
-  `VITE_TEST_BROWSER` must be set to `chromium` in `.env.test.local` and this
-  browser must be installed with Playwright)
-- `pnpm test[:headless] --ui [--coverage]` - run tests in Vitest UI (with or
-  without coverage)
+- `pnpm test run` - run tests once
+- `pnpm test [run] <filter>` - run tests matching the given filter
+- `pnpm test --project <project-name>` - run Vitest on a specific project
+- `pnpm test --coverage` measure coverage (requires
+  `VITE_TEST_BROWSER=chromium`)
+- `pnpm test --ui [--coverage]` - run tests in Vitest UI (with or without
+  coverage)
+- `pnpm test --browser.headless` - use headless mode for browser tests, like in
+  the CI
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
 - `pnpm support:sample` - create `sample.h5`

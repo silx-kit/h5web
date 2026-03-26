@@ -19,6 +19,11 @@ jobs:
       group: approve-snapshots_${{ github.event.issue.number || github.ref_name }}
       cancel-in-progress: true
 
+    container:
+      # Run in Playwright Docker container for stable visual regression tests
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
+      options: --user 1001
+
     steps:
       - name: Get branch name for PR 🔍
         if: github.event_name == 'issue_comment'

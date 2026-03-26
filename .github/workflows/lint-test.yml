@@ -31,22 +31,17 @@ jobs:
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
+    container:
+      # Run in Playwright Docker container for stable visual regression tests
+      image: mcr.microsoft.com/playwright:v1.58.1-noble
+      options: --user 1001
+
     steps:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
 
       - name: Install ⚙️
         uses: ./.github/actions/install
-
-      - name: Restore Playwright cache 📌
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-
-
-      - name: Install Playwright browser ⚙️
-        run: pnpm exec playwright install chromium
 
       - name: Set up Python 🕹️
         id: setup-python
@@ -83,7 +78,10 @@ jobs:
         run: pnpm support:h5grove & pnpm wait-on http://localhost:8888 -t 1m
 
       - name: Test 👓
-        run: pnpm test:headless
+        run: pnpm test
+        env:
+          VITE_TEST_IN_DOCKER: 'true'
+          VITE_TEST_BROWSER: 'chromium'
 
       - name: Upload debug screenshots on failure 🖼️
         uses: actions/upload-artifact@v7
