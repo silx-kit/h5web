@@ -8,8 +8,8 @@ dist*/
 /cypress/snapshots/**/__received_output__
 
 /coverage/
-/packages/app/src/__tests__/__screenshots__/
 /support/h5grove/__pycache__/
+**/__screenshots__/.attachments/
 
 .env.local
 .env.*.local
