@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { renderApp } from '../test-utils';
+import { getMainArea, renderApp } from '../test-utils';
 
 test('show slider with two thumbs and reveal popup on hover', async () => {
   const { user } = await renderApp('/nexus/NXdata');
@@ -135,6 +135,10 @@ test('edit bounds manually', async () => {
   expect(maxInput).toHaveValue('1e+5'); // auto-format
   expect(page.getByLabelText('Max: 1e+5')).toBeVisible();
   expect(editBtn).toHaveAttribute('aria-pressed', 'false'); // min and max no longer in edit mode
+
+  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await expect(getMainArea()).toMatchScreenshot();
+  }
 });
 
 test('clamp domain in symlog scale', async () => {

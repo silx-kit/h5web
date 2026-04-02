@@ -22,6 +22,7 @@ type InitialPath = `/${string}`;
 interface RenderAppOpts {
   initialPath?: InitialPath;
   preferredVis?: Vis | undefined;
+  sidebarOpen?: boolean;
   waitForLoaders?: boolean;
 }
 
@@ -32,6 +33,7 @@ export async function renderApp(
   const {
     initialPath,
     preferredVis,
+    sidebarOpen = true,
     waitForLoaders = true,
   }: RenderAppOpts = {
     initialPath: '/',
@@ -50,7 +52,7 @@ export async function renderApp(
   const renderResult = await render(
     <div style={{ height: '100vh' }}>
       <MockProvider>
-        <App initialPath={initialPath} />
+        <App initialPath={initialPath} sidebarOpen={sidebarOpen} />
       </MockProvider>
     </div>,
   );

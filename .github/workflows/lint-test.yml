@@ -55,6 +55,10 @@ jobs:
           path: ~/.local
           key: poetry-1 # increment to reset cache
 
+      - name: Add Poetry to PATH 📜
+        if: steps.poetry.outputs.cache-hit == 'true'
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
       - name: Install Poetry 📜
         if: steps.poetry.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
@@ -87,7 +91,7 @@ jobs:
         if: failure()
         with:
           name: vitest
-          path: packages/app/src/__tests__/__screenshots__/.attachments
+          path: packages/app/src/__tests__/__screenshots__/.attachments/**
 
   packages:
     runs-on: ubuntu-latest
