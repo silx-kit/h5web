@@ -36,6 +36,16 @@ jobs:
       - name: Install ⚙️
         uses: ./.github/actions/install
 
+      - name: Restore Playwright cache 📌
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Install Playwright browser ⚙️
+        run: pnpm exec playwright install chromium
+
       - name: Build packages 📦
         run: pnpm packages
 
@@ -57,6 +67,12 @@ jobs:
             cypress/debug/
             cypress/snapshots/**/__diff_output__/
             cypress/snapshots/**/__received_output__/
+
+      - name: Run Vitest 👓
+        run: pnpm test --project "Browser tests" --browser.headless --update
+        env:
+          VITE_TEST_BROWSER: chromium
+          VITE_TEST_WITH_SCREENSHOTS: true
 
       - name: Open PR to update reference snapshots 🎁
         uses: peter-evans/create-pull-request@v8

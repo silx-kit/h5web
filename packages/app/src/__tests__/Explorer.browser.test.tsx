@@ -18,6 +18,10 @@ test('select root group by default', async () => {
   const fileBtn = getExplorerItem('source.h5');
   expect(fileBtn).toBeVisible();
   expect(fileBtn).toHaveAttribute('aria-selected', 'true');
+
+  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await expect(document.body).toMatchScreenshot();
+  }
 });
 
 test('toggle sidebar', async () => {
@@ -35,6 +39,20 @@ test('toggle sidebar', async () => {
   await sidebarBtn.click();
   await expect.element(getExplorerItem('source.h5')).toBeVisible();
   expect(sidebarBtn).toHaveAttribute('aria-pressed', 'true');
+});
+
+test('render viewer with sidebar collpased', async () => {
+  await renderApp({ sidebarOpen: false });
+
+  expect(getExplorerItem('source.h5')).not.toBeInTheDocument();
+  expect(page.getByRole('button', { name: 'Toggle sidebar' })).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
+
+  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await expect(document.body).toMatchScreenshot();
+  }
 });
 
 test('resize and collapse/expand sidebar with keyboard', async () => {

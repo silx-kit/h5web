@@ -1,10 +1,10 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { getDimMappingBtn, renderApp } from '../test-utils';
+import { getDimMappingBtn, getMainArea, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
-test('control mapping for X axis when visualizing 2D dataset as Line', async () => {
+test('control mapping for X axis when visualizing 2D dataset as line', async () => {
   await renderApp({
     initialPath: '/arrays/twoD',
     preferredVis: Vis.Line,
@@ -16,7 +16,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
   expect(xRadioGroup).toBeVisible();
   expect(yRadioGroup).not.toBeInTheDocument();
 
-  // Ensure that the default mapping is [0, 'x']
+  // Ensure that default mapping is [0, 'x']
   const xDimsButtons = xRadioGroup.getByRole('radio');
   expect(xDimsButtons).toHaveLength(2);
   expect(xDimsButtons.nth(0)).not.toBeChecked();
@@ -33,14 +33,14 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
   expect(xDimsButtons.nth(0)).toBeChecked();
   expect(xDimsButtons.nth(1)).not.toBeChecked();
 
-  // Ensure that the dimension slider is now for D1
+  // Ensure that dimension slider is now for D1
   const d1Slider = page.getByRole('slider', { name: 'D1' });
   expect(d1Slider).toBeVisible();
   expect(d1Slider).toHaveValue(0);
   expect(page.getByRole('slider', { name: 'D0' })).not.toBeInTheDocument();
 });
 
-test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', async () => {
+test('control mapping for X and Y axes when visualizing 2D dataset as heatmap', async () => {
   await renderApp({
     initialPath: '/arrays/twoD',
     preferredVis: Vis.Heatmap,
@@ -57,7 +57,7 @@ test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', 
   const yD0Button = yRadioGroup.getByRole('radio', { name: 'D0' });
   const yD1Button = yRadioGroup.getByRole('radio', { name: 'D1' });
 
-  // Ensure that the default mapping is ['y', 'x']
+  // Ensure that default mapping is ['y', 'x']
   expect(xD1Button).toBeChecked();
   expect(yD0Button).toBeChecked();
 
@@ -69,7 +69,7 @@ test('control mapping for X and Y axes when visualizing 2D dataset as Heatmap', 
   expect(yD1Button).toBeChecked();
 });
 
-test('display one slider and two mappers when visualizing 3D dataset as Matrix', async () => {
+test('display one slider and two mappers when visualizing 3D dataset as matrix', async () => {
   await renderApp({
     initialPath: '/arrays/threeD',
     preferredVis: Vis.Matrix,
@@ -86,16 +86,54 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
   expect(yRadioGroup).toBeVisible();
   expect(yDimsButtons).toHaveLength(3);
 
-  // Ensure that the default mapping is [0, 'y', 'x']
+  // Ensure that default mapping is [0, 'y', 'x']
   expect(xDimsButtons.nth(2)).toBeChecked();
   expect(yDimsButtons.nth(1)).toBeChecked();
-
-  // Ensure that only one dimension slider for D0 is visible
   expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
-  expect(page.getByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 });
 
-test('slice through 2D dataset', async () => {
+test('display two sliders and two mappers when visualizing 4D dataset as heatmap', async () => {
+  await renderApp('/arrays/fourD');
+
+  // Ensure that two dimension mappers for X and Y are visible
+  const xRadioGroup = page.getByLabelText('Dimension as x axis');
+  const xDimsButtons = xRadioGroup.getByRole('radio');
+  expect(xRadioGroup).toBeVisible();
+  expect(xDimsButtons).toHaveLength(4);
+
+  const yRadioGroup = page.getByLabelText('Dimension as y axis');
+  const yDimsButtons = yRadioGroup.getByRole('radio');
+  expect(yRadioGroup).toBeVisible();
+  expect(yDimsButtons).toHaveLength(4);
+
+  // Ensure that default mapping is [0, 0, 'y', 'x']
+  expect(xDimsButtons.nth(3)).toBeChecked();
+  expect(yDimsButtons.nth(2)).toBeChecked();
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+
+  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await expect(getMainArea()).toMatchScreenshot();
+  }
+});
+
+test('remap dimensions of 4D dataset as heatmap', async () => {
+  await renderApp('/arrays/fourD');
+
+  const yRadioGroup = page.getByLabelText('Dimension as y axis');
+  const d1Btn = yRadioGroup.getByRole('radio', { name: 'D1' });
+
+  await d1Btn.click();
+  expect(d1Btn).toBeChecked();
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D2' })).toHaveValue(0);
+
+  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await expect(getMainArea()).toMatchScreenshot();
+  }
+});
+
+test('slice through 2D dataset as line', async () => {
   const { user } = await renderApp({
     initialPath: '/arrays/twoD',
     preferredVis: Vis.Line,
@@ -119,6 +157,25 @@ test('slice through 2D opaque dataset', async () => {
 
   expect(d0Slider).toHaveValue(1);
   await expect.element(page.getByText('Uint8Array [ 4,5 ]')).toBeVisible();
+});
+
+test('slice through 4D dataset as heatmap', async () => {
+  const { user } = await renderApp('/arrays/fourD');
+
+  const d1Slider = page.getByRole('slider', { name: 'D1' });
+  expect(d1Slider).toHaveAttribute('aria-valuemin', '0');
+  expect(d1Slider).toHaveAttribute('aria-valuemax', '8');
+
+  // Move to fourth slice with keyboard
+  await user.type(d1Slider, '{ArrowUp}{ArrowUp}{ArrowUp}');
+
+  await expect.element(page.getByLabelText('Min: −1e+0')).toBeVisible();
+  expect(page.getByLabelText('Max: 9.996e-1')).toBeVisible();
+  expect(d1Slider).toHaveValue(3);
+
+  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await expect(getMainArea()).toMatchScreenshot();
+  }
 });
 
 test('maintain mapping when switching to inspect mode and back', async () => {

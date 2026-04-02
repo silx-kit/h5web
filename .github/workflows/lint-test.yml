@@ -31,16 +31,22 @@ jobs:
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
-    container:
-      image: mcr.microsoft.com/playwright:v1.58.1-noble
-      options: -u 1001
-
     steps:
       - name: Checkout 🏷️
         uses: actions/checkout@v6
 
       - name: Install ⚙️
         uses: ./.github/actions/install
+
+      - name: Restore Playwright cache 📌
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Install Playwright browser ⚙️
+        run: pnpm exec playwright install chromium
 
       - name: Set up Python 🕹️
         id: setup-python
@@ -87,6 +93,7 @@ jobs:
         if: failure()
         with:
           name: vitest
+          include-hidden-files: true
           path: packages/app/src/__tests__/__screenshots__/.attachments
 
   packages:

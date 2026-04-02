@@ -34,7 +34,6 @@ export default mergeConfig(
             comparatorOptions: {
               allowedMismatchedPixelRatio: 0,
               threshold: 0,
-              includeAA: false,
             },
           },
         },
