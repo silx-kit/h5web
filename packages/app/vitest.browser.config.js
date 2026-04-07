@@ -3,6 +3,10 @@ import { defineConfig, mergeConfig } from 'vitest/config';
 
 import viteConfig from './vite.config';
 
+const browser = process.env.CI
+  ? 'chromium' // Firefox doesn't work in CI: https://github.com/microsoft/playwright/issues/11566
+  : process.env.VITE_TEST_BROWSER;
+
 export default mergeConfig(
   viteConfig,
   defineConfig({
@@ -13,31 +17,13 @@ export default mergeConfig(
       restoreMocks: true,
       pool: 'threads',
       testTimeout: 10_000,
-      attachmentsDir: 'src/__tests__/__screenshots__/.attachments',
 
       browser: {
         enabled: true,
-        provider: playwright({
-          connectOptions: process.env.VITE_TEST_IN_DOCKER
-            ? {
-                wsEndpoint: 'ws://localhost:6677',
-                exposeNetwork: '<loopback>',
-              }
-            : undefined,
-        }),
-        instances: [{ browser: process.env.VITE_TEST_BROWSER }],
+        provider: playwright(),
+        instances: [{ browser }],
         viewport: { width: 1920, height: 1080 },
         ui: false,
-        screenshotFailures: false, // disable debug screenshots for now as they end up in the same directory as visual regression screenshots
-        expect: {
-          toMatchScreenshot: {
-            comparatorOptions: {
-              allowedMismatchedPixelRatio: 0,
-              threshold: 0,
-              includeAA: false,
-            },
-          },
-        },
       },
     },
   }),

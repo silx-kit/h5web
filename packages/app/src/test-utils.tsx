@@ -5,7 +5,7 @@ import { expect, type MockInstance, vi } from 'vitest';
 import { type Locator, page, userEvent } from 'vitest/browser';
 import { render, type RenderResult } from 'vitest-browser-react';
 
-import App, { MAIN_AREA_ID } from './App';
+import App from './App';
 import MockProvider from './providers/mock/MockProvider';
 import { delay } from './providers/mock/utils';
 import { type Vis } from './vis-packs/core/visualizations';
@@ -110,10 +110,6 @@ export function getNexusExplorerItem(name: string): Locator {
     name: `${name} (NeXus group)`,
     exact: true,
   });
-}
-
-export function getMainArea(): Locator {
-  return page.getByTestId(MAIN_AREA_ID);
 }
 
 function getVisSelector(): Locator {

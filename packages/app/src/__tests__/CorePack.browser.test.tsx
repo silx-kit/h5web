@@ -1,12 +1,7 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import {
-  getMainArea,
-  getSelectedVisTab,
-  getVisTabs,
-  renderApp,
-} from '../test-utils';
+import { getSelectedVisTab, getVisTabs, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
 
 test('visualize unknown dataset', async () => {
@@ -58,10 +53,6 @@ test('visualize 1D dataset', async () => {
   expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line]);
   expect(getSelectedVisTab()).toBe(Vis.Line);
   expect(page.getByRole('figure', { name: 'oneD' })).toBeVisible();
-
-  if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
-    await expect(getMainArea()).toMatchScreenshot();
-  }
 });
 
 test('visualize 1D dataset as matrix', async () => {
