@@ -1,11 +1,17 @@
 name: Lint & Test
 
 on:
-  workflow_dispatch:
   pull_request: # for PRs from forks
   push:
     branches-ignore:
       - 'update-snapshots'
+      - 'update-screenshots'
+  workflow_dispatch:
+    inputs:
+      updateScreenshots:
+        description: 'Update screenshots'
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -14,7 +20,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
@@ -29,7 +35,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
+
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.1-noble
+      options: -u 1001
 
     steps:
       - name: Checkout 🏷️
@@ -37,16 +47,6 @@ jobs:
 
       - name: Install ⚙️
         uses: ./.github/actions/install
-
-      - name: Restore Playwright cache 📌
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-
-
-      - name: Install Playwright browser ⚙️
-        run: pnpm exec playwright install chromium
 
       - name: Set up Python 🕹️
         id: setup-python
@@ -60,6 +60,10 @@ jobs:
         with:
           path: ~/.local
           key: poetry-1 # increment to reset cache
+
+      - name: Add Poetry to PATH
+        if: steps.poetry.outputs.cache-hit == 'true'
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Install Poetry 📜
         if: steps.poetry.outputs.cache-hit != 'true'
@@ -83,7 +87,7 @@ jobs:
         run: pnpm support:h5grove & pnpm wait-on http://localhost:8888 -t 1m
 
       - name: Test 👓
-        run: pnpm test --browser.headless
+        run: pnpm test --browser.headless ${{ inputs.updateScreenshots && '--update' || '' }}
         env:
           VITE_TEST_BROWSER: chromium
           VITE_TEST_WITH_SCREENSHOTS: true
@@ -96,10 +100,21 @@ jobs:
           include-hidden-files: true
           path: packages/app/src/__tests__/__screenshots__/.attachments
 
+      - name: Open PR to update reference screenshots 🎁
+        uses: peter-evans/create-pull-request@v8
+        if: ${{ inputs.updateScreenshots }}
+        with:
+          token: ${{ secrets.USER_TOKEN }}
+          branch: update-screenshots
+          delete-branch: true
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com> # https://github.com/peter-evans/create-pull-request/blob/v8/action.yml#L27
+          title: 'Update Vitest reference screenshots'
+          commit-message: 'Update Vitest reference screenshots'
+
   packages:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
@@ -114,7 +129,7 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
