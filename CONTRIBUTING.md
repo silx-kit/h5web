@@ -474,27 +474,22 @@ rendering of the app depends on the GPU. For this reason, visual regression
 tests are run only on the CI. This is done by running cypress with the
 `takeSnapshots` feature flag: `pnpm cypress:run --expose takeSnapshots=true`.
 
-> Locally, we run the tests without snapshots in Firefox, since it's our main
-> target browser. On the CI, Firefox takes flaky snapshots, so we have to run
-> the tests in Electron instead.
-
 Visual regression tests may fail in the CI, either expectedly (e.g. when
 implementing a new feature) or unexpectedly (when detecting a regression). When
 this happens, the diff images and debug screenshots that Cypress generates are
-uploaded as artifacts of the workflow, which can be downloaded and reviewed.
+uploaded as artifacts of the
+[_Lint & Test_ workflow](https://github.com/silx-kit/h5web/actions/workflows/lint-test.yml),
+which can be downloaded and reviewed.
 
 If the visual regressions are expected, the version-controlled reference
-snapshots can be updated by posting a comment in the Pull Request with this
-exact text: `/approve`. This triggers the _Approve snapshots_ workflow, which
-runs Cypress again but this time telling it to update the reference snapshots
-when it finds differences and to pass the tests. Once Cypress has updated the
-reference snapshots, the workflow automatically opens a PR to merge the new
-and/or updated snapshots into the working branch. After this PR is merged, the
-visual regression tests in the working branch succeed and the branch can be
-merged into `main`.
+snapshots can be updated by manually running the _Lint & Test_ workflow on the
+working branch and by ticking the "Update Cypress snapshots" checkbox. Once
+Cypress has updated the reference snapshots, the workflow automatically opens a
+PR to merge the new and/or updated snapshots into the working branch. After this
+PR is merged, the visual regression tests in the working branch succeed and the
+branch can be merged into `main`.
 
-Here is the summarised workflow (also described with screenshots in
-[PR #306](https://github.com/silx-kit/h5web/pull/306)):
+Here is the summarised workflow:
 
 1. Push your working branch and open a PR.
 2. If the `e2e` job of the _Lint & Test_ CI workflow fails, check out the logs.
@@ -503,19 +498,19 @@ Here is the summarised workflow (also described with screenshots in
 4. Review the snapshot diffs. If the visual regression is unexpected: fix the
    bug, push it and start from step 2 again. If the visual regression is
    expected: continue to step 5.
-5. In the PR, post a comment with `/approve`.
-6. Go to the _Actions_ page and wait for the _Approve snapshots_ workflow to
-   complete.
-7. Go to the newly opened PR titled _Update Cypress reference snapshots_.
-8. Review the new reference snapshots once more and merge the PR.
-9. Go back to your main PR and wait for the jobs of the _Lint & Test_ workflow
+5. Run the
+   [_Lint & Test_ workflow](https://github.com/silx-kit/h5web/actions/workflows/lint-test.yml)
+   manually on your working branch, making sure to tick the "Update Cypress
+   snapshots" checkbox.
+6. Wait for the workflow to complete, then go to the newly opened PR titled
+   _Update Cypress reference snapshots_.
+7. Review the new reference snapshots once more and merge the PR (ideally with a
+   rebase).
+8. Go back to your main PR and wait for the jobs of the _Lint & Test_ workflow
    to succeed.
 
 > It is also possible to download the artifacts from the CI and manually
-> commit/push the updated snapshots without going through the steps above. This
-> may be the best option if, for instance, the visual diffing tests fail on the
-> `main` branch after a commit is pushed to it directly or after a PR is
-> forcefully merged.
+> commit/push the updated snapshots without going through the steps above.
 
 ## Deployment
 
