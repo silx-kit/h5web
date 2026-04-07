@@ -34,6 +34,9 @@ test('visualize dataset with `_FillValue` attribute as heatmap', async () => {
   expect(page.getByLabelText('Max: 9.9e+1')).toBeVisible(); // closest data value lower than _FillValue
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -47,6 +50,9 @@ test('visualize dataset with `_FillValue` attribute as line', async () => {
   expect(page.getByRole('figure', { name: '_FillValue' })).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });

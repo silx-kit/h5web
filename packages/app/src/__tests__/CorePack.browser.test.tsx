@@ -60,6 +60,9 @@ test('visualize 1D dataset as line', async () => {
   expect(page.getByRole('figure', { name: 'oneD' })).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -71,6 +74,9 @@ test('visualize 1D dataset as line with constant interpolation', async () => {
   await page.getByLabelText('Constant').click();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -82,6 +88,9 @@ test('visualize 1D dataset as points', async () => {
   await page.getByLabelText('Points').click();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -104,6 +113,9 @@ test('visualize 1D dataset as matrix', async () => {
   expect(row.first()).toHaveAttribute('aria-rowindex', '1');
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -132,6 +144,9 @@ test('visualize 1D complex dataset as line', async () => {
   expect(page.getByRole('figure', { name: 'oneD_complex' })).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -143,6 +158,9 @@ test('visualize 1D complex dataset as line with constant interpolation', async (
   await page.getByLabelText('Constant').click();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -170,6 +188,9 @@ test('visualize 1D compound dataset', async () => {
   expect(row).toHaveAttribute('aria-rowindex', '1');
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -201,6 +222,9 @@ test('visualize 2D dataset as heatmap', async () => {
   expect(figure.getByLabelText('Max: 4e+2')).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -210,6 +234,9 @@ test('visualize 2D dataset as heatmap with inverted color map', async () => {
   await page.getByRole('button', { name: 'Invert' }).click();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -264,6 +291,9 @@ test('visualize 2D complex dataset as heatmap (amplitude)', async () => {
   expect(figure.getByLabelText('Max: 5e+0')).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -279,6 +309,9 @@ test('visualize 2D complex dataset as heatmap (phase)', async () => {
   expect(figure.getByLabelText('Max: 3.108e+0')).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -296,6 +329,9 @@ test('visualize 2D complex dataset as heatmap (phase & amplitude)', async () => 
   expect(figure.getByLabelText('Max: 3.108e+0')).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -320,6 +356,9 @@ test('visualize dataset slice with only zeros as heatmap', async () => {
   expect(d1Slider).toHaveValue(4);
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -337,6 +376,9 @@ test('flip heatmap', async () => {
   expect(flipY).toHaveAttribute('aria-pressed', 'true');
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -378,6 +420,9 @@ test('visualize RGB image dataset', async () => {
   expect(page.getByRole('figure', { name: 'threeD_rgb' })).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -387,6 +432,9 @@ test('visualize BGR image dataset', async () => {
   await page.getByRole('radio', { name: 'BGR' }).click();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -399,6 +447,9 @@ test('visualize RGBA image dataset', async () => {
   expect(page.getByRole('figure', { name: 'threeD_rgba' })).toBeVisible();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -408,6 +459,9 @@ test('visualize BGRA image dataset', async () => {
   await page.getByRole('radio', { name: 'BGR' }).click();
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });

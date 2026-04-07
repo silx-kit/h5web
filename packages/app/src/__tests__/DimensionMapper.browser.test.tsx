@@ -113,6 +113,9 @@ test('display two sliders and two mappers when visualizing 4D dataset as heatmap
   expect(page.getByRole('slider', { name: 'D1' })).toHaveValue(0);
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -129,6 +132,9 @@ test('remap dimensions of 4D dataset as heatmap', async () => {
   expect(page.getByRole('slider', { name: 'D2' })).toHaveValue(0);
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
@@ -174,6 +180,9 @@ test('slice through 4D dataset as heatmap', async () => {
   expect(d1Slider).toHaveValue(3);
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });

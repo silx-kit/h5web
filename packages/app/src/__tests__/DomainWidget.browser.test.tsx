@@ -137,6 +137,9 @@ test('edit bounds manually', async () => {
   expect(editBtn).toHaveAttribute('aria-pressed', 'false'); // min and max no longer in edit mode
 
   if (import.meta.env.VITE_TEST_WITH_SCREENSHOTS) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 50);
+    });
     await expect(getMainArea()).toMatchScreenshot();
   }
 });
