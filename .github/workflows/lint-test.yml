@@ -19,7 +19,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
@@ -34,7 +34,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
@@ -100,7 +100,7 @@ jobs:
   packages:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
@@ -115,7 +115,7 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     # Skip `pull_request` runs on local PRs for which `push` runs are already triggered
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
 
     steps:
       - name: Checkout 🏷️
