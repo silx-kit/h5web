@@ -1,11 +1,16 @@
 name: Lint & Test
 
 on:
-  workflow_dispatch:
   pull_request: # for PRs from forks
   push:
     branches-ignore:
       - 'update-snapshots'
+  workflow_dispatch:
+    inputs:
+      updateSnapshots:
+        description: 'Update Cypress snapshots'
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -126,7 +131,7 @@ jobs:
         run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run --env requireSnapshots=true --expose takeSnapshots=true
+        run: pnpm cypress:run --env ${{ inputs.updateSnapshots && 'updateSnapshots=true' || 'requireSnapshots=true' }}  --expose takeSnapshots=true
 
       - name: Upload debug screenshots and diffs on failure 🖼️
         uses: actions/upload-artifact@v7
@@ -137,3 +142,14 @@ jobs:
             cypress/debug/
             cypress/snapshots/**/__diff_output__/
             cypress/snapshots/**/__received_output__/
+
+      - name: Open PR to update reference snapshots 🎁
+        uses: peter-evans/create-pull-request@v8
+        if: ${{ inputs.updateSnapshots }}
+        with:
+          token: ${{ secrets.USER_TOKEN }}
+          branch: update-snapshots
+          delete-branch: true
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com> # https://github.com/peter-evans/create-pull-request/blob/v8/action.yml#L27
+          title: 'Update Cypress reference snapshots'
+          commit-message: 'Update Cypress reference snapshots'
