@@ -12,7 +12,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       name: 'Browser tests',
-      include: ['src/**/*.browser.test.tsx'],
+      include: ['src/**/*.browser.test.ts'],
       setupFiles: 'src/setupTests.ts',
       restoreMocks: true,
       pool: 'threads',
