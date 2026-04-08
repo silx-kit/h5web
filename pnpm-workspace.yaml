@@ -9,11 +9,6 @@ engineStrict: true
 # Use whichever pnpm version is available in the environment
 managePackageManagerVersions: false
 
-# Hoist `@types` packages to root `node_modules` to fix type error in linting config
-# https://github.com/silx-kit/h5web/pull/1787
-publicHoistPattern:
-  - '@types/*'
-
 # Manage peer dependencies explicitly and predictibly
 strictPeerDependencies: true
 autoInstallPeers: false
