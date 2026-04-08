@@ -491,7 +491,7 @@ branch can be merged into `main`.
 
 Here is the summarised workflow:
 
-1. Push your working branch and open a PR.
+1. Push your working branch but don't open a PR yet.
 2. If the `e2e` job of the _Lint & Test_ CI workflow fails, check out the logs.
 3. If the fail is caused by a visual regression (i.e. if a test fails on a
    `cy.matchImageSnapshot()` call), download the workflow's artifacts.
@@ -506,11 +506,11 @@ Here is the summarised workflow:
    _Update Cypress reference snapshots_.
 7. Review the new reference snapshots once more and merge the PR (ideally with a
    rebase).
-8. Go back to your main PR and wait for the jobs of the _Lint & Test_ workflow
-   to succeed.
+8. Confirm that the _Lint & Test_ workflow now succeeds on your working branch,
+   then open a PR.
 
-> It is also possible to download the artifacts from the CI and manually
-> commit/push the updated snapshots without going through the steps above.
+> After step 4, it's also possible to commit/push the updated snapshots manually
+> instead of going through steps 5 to 7.
 
 ## Deployment
 
