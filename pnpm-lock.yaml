@@ -134,7 +134,7 @@ importers:
         version: 25.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-three/fiber':
         specifier: 8.18.0
-        version: 8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.183.2)
+        version: 8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.182.0)
       d3-array:
         specifier: 3.2.4
         version: 3.2.4
@@ -160,8 +160,8 @@ importers:
         specifier: 5.4.0
         version: 5.4.0(react@18.3.1)
       three:
-        specifier: 0.183.2
-        version: 0.183.2
+        specifier: 0.182.0
+        version: 0.182.0
     devDependencies:
       '@esrf/eslint-config':
         specifier: 2.3.0
@@ -222,7 +222,7 @@ importers:
         version: 25.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-three/fiber':
         specifier: 8.18.0
-        version: 8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.183.2)
+        version: 8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.182.0)
       '@types/d3-format':
         specifier: ~3.0.4
         version: 3.0.4
@@ -248,8 +248,8 @@ importers:
         specifier: 4.9.0
         version: 4.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       three:
-        specifier: 0.183.2
-        version: 0.183.2
+        specifier: 0.182.0
+        version: 0.182.0
       zustand:
         specifier: 5.0.12
         version: 5.0.12(@types/react@18.3.28)(react@18.3.1)(use-sync-external-store@1.6.0(react@18.3.1))
@@ -486,7 +486,7 @@ importers:
         version: link:../shared
       '@react-three/fiber':
         specifier: 8.18.0
-        version: 8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.183.2)
+        version: 8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.182.0)
       '@rollup/plugin-alias':
         specifier: 6.0.0
         version: 6.0.0(rollup@4.60.1)
@@ -530,8 +530,8 @@ importers:
         specifier: 6.4.1
         version: 6.4.1(rollup@4.60.1)(typescript@5.9.3)
       three:
-        specifier: 0.183.2
-        version: 0.183.2
+        specifier: 0.182.0
+        version: 0.182.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -4655,8 +4655,8 @@ packages:
   terminal-columns@2.0.0:
     resolution: {integrity: sha512-6IByuUjyNZJXUtwDNm+OIe62zgwwaRbH+WMNTcx05O2G5V9WhvluAAHJY8OvUdwmzMPpqAD/7EUpGdI6ae1aiQ==}
 
-  three@0.183.2:
-    resolution: {integrity: sha512-di3BsL2FEQ1PA7Hcvn4fyJOlxRRgFYBpMTcyOgkwJIaDOdJMebEFPA+t98EvjuljDx4hNulAGwF6KIjtwI5jgQ==}
+  three@0.182.0:
+    resolution: {integrity: sha512-GbHabT+Irv+ihI1/f5kIIsZ+Ef9Sl5A1Y7imvS5RQjWgtTPfPnZ43JmlYI7NtCRDK9zir20lQpfg8/9Yd02OvQ==}
 
   throttleit@1.0.1:
     resolution: {integrity: sha512-vDZpf9Chs9mAdfY046mcPt8fg5QSZr37hEH4TXYBnDF+izxgrbRGUAAaBvIk/fJm9aOFCGFd1EsNg5AZCbnQCQ==}
@@ -5700,7 +5700,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@react-three/fiber@8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.183.2)':
+  '@react-three/fiber@8.18.0(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.182.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@types/react-reconciler': 0.26.7
@@ -5713,7 +5713,7 @@ snapshots:
       react-use-measure: 2.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       scheduler: 0.21.0
       suspend-react: 0.1.3(react@18.3.1)
-      three: 0.183.2
+      three: 0.182.0
       zustand: 3.7.2(react@18.3.1)
     optionalDependencies:
       react-dom: 18.3.1(react@18.3.1)
@@ -9650,7 +9650,7 @@ snapshots:
 
   terminal-columns@2.0.0: {}
 
-  three@0.183.2: {}
+  three@0.182.0: {}
 
   throttleit@1.0.1: {}
 
