@@ -6,6 +6,7 @@ import eslintPlugin from 'vite-plugin-eslint';
 
 export default defineConfig({
   server: { open: true },
+  build: { sourcemap: true },
   plugins: [
     react(),
     patchCssModules(),
@@ -15,11 +16,4 @@ export default defineConfig({
 
   // Import HDF5 compression plugins as static assets
   assetsInclude: ['**/*.so'],
-
-  // `es2020` required by @h5web/h5wasm for BigInt `123n` notation support
-  optimizeDeps: { esbuildOptions: { target: 'es2020' } },
-  build: {
-    target: 'es2020',
-    sourcemap: true,
-  },
 });
