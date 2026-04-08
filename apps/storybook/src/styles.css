@@ -1,14 +1,7 @@
-@import 'normalize.css';
+@import 'modern-normalize/modern-normalize.css';
 @import '@h5web/lib/global-styles.css';
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
-
 body {
-  box-sizing: border-box;
   font-family: var(--sans-serif);
   line-height: 1.2;
   color: #020402;
