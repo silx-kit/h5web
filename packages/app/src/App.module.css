@@ -63,16 +63,23 @@
   --h5w-slicingSlider-thumb--bgColor: var(--primary-bg);
 }
 
-.root *,
-.root *::before,
-.root *::after {
+:where(.root) *,
+:where(.root) *::before,
+:where(.root) *::after {
   box-sizing: inherit;
 }
 
-.root abbr[title] {
+:where(.root) abbr[title] {
   cursor: help;
   border-bottom: 1px dotted;
   text-decoration: none;
+}
+
+:where(.root) pre,
+:where(.root) kbd {
+  font-family: var(--monospace);
+  font-size: inherit;
+  color: inherit;
 }
 
 @media (min-width: 50em) {
