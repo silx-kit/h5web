@@ -545,17 +545,8 @@ To release a new version and publish the packages to NPM:
 > workflows on the CI, which builds and publishes the packages to NPM (with
 > `pnpm -r publish`) and deploys the Storybook site.
 >
-> A few things happen when `pnpm publish` runs for each package:
->
-> 1. First, it triggers a `prepack` script that removes the `type` field from
->    the package's `package.json`. The reason for this workaround is explained
->    in [#1219](https://github.com/silx-kit/h5web/issues/1219).
-> 2. Then, pnpm modifies `package.json` further by merging in the content of the
->    [`publishConfig` field](https://pnpm.io/package_json#publishconfig).
-> 3. Finally, the package gets published to NPM. Note that it's possible to
->    publish to a local registry for testing purposes (e.g.
->    [Verdaccio](https://verdaccio.org/)) by overriding NPM's default
->    [`registry` configuration](https://docs.npmjs.com/cli/v9/using-npm/registry).
+> Note that `pnpm publish` modifies `package.json` by merging in the content of
+> the [`publishConfig` field](https://pnpm.io/package_json#publishconfig).
 
 Once the CI workflows have run successfully:
 
@@ -606,7 +597,3 @@ follow these steps:
 1. Navigate to the project in which you want to install and test the package.
 1. Install the tarball with the project's package manager (e.g.
    `pnpm add <path-to-tarball>`).
-
-> Like `pnpm publish`, `pnpm pack` runs the package's `prepack` script, which
-> removes `"type": "module"` from `package.json`, so don't forget to revert this
-> change when you're done.

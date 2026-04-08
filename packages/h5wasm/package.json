@@ -27,7 +27,6 @@
     "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc",
     "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks",
-    "prepack": "dot-json package.json -d type",
     "sync-version": "dot-json ../../package.json version | xargs dot-json package.json version"
   },
   "peerDependencies": {
