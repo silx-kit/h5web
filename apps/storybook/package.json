@@ -34,7 +34,7 @@
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
-    "@types/node": "^24.10.13",
+    "@types/node": "^24.12.2",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@types/three": "0.182.0",
