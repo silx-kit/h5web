@@ -32,6 +32,7 @@
 }
 
 .root {
+  --h5w-info--color: var(--secondary-dark);
   --h5w-matrix--fontFamily: var(--monospace);
   --h5w-matrix-cell--bgColorAlt: var(--secondary-light-bg);
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);
@@ -181,11 +182,11 @@
 }
 
 .fallback {
-  composes: fallback from global;
+  composes: fallback from './utils.module.css';
 }
 
 .error {
-  composes: error from global;
+  composes: error from './utils.module.css';
   grid-area: vis;
 }
 
@@ -194,7 +195,7 @@
 }
 
 .detailedError {
-  composes: error from global;
+  composes: error from './utils.module.css';
   overflow: auto;
   scrollbar-width: thin;
 }
@@ -208,5 +209,5 @@
 }
 
 .retryBtn {
-  composes: btnClean btnLink from global;
+  composes: btnLink from './utils.module.css';
 }

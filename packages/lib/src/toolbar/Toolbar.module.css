@@ -74,7 +74,7 @@
 }
 
 .btnOption {
-  composes: btnClean from global;
+  composes: btnClean from './utils.module.css';
   display: flex;
   align-items: center;
   padding: 0.5rem 0.75rem;

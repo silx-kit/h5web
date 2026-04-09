@@ -1,5 +1,3 @@
-import '@h5web/app/global-styles.css';
-
 import { assertDefined, assertNonNull } from '@h5web/shared/guards';
 import { expect, type MockInstance, vi } from 'vitest';
 import { type Locator, page, userEvent } from 'vitest/browser';

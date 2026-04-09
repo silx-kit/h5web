@@ -14,7 +14,6 @@
     "dist"
   ],
   "exports": {
-    "./global-styles.css": "./src/global-styles.css",
     "./styles.css": "./dist/styles.css",
     ".": "./src/index.ts"
   },
@@ -25,8 +24,7 @@
     }
   },
   "scripts": {
-    "build": "vite build && pnpm \"/^build:/\"",
-    "build:css": "vite build --config vite.styles.config.js && concat dist/temp/styles.css dist/lib.css -o dist/styles.css && rimraf dist/lib.css dist/temp",
+    "build": "vite build && pnpm build:dts",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc",
@@ -100,12 +98,10 @@
     "@types/react-dom": "^18.3.7",
     "@types/three": "0.183.1",
     "@vitejs/plugin-react-swc": "4.3.0",
-    "concat": "1.0.3",
     "dot-json": "1.3.0",
     "eslint": "9.39.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "rimraf": "6.1.3",
     "rollup": "4.60.1",
     "rollup-plugin-dts": "6.4.1",
     "three": "0.182.0",

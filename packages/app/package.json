@@ -14,7 +14,6 @@
     "dist"
   ],
   "exports": {
-    "./global-styles.css": "./src/global-styles.css",
     ".": "./src/index.ts"
   },
   "publishConfig": {
@@ -25,7 +24,7 @@
   },
   "scripts": {
     "build": "vite build && pnpm \"/^build:/\"",
-    "build:css": "vite build --config vite.styles.config.js && concat dist/temp/styles.css dist/app.css -o dist/styles.css && rimraf dist/app.css dist/temp",
+    "build:css": "vite build --config vite.styles.config.js && concat dist-css/lib.css dist/app.css -o dist/styles.css && rimraf dist/app.css",
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc",

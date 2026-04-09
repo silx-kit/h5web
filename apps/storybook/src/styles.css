@@ -1,5 +1,4 @@
 @import 'modern-normalize/modern-normalize.css';
-@import '@h5web/lib/global-styles.css';
 
 body {
   font-family: var(--sans-serif);
@@ -30,6 +29,7 @@ body {
 }
 
 body {
+  --h5w-info--color: var(--secondary-dark);
   --h5w-matrix--fontFamily: var(--monospace);
   --h5w-matrix-cell--bgColorAlt: var(--secondary-light-bg);
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);

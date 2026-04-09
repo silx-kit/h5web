@@ -70,7 +70,7 @@
 }
 
 .cancelBtn {
-  composes: btnClean btnLink from global;
+  composes: btnLink from '../utils.module.css';
 }
 
 .grid {

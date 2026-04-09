@@ -19,8 +19,7 @@
 }
 
 .urlBtn {
-  composes: btnClean from global;
-  composes: ctaBtn from '../utils.module.css';
+  composes: btnClean ctaBtn from '../utils.module.css';
   margin-left: 0.5rem;
   margin-right: 0;
 }

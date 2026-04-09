@@ -220,42 +220,29 @@ another React component:
 
 The build process of `@h5web/lib` works as follows:
 
-1. First, Vite builds the JS bundles (ESM and CommonJS) in library mode starting
-   from the package's entrypoint: `src/index.ts`. The bundles are placed in the
-   output `dist` directory and referenced from `package.json`.
+1. First, we use Vite to build the JS bundle of the library starting from the
+   `src/index.ts` entrypoint. The `dist/index.js` bundle is then referenced from
+   `package.json`. Vite also generates `dist/style.css`, which contains the
+   compiled CSS modules that Vite comes across while building the React
+   components.
 
-   The JS build also generates a file called `style.css` in the `dist` folder
-   that contains the compiled CSS modules that Vite comes across while building
-   the React components. These styles are called "local" styles.
+2. Second, we run `build:dts` to generate type declarations for TypeScript
+   consumers. This is a two step process: first we generate type declarations
+   for all TS files in the `dist-ts` folder with `tsc`, then we use Rollup to
+   merge all the declarations into a single file: `dist/index.d.ts`, which is
+   referenced from `package.json`. Note that since `@h5web/shared` is not a
+   published package, it cannot be marked as an external dependency; its types
+   must therefore be inlined into `dist/index.d.ts`, so we make sure to tell
+   Rollup where to find them.
 
-2. Second, we run two scripts in parallel: `build:css` and `build:dts`.
-   - The job of `build:css` is to build the package's global styles and
-     concatenate them with the local styles compiled at the first step. To do
-     so, we run Vite again but with a different config: `vite.styles.config.js`,
-     and a different entrypoint: `src/styles.ts`. The output files are placed in
-     a temporary folder: `dist/temp`. We then concatenate `dist/temp/styles.css`
-     (the global styles) and `dist/<app|lib>.css` (the local styles) and output
-     the result to `dist/styles.css`, which is the stylesheet referenced from
-     `package.json` that consumers need to import.
-   - The job of `build:dts` is to generate type declarations for package
-     consumers who use TypeScript. This is a two step process: first we generate
-     type declarations for all TS files in the `dist-ts` folder with `tsc`, then
-     we use Rollup to merge all the declarations into a single file:
-     `dist/index.d.ts`, which is referenced from `package.json`. Note that since
-     `@h5web/shared` is not a published package, it cannot be marked as an
-     external dependency; its types must therefore be inlined into
-     `dist/index.d.ts`, so we make sure to tell Rollup where to find them.
+The build process of `@h5web/app` is the same with one exception: after Vite
+generates the styles of the app package, we concatenate them with the styles of
+the lib package so that consumers can just import a single stylesheet. This is
+taken care of by the `build:css` script thanks to a dedicated Vite config
+(`vite.styles.config.js`) and entrypoint (`src/lib-styles.ts`).
 
-The build process of `@h5web/app` is the same with one exception: in addition to
-importing the package's global styles, `src/styles.ts` also imports the `lib`
-package's distributed styles - i.e. the output of the lib's `build:css` script.
-The lib's distributed styles include both its global _and_ local styles. This
-allows us to provide a single CSS bundle for consumers of `@h5web/app` to
-import.
-
-The build process of`@h5web/h5wasm` is also the same as the lib's, but since the
-package does not include any styles, `vite build` does not generate a
-`style.css` file and there's no `build:css` script.
+The build process of`@h5web/h5wasm` is also the same, but since the package does
+not include any styles, no `styles.css` file is generated.
 
 Finally, since `@h5web/shared` is not a published package, it does not need to
 be built with Vite. However, its types do need to be built with `tsc` so that
