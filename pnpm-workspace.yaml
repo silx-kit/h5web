@@ -17,7 +17,6 @@ resolvePeersFromWorkspaceRoot: false
 # Fail install if any dependency has unreviewed build scripts
 strictDepBuilds: true
 onlyBuiltDependencies:
-  - '@swc/core'
   - 'cypress'
   - 'esbuild'
 
