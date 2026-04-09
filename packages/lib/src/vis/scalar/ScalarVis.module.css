@@ -8,10 +8,12 @@
   min-width: fit-content; /* fix missing padding-right */
   margin: 0;
   padding: 1rem 1.5rem !important; /* overridden by JupyterLab if not !important */
+  font-family: var(--h5w-scalar--fontFamily, monospace);
+  color: var(--h5w-scalar--color, inherit);
 }
 
 .fallback {
   margin: 0;
   padding: 1em;
-  color: var(--h5w-info--color, royalblue);
+  color: var(--h5w-scalar-fallback--color, var(--h5w-info--color, royalblue));
 }
