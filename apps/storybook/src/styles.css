@@ -1,7 +1,9 @@
 @import 'modern-normalize/modern-normalize.css';
 
 body {
-  font-family: var(--sans-serif);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.2;
   color: #020402;
 }
@@ -21,16 +23,10 @@ body {
   --secondary-darker: #0e5846;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
-  --monospace:
-    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  --sans-serif:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 body {
   --h5w-info--color: var(--secondary-dark);
-  --h5w-matrix--fontFamily: var(--monospace);
   --h5w-matrix-cell--bgColorAlt: var(--secondary-light-bg);
   --h5w-matrix-indexCell--bgColor: var(--primary-bg);
   --h5w-matrix-indexCell--bgColorAlt: var(--primary-light-bg);

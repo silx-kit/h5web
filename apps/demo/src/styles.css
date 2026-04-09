@@ -2,7 +2,9 @@
 
 body {
   min-width: 42em;
-  font-family: var(--sans-serif);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.2;
   color: #020402;
 }
@@ -23,11 +25,6 @@ body {
   --secondary-darker: #0e5846;
   --secondary-bg: #d9f4ec;
   --secondary-light-bg: #ecfaf6;
-  --monospace:
-    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  --sans-serif:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 }
 
 #root {
