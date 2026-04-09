@@ -11,5 +11,7 @@
 }
 
 .fallback {
-  composes: fallback from global;
+  margin: 0;
+  padding: 1em;
+  color: var(--h5w-info--color, royalblue);
 }

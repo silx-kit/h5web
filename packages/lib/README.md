@@ -65,21 +65,12 @@ function MyApp() {
 export default MyApp;
 ```
 
-> If your bundler supports it (e.g. webpack 5), you may be able to shorten the
-> stylesheet import path as follows:
->
-> ```ts
-> import '@h5web/lib/styles.css';
-> ```
-
 ### Examples
 
 The following code sandboxes demonstrate how to set up and use `@h5web/lib` with
 various front-end development stacks:
 
 - [Vite](https://codesandbox.io/p/sandbox/h5weblib-vite-xru04?file=%2Fsrc%2FApp.tsx)
-- [Create React App v5](https://codesandbox.io/p/sandbox/h5weblib-cra-v5-nhznhh?file=%2Fsrc%2FApp.tsx)
-  (deprecated)
 
 ### Browser support
 

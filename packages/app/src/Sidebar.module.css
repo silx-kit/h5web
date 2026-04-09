@@ -7,7 +7,7 @@
 }
 
 .tab {
-  composes: btnClean from global;
+  composes: btnClean from './utils.module.css';
   display: flex;
   justify-content: center;
   align-items: center;

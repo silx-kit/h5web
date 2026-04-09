@@ -63,7 +63,7 @@
 }
 
 .attrValueBtn {
-  composes: btnClean from global;
+  composes: btnClean from '../utils.module.css';
   display: flex;
   align-items: center;
   font-weight: 600;
@@ -90,9 +90,9 @@
 }
 
 .error {
-  composes: error from global;
+  composes: error from '../utils.module.css';
 }
 
 .fallback {
-  composes: fallback from global;
+  composes: fallback from '../utils.module.css';
 }

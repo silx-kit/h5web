@@ -28,7 +28,7 @@
 }
 
 .crumbButton {
-  composes: btnClean from global;
+  composes: btnClean from '../utils.module.css';
   position: relative;
   display: flex;
   align-items: center;

@@ -24,7 +24,7 @@ export default defineConfig({
       entry: path.resolve('src/index.ts'),
       formats: ['es'],
       fileName: 'index',
-      cssFileName: 'app',
+      cssFileName: 'app', // temp file for `build:css` script
     },
     rollupOptions: {
       external: [...externals].map(

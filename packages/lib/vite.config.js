@@ -22,7 +22,7 @@ export default defineConfig({
       entry: path.resolve('src/index.ts'),
       formats: ['es'],
       fileName: 'index',
-      cssFileName: 'lib',
+      cssFileName: 'styles',
     },
     rollupOptions: {
       external: [...externals].map(

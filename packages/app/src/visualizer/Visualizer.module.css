@@ -24,7 +24,7 @@
 }
 
 .fallback {
-  composes: fallback from global;
+  composes: fallback from '../utils.module.css';
 }
 
 .fallback > p:first-child {

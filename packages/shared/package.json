@@ -5,7 +5,6 @@
   "description": "Shared models, guards and utilities",
   "type": "module",
   "sideEffects": false,
-  "main": "src/index.ts",
   "exports": {
     "./createMemo": "./src/createMemo.ts",
     "./guards": "./src/guards.ts",
@@ -19,7 +18,6 @@
     "./mock-utils": "./src/mock-utils.ts",
     "./mock-values": "./src/mock-values.ts",
     "./react-suspense-fetch": "./src/react-suspense-fetch.ts",
-    "./styles.css": "./src/styles.css",
     ".": "./src/index.ts"
   },
   "scripts": {

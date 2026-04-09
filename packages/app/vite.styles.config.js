@@ -5,11 +5,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   build: {
     lib: {
-      entry: path.resolve('src/styles.ts'),
+      entry: path.resolve('src/lib-styles.ts'),
       formats: ['es'],
-      fileName: 'styles',
+      fileName: 'noop',
+      cssFileName: 'lib',
     },
-    outDir: 'dist/temp',
-    emptyOutDir: false,
+    outDir: 'dist-css',
   },
 });
