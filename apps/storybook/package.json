@@ -28,9 +28,9 @@
   },
   "devDependencies": {
     "@esrf/eslint-config": "2.3.0",
-    "@storybook/addon-docs": "10.3.3",
-    "@storybook/addon-links": "10.3.3",
-    "@storybook/react-vite": "10.3.3",
+    "@storybook/addon-docs": "10.3.5",
+    "@storybook/addon-links": "10.3.5",
+    "@storybook/react-vite": "10.3.5",
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.0.14",
@@ -40,9 +40,9 @@
     "@types/three": "0.183.1",
     "eslint": "9.39.2",
     "remark-gfm": "4.0.1",
-    "storybook": "10.3.3",
+    "storybook": "10.3.5",
     "typescript": "5.9.3",
-    "vite": "7.3.1"
+    "vite": "8.0.7"
   },
   "browserslist": {
     "production": [
