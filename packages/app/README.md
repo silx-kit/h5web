@@ -9,7 +9,7 @@ to visualize and explore data. It consists of two main packages:
 - [`@h5web/lib`](https://www.npmjs.com/package/@h5web/lib): visualization
   components built with
   [react-three-fiber](https://github.com/react-spring/react-three-fiber).
-- **[`@h5web/app`](https://www.npmjs.com/package/@h5web/app): a stand-alone,
+- **[`@h5web/app`](https://www.npmjs.com/package/@h5web/app): a standalone,
   web-based viewer to explore HDF5 files (this library)**.
 
 `@h5web/app` exposes the HDF5 viewer component `App`, as well as the following
@@ -60,14 +60,12 @@ The following code sandboxes demonstrate how to set up and use `@h5web/app` with
 various front-end development stacks:
 
 - [Vite](https://codesandbox.io/p/sandbox/h5webapp-vite-5c204?file=%2Fsrc%2FMyApp.tsx)
-- [Create React App v5](https://codesandbox.io/p/sandbox/h5webapp-cra-v5-bzmbh1?file=%2Fsrc%2FMyApp.tsx)
-  (deprecated)
 
 ### Browser support
 
-H5Web works out of the box on **Firefox 78 ESR**. Support for Firefox 68 ESR is
-possible by polyfilling the `ResizeObserver` API. Older versions of Firefox are
-not supported.
+H5Web works out of the box on **Firefox 102 ESR**. Support for older versions
+might be achieved by polyfilling specific web platform features like
+[`Object.hasOwn()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn).
 
 ## API reference
 
@@ -88,7 +86,7 @@ For `App` to work, it must be wrapped in a data provider:
 Whether the viewer should start with the sidebar open. The sidebar contains the
 explorer and search panels. Defaults to `true`. Pass `false` to hide the sidebar
 on initial render, thus giving more space to the visualization. This is useful
-when H5Web is embeded inside another app.
+when H5Web is embedded inside another app.
 
 ```tsx
 <App sidebarOpen={false} />
@@ -137,7 +135,7 @@ form instead.
 #### `disableDarkMode?: boolean` (optional)
 
 By default, the viewer follows your browser's and/or operating system's dark
-mode setting. This prop disables this beahviour by forcing the viewer into light
+mode setting. This prop disables this behavior by forcing the viewer into light
 mode.
 
 ```tsx
@@ -602,7 +600,7 @@ once, it's important to prefetch every entity/value first so the requests are
 done in parallel. `useDatasets` and `useValues` do this automatically, but not
 `useEntity` and `useValue`:
 
-```tsx
+```ts
 const { valuesStore } = useDataContext();
 valuesStore.prefetch(abscissasDataset);
 valuesStore.prefetch(ordinatesDataset);

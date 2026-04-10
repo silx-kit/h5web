@@ -74,6 +74,6 @@ various front-end development stacks:
 
 ### Browser support
 
-H5Web works out of the box on **Firefox 78 ESR**. Support for Firefox 68 ESR is
-possible by polyfilling the `ResizeObserver` API. Older versions of Firefox are
-not supported.
+H5Web works out of the box on **Firefox 102 ESR**. Support for older versions
+might be achieved by polyfilling specific web platform features like
+[`Object.hasOwn()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn).
