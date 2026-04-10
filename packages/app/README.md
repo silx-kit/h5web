@@ -608,3 +608,47 @@ valuesStore.prefetch(ordinatesDataset);
 const abscissas = useValue(abscissasDataset);
 const ordinates = useValue(ordinatesDataset);
 ```
+
+To work with HDF5 attributes, retrieve an entity object with `useEntity` or
+`useDatasets` and pass it to `findAttribute`. Then, you can check or assert its
+type and shape and retrieve its value with `getAttributeValue`:
+
+```ts
+const { attrValuesStore } = useDataContext();
+const entity = useEntity('/arrays/twoD'); // ProvidedEntity
+
+// If you just want to know whether the attribute is present
+const hasAttr = hasAttribute(entity, 'my_attr'); // boolean
+
+// Otherwise, find it
+const attribute = findAttribute(entity, 'my_attr'); // Attribute | undefined
+
+// If the attribute must be present and have the expected shape and type, use type assertions
+assertDefined(attribute);
+assertArrayShape(attribute);
+assertStringType(attribute); // now `Attribute & HasShape<ArrayShape> & HasType<StringType>`
+
+// Otherwise, use type guards and an `if` block
+if (
+  isDefined(attribute) &&
+  hasArrayShape(attribute) &&
+  hasStringType(attribute)
+) {
+  const someStr = getAttributeValue(entity, attribute, attrValuesStore); // string
+  someStr.startWith('foo'); // `someStr` is fully type-checked; no need to use `typeof`
+}
+```
+
+With scalar string and numeric attributes, use `findScalarStrAttr` and
+`findScalarNumAttr` for convenience:
+
+```ts
+const strAttr = findScalarStrAttr(entity, 'my_str_attr');
+const numAttr = findScalarNumAttr(entity, 'my_num_attr');
+
+assertDefined(strAttr); // or `isDefined` + `if` block
+assertDefined(numAttr);
+
+const str = getAttributeValue(entity, strAttr, attrValuesStore); // string
+const num = getAttributeValue(entity, numAttr, attrValuesStore); // number | bigint
+```

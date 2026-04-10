@@ -12,7 +12,15 @@ export {
   buildBasicAuthHeader,
 } from './providers/utils';
 
-export { enableBigIntSerialization } from './utils';
+export {
+  enableBigIntSerialization,
+  hasAttribute,
+  findAttribute,
+  findScalarNumAttr,
+  findScalarStrAttr,
+  getAttributeValue,
+} from './utils';
+
 export { getFeedbackMailto } from './breadcrumbs/utils';
 export { AbortError } from '@h5web/shared/react-suspense-fetch';
 
@@ -181,13 +189,6 @@ export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi } from './providers/api';
 export { getValueOrError } from './providers/utils';
 export { useValuesInCache } from './hooks';
-export {
-  hasAttribute,
-  findAttribute,
-  findScalarNumAttr,
-  findScalarStrAttr,
-  getAttributeValue,
-} from './utils';
 export { arrayDef, scalarDef, parseShape } from '@h5web/shared/hdf5-utils';
 
 export { default as ValueFetcher } from './vis-packs/core/ValueFetcher';
