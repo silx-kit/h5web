@@ -109,14 +109,14 @@ files = [
 
 [[package]]
 name = "h5grove"
-version = "4.0.0rc0"
+version = "4.0.0"
 description = "Core utilities to serve HDF5 file contents"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "h5grove-4.0.0rc0-py3-none-any.whl", hash = "sha256:beea842ad29e7d6cbee0330a9c364cbaa8e21c79c88b375137908729e6bce9e9"},
-    {file = "h5grove-4.0.0rc0.tar.gz", hash = "sha256:fa20c46b163ef6564fce9031b53213d7cf4972fe40ad7eda3d1b760f2625fb5a"},
+    {file = "h5grove-4.0.0-py3-none-any.whl", hash = "sha256:8bacfc2af4af0b302fd7688e9c1f463e6a80e142d0272f871d37019d6e6a16d5"},
+    {file = "h5grove-4.0.0.tar.gz", hash = "sha256:81bbd726743f31e78ff11f656a2558bbea3ed80ddde5e4e76285a9d15bfb4b9a"},
 ]
 
 [package.dependencies]
@@ -579,4 +579,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "b3c92d529dda6c1a0fab163eccaceda388d0be6cc98d14a362b1e092859f7655"
+content-hash = "8317746bd87d300174e97201ce1beaba6b8f081a027b0343a34184aaa455544c"
