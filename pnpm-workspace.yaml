@@ -23,8 +23,14 @@ onlyBuiltDependencies:
 # Save exact dependency versions in `package.json`
 savePrefix: ''
 
+# Only install packages that are at least 2 days old
+minimumReleaseAge: 2880
+minimumReleaseAgeExclude:
+  - '@h5web/*'
+  - '@esrf/config'
+
 # Check that `node_modules` is up to date before running scripts
-# verifyDepsBeforeRun: 'error'
+verifyDepsBeforeRun: 'error'
 
 # Every project must have these scripts in their `package.json`
 requiredScripts:
