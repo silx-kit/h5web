@@ -14,11 +14,11 @@ strictPeerDependencies: true
 autoInstallPeers: false
 resolvePeersFromWorkspaceRoot: false
 
-# Fail install if any dependency has unreviewed build scripts
+# Fail install if any dependency has unapproved build scripts
 strictDepBuilds: true
-onlyBuiltDependencies:
-  - 'cypress'
-  - 'esbuild'
+allowBuilds:
+  cypress: true
+  esbuild: true
 
 # Save exact dependency versions in `package.json`
 savePrefix: ''
