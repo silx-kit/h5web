@@ -27,7 +27,7 @@ savePrefix: ''
 minimumReleaseAge: 2880
 minimumReleaseAgeExclude:
   - '@h5web/*'
-  - '@esrf/config'
+  - '@esrf/eslint-config'
 
 # Run install automatically if anything is out of date before running a script
 verifyDepsBeforeRun: 'install'
