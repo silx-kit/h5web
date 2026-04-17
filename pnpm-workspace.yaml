@@ -29,8 +29,8 @@ minimumReleaseAgeExclude:
   - '@h5web/*'
   - '@esrf/config'
 
-# Check that `node_modules` is up to date before running scripts
-verifyDepsBeforeRun: 'error'
+# Run install automatically if anything is out of date before running a script
+verifyDepsBeforeRun: 'install'
 
 # Every project must have these scripts in their `package.json`
 requiredScripts:
