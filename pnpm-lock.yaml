@@ -66,8 +66,8 @@ importers:
         specifier: 5.1.1
         version: 5.1.1(axios@1.13.5)(react@18.3.1)
       h5wasm-plugins:
-        specifier: 0.2.1
-        version: 0.2.1
+        specifier: 0.3.0
+        version: 0.3.0(h5wasm@0.10.1)
       modern-normalize:
         specifier: 3.0.1
         version: 3.0.1
@@ -2844,10 +2844,10 @@ packages:
   greenlet@1.1.0:
     resolution: {integrity: sha512-W/kKzq7ZSF/LFItIjaSaccw8L6js+9SMSS5buXZs/Td7qZAT91Kd0LTxuUjSWDwuyv4MPo/fhZdkRLV1zsuClg==}
 
-  h5wasm-plugins@0.2.1:
-    resolution: {integrity: sha512-79l7F9kuQEJrMPwX96Q7dJjVtOaxxbldujmFcBLYuMn2n28q1OBLlvtAthWckZ6U/opPIxy4/cNrS8kOTiSrNw==}
+  h5wasm-plugins@0.3.0:
+    resolution: {integrity: sha512-0L3XSaNa44sWQYfyI6b8aNm4uORJaFV9Q/+6DY/4J7M8lyO7B7ZBZCh4D7BVHpIK5XrfensRWOnuXArugMqfaQ==}
     peerDependencies:
-      h5wasm: ^0.8.8
+      h5wasm: ^0.10.1
     peerDependenciesMeta:
       h5wasm:
         optional: true
@@ -7230,7 +7230,9 @@ snapshots:
 
   greenlet@1.1.0: {}
 
-  h5wasm-plugins@0.2.1: {}
+  h5wasm-plugins@0.3.0(h5wasm@0.10.1):
+    optionalDependencies:
+      h5wasm: 0.10.1
 
   h5wasm@0.10.1: {}
 

@@ -147,8 +147,9 @@ return:
 
 `@h5web/h5wasm` is capable of identifying and requesting the plugins supported
 by the
-[`h5wasm-plugins@0.2.0`](https://github.com/h5wasm/h5wasm-plugins/tree/v0.2.0)
-package: `blosc`, `blosc2`, `bshuf`, `bz2`, `jpeg`, `lz4`, `lzf`, `zfp`, `zstd`.
+[`h5wasm-plugins@0.3.0`](https://github.com/h5wasm/h5wasm-plugins/tree/v0.3.0)
+package: `blosc`, `blosc2`, `bshuf`, `bz2`, `jpeg`, `lz4`, `lzf`, `zfp`, `zstd`,
+`bitround`, `bitgroom`.
 
 A typical implementation of `getPlugin` in a bundled front-end application might
 look like this:
