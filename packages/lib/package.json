@@ -28,7 +28,6 @@
     "build:dts": "tsc --build tsconfig.build.json && rollup -c",
     "lint:eslint": "eslint --max-warnings=0",
     "lint:tsc": "tsc",
-    "analyze": "pnpm dlx source-map-explorer dist/index.js --no-border-checks",
     "sync-version": "dot-json ../../package.json version | xargs dot-json package.json version"
   },
   "peerDependencies": {

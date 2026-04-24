@@ -9,8 +9,7 @@
     "build": "vite build",
     "serve": "vite preview --port 5173",
     "lint:eslint": "eslint --max-warnings=0",
-    "lint:tsc": "tsc",
-    "analyze": "pnpm dlx source-map-explorer dist/assets/*.js --no-border-checks"
+    "lint:tsc": "tsc"
   },
   "dependencies": {
     "@h5web/app": "workspace:*",
@@ -30,6 +29,7 @@
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "6.0.1",
     "eslint": "9.39.2",
+    "sonda": "0.11.1",
     "typescript": "5.9.3",
     "vite": "8.0.7",
     "vite-css-modules": "1.15.0",
