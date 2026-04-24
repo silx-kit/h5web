@@ -27,7 +27,7 @@ import {
   getSilxStyle,
 } from './utils';
 
-export const useDefaultSlice = createMemo(getDefaultSlice);
+const useDefaultSlice = createMemo(getDefaultSlice);
 
 export function useNxData(group: GroupWithChildren): NxData {
   const { attrValuesStore } = useDataContext();

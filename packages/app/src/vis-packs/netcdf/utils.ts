@@ -81,7 +81,7 @@ export function createIgnoreFillValue(
 }
 
 // https://en.wikipedia.org/wiki/Machine_epsilon
-export function getEpsilon(floatSize: number): number {
+function getEpsilon(floatSize: number): number {
   if (floatSize === 16) {
     return 2 ** -10;
   }

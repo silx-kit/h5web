@@ -397,7 +397,7 @@ export function getUniforms(
   );
 }
 
-export function toArray(arr: NumArray): number[] {
+function toArray(arr: NumArray): number[] {
   return Array.isArray(arr) ? arr : [...arr];
 }
 

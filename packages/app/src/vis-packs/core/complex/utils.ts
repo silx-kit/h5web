@@ -34,7 +34,7 @@ export function getPhaseAmplitude(values: H5WebComplex[]): {
 }
 
 // Unwrap phase values by removing 2π discontinuities
-export function unwrapPhase(values: number[]): number[] {
+function unwrapPhase(values: number[]): number[] {
   const unwrapped: number[] = Array.from({ length: values.length });
 
   for (const [i, val] of values.entries()) {

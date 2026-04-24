@@ -146,7 +146,7 @@ export function findAuxErrorDataset(
   return dataset;
 }
 
-export function findAssociatedDatasets(
+function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals',
   attrValuesStore: AttrValuesStore,

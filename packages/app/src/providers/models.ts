@@ -20,8 +20,6 @@ export interface ValuesStoreParams {
   selection?: string | undefined;
 }
 
-export type ProgressCallback = (prog: number[]) => void;
-
 export type Fetcher = (
   url: string,
   params: Record<string, string>,
