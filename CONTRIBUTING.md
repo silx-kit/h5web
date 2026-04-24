@@ -216,6 +216,10 @@ another React component:
 - `pnpm serve:storybook` - serve the built Storybook at http://localhost:6006
 - `pnpm packages` - build packages (cf. details below)
 
+> Locally, `pnpm build` also generates a bundle analysis report with a tool
+> called [Sonda](https://sonda.dev/). The report opens automatically at the end
+> of the build and is stored under `apps/demo/.sonda`.
+
 ### Package builds
 
 The build process of `@h5web/lib` works as follows:
@@ -263,8 +267,6 @@ other packages can inline them in their own `dist/index.d.ts`.
   projects
 - `pnpm lint:root:tsc` - type-check files at the root of the monorepo
 - `pnpm lint:cypress:tsc` - type-check the `cypress` folder
-- `pnpm --filter @h5web/<lib|app> analyze` - analyze a package's bundle (run
-  only after building the package)
 - `pnpm --filter storybook exec storybook doctor` - diagnose problems with
   Storybook installation
 
