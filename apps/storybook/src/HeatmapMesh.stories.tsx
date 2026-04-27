@@ -9,11 +9,11 @@ import {
 import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES, toTypedNdArray } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 import ndarray from 'ndarray';
 import { LinearFilter, NearestFilter } from 'three';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const twoD = mockValues.twoD();
@@ -32,16 +32,11 @@ const mask = ndarray(
   [20, 41],
 );
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/HeatmapMesh',
   component: HeatmapMesh,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
-  args: {
-    invertColorMap: false,
-    magFilter: NearestFilter,
-    minFilter: NearestFilter,
-  },
   argTypes: {
     scaleType: {
       control: { type: 'inline-radio' },
@@ -52,22 +47,19 @@ const meta = {
         type: 'inline-radio',
         labels: { [NearestFilter]: 'nearest', [LinearFilter]: 'linear' },
       },
-      options: [NearestFilter, LinearFilter],
+      options: [NearestFilter, LinearFilter, undefined],
     },
     minFilter: {
       control: {
         type: 'inline-radio',
         labels: { [NearestFilter]: 'nearest', [LinearFilter]: 'linear' },
       },
-      options: [NearestFilter, LinearFilter],
+      options: [NearestFilter, LinearFilter, undefined],
     },
   },
-} satisfies Meta<typeof HeatmapMesh>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const [rows, cols] = args.values.shape;
 
@@ -87,40 +79,33 @@ export const Default = {
     scaleType: ScaleType.SymLog,
     colorMap: 'Inferno',
   },
-} satisfies Story;
+});
 
-export const HalfFloatTexture = {
-  ...Default,
+export const HalfFloatTexture = Default.extend({
   args: {
     values: uint16DataArray,
     domain: uint16Domain,
     scaleType: ScaleType.Linear,
     colorMap: 'Blues',
   },
-} satisfies Story;
+});
 
-export const LinearMagFilter = {
-  ...Default,
+export const LinearMagFilter = Default.extend({
   args: {
-    ...Default.args,
     magFilter: LinearFilter,
   },
-} satisfies Story;
+});
 
-export const BadColor = {
-  ...Default,
+export const BadColor = Default.extend({
   args: {
-    ...Default.args,
     domain: [0.1, 400],
     scaleType: ScaleType.Log,
     badColor: 'steelblue',
   },
-} satisfies Story;
+});
 
-export const Mask = {
-  ...Default,
+export const Mask = Default.extend({
   args: {
-    ...Default.args,
     mask,
   },
-} satisfies Story;
+});

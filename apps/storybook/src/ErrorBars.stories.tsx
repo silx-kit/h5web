@@ -7,14 +7,14 @@ import {
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const oneD = mockValues.oneD();
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/ErrorBars',
   component: ErrorBars,
   decorators: [FillHeight],
@@ -22,25 +22,15 @@ const meta = {
     layout: 'fullscreen',
     controls: { sort: 'requiredFirst' },
   },
-  args: {
-    abscissas: range(oneD.size),
-    ordinates: oneD.data,
-    errors: oneD.data.map(() => 10),
-    color: 'blue',
-    visible: true,
-  },
   argTypes: {
     abscissas: { control: false },
     ordinates: { control: false },
     errors: { control: false },
     color: { control: { type: 'color' } },
   },
-} satisfies Meta<typeof ErrorBars>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const { abscissas, ordinates, errors, ignoreValue } = args;
 
@@ -68,18 +58,22 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+  args: {
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
+    errors: oneD.data.map(() => 10),
+    color: 'blue',
+  },
+});
 
-export const Color = {
-  ...Default,
+export const Color = Default.extend({
   args: {
     color: 'red',
   },
-} satisfies Story;
+});
 
-export const IgnoreValue = {
-  ...Default,
+export const IgnoreValue = Default.extend({
   args: {
     ignoreValue: (val) => val % 5 === 0,
   },
-} satisfies Story;
+});

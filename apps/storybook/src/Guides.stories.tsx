@@ -5,21 +5,18 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Guides',
   component: Guides,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof Guides>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const [show, toggle] = useToggle(true);
 
@@ -43,18 +40,18 @@ export const Default = {
     top: 50,
     left: 60,
   },
-} satisfies Story;
+});
 
-export const HorizontalOnly = {
-  ...Default,
+export const HorizontalOnly = Default.extend({
   args: {
     top: 50,
+    left: undefined,
   },
-} satisfies Story;
+});
 
-export const VerticalOnly = {
-  ...Default,
+export const VerticalOnly = Default.extend({
   args: {
+    top: undefined,
     left: 60,
   },
-} satisfies Story;
+});

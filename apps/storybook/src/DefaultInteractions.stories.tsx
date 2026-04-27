@@ -9,13 +9,13 @@ import {
   useDomain,
   VisCanvas,
 } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const typedTwoD = toTypedNdArray(mockValues.twoD(), Float32Array);
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/DefaultInteractions',
   component: DefaultInteractions,
   decorators: [FillHeight],
@@ -29,12 +29,9 @@ const meta = {
     xSelectToZoom: { modifierKey: ['Control', 'Alt'] },
     ySelectToZoom: { modifierKey: ['Control', 'Shift'] },
   },
-} satisfies Meta<typeof DefaultInteractions>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const InsideAutoAspectCanvas = {
+export const InsideAutoAspectCanvas = meta.story({
   render: (args) => {
     const [rows, cols] = typedTwoD.shape;
     const domain = useDomain(typedTwoD);
@@ -58,9 +55,9 @@ export const InsideAutoAspectCanvas = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const InsideEqualAspectCanvas = {
+export const InsideEqualAspectCanvas = meta.story({
   render: (args) => {
     const [rows, cols] = typedTwoD.shape;
     const domain = useDomain(typedTwoD);
@@ -84,4 +81,4 @@ export const InsideEqualAspectCanvas = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});

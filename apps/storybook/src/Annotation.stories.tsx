@@ -6,13 +6,13 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { useRafState } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { type ReactNode } from 'react';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 import { formatCoord } from './utils';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Annotation',
   component: Annotation,
   parameters: {
@@ -31,17 +31,9 @@ const meta = {
     ),
     FillHeight,
   ],
-  args: {
-    overflowCanvas: false,
-    scaleOnZoom: false,
-    center: false,
-  },
-} satisfies Meta<typeof Annotation>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const { x, y, overflowCanvas, scaleOnZoom, center, style } = args;
 
@@ -89,46 +81,42 @@ export const Default = {
     x: 10,
     y: 16,
   },
-} satisfies Story;
+});
 
-export const OverflowCanvas = {
-  ...Default,
+export const OverflowCanvas = Default.extend({
   args: {
     x: 6,
     y: 16,
     overflowCanvas: true,
   },
-} satisfies Story;
+});
 
-export const Centered = {
-  ...Default,
+export const Centered = Default.extend({
   args: {
     x: 5,
     y: 14,
     center: true,
   },
-} satisfies Story;
+});
 
-export const ScaleOnZoom = {
-  ...Default,
+export const ScaleOnZoom = Default.extend({
   args: {
     x: 10,
     y: 16,
     scaleOnZoom: true,
   },
-} satisfies Story;
+});
 
-export const ScaleOnZoomCentered = {
-  ...Default,
+export const ScaleOnZoomCentered = Default.extend({
   args: {
     x: 10,
     y: 16,
     scaleOnZoom: true,
     center: true,
   },
-} satisfies Story;
+});
 
-export const FollowPointer = {
+export const FollowPointer = meta.story({
   render: (args) => (
     <PointerTracker>
       {(x, y) => (
@@ -149,7 +137,7 @@ export const FollowPointer = {
     x: { control: false },
     y: { control: false },
   },
-} satisfies Story;
+});
 
 interface PointerTrackerProps {
   children: (x: number, y: number) => ReactNode;

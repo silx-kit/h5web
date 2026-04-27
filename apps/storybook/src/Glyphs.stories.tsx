@@ -7,28 +7,20 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const oneD = mockValues.oneD();
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Glyphs',
   component: Glyphs,
   decorators: [FillHeight],
   parameters: {
     layout: 'fullscreen',
     controls: { sort: 'requiredFirst' },
-  },
-  args: {
-    abscissas: range(oneD.size),
-    ordinates: oneD.data,
-    glyphType: GlyphTypeEnum.Cross,
-    color: 'blue',
-    size: 6,
-    visible: true,
   },
   argTypes: {
     abscissas: { control: false },
@@ -39,12 +31,9 @@ const meta = {
     },
     color: { control: { type: 'color' } },
   },
-} satisfies Meta<typeof Glyphs>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const { abscissas, ordinates, ignoreValue } = args;
 
@@ -64,32 +53,33 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+  args: {
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
+    color: 'blue',
+  },
+});
 
-export const Color = {
-  ...Default,
+export const Color = Default.extend({
   args: {
     color: 'red',
   },
-} satisfies Story;
+});
 
-export const GlyphType = {
-  ...Default,
+export const GlyphType = Default.extend({
   args: {
     glyphType: GlyphTypeEnum.Square,
   },
-} satisfies Story;
+});
 
-export const Size = {
-  ...Default,
+export const Size = Default.extend({
   args: {
     size: 12,
   },
-} satisfies Story;
+});
 
-export const IgnoreValue = {
-  ...Default,
+export const IgnoreValue = Default.extend({
   args: {
     ignoreValue: (val) => val % 5 === 0,
   },
-} satisfies Story;
+});

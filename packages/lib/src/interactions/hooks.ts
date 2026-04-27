@@ -172,6 +172,7 @@ export function useModifierKeyPressed(
 
   function checkAllPressed() {
     const newAllPressed = modifierKeys.every((key) => pressedKeys.get(key));
+
     if (allPressed !== newAllPressed) {
       toggleAllPressed(newAllPressed);
     }

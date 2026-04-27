@@ -12,39 +12,34 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const oneD = mockValues.oneD();
 const typedTwoD = toTypedNdArray(mockValues.twoD(), Float32Array);
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/AxialSelectToZoom',
   component: AxialSelectToZoom,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-  args: {
-    axis: 'x',
-    modifierKey: [],
-    disabled: false,
-  },
   argTypes: {
-    axis: { control: { type: 'inline-radio' } },
+    axis: {
+      control: { type: 'inline-radio' },
+      options: ['x', 'y'],
+    },
     modifierKey: {
       control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} satisfies Meta<typeof AxialSelectToZoom>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-const Default = {
+export const XAxis = meta.story({
   render: (args) => {
-    const { modifierKey } = args;
+    const { modifierKey = [] } = args;
     const domain = useDomain(oneD);
     assertDefined(domain);
 
@@ -53,7 +48,7 @@ const Default = {
         abscissaConfig={{ visDomain: [0, oneD.size], showGrid: true }}
         ordinateConfig={{ visDomain: domain, showGrid: true }}
       >
-        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Pan modifierKey={modifierKey.length === 0 ? 'Control' : undefined} />
         <Zoom />
         <AxialSelectToZoom {...args} />
         <ResetZoomButton />
@@ -62,54 +57,45 @@ const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
-
-export const XAxis = {
-  ...Default,
   args: {
     axis: 'x',
   },
-} satisfies Story;
+});
 
-export const YAxis = {
-  ...Default,
+export const YAxis = XAxis.extend({
   args: {
     axis: 'y',
   },
-} satisfies Story;
+});
 
-export const ModifierKeyX = {
-  ...Default,
+export const ModifierKeyX = XAxis.extend({
   args: {
     axis: 'x',
     modifierKey: ['Alt'],
   },
-} satisfies Story;
+});
 
-export const MultipleModifierKeysY = {
-  ...Default,
+export const MultipleModifierKeysY = XAxis.extend({
   args: {
     axis: 'y',
     modifierKey: ['Control', 'Shift'],
   },
-} satisfies Story;
+});
 
-export const MinZoom = {
-  ...Default,
+export const MinZoom = XAxis.extend({
   args: {
     minZoom: 200,
   },
-} satisfies Story;
+});
 
-export const Disabled = {
-  ...Default,
+export const Disabled = XAxis.extend({
   args: {
     axis: 'x',
     disabled: true,
   },
-} satisfies Story;
+});
 
-export const DisabledInsideEqualAspectCanvas = {
+export const DisabledInsideEqualAspectCanvas = meta.story({
   render: (args) => {
     const [rows, cols] = typedTwoD.shape;
     const domain = useDomain(typedTwoD);
@@ -135,8 +121,11 @@ export const DisabledInsideEqualAspectCanvas = {
       </VisCanvas>
     );
   },
+  args: {
+    axis: 'x',
+  },
   argTypes: {
     modifierKey: { control: false },
     disabled: { control: false },
   },
-} satisfies Story;
+});

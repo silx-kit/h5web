@@ -1,7 +1,7 @@
-import { type StorybookConfig } from '@storybook/react-vite';
+import { defineMain } from '@storybook/react-vite/node';
 import remarkGfm from 'remark-gfm';
 
-const config: StorybookConfig = {
+export default defineMain({
   framework: '@storybook/react-vite',
   stories: ['../src/**/*.mdx', '../src/**/*.stories.tsx'],
   addons: [
@@ -14,7 +14,12 @@ const config: StorybookConfig = {
     },
     '@storybook/addon-links',
   ],
-  core: { disableTelemetry: true },
-};
-
-export default config;
+  core: {
+    // Use Vite config from `@h5web/lib` instead of Storybook's default to fix CSS modules
+    builder: {
+      name: '@storybook/builder-vite',
+      options: { viteConfigPath: '../../packages/lib/vite.config.js' },
+    },
+    disableTelemetry: true,
+  },
+});
