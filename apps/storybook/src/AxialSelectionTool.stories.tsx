@@ -10,22 +10,16 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/AxialSelectionTool',
   component: AxialSelectionTool,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-  args: {
-    axis: 'x',
-    disabled: false,
-    modifierKey: undefined,
-    children: undefined,
-  },
   argTypes: {
     axis: {
       control: { type: 'inline-radio' },
@@ -36,12 +30,9 @@ const meta = {
       options: ['Alt', 'Control', 'Shift', undefined],
     },
   },
-} satisfies Meta<typeof AxialSelectionTool>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-const Default = {
+export const XAxis = meta.story({
   render: (args) => {
     const { modifierKey } = args;
 
@@ -77,39 +68,31 @@ const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
-
-export const XAxis = {
-  ...Default,
   args: {
     axis: 'x',
   },
-} satisfies Story;
+});
 
-export const YAxis = {
-  ...Default,
+export const YAxis = XAxis.extend({
   args: {
     axis: 'y',
   },
-} satisfies Story;
+});
 
-export const Disabled = {
-  ...Default,
+export const Disabled = XAxis.extend({
   args: {
     disabled: true,
   },
-} satisfies Story;
+});
 
-export const WithModifierKey = {
-  ...Default,
+export const WithModifierKey = XAxis.extend({
   args: {
     modifierKey: 'Control',
   },
-} satisfies Story;
+});
 
-export const WithValidation = {
-  ...Default,
+export const WithValidation = XAxis.extend({
   args: {
     validate: ({ html }) => Box.fromPoints(...html).hasMinSize(200),
   },
-} satisfies Story;
+});

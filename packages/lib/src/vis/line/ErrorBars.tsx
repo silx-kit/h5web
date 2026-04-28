@@ -23,7 +23,7 @@ function ErrorBars(props: Props) {
     ordinates,
     errors,
     color,
-    visible = false,
+    visible = true,
     ignoreValue,
   } = props;
   const { abscissaScale, ordinateScale } = useVisCanvasContext();

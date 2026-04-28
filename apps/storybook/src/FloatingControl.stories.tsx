@@ -1,20 +1,17 @@
 import { DefaultInteractions, FloatingControl, VisCanvas } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Toolbar/FloatingControl',
   component: FloatingControl,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof FloatingControl>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: () => {
     const [isToggled, toggle] = useToggle(false);
     const [withTitle, toggleTitle] = useToggle(false);
@@ -43,4 +40,4 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});

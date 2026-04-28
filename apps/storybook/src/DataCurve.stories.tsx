@@ -10,15 +10,15 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 import { useState } from 'react';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const oneD = mockValues.oneD();
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/DataCurve',
   component: DataCurve,
   decorators: [FillHeight],
@@ -26,30 +26,32 @@ const meta = {
     layout: 'fullscreen',
     controls: { sort: 'requiredFirst' },
   },
-  args: {
-    abscissas: range(oneD.size),
-    ordinates: oneD.data,
-    curveType: CurveType.LineOnly,
-    color: 'blue',
-    materialProps: {},
-    visible: true,
-  },
   argTypes: {
     abscissas: { control: false },
     ordinates: { control: false },
     errors: { control: false },
     color: { control: { type: 'color' } },
+    curveType: {
+      control: { type: 'inline-radio' },
+      options: ['OnlyLine', 'OnlyGlyphs', 'LineAndGlyphs', undefined],
+    },
+    interpolation: {
+      control: { type: 'inline-radio' },
+      options: ['Linear', 'Constant', undefined],
+    },
+    glyphType: {
+      control: { type: 'inline-radio' },
+      options: ['Circle', 'Cross', 'Square', 'Cap', undefined],
+    },
+    ignoreValue: { control: false },
     materialProps: {
       control: 'object',
       description: 'Properties passed to the underlying Three.js material.',
     },
   },
-} satisfies Meta<typeof DataCurve>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const { abscissas, ordinates, errors, ignoreValue } = args;
 
@@ -72,75 +74,77 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+  args: {
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
+    color: 'blue',
+  },
+});
 
-export const Color = {
-  ...Default,
+export const Color = Default.extend({
   args: {
     color: 'black',
   },
-} satisfies Story;
+});
 
-export const Width = {
-  ...Default,
-  args: {
-    width: 3,
-  },
-} satisfies Story;
-
-export const ConstantInterpolation = {
-  ...Default,
-  args: {
-    interpolation: Interpolation.Constant,
-  },
-} satisfies Story;
-
-export const ConstantWithWidth = {
-  ...Default,
-  args: {
-    width: 3,
-    interpolation: Interpolation.Constant,
-  },
-} satisfies Story;
-
-export const Glyphs = {
-  ...Default,
+export const GlyphsOnly = Default.extend({
   args: {
     curveType: CurveType.GlyphsOnly,
   },
-} satisfies Story;
+});
 
-export const WithErrors = {
-  ...Default,
+export const LineAndGlyphs = Default.extend({
+  args: {
+    curveType: CurveType.LineAndGlyphs,
+  },
+});
+
+export const Width = Default.extend({
+  args: {
+    width: 3,
+  },
+});
+
+export const ConstantInterpolation = Default.extend({
+  args: {
+    interpolation: Interpolation.Constant,
+  },
+});
+
+export const ConstantWithWidth = Default.extend({
+  args: {
+    width: 3,
+    interpolation: Interpolation.Constant,
+  },
+});
+
+export const WithErrors = Default.extend({
   args: {
     errors: oneD.data.map(() => 10),
   },
-} satisfies Story;
+});
 
-export const GlyphType = {
-  ...Default,
+export const GlyphType = Default.extend({
   args: {
-    curveType: CurveType.LineAndGlyphs,
-    glyphType: GlyphTypeEnum.Circle,
+    curveType: CurveType.GlyphsOnly,
+    glyphType: GlyphTypeEnum.Square,
   },
-} satisfies Story;
+});
 
-export const GlyphSize = {
-  ...Default,
+export const GlyphSize = Default.extend({
   args: {
     curveType: CurveType.LineAndGlyphs,
     glyphSize: 10,
   },
-} satisfies Story;
+});
 
-export const IgnoreValue = {
-  ...Default,
+export const IgnoreValue = Default.extend({
   args: {
     ignoreValue: (val) => val % 5 === 0,
   },
-} satisfies Story;
+});
 
-export const Interactive = {
+export const Interactive = meta.story({
   render: (args) => {
     const [index, setIndex] = useState<number>();
     const [hoveredIndex, setHoveredIndex] = useState<number>();
@@ -160,7 +164,7 @@ export const Interactive = {
             ? `You clicked on point ${index} at (${abscissas[index]}, ${ordinates[index]})!`
             : 'Click on a point!'
         }
-        raycasterThreshold={6}
+        raycasterThreshold={20}
       >
         <DefaultInteractions />
         <DataCurve
@@ -186,7 +190,7 @@ export const Interactive = {
                 fill: color,
               }}
             >
-              <circle r={6} />
+              <circle r={10} />
             </svg>
           </Annotation>
         )}
@@ -194,7 +198,10 @@ export const Interactive = {
     );
   },
   args: {
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
+    color: 'blue',
     curveType: CurveType.LineAndGlyphs,
-    glyphType: GlyphTypeEnum.Circle,
+    glyphSize: 10,
   },
-} satisfies Story;
+});

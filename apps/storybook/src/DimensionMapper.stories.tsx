@@ -1,27 +1,20 @@
 import { DimensionMapper } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/DimensionMapper',
   component: DimensionMapper,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-  args: {
-    dimMapping: [],
-    onChange: () => {},
-  },
   argTypes: {
     dimMapping: { control: false },
   },
-} satisfies Meta<typeof DimensionMapper>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const { dimMapping: initialMapping, ...otherArgs } = args;
     const [dimMapping, setDimMapping] = useState(initialMapping);
@@ -42,61 +35,51 @@ export const Default = {
   args: {
     dims: [5, 10, 15],
     dimMapping: [2, 5, 'x'],
+    onChange: () => {},
   },
-} satisfies Story;
+});
 
-export const DimensionHints = {
-  ...Default,
+export const DimensionHints = Default.extend({
   args: {
-    ...Default.args,
     dimHints: [undefined, 'Threshold', 'Position (mm)'],
   },
-} satisfies Story;
+});
 
-export const FastSlicing = {
-  ...Default,
+export const FastSlicing = Default.extend({
   args: {
-    ...Default.args,
     canSliceFast: () => true,
   },
-} satisfies Story;
+});
 
-export const TwoAxes = {
-  ...Default,
+export const TwoAxes = Default.extend({
   args: {
-    ...Default.args,
     dimMapping: ['x', 5, 'y'],
   },
-} satisfies Story;
+});
 
-export const NoAxes = {
-  ...Default,
+export const NoAxes = Default.extend({
   args: {
-    ...Default.args,
     dimMapping: [0, 1, 2],
   },
-} satisfies Story;
+});
 
-export const SmallDimensions = {
-  ...Default,
+export const SmallDimensions = Default.extend({
   args: {
     dims: [1, 2, 3],
     dimMapping: [0, 0, 0],
   },
-} satisfies Story;
+});
 
-export const LargeDimensions = {
-  ...Default,
+export const LargeDimensions = Default.extend({
   args: {
     dims: [10_000, 100_000],
     dimMapping: [0, 99_999],
   },
-} satisfies Story;
+});
 
-export const ExtraDimensions = {
-  ...Default,
+export const LockedDimensions = Default.extend({
   args: {
     dims: [5, 10, 15, 20],
-    dimMapping: [0, 'x'],
+    dimMapping: [0, 'x', null, null],
   },
-} satisfies Story;
+});

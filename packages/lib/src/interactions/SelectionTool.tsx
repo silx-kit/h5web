@@ -39,7 +39,7 @@ interface Props extends CommonInteractionProps {
   ) => void;
   onSelectionEnd?: (selection: Selection | undefined, isValid: boolean) => void;
   onValidSelection?: (selection: Selection) => void;
-  children: (
+  children?: (
     selection: Selection,
     rawSelection: Selection,
     isValid: boolean,
@@ -214,7 +214,7 @@ function SelectionTool(props: Props) {
   }
 
   assertDefined(rawSelection);
-  return children(selection, rawSelection, isValid);
+  return children?.(selection, rawSelection, isValid);
 }
 
 export type { Props as SelectionToolProps };
