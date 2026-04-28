@@ -4,7 +4,7 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 const opts = detectOpts(import.meta.dirname);
 
 const config = defineConfig([
-  globalIgnores(['dist/', 'dist-ts/']),
+  globalIgnores(['dist/', 'dist-css/', 'dist-ts/']),
   ...createConfig(opts),
 ]);
 
