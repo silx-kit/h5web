@@ -1,9 +1,9 @@
 import { Overlay, Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Overlay',
   component: Overlay,
   decorators: [FillHeight],
@@ -12,12 +12,9 @@ const meta = {
     className: { control: false },
     style: { control: false },
   },
-} satisfies Meta<typeof Overlay>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     return (
       <VisCanvas
@@ -50,4 +47,4 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});

@@ -6,21 +6,15 @@ import {
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/Pan',
   component: Pan,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-  args: {
-    id: undefined,
-    button: [MouseButton.Left],
-    modifierKey: [],
-    disabled: false,
-  },
   argTypes: {
     id: { control: false },
     button: {
@@ -38,13 +32,11 @@ const meta = {
       control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
+    disabled: { control: { type: 'boolean' } },
   },
-} satisfies Meta<typeof Pan>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     return (
       <VisCanvas
@@ -58,51 +50,48 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+  args: {
+    button: [MouseButton.Left],
+  },
+});
 
-export const ModifierKey = {
-  ...Default,
+export const ModifierKey = Default.extend({
   args: {
     modifierKey: ['Shift'],
   },
-} satisfies Story;
+});
 
-export const MultipleModifierKey = {
-  ...Default,
+export const MultipleModifierKey = Default.extend({
   args: {
     modifierKey: ['Control', 'Shift'],
   },
-} satisfies Story;
+});
 
-export const MiddleButton = {
-  ...Default,
+export const MiddleButton = Default.extend({
   args: {
     button: [MouseButton.Middle],
   },
-} satisfies Story;
+});
 
-export const RightButton = {
-  ...Default,
+export const RightButton = Default.extend({
   args: {
     button: [MouseButton.Right],
   },
-} satisfies Story;
+});
 
-export const TwoButtons = {
-  ...Default,
+export const TwoButtons = Default.extend({
   args: {
     button: [MouseButton.Left, MouseButton.Middle],
   },
-} satisfies Story;
+});
 
-export const Disabled = {
-  ...Default,
+export const Disabled = Default.extend({
   args: {
     disabled: true,
   },
-} satisfies Story;
+});
 
-export const TwoComponents = {
+export const TwoComponents = meta.story({
   render: (args) => {
     return (
       <VisCanvas
@@ -128,4 +117,4 @@ export const TwoComponents = {
     button: { control: false },
     disabled: { control: false },
   },
-} satisfies Story;
+});
