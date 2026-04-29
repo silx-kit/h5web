@@ -8,20 +8,17 @@ import {
   TooltipMesh,
   VisCanvas,
 } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { Vector3 } from 'three';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   decorators: [FillHeight],
   tags: ['!dev'], // hide from sidebar (use in `Stacking.mdx` doc page only)
-} satisfies Meta;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: () => (
     <VisCanvas
       abscissaConfig={{ visDomain: [0, 41], showGrid: true }}
@@ -50,4 +47,4 @@ export const Default = {
       <TooltipMesh guides="both" renderTooltip={() => <>Tooltip</>} />
     </VisCanvas>
   ),
-} satisfies Story;
+});

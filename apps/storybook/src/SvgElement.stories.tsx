@@ -8,23 +8,19 @@ import {
   SvgRect,
   VisCanvas,
 } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { Vector3 } from 'three';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 import styles from './SvgElement.stories.module.css';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/SvgElement',
   component: SvgElement,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof SvgElement>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => (
     <VisCanvas
       abscissaConfig={{ visDomain: [0, 10], showGrid: true }}
@@ -65,4 +61,4 @@ export const Default = {
       </DataToHtml>
     </VisCanvas>
   ),
-} satisfies Story;
+});

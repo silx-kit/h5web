@@ -1,16 +1,16 @@
 import { getDomain, mockValues, SurfaceVis } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
-import { extend, type Node, useThree } from '@react-three/fiber';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
+import { extend, type Object3DNode, useThree } from '@react-three/fiber';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 extend({ OrbitControls });
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    orbitControls: Node<OrbitControls, typeof OrbitControls>;
+    orbitControls: Object3DNode<OrbitControls, typeof OrbitControls>;
   }
 }
 
@@ -18,20 +18,16 @@ const dataArray = createArrayFromView(mockValues.fourD().pick(0, 0));
 const domain = getDomain(dataArray.data);
 assertDefined(domain);
 
-const meta = {
+const meta = preview.meta({
   title: 'Experimental/SurfaceVis',
   component: SurfaceVis,
-  parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
   argTypes: {
     dataArray: { control: false },
   },
-} satisfies Meta<typeof SurfaceVis>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => (
     <SurfaceVis {...args}>
       <Controls />
@@ -41,7 +37,7 @@ export const Default = {
     dataArray,
     domain,
   },
-} satisfies Story;
+});
 
 function Controls() {
   const camera = useThree((state) => state.camera);

@@ -18,10 +18,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Line',
   component: Line,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
   argTypes: {
     abscissas: { control: false },
     ordinates: { control: false },

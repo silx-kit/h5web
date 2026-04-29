@@ -27,10 +27,6 @@ const meta = {
   title: 'Visualizations/HeatmapVis',
   component: HeatmapVis,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
   args: {
     dataArray: twoD,
     domain,

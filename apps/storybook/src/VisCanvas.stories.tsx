@@ -1,41 +1,37 @@
 import { ScaleType, VisCanvas } from '@h5web/lib';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
 import { format } from 'd3-format';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/VisCanvas',
   component: VisCanvas,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof VisCanvas>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const IndexDomains = {
+export const IndexDomains = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
     ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
   },
-} satisfies Story;
+});
 
-export const ArbitraryDomains = {
+export const ArbitraryDomains = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 3], showGrid: true },
     ordinateConfig: { visDomain: [50, 100], showGrid: true },
   },
-} satisfies Story;
+});
 
-export const NiceDomains = {
+export const NiceDomains = meta.story({
   args: {
     abscissaConfig: { visDomain: [-1.2, 2.8], showGrid: true, nice: true },
     ordinateConfig: { visDomain: [-1.2, 2.8], showGrid: true, nice: false },
   },
-} satisfies Story;
+});
 
-export const TickFormatters = {
+export const TickFormatters = meta.story({
   args: {
     abscissaConfig: {
       visDomain: [-1.2, 2.8],
@@ -50,9 +46,9 @@ export const TickFormatters = {
       formatTick: format('.2e'),
     },
   },
-} satisfies Story;
+});
 
-export const LogScales = {
+export const LogScales = meta.story({
   args: {
     abscissaConfig: {
       visDomain: [1, 10],
@@ -65,40 +61,40 @@ export const LogScales = {
       scaleType: ScaleType.SymLog,
     },
   },
-} satisfies Story;
+});
 
-export const EqualAspectRatio = {
+export const EqualAspectRatio = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 20], showGrid: true, isIndexAxis: true },
     ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
     aspect: 'equal',
   },
-} satisfies Story;
+});
 
-export const CustomAspectRatio = {
+export const CustomAspectRatio = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 20], showGrid: true, isIndexAxis: true },
     ordinateConfig: { visDomain: [0, 10], showGrid: true, isIndexAxis: true },
     aspect: 2,
   },
-} satisfies Story;
+});
 
-export const NoGrid = {
+export const NoGrid = meta.story({
   args: {
     abscissaConfig: { visDomain: [-5, 20], showGrid: false, isIndexAxis: true },
     ordinateConfig: { visDomain: [0, 2], showGrid: false },
   },
-} satisfies Story;
+});
 
-export const Title = {
+export const Title = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 3], showGrid: true, isIndexAxis: true },
     ordinateConfig: { visDomain: [50, 100], showGrid: true, isIndexAxis: true },
     title: 'This is a graph',
   },
-} satisfies Story;
+});
 
-export const AxisLabels = {
+export const AxisLabels = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 3], showGrid: true, label: 'Abscissas' },
     ordinateConfig: {
@@ -107,24 +103,24 @@ export const AxisLabels = {
       label: 'Ordinates',
     },
   },
-} satisfies Story;
+});
 
-export const FlippedAxes = {
+export const FlippedAxes = meta.story({
   args: {
     abscissaConfig: { visDomain: [0, 3], showGrid: true, flip: true },
     ordinateConfig: { visDomain: [50, 100], showGrid: true, flip: true },
   },
-} satisfies Story;
+});
 
-export const NoAxes = {
+export const NoAxes = meta.story({
   args: {
     abscissaConfig: { visDomain: [-5, 20], showGrid: true },
     ordinateConfig: { visDomain: [0, 2], showGrid: true },
     showAxes: false,
   },
-} satisfies Story;
+});
 
-export const InheritedStyles = {
+export const InheritedStyles = meta.story({
   args: {
     abscissaConfig: {
       visDomain: [0, 50],
@@ -141,7 +137,7 @@ export const InheritedStyles = {
     title: 'The title',
   },
   decorators: [
-    (VisCanvasStory: StoryFn) => (
+    (Story) => (
       <div
         style={{
           flex: '1 1 0%',
@@ -151,8 +147,8 @@ export const InheritedStyles = {
           fontSize: '1.125rem',
         }}
       >
-        <VisCanvasStory />
+        <Story />
       </div>
     ),
   ],
-} satisfies Story;
+});

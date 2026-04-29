@@ -13,35 +13,27 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { useThrottledState } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 import { getTitleForSelection } from './utils';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/SelectionTool',
   component: SelectionTool,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
-  args: {
-    modifierKey: [],
-    children: undefined,
-  },
   argTypes: {
     modifierKey: {
       control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} satisfies Meta<typeof SelectionTool>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Rectangle = {
+export const Rectangle = meta.story({
   render: (args) => {
-    const { modifierKey } = args;
+    const { modifierKey = [] } = args;
 
     const [activeSelection, setActiveSelection] = useThrottledState<
       Selection | undefined
@@ -53,7 +45,7 @@ export const Rectangle = {
         abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
         ordinateConfig={{ visDomain: [50, 100], showGrid: true }}
       >
-        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Pan modifierKey={modifierKey.length === 0 ? 'Control' : undefined} />
         <Zoom />
         <ResetZoomButton />
 
@@ -78,23 +70,21 @@ export const Rectangle = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const ModifierKey = {
-  ...Rectangle,
+export const ModifierKey = Rectangle.extend({
   args: {
-    modifierKey: 'Control',
+    modifierKey: ['Control'],
   },
-} satisfies Story;
+});
 
-export const Validation = {
-  ...Rectangle,
+export const Validation = Rectangle.extend({
   args: {
     validate: ({ html }) => Box.fromPoints(...html).hasMinSize(100),
   },
-} satisfies Story;
+});
 
-export const PersistedDataSelection = {
+export const PersistedDataSelection = meta.story({
   render: () => {
     const [persistedDataSelection, setPersistedDataSelection] =
       useState<Rect>();
@@ -137,9 +127,9 @@ export const PersistedDataSelection = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const LineWithLengthValidation = {
+export const LineWithLengthValidation = meta.story({
   render: () => {
     const [isValid, setValid] = useThrottledState<boolean | undefined>(
       undefined,
@@ -181,9 +171,9 @@ export const LineWithLengthValidation = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const RectWithTransform = {
+export const RectWithTransform = meta.story({
   render: () => (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
@@ -220,4 +210,4 @@ export const RectWithTransform = {
       </SelectionTool>
     </VisCanvas>
   ),
-} satisfies Story;
+});

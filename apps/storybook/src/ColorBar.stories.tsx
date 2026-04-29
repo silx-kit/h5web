@@ -20,9 +20,6 @@ const meta = {
     ),
     FillHeight,
   ],
-  parameters: {
-    layout: 'fullscreen',
-  },
   argTypes: {
     domain: { control: false },
     domainMin: {

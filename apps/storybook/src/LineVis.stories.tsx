@@ -32,10 +32,6 @@ const meta = {
   title: 'Visualizations/LineVis',
   component: LineVis,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
   args: {
     dataArray: oneD,
     domain: undefined, // compute dynamically in each story based on scale type, errors and auxiliaries

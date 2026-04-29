@@ -3,10 +3,12 @@ import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { useState } from 'react';
 
 import preview from '../.storybook/preview';
+import CenterTop from './decorators/CenterTop';
 
 const meta = preview.meta({
   title: 'Toolbar/Histogram',
   component: Histogram,
+  decorators: [CenterTop],
   argTypes: {
     scaleType: {
       control: { type: 'inline-radio' },
@@ -24,17 +26,27 @@ export const Default = meta.story({
     const [max, setMax] = useState(value[1]);
 
     return (
-      <>
-        <p style={{ marginTop: 0 }}>
-          Domain: [{min.toFixed(2)}, {max.toFixed(2)}]
-        </p>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem',
+        }}
+      >
         <Histogram
           {...otherArgs}
           value={[min, max]}
           onChangeMin={setMin}
           onChangeMax={setMax}
         />
-      </>
+        <p>
+          Domain:{' '}
+          <code>
+            [{min.toFixed(2)}, {max.toFixed(2)}]
+          </code>
+        </p>
+      </div>
     );
   },
   args: {

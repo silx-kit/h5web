@@ -10,12 +10,14 @@ import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useEffect, useState } from 'react';
 
+import CenterTop from './decorators/CenterTop';
 import styles from './DomainSlider.stories.module.css';
 import { formatDomain } from './utils';
 
 const meta = {
   title: 'Toolbar/DomainSlider',
   component: DomainSlider,
+  decorators: [CenterTop],
   argTypes: {
     value: { control: false },
     safeVisDomain: { control: false },
@@ -77,7 +79,7 @@ export const Default = {
             }}
           />
         </div>
-        <ul>
+        <ul className={styles.info}>
           <li>
             Data domain: <code>{formatDomain(dataDomain)}</code>
           </li>

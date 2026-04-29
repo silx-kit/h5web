@@ -14,21 +14,18 @@ import {
 import { type AxisScaleType } from '@h5web/shared/vis-models';
 import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryFn, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';
 import { MdGridOn } from 'react-icons/md';
 
-const meta = {
+import preview from '../.storybook/preview';
+
+const meta = preview.meta({
   title: 'Toolbar/Toolbar',
   component: Toolbar,
-  parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof Toolbar>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const [customDomain, setCustomDomain] = useState<CustomDomain>([
       null,
@@ -110,12 +107,11 @@ export const Default = {
       </>
     );
   },
-} satisfies Story;
+});
 
-export const Responsive = {
-  ...Default,
+export const Responsive = Default.extend({
   decorators: [
-    (Story: StoryFn) => (
+    (Story) => (
       <div
         style={{ maxWidth: '30rem', marginLeft: 'auto', marginRight: 'auto' }}
       >
@@ -123,10 +119,9 @@ export const Responsive = {
       </div>
     ),
   ],
-} satisfies Story;
+});
 
-export const DocumentInteractions = {
-  ...Default,
+export const WithInteractionsHelp = Default.extend({
   args: {
     interactions: [
       { shortcut: 'Wheel', description: 'Turn' },
@@ -134,11 +129,10 @@ export const DocumentInteractions = {
       { shortcut: 'Ctrl+Alt', description: 'Do a backflip' },
     ],
   },
-} satisfies Story;
+});
 
-export const OverflowChildren = {
-  ...Default,
+export const OverflowChildren = Default.extend({
   args: {
     overflowChildren: <Btn label="Some button" onClick={() => {}} />,
   },
-} satisfies Story;
+});

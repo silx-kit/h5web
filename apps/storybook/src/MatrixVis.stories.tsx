@@ -19,7 +19,6 @@ const meta = preview.meta({
   title: 'Visualizations/MatrixVis',
   component: MatrixVis,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
 });
 
 export const Default = meta.story({

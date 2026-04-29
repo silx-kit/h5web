@@ -7,7 +7,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Overlay',
   component: Overlay,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   argTypes: {
     className: { control: false },
     style: { control: false },

@@ -4,9 +4,12 @@ import { useToggle } from '@react-hookz/web';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useEffect, useState } from 'react';
 
+import CenterTop from './decorators/CenterTop';
+
 const meta = {
   title: 'Toolbar/DomainControls',
   component: DomainControls,
+  decorators: [CenterTop],
   argTypes: {
     sliderDomain: { control: false },
     errors: { control: false },

@@ -36,7 +36,6 @@ const meta = preview.meta({
   title: 'Building Blocks/HeatmapMesh',
   component: HeatmapMesh,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen', controls: { sort: 'requiredFirst' } },
   argTypes: {
     scaleType: {
       control: { type: 'inline-radio' },

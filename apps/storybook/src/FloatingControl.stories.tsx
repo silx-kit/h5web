@@ -8,7 +8,6 @@ const meta = preview.meta({
   title: 'Toolbar/FloatingControl',
   component: FloatingControl,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
 });
 
 export const Default = meta.story({

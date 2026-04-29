@@ -18,10 +18,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Glyphs',
   component: Glyphs,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
   argTypes: {
     abscissas: { control: false },
     ordinates: { control: false },

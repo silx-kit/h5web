@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { MdIcecream } from 'react-icons/md';
 
 import preview from '../.storybook/preview';
+import CenterTop from './decorators/CenterTop';
 
 type Option = 'Bar' | 'Baz';
 const OPTIONS: Option[] = ['Bar', 'Baz'];
@@ -10,6 +11,7 @@ const OPTIONS: Option[] = ['Bar', 'Baz'];
 const meta = preview.meta({
   title: 'Toolbar/Menu',
   component: Menu,
+  decorators: [CenterTop],
 });
 
 export const Default = meta.story({

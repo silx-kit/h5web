@@ -15,10 +15,6 @@ import { formatCoord } from './utils';
 const meta = preview.meta({
   title: 'Building Blocks/Annotation',
   component: Annotation,
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
   decorators: [
     (Story) => (
       <VisCanvas
