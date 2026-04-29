@@ -1,29 +1,21 @@
 import { Pan, ResetZoomButton, VisCanvas, Zoom } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/Zoom',
   component: Zoom,
-  parameters: { layout: 'fullscreen' },
   decorators: [FillHeight],
-  args: {
-    modifierKey: [],
-    disabled: false,
-  },
   argTypes: {
     modifierKey: {
       control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} satisfies Meta<typeof Zoom>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     return (
       <VisCanvas
@@ -36,25 +28,22 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const ModifierKey = {
-  ...Default,
+export const ModifierKey = Default.extend({
   args: {
     modifierKey: ['Control'],
   },
-} satisfies Story;
+});
 
-export const MultipleModifierKeys = {
-  ...Default,
+export const MultipleModifierKeys = Default.extend({
   args: {
     modifierKey: ['Control', 'Shift'],
   },
-} satisfies Story;
+});
 
-export const Disabled = {
-  ...Default,
+export const Disabled = Default.extend({
   args: {
     disabled: true,
   },
-} satisfies Story;
+});

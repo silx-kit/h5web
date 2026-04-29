@@ -2,10 +2,10 @@ import { getDomain, INTERPOLATORS, ScatterVis } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
 import { ScaleType } from '@h5web/shared/vis-models';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import ndarray from 'ndarray';
 import { useState } from 'react';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const abscissas = [
@@ -47,18 +47,10 @@ const dataArray = ndarray(data);
 const domain = getDomain(data);
 assertDefined(domain);
 
-const meta = {
+const meta = preview.meta({
   title: 'Visualizations/ScatterVis',
   component: ScatterVis,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
-  args: {
-    colorMap: 'Viridis',
-    showGrid: true,
-  },
   argTypes: {
     colorMap: {
       control: { type: 'select' },
@@ -66,70 +58,61 @@ const meta = {
     },
     scaleType: {
       control: { type: 'inline-radio' },
-      options: COLOR_SCALE_TYPES,
+      options: [...COLOR_SCALE_TYPES, undefined],
     },
   },
-} satisfies Meta<typeof ScatterVis>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   args: {
     abscissaParams: { value: abscissas },
     ordinateParams: { value: ordinates },
     dataArray,
     domain,
+    showGrid: true,
   },
-} satisfies Story;
+});
 
-export const TypedArray = {
+export const TypedArray = Default.extend({
   args: {
-    ...Default.args,
     dataArray: ndarray(Float32Array.from(data)),
   },
-} satisfies Story;
+});
 
-export const MarkerSize = {
+export const MarkerSize = Default.extend({
   args: {
-    ...Default.args,
     size: 20,
   },
-} satisfies Story;
+});
 
-export const ColorMap = {
+export const ColorMap = Default.extend({
   args: {
-    ...Default.args,
     colorMap: 'Rainbow',
   },
-} satisfies Story;
+});
 
-export const ColorScaleType = {
+export const ColorScaleType = Default.extend({
   args: {
-    ...Default.args,
     scaleType: ScaleType.SymLog,
   },
-} satisfies Story;
+});
 
-export const Labels = {
+export const Labels = Default.extend({
   args: {
-    ...Default.args,
     abscissaParams: { value: abscissas, label: 'Latitude' },
     ordinateParams: { value: ordinates, label: 'Longitude' },
     title: 'A Scatter vis',
   },
-} satisfies Story;
+});
 
-export const AxisScaleTypes = {
+export const AxisScaleTypes = Default.extend({
   args: {
-    ...Default.args,
     abscissaParams: { value: abscissas, scaleType: ScaleType.SymLog },
     ordinateParams: { value: ordinates, scaleType: ScaleType.Log },
   },
-} satisfies Story;
+});
 
-export const Click = {
-  ...Default,
+export const Click = Default.extend({
   render: (args) => {
     const [index, setIndex] = useState<number>();
 
@@ -145,4 +128,4 @@ export const Click = {
       />
     );
   },
-} satisfies Story;
+});

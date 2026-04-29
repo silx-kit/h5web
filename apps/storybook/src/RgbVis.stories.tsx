@@ -1,44 +1,41 @@
 import { ImageType, mockValues, RgbVis } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const rgbThreeD = mockValues.threeD_rgb();
 
-const meta = {
+const meta = preview.meta({
   title: 'Visualizations/RgbVis',
   component: RgbVis,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
-  args: {
-    dataArray: rgbThreeD,
-    aspect: 'equal',
-    showGrid: true,
-  },
   argTypes: {
     dataArray: { control: false },
     aspect: {
       control: { type: 'inline-radio' },
-      options: ['auto', 'equal', 0.25],
+      options: ['auto', 'equal', 0.25, undefined],
+    },
+    imageType: {
+      control: { type: 'inline-radio' },
+      options: ['RGB', 'BGR', undefined],
     },
   },
-} satisfies Meta<typeof RgbVis>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export const Default = meta.story({
+  args: {
+    dataArray: rgbThreeD,
+    showGrid: true,
+  },
+});
 
-export const Default = {} satisfies Story;
-
-export const BGR = {
+export const BGR = Default.extend({
   args: {
     imageType: ImageType.BGR,
   },
-} satisfies Story;
+});
 
-export const AxisValues = {
+export const AxisValues = Default.extend({
   args: {
     abscissaParams: {
       value: Array.from(
@@ -53,9 +50,9 @@ export const AxisValues = {
       ),
     },
   },
-} satisfies Story;
+});
 
-export const DescendingAxisValues = {
+export const DescendingAxisValues = Default.extend({
   args: {
     abscissaParams: {
       value: Array.from(
@@ -70,57 +67,56 @@ export const DescendingAxisValues = {
       ),
     },
   },
-} satisfies Story;
+});
 
-export const TypedArray = {
+export const TypedArray = Default.extend({
   args: {
     dataArray: mockValues.int8_rgb(),
   },
-} satisfies Story;
+});
 
-export const ChangeInteractionKeys = {
+export const ChangeInteractionKeys = Default.extend({
   args: {
     interactions: {
       pan: { modifierKey: 'Shift' },
-      selectToZoom: { modifierKey: 'Control' },
     },
   },
-} satisfies Story;
+});
 
-export const AutoAspectRatio = {
+export const AutoAspectRatio = Default.extend({
   args: {
     aspect: 'auto',
   },
-} satisfies Story;
+});
 
-export const CustomAspectRatio = {
+export const CustomAspectRatio = Default.extend({
   args: {
     aspect: 0.25,
   },
-} satisfies Story;
+});
 
-export const FlipXAxis = {
+export const FlipXAxis = Default.extend({
   args: {
     dataArray: rgbThreeD,
     flipXAxis: true,
   },
-} satisfies Story;
+});
 
-export const FlipYAxis = {
+export const FlipYAxis = Default.extend({
   args: {
     dataArray: rgbThreeD,
     flipYAxis: true,
   },
-} satisfies Story;
+});
 
-export const NoGrid = {
+export const NoGrid = Default.extend({
   args: {
     showGrid: false,
   },
-} satisfies Story;
+});
 
-export const WithTitle = {
+export const WithTitle = Default.extend({
   args: {
     title: 'RGB image',
   },
-} satisfies Story;
+});

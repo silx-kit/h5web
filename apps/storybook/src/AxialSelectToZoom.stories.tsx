@@ -24,7 +24,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Interactions/AxialSelectToZoom',
   component: AxialSelectToZoom,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   argTypes: {
     axis: {
       control: { type: 'inline-radio' },

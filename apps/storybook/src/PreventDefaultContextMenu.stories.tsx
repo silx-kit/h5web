@@ -15,7 +15,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Interactions/PreventDefaultContextMenu',
   component: PreventDefaultContextMenu,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   argTypes: {
     when: {
       control: { type: 'inline-check' },

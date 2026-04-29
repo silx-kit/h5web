@@ -13,7 +13,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Guides',
   component: Guides,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
 });
 
 export const Default = meta.story({

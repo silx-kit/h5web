@@ -15,7 +15,6 @@ import FillHeight from './decorators/FillHeight';
 const meta = preview.meta({
   title: 'Building Blocks/Html',
   component: Html,
-  parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
       <VisCanvas

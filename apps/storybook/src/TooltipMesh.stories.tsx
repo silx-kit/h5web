@@ -1,24 +1,20 @@
 import { DefaultInteractions, TooltipMesh, VisCanvas } from '@h5web/lib';
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/TooltipMesh',
   component: TooltipMesh,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   argTypes: {
     guides: {
       control: { type: 'inline-radio' },
-      options: ['horizontal', 'vertical', 'both'],
+      options: ['horizontal', 'vertical', 'both', undefined],
     },
   },
-} satisfies Meta<typeof TooltipMesh>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
+});
 
 interface TooltipContentProps {
   x: number;
@@ -40,7 +36,7 @@ function TooltipContent(props: TooltipContentProps) {
   );
 }
 
-export const Default = {
+export const Default = meta.story({
   render: (args) => (
     <VisCanvas
       abscissaConfig={{ visDomain: [-10, 0], showGrid: true }}
@@ -53,42 +49,38 @@ export const Default = {
   args: {
     renderTooltip: (x, y) => <TooltipContent x={x} y={y} />,
   },
-} satisfies Story;
+});
 
-export const HorizontalGuide = {
-  ...Default,
+export const HorizontalGuide = Default.extend({
   args: {
     guides: 'horizontal',
     renderTooltip: (x, y) => (
       <TooltipContent text='guides="horizontal"' x={x} y={y} />
     ),
   },
-} satisfies Story;
+});
 
-export const VerticalGuide = {
-  ...Default,
+export const VerticalGuide = Default.extend({
   args: {
     guides: 'vertical',
     renderTooltip: (x, y) => (
       <TooltipContent text='guides="vertical"' x={x} y={y} />
     ),
   },
-} satisfies Story;
+});
 
-export const BothGuides = {
-  ...Default,
+export const BothGuides = Default.extend({
   args: {
     guides: 'both',
     renderTooltip: (x, y) => (
       <TooltipContent text='guides="both"' x={x} y={y} />
     ),
   },
-} satisfies Story;
+});
 
-export const GuidesOnly = {
-  ...Default,
+export const GuidesOnly = Default.extend({
   args: {
     guides: 'both',
     renderTooltip: () => undefined,
   },
-} satisfies Story;
+});

@@ -8,7 +8,6 @@ const meta = preview.meta({
   title: 'Building Blocks/DimensionMapper',
   component: DimensionMapper,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   argTypes: {
     dimMapping: { control: false },
   },

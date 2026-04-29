@@ -5,21 +5,17 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Tooltip',
   component: Tooltip,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
-} satisfies Meta<typeof Tooltip>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const [show, toggle] = useToggle(true);
 
@@ -45,16 +41,14 @@ export const Default = {
     top: 50,
     left: 60,
   },
-} satisfies Story;
+});
 
-export const CustomStyle = {
-  ...Default,
+export const CustomStyle = Default.extend({
   args: {
-    ...Default.args,
     style: {
       fontSize: '120%',
       padding: '0.5rem 1rem',
       backgroundColor: 'lightblue',
     },
   },
-} satisfies Story;
+});

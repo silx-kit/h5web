@@ -19,7 +19,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Interactions/DefaultInteractions',
   component: DefaultInteractions,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   args: {
     pan: {},
     zoom: {},

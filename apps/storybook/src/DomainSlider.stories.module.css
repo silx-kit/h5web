@@ -1,13 +1,17 @@
 .root {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 
 .sliderWrapper {
   display: flex;
   height: 2.5rem;
   --h5w-domainSlider-track--width: 12rem;
+}
+
+.info {
+  min-width: 25em;
+  padding-left: 0;
 }
 
 .resetBtn {

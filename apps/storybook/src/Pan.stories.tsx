@@ -14,7 +14,6 @@ const meta = preview.meta({
   title: 'Building Blocks/Interactions/Pan',
   component: Pan,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
   argTypes: {
     id: { control: false },
     button: {

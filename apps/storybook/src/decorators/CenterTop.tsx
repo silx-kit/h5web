@@ -1,13 +1,13 @@
 import { type StoryFn } from '@storybook/react-vite';
 
-function DomainWidgetDecorator(Story: StoryFn) {
+function CenterTop(Story: StoryFn) {
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        minHeight: '16rem',
+        padding: '1.5rem',
       }}
     >
       <Story />
@@ -15,4 +15,4 @@ function DomainWidgetDecorator(Story: StoryFn) {
   );
 }
 
-export default DomainWidgetDecorator;
+export default CenterTop;

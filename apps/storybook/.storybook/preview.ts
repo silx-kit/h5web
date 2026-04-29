@@ -9,6 +9,8 @@ export default definePreview({
   addons: [addonDocs(), addonLinks()],
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: { sort: 'requiredFirst', disableSaveFromUI: true },
+    layout: 'fullscreen',
     options: {
       storySort: {
         order: [

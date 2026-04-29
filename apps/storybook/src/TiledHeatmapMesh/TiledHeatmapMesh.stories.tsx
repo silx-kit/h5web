@@ -43,10 +43,6 @@ const meta = {
   title: 'Experimental/TiledHeatmapMesh',
   component: TiledHeatmapMesh,
   decorators: [FillHeight],
-  parameters: {
-    layout: 'fullscreen',
-    controls: { sort: 'requiredFirst' },
-  },
   args: {
     invertColorMap: false,
     colorMap: 'Viridis',

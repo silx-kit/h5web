@@ -11,35 +11,27 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { ScaleType } from '@h5web/shared/vis-models';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const typedTwoD = toTypedNdArray(mockValues.twoD(), Float32Array);
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/SelectToZoom',
   component: SelectToZoom,
   decorators: [FillHeight],
-  parameters: { layout: 'fullscreen' },
-  args: {
-    modifierKey: [],
-    disabled: false,
-  },
   argTypes: {
     modifierKey: {
       control: { type: 'inline-check' },
       options: ['Alt', 'Control', 'Shift'],
     },
   },
-} satisfies Meta<typeof SelectToZoom>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const InsideAutoAspectCanvas = {
+export const InsideAutoAspectCanvas = meta.story({
   render: (args) => {
-    const { modifierKey } = args;
+    const { modifierKey = [] } = args;
     const [rows, cols] = typedTwoD.shape;
 
     const domain = useDomain(typedTwoD);
@@ -50,7 +42,7 @@ export const InsideAutoAspectCanvas = {
         abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
         ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
       >
-        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Pan modifierKey={modifierKey.length === 0 ? 'Control' : undefined} />
         <Zoom />
         <SelectToZoom {...args} />
         <ResetZoomButton />
@@ -64,11 +56,11 @@ export const InsideAutoAspectCanvas = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const InsideEqualAspectCanvas = {
+export const InsideEqualAspectCanvas = meta.story({
   render: (args) => {
-    const { modifierKey } = args;
+    const { modifierKey = [] } = args;
     const [rows, cols] = typedTwoD.shape;
 
     const domain = useDomain(typedTwoD);
@@ -80,7 +72,7 @@ export const InsideEqualAspectCanvas = {
         ordinateConfig={{ visDomain: [0, rows], showGrid: true }}
         aspect="equal"
       >
-        <Pan modifierKey={modifierKey?.length === 0 ? 'Control' : undefined} />
+        <Pan modifierKey={modifierKey.length === 0 ? 'Control' : undefined} />
         <Zoom />
         <SelectToZoom {...args} />
         <ResetZoomButton />
@@ -94,32 +86,28 @@ export const InsideEqualAspectCanvas = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const ModifierKey = {
-  ...InsideAutoAspectCanvas,
+export const ModifierKey = InsideAutoAspectCanvas.extend({
   args: {
     modifierKey: ['Control'],
   },
-} satisfies Story;
+});
 
-export const MultipleModifierKeys = {
-  ...InsideAutoAspectCanvas,
+export const MultipleModifierKeys = InsideAutoAspectCanvas.extend({
   args: {
     modifierKey: ['Control', 'Shift'],
   },
-} satisfies Story;
+});
 
-export const MinZoom = {
-  ...InsideAutoAspectCanvas,
+export const MinZoom = InsideAutoAspectCanvas.extend({
   args: {
     minZoom: 200,
   },
-} satisfies Story;
+});
 
-export const Disabled = {
-  ...InsideAutoAspectCanvas,
+export const Disabled = InsideAutoAspectCanvas.extend({
   args: {
     disabled: true,
   },
-} satisfies Story;
+});

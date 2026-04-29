@@ -3,12 +3,12 @@ import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import DomainWidgetDecorator from './decorators/DomainWidgetDecorator';
+import CenterTop from './decorators/CenterTop';
 
 const meta = {
   title: 'Toolbar/DomainWidget',
   component: DomainWidget,
-  decorators: [DomainWidgetDecorator],
+  decorators: [CenterTop],
   args: {
     customDomain: [null, null],
     onCustomDomainChange: () => {},

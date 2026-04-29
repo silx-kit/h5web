@@ -6,14 +6,14 @@ import {
   useDrag,
   VisCanvas,
 } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Vector3 } from 'three';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 import styles from './useDrag.stories.module.css';
 
-const meta = {
+const meta = preview.meta({
   title: 'Experimental/useDrag',
   decorators: [
     (Story) => (
@@ -28,13 +28,9 @@ const meta = {
     ),
     FillHeight,
   ],
-  parameters: { layout: 'fullscreen' },
-} satisfies Meta;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: () => {
     const [center, setCenter] = useState(() => new Vector3(2, 6));
 
@@ -62,4 +58,4 @@ export const Default = {
       </DataToHtml>
     );
   },
-} satisfies Story;
+});
