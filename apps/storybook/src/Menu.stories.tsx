@@ -1,20 +1,18 @@
 import { Checkbox, Menu, MenuSeparator, RadioGroup } from '@h5web/lib';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { MdIcecream } from 'react-icons/md';
+
+import preview from '../.storybook/preview';
 
 type Option = 'Bar' | 'Baz';
 const OPTIONS: Option[] = ['Bar', 'Baz'];
 
-const meta = {
+const meta = preview.meta({
   title: 'Toolbar/Menu',
   component: Menu,
-} satisfies Meta<typeof Menu>;
+});
 
-export default meta;
-type Story = StoryObj<typeof Menu>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const [option, setOption] = useState<Option>('Bar');
     const [checked, setChecked] = useState(true);
@@ -47,4 +45,4 @@ export const Default = {
     label: 'Icecream',
     Icon: MdIcecream,
   },
-} satisfies Story;
+});

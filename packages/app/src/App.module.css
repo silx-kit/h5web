@@ -4,6 +4,7 @@
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 1rem; /* ensures font-size inherits properly in tables and grids */
   line-height: 1.2;
   color: #020402;
 }

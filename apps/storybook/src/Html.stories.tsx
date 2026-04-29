@@ -6,13 +6,13 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { type PropsWithChildren, useState } from 'react';
 import { createPortal } from 'react-dom';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Html',
   component: Html,
   parameters: { layout: 'fullscreen' },
@@ -28,12 +28,9 @@ const meta = {
     ),
     FillHeight,
   ],
-} satisfies Meta<typeof Html>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: () => (
     <>
       <Html>
@@ -67,7 +64,7 @@ export const Default = {
   argTypes: {
     overflowCanvas: { control: false },
   },
-} satisfies Story;
+});
 
 function MyHtml({ children }: PropsWithChildren<object>) {
   const { canvasSize } = useVisCanvasContext();
@@ -127,7 +124,7 @@ function MyDiv() {
   );
 }
 
-export const OverflowCanvas = {
+export const OverflowCanvas = meta.story({
   render: (args) => {
     const { overflowCanvas } = args;
     return (
@@ -167,9 +164,9 @@ export const OverflowCanvas = {
   args: {
     overflowCanvas: true,
   },
-} satisfies Story;
+});
 
-export const Portal = {
+export const Portal = meta.story({
   render: () => {
     const { visCanvas } = useVisCanvasContext();
 
@@ -248,4 +245,4 @@ export const Portal = {
   argTypes: {
     overflowCanvas: { control: false },
   },
-} satisfies Story;
+});

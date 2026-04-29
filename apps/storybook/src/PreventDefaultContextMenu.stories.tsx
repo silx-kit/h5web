@@ -7,30 +7,24 @@ import {
   Zoom,
 } from '@h5web/lib';
 import { useToggle } from '@react-hookz/web';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Interactions/PreventDefaultContextMenu',
   component: PreventDefaultContextMenu,
   decorators: [FillHeight],
   parameters: { layout: 'fullscreen' },
-  args: {
-    when: undefined,
-  },
   argTypes: {
     when: {
       control: { type: 'inline-check' },
-      options: ['when-needed', 'always', 'never'],
+      options: ['when-needed', 'always', 'never', undefined],
     },
   },
-} satisfies Meta<typeof PreventDefaultContextMenu>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const WhenNeeded = {
+export const WhenNeeded = meta.story({
   render: (args) => {
     const [withRightBtn, toggleRightBtn] = useToggle(false);
 
@@ -53,18 +47,16 @@ export const WhenNeeded = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+});
 
-export const Always = {
-  ...WhenNeeded,
+export const Always = WhenNeeded.extend({
   args: {
     when: 'always',
   },
-} satisfies Story;
+});
 
-export const Never = {
-  ...WhenNeeded,
+export const Never = WhenNeeded.extend({
   args: {
     when: 'never',
   },
-} satisfies Story;
+});

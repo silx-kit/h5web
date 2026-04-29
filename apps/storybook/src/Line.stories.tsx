@@ -7,14 +7,14 @@ import {
   VisCanvas,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { range } from 'd3-array';
 
+import preview from '../.storybook/preview';
 import FillHeight from './decorators/FillHeight';
 
 const oneD = mockValues.oneD();
 
-const meta = {
+const meta = preview.meta({
   title: 'Building Blocks/Line',
   component: Line,
   decorators: [FillHeight],
@@ -22,23 +22,14 @@ const meta = {
     layout: 'fullscreen',
     controls: { sort: 'requiredFirst' },
   },
-  args: {
-    abscissas: range(oneD.size),
-    ordinates: oneD.data,
-    color: 'blue',
-    visible: true,
-  },
   argTypes: {
     abscissas: { control: false },
     ordinates: { control: false },
     color: { control: { type: 'color' } },
   },
-} satisfies Meta<typeof Line>;
+});
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default = {
+export const Default = meta.story({
   render: (args) => {
     const { abscissas, ordinates, ignoreValue } = args;
 
@@ -58,40 +49,40 @@ export const Default = {
       </VisCanvas>
     );
   },
-} satisfies Story;
+  args: {
+    abscissas: range(oneD.size),
+    ordinates: oneD.data,
+    color: 'blue',
+  },
+});
 
-export const Color = {
-  ...Default,
+export const Color = Default.extend({
   args: {
     color: 'purple',
   },
-} satisfies Story;
+});
 
-export const Width = {
-  ...Default,
+export const Width = Default.extend({
   args: {
     width: 3,
   },
-} satisfies Story;
+});
 
-export const ConstantInterpolation = {
-  ...Default,
+export const ConstantInterpolation = Default.extend({
   args: {
     interpolation: Interpolation.Constant,
   },
-} satisfies Story;
+});
 
-export const ConstantWithWidth = {
-  ...Default,
+export const ConstantWithWidth = Default.extend({
   args: {
     width: 3,
     interpolation: Interpolation.Constant,
   },
-} satisfies Story;
+});
 
-export const IgnoreValue = {
-  ...Default,
+export const IgnoreValue = Default.extend({
   args: {
     ignoreValue: (val) => val % 5 === 0,
   },
-} satisfies Story;
+});
