@@ -22,5 +22,5 @@ runs:
         restore-keys: ${{ runner.os }}-
 
     - name: Install dependencies ⚙️
-      run: pnpm install
+      run: pnpm ci
       shell: bash

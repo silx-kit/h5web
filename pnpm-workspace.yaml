@@ -7,30 +7,25 @@ packages:
 engineStrict: true
 
 # Use whichever pnpm version is available in the environment
-managePackageManagerVersions: false
+pmOnFail: ignore
 
 # Manage peer dependencies explicitly and predictibly
 strictPeerDependencies: true
 autoInstallPeers: false
 resolvePeersFromWorkspaceRoot: false
 
-# Fail install if any dependency has unapproved build scripts
-strictDepBuilds: true
+# Approve specific build scripts
 allowBuilds:
   cypress: true
   esbuild: true
 
-# Save exact dependency versions in `package.json`
-savePrefix: ''
-
-# Only install packages that are at least 2 days old
-minimumReleaseAge: 2880
+# Relax minimum release age protection for owned packages
 minimumReleaseAgeExclude:
   - '@h5web/*'
   - '@esrf/eslint-config'
 
-# Run install automatically if anything is out of date before running a script
-verifyDepsBeforeRun: 'install'
+# Save exact dependency versions in `package.json`
+savePrefix: ''
 
 # Every project must have these scripts in their `package.json`
 requiredScripts:
