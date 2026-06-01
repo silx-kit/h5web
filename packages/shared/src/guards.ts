@@ -645,8 +645,8 @@ export function isArrayOrVlenType(type: DType): type is ArrayType | VLenType {
 
 export function isComplexValue(
   type: DType,
-  value: unknown,
-): value is H5WebComplex | ComplexArray {
+  _value: unknown,
+): _value is H5WebComplex | ComplexArray {
   return type.class === DTypeClass.Complex;
 }
 

@@ -20,20 +20,20 @@
     "react-dom": "18.3.1",
     "react-dropzone": "15.0.0",
     "react-icons": "5.4.0",
-    "wouter": "3.9.0"
+    "wouter": "3.10.0"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "2.3.0",
+    "@esrf/eslint-config": "2.3.1",
     "@types/node": "^24.12.2",
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "6.0.1",
-    "eslint": "9.39.2",
+    "@vitejs/plugin-react": "6.0.2",
+    "eslint": "9.39.4",
     "sonda": "0.11.1",
     "typescript": "5.9.3",
-    "vite": "8.0.7",
-    "vite-css-modules": "1.15.0",
-    "vite-plugin-checker": "0.12.0",
+    "vite": "8.0.14",
+    "vite-css-modules": "1.16.0",
+    "vite-plugin-checker": "0.14.1",
     "vite-plugin-eslint": "1.8.1"
   }
 }

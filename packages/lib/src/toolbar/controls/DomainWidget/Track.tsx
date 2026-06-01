@@ -12,7 +12,7 @@ function Track(props: Props) {
   const { scale, dataDomain } = props;
 
   const [min, max] = dataDomain;
-  const cssScale = scale.copy().range([0, 100]) as Scale;
+  const cssScale = scale.copy().range([0, 100]);
 
   return (
     <div className={styles.track}>
