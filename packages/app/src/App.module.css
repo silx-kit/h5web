@@ -140,8 +140,7 @@
   opacity: 0;
 }
 
-.splitter:not([data-separator='inactive'])::before,
-.splitter:hover::before /* splitter becomes "inactive" after resizing even if still hovered */ {
+.splitter:hover::before {
   opacity: 1;
   transition-delay: 0.3s; /* delay showing (but not hiding) */
 }

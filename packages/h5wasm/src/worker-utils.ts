@@ -3,7 +3,7 @@ import {
   assertNonNull,
   isNumericType,
 } from '@h5web/shared/guards';
-import { H5T_CLASS, H5T_ORDER, type H5T_STR } from '@h5web/shared/h5t';
+import { H5T_CLASS, H5T_ORDER } from '@h5web/shared/h5t';
 import {
   type Attribute,
   type ChildEntity,
@@ -236,7 +236,7 @@ function parseDType(metadata: Metadata): DType {
 
   if (h5tClass === H5T_CLASS.STRING) {
     const { cset, strpad, vlen } = metadata;
-    return strType(cset, strpad as H5T_STR, vlen ? undefined : size);
+    return strType(cset, strpad, vlen ? undefined : size);
   }
 
   if (h5tClass === H5T_CLASS.BITFIELD) {
