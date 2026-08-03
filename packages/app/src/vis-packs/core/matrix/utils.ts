@@ -104,7 +104,9 @@ export function getCellWidth(
   }
 
   if (type.class === DTypeClass.String) {
-    return type.length !== undefined ? 12 * type.length : 300;
+    return type.length !== undefined && type.strPad !== 'space-padded'
+      ? 12 * type.length
+      : 300;
   }
 
   if (type.class === DTypeClass.Bool) {

@@ -133,6 +133,9 @@ export function makeMockFile(): GroupWithChildren {
         array('oneD'),
         array('oneD_linear'),
         array('oneD_bigint'),
+        array('oneD_string', {
+          type: strType(H5T_CSET.ASCII, H5T_STR.SPACEPAD, 256),
+        }),
         array('oneD_boolean'),
         array('oneD_enum', {
           type: enumType(intType(false, 8), ENUM_MAPPING),
