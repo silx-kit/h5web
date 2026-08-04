@@ -34,10 +34,10 @@
     "@react-three/fiber": "8.x",
     "@types/react": "18.x",
     "@types/react-dom": "18.x",
-    "@types/three": ">=0.138",
+    "@types/three": ">=0.138 <=0.182",
     "react": "18.x",
     "react-dom": "18.x",
-    "three": ">=0.138",
+    "three": ">=0.138 <=0.182",
     "typescript": ">=4.5"
   },
   "peerDependenciesMeta": {
