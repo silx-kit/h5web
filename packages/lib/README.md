@@ -30,8 +30,16 @@ separate `@types/` package.
 
 ## Getting started 🚀
 
+> [!WARNING]
+>
+> `@h5web/lib` requires the following peer deps:
+>
+> - React v18.*
+> - React-three-fiber v8.*
+> - three <= v0.182
+
 ```bash
-npm install @h5web/lib three @react-three/fiber ndarray
+npm install @h5web/lib "three<=0.182" @react-three/fiber@8 ndarray
 ```
 
 ```tsx
