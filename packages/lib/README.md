@@ -36,10 +36,9 @@ separate `@types/` package.
 >
 > - React v18.*
 > - React-three-fiber v8.*
-> - three <= v0.182
 
 ```bash
-npm install @h5web/lib "three<=0.182" @react-three/fiber@8 ndarray
+npm install @h5web/lib three @react-three/fiber@8 ndarray
 ```
 
 ```tsx
