@@ -104,7 +104,8 @@ export function getCellWidth(
   }
 
   if (type.class === DTypeClass.String) {
-    return type.length !== undefined ? 12 * type.length : 300;
+    // Use length from dtype if available, but with upper bound to avoid large empty cells with padded strings
+    return type.length !== undefined ? Math.min(12 * type.length, 300) : 300;
   }
 
   if (type.class === DTypeClass.Bool) {

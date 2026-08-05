@@ -127,6 +127,7 @@ export const mockValues = {
   oneD,
   oneD_linear: () => ndarray(range1()),
   oneD_bigint,
+  oneD_string: () => ndarray(range8().map((val) => 'A'.repeat(val))),
   oneD_complex,
   oneD_compound,
   oneD_boolean,
