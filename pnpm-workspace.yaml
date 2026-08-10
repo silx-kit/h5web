@@ -18,6 +18,7 @@ resolvePeersFromWorkspaceRoot: false
 allowBuilds:
   cypress: true
   esbuild: true
+  unrs-resolver: true
 
 # Relax minimum release age protection for owned packages
 minimumReleaseAgeExclude:

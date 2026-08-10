@@ -1,7 +1,7 @@
-import { ToggleGroup } from '@h5web/lib';
 import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { type Axis, type DimensionMapping } from '@h5web/shared/vis-models';
 
+import ToggleGroup from '../toolbar/controls/ToggleGroup/ToggleGroup';
 import styles from './DimensionMapper.module.css';
 
 interface Props {

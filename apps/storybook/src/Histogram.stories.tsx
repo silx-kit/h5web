@@ -1,5 +1,5 @@
 import { Histogram, ScaleType } from '@h5web/lib';
-import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
 import { useState } from 'react';
 
 import preview from '../.storybook/preview';

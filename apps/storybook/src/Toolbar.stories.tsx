@@ -11,8 +11,7 @@ import {
   ToggleGroup,
   Toolbar,
 } from '@h5web/lib';
-import { type AxisScaleType } from '@h5web/shared/vis-models';
-import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
+import { AXIS_SCALE_TYPES, type AxisScaleType } from '@h5web/shared/vis-models';
 import { useToggle } from '@react-hookz/web';
 import { useState } from 'react';
 import { FiTarget } from 'react-icons/fi';

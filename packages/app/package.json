@@ -68,7 +68,7 @@
     "zustand": "5.0.14"
   },
   "devDependencies": {
-    "@esrf/eslint-config": "2.3.1",
+    "@esrf/eslint-config": "3.1.0",
     "@h5web/shared": "workspace:*",
     "@rollup/plugin-alias": "6.0.0",
     "@types/node": "^24.13.2",
@@ -89,6 +89,7 @@
     "vite": "8.1.2",
     "vite-css-modules": "1.16.0",
     "vitest": "4.1.9",
-    "vitest-browser-react": "2.2.0"
+    "vitest-browser-react": "2.2.0",
+    "vitest-fail-on-console": "0.10.1"
   }
 }

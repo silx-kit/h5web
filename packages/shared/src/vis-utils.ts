@@ -12,9 +12,7 @@ import {
 } from './hdf5-models';
 import {
   type AnyNumArray,
-  type AxisScaleType,
   type Bounds,
-  type ColorScaleType,
   type Domain,
   type IgnoreValue,
   type NumArray,
@@ -23,18 +21,6 @@ import {
 } from './vis-models';
 
 export const SCALAR_SELECTION_REGEXP = /^\d+(?:,\d+)*$/u;
-
-export const AXIS_SCALE_TYPES: AxisScaleType[] = [
-  ScaleType.Linear,
-  ScaleType.Log,
-  ScaleType.SymLog,
-];
-export const COLOR_SCALE_TYPES: ColorScaleType[] = [
-  ScaleType.Linear,
-  ScaleType.Log,
-  ScaleType.SymLog,
-  ScaleType.Sqrt,
-];
 
 export const formatBound = format('.3~e');
 export const formatBoundInput = format('.5~e');

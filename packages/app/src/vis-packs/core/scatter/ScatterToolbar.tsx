@@ -7,7 +7,7 @@ import {
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
-import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
+import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
 import { MdGridOn } from 'react-icons/md';
 
 import { BASE_INTERACTIONS } from '../utils';

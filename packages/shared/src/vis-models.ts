@@ -51,6 +51,18 @@ export enum ScaleType {
 export type ColorScaleType = Exclude<ScaleType, 'gamma'>;
 export type AxisScaleType = Exclude<ScaleType, 'sqrt' | 'gamma'>;
 
+export const AXIS_SCALE_TYPES: AxisScaleType[] = [
+  ScaleType.Linear,
+  ScaleType.Log,
+  ScaleType.SymLog,
+];
+export const COLOR_SCALE_TYPES: ColorScaleType[] = [
+  ScaleType.Linear,
+  ScaleType.Log,
+  ScaleType.SymLog,
+  ScaleType.Sqrt,
+];
+
 export enum ComplexVisType {
   Amplitude = 'amplitude',
   Phase = 'phase',

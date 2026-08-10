@@ -10,6 +10,7 @@ export {
   createBasicFetcher,
   createAxiosFetcher,
   buildBasicAuthHeader,
+  FetcherError,
 } from './providers/utils';
 
 export {
