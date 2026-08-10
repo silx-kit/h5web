@@ -1,8 +1,8 @@
+import { aliasEntries } from '@h5web/shared/rollup.utils.js';
 import alias from '@rollup/plugin-alias';
 import { defineConfig } from 'rollup';
-import dts from 'rollup-plugin-dts';
+import { dts } from 'rollup-plugin-dts';
 
-import { aliasEntries } from '../shared/rollup.utils.js';
 import { externals } from './vite.config.js';
 
 export default defineConfig({

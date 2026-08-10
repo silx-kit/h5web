@@ -12,7 +12,7 @@ import {
 } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 
-import EntityList from './EntityList';
+import EntityList from './EntityList'; // eslint-disable-line import-x/no-cycle -- safe
 import styles from './Explorer.module.css';
 import NxBadge from './NxBadge';
 import {

@@ -6,11 +6,8 @@ import {
   mockValues,
   ScaleType,
 } from '@h5web/lib';
-import {
-  AXIS_SCALE_TYPES,
-  createArrayFromView,
-  toTypedNdArray,
-} from '@h5web/shared/vis-utils';
+import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-models';
+import { createArrayFromView, toTypedNdArray } from '@h5web/shared/vis-utils';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import ndarray from 'ndarray';
 
