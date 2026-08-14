@@ -18,33 +18,42 @@ export const COMPLEX_VIS_TYPE_LABELS = {
   [ComplexVisType.PhaseAmplitude]: 'Phase & Amplitude',
 } satisfies Record<ComplexVisType, string>;
 
+/* The output arrays are `Float64Array`s rather than `number[]`: an array built
+ * with `Array.from({ length })` is filled with `undefined`, which fixes its V8
+ * elements kind as `PACKED_ELEMENTS`, so every phase and amplitude written into
+ * it is boxed as a separate heap number. */
 export function getPhaseAmplitude(values: H5WebComplex[]): {
-  phase: number[];
-  amplitude: number[];
+  phase: NumArray;
+  amplitude: NumArray;
 } {
-  const phase: number[] = Array.from({ length: values.length });
-  const amplitude: number[] = Array.from({ length: values.length });
+  const phase = new Float64Array(values.length);
+  const amplitude = new Float64Array(values.length);
 
-  values.forEach(([real, imag], i) => {
+  /* Iterate by index: destructuring in a `forEach` callback allocates per
+   * element, which dominates the scan once the boxing is gone. */
+  // eslint-disable-next-line unicorn/no-for-loop -- see above
+  for (let i = 0; i < values.length; i += 1) {
+    const [real, imag] = values[i];
     phase[i] = Math.atan2(imag, real);
     amplitude[i] = Math.hypot(real, imag);
-  });
+  }
 
   return { phase, amplitude };
 }
 
 // Unwrap phase values by removing 2π discontinuities
-function unwrapPhase(values: number[]): number[] {
-  const unwrapped: number[] = Array.from({ length: values.length });
+function unwrapPhase(values: NumArray): NumArray {
+  const unwrapped = new Float64Array(values.length);
 
-  for (const [i, val] of values.entries()) {
-    if (i === 0) {
-      unwrapped[0] = val;
-      continue;
-    }
-
-    const diff = val - unwrapped[i - 1];
-    unwrapped[i] = val - TWO_PI * Math.round(diff / TWO_PI);
+  /* Carry the previous unwrapped value rather than reading it back, and index
+   * rather than using `values.entries()`, which allocates a pair per element. */
+  let previous = 0;
+  // eslint-disable-next-line unicorn/no-for-loop -- see above
+  for (let i = 0; i < values.length; i += 1) {
+    const val = values[i];
+    const diff = val - previous;
+    previous = i === 0 ? val : val - TWO_PI * Math.round(diff / TWO_PI);
+    unwrapped[i] = previous;
   }
 
   return unwrapped;
