@@ -1,4 +1,5 @@
 import { isTypedArray } from '@h5web/shared/guards';
+import { H5T_CLASS } from '@h5web/shared/h5t';
 import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { expose, transfer } from 'comlink';
 import { Attribute, Dataset, File as H5WasmFile } from 'h5wasm';
@@ -7,6 +8,7 @@ import {
   getAvailableFileName,
   initH5Wasm,
   mountWorkerFS,
+  parseComplexValue,
   parseEntity,
   PLUGINS_FOLDER,
   readSelectedValue,
@@ -69,7 +71,16 @@ async function getAttrValue(
   path: string,
   attrName: string,
 ): Promise<unknown> {
-  return new Attribute(fileId, path, attrName).json_value;
+  const attr = new Attribute(fileId, path, attrName);
+  const value = attr.json_value;
+
+  /* eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison --
+   * h5wasm types the class as a plain number */
+  if (attr.metadata.type === H5T_CLASS.COMPLEX) {
+    return parseComplexValue(value, attr.shape?.length === 0);
+  }
+
+  return value;
 }
 
 async function getDescendantPaths(
