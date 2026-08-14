@@ -15,6 +15,7 @@ export enum H5T_CLASS {
   ENUM = 8,
   VLEN = 9,
   ARRAY = 10,
+  COMPLEX = 11, // HDF5 2.0
 }
 
 export enum H5T_ORDER {
