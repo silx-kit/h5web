@@ -314,7 +314,7 @@ install the recommended extensions.
   without coverage)
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
-- `pnpm support:sample` - create `sample.h5`
+- `pnpm support:sample` - create `sample.h5` and `dimension_scales.h5`
 - `pnpm support:h5grove` - start h5grove support server
 
 We also use Cypress to run end-to-end and visual regression testing:

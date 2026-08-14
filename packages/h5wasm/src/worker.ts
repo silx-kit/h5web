@@ -1,5 +1,8 @@
 import { isTypedArray } from '@h5web/shared/guards';
-import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
+import {
+  type DimensionScales,
+  type ProvidedEntity,
+} from '@h5web/shared/hdf5-models';
 import { expose, transfer } from 'comlink';
 import { Attribute, Dataset, File as H5WasmFile } from 'h5wasm';
 
@@ -7,6 +10,7 @@ import {
   getAvailableFileName,
   initH5Wasm,
   mountWorkerFS,
+  parseDimensionScales,
   parseEntity,
   PLUGINS_FOLDER,
   readSelectedValue,
@@ -72,6 +76,16 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
+async function getDimensionScales(
+  fileId: bigint,
+  path: string,
+): Promise<DimensionScales> {
+  return parseDimensionScales(
+    new Dataset(fileId, path),
+    (scalePath) => new Dataset(fileId, scalePath),
+  );
+}
+
 async function getDescendantPaths(
   fileId: bigint,
   rootPath: string,
@@ -103,6 +117,7 @@ const api = {
   getEntity,
   getValue,
   getAttrValue,
+  getDimensionScales,
   getDescendantPaths,
   isPluginLoaded,
   loadPlugin,

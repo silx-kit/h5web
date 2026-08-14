@@ -87,6 +87,17 @@ export interface VirtualSource {
   path: string;
 }
 
+/* HDF5 dimension scales: https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_s__u_g.html
+ * The scale datasets attached to each of a dataset's dimensions, as recorded in
+ * its `DIMENSION_LIST` attribute. Dimension names come from the plain
+ * `DIMENSION_LABELS` attribute instead, so they need no provider support. */
+export interface DimensionScale {
+  path: string; // one of possibly several valid paths to the scale dataset (object references don't identify a single path)
+  name?: string; // scale name, as passed to `make_scale`
+}
+
+export type DimensionScales = DimensionScale[][]; // one array of attached scales per dimension
+
 /* --------------------- */
 /* ---- DEFINITIONS ---- */
 

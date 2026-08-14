@@ -2,6 +2,7 @@ import {
   type ArrayShape,
   type AttributeValues,
   type Dataset,
+  type DimensionScales,
   type Entity,
   type ProvidedEntity,
   type ScalarShape,
@@ -14,6 +15,7 @@ import {
 export type EntitiesStore = FetchStore<string, ProvidedEntity>;
 export type ValuesStore = FetchStore<ValuesStoreParams, unknown>;
 export type AttrValuesStore = FetchStore<Entity, AttributeValues>;
+export type DimScalesStore = FetchStore<Dataset, DimensionScales>;
 
 export interface ValuesStoreParams {
   dataset: Dataset<ScalarShape | ArrayShape>;

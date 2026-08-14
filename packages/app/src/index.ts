@@ -41,6 +41,7 @@ export type {
   ValuesStore,
   ValuesStoreParams,
   AttrValuesStore,
+  DimScalesStore,
   Fetcher,
   FetcherOptions,
 } from './providers/models';
@@ -66,6 +67,8 @@ export type {
   Attribute,
   Filter,
   VirtualSource,
+  DimensionScale,
+  DimensionScales,
 
   // Definition
   DatasetDef,
