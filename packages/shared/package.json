@@ -86,7 +86,7 @@
     "ndarray": "1.0.19",
     "ndarray-ops": "1.2.2",
     "react": "18.3.1",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "vitest": "4.1.9",
     "zustand": "5.0.14"
   }
