@@ -254,6 +254,7 @@ export const mockValues = {
   uint8: () => ndarray(Uint8Array.from(range7()), [2, 2]),
   int16: () => ndarray(Int16Array.from(range7()), [2, 2]),
   int64: () => ndarray(BigInt64Array.from(range7(), BigInt), [2, 2]),
+  float16: () => ndarray(Float16Array.from(range7()), [2, 2]),
   float32: () => ndarray(Float32Array.from(range7()), [2, 2]),
   float64: () => ndarray(Float64Array.from(range7()), [2, 2]),
   int8_rgb: () =>

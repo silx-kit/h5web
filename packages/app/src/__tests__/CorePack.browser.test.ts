@@ -123,6 +123,23 @@ test('visualize 2D dataset', async () => {
   expect(figure.getByLabelText('Max: 4e+2')).toBeVisible();
 });
 
+test('visualize 2D float16 dataset', async () => {
+  // Half-precision values reach the heatmap in a `Float16Array`, which has to
+  // survive `ndarray` and reach the GPU as a HALF_FLOAT texture.
+  const { selectVisTab } = await renderApp('/arrays/typed/float16');
+
+  expect(getVisTabs()).toEqual([Vis.Matrix, Vis.Line, Vis.Heatmap]);
+  expect(getSelectedVisTab()).toBe(Vis.Heatmap);
+
+  const figure = page.getByRole('figure', { name: 'float16' });
+  expect(figure).toBeVisible();
+  expect(figure.getByLabelText('Max: 3')).toBeVisible();
+
+  await selectVisTab(Vis.Matrix);
+  expect(page.getByText('1.000e+0').first()).toBeVisible();
+  expect(page.getByText('3.000e+0').first()).toBeVisible();
+});
+
 test('visualize 2D dataset as line', async () => {
   const { selectVisTab } = await renderApp('/arrays/twoD');
   await selectVisTab(Vis.Line);
