@@ -17,7 +17,7 @@ export type AttrValuesStore = FetchStore<Entity, AttributeValues>;
 
 export interface ValuesStoreParams {
   dataset: Dataset<ScalarShape | ArrayShape>;
-  selection?: string | undefined;
+  selection?: string | undefined; // if omitted or `undefined`, provider should return the full dataset
 }
 
 export type Fetcher = (

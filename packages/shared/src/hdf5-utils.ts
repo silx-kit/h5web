@@ -1,4 +1,4 @@
-import { isNumericType } from './guards';
+import { assertValue, isNumericType } from './guards';
 import {
   H5T_CSET,
   H5T_ORDER,
@@ -22,6 +22,8 @@ import {
   type FloatType,
   type GroupWithChildren,
   type H5WebComplex,
+  type HasShape,
+  type HasType,
   type IntegerType,
   type NullShape,
   type NumericType,
@@ -33,6 +35,7 @@ import {
   type StringType,
   type TimeType,
   type UnknownType,
+  type Value,
   type VLenType,
 } from './hdf5-models';
 
@@ -235,4 +238,23 @@ export function unknownType(): UnknownType {
 
 export function cplx(real: number, imag: number): H5WebComplex {
   return [real, imag];
+}
+
+export function getAssertedValue<
+  O extends HasShape<ArrayShape | ScalarShape> & HasType,
+>(value: unknown, obj: O): Value<O>;
+
+export function getAssertedValue<
+  O extends HasShape<ArrayShape | ScalarShape> & HasType,
+>(value: unknown, obj: O | undefined): Value<O> | undefined;
+
+export function getAssertedValue<
+  O extends HasShape<ArrayShape | ScalarShape> & HasType,
+>(value: unknown, obj: O | undefined): Value<O> | undefined {
+  if (obj) {
+    assertValue(value, obj);
+    return value;
+  }
+
+  return undefined;
 }

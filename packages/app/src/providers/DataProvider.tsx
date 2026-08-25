@@ -1,25 +1,62 @@
 import { isGroup } from '@h5web/shared/guards';
+import {
+  type ArrayShape,
+  type Dataset,
+  type ScalarShape,
+} from '@h5web/shared/hdf5-models';
 import { getNameFromPath } from '@h5web/shared/hdf5-utils';
 import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
+import {
+  hashKey,
+  QueryClient,
+  QueryClientProvider,
+  queryOptions,
+} from '@tanstack/react-query';
 import {
   createContext,
   type PropsWithChildren,
   useContext,
   useMemo,
+  useState,
 } from 'react';
 
 import { type DataProviderApi } from './api';
+import { type AttrValuesStore, type EntitiesStore } from './models';
 import {
-  type AttrValuesStore,
-  type EntitiesStore,
-  type ValuesStore,
-} from './models';
+  createProgressStore,
+  type ProgressStore,
+  trackProgress,
+} from './progress-store';
+
+function getQueryOptionsFactories(
+  api: DataProviderApi,
+  scope: string,
+  progressStore: ProgressStore,
+) {
+  return {
+    value: (dataset: Dataset<ScalarShape | ArrayShape>, selection?: string) => {
+      const queryKey = [scope, 'value', dataset.path, selection] as const;
+      const queryHash = hashKey(queryKey);
+
+      return queryOptions({
+        queryKey,
+        queryFn: async ({ signal }) => {
+          return trackProgress(progressStore, queryHash, async (onProgress) => {
+            return api.getValue({ dataset, selection }, signal, onProgress);
+          });
+        },
+      });
+    },
+  };
+}
 
 export interface DataContextValue {
   filepath: string;
   filename: string;
+  queries: ReturnType<typeof getQueryOptionsFactories>;
+  queryClient: QueryClient;
+  progressStore: ProgressStore;
   entitiesStore: EntitiesStore;
-  valuesStore: ValuesStore;
   attrValuesStore: AttrValuesStore;
 
   // Undocumented
@@ -39,6 +76,23 @@ interface Props {
 
 function DataProvider(props: PropsWithChildren<Props>) {
   const { api, children } = props;
+
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            networkMode: 'always', // always fire queries regardless of online/offline status
+            staleTime: 'static', // never ever refetch cached data
+            gcTime: 15 * 60 * 1000, // keep cached data with no active queries for 15 min
+            retry: false, // never retry fetching automatically on error
+            structuralSharing: false, // not relevant since data is never refetched
+          },
+        },
+      }),
+  );
+
+  const [progressStore] = useState(createProgressStore);
 
   const entitiesStore = useMemo(() => {
     const store = createFetchStore(async (path: string) => {
@@ -60,12 +114,6 @@ function DataProvider(props: PropsWithChildren<Props>) {
     return store;
   }, [api]);
 
-  const valuesStore = useMemo(() => {
-    return createFetchStore(api.getValue.bind(api), (a, b) => {
-      return a.dataset.path === b.dataset.path && a.selection === b.selection;
-    });
-  }, [api]);
-
   const attrValuesStore = useMemo(() => {
     return createFetchStore(
       api.getAttrValues.bind(api),
@@ -73,20 +121,26 @@ function DataProvider(props: PropsWithChildren<Props>) {
     );
   }, [api]);
 
+  const value = useMemo(() => {
+    const { filepath } = api;
+
+    return {
+      filepath,
+      filename: getNameFromPath(filepath),
+      queries: getQueryOptionsFactories(api, filepath, progressStore),
+      queryClient,
+      progressStore,
+      entitiesStore,
+      attrValuesStore,
+      getExportURL: api.getExportURL?.bind(api),
+      getSearchablePaths: api.getSearchablePaths?.bind(api),
+    };
+  }, [api, entitiesStore, attrValuesStore, queryClient, progressStore]);
+
   return (
-    <DataContext.Provider
-      value={{
-        filepath: api.filepath,
-        filename: getNameFromPath(api.filepath),
-        entitiesStore,
-        valuesStore,
-        attrValuesStore,
-        getExportURL: api.getExportURL?.bind(api),
-        getSearchablePaths: api.getSearchablePaths?.bind(api),
-      }}
-    >
-      {children}
-    </DataContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <DataContext.Provider value={value}>{children}</DataContext.Provider>
+    </QueryClientProvider>
   );
 }
 

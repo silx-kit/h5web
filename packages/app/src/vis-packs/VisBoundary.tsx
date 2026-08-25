@@ -13,15 +13,19 @@ interface Props {
 
 function VisBoundary(props: PropsWithChildren<Props>) {
   const { resetKey, isSlice, children } = props;
-  const { valuesStore } = useDataContext();
+  const { queryClient } = useDataContext();
 
   return (
     <ErrorBoundary
+      resetKeys={[resetKey]}
       fallbackRender={(args) => (
         <ErrorFallback className={visualizerStyles.vis} {...args} />
       )}
-      resetKeys={[resetKey]}
-      onError={() => valuesStore.evictErrors()}
+      onError={() => {
+        queryClient.removeQueries({
+          predicate: (query) => query.state.status === 'error',
+        });
+      }}
     >
       <Suspense fallback={<ValueLoader isSlice={isSlice} />}>
         {children}
