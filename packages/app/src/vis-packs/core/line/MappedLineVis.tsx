@@ -1,7 +1,6 @@
 import {
   type DimensionMapping,
   getSliceSelection,
-  type IgnoreValue,
   KeepZoom,
   LineVis,
   useCombinedDomain,
@@ -25,6 +24,7 @@ import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useNcIgnoreValue } from '../../netcdf/hooks';
 import {
   useExportEntries,
   useMappedArray,
@@ -53,7 +53,6 @@ interface Props {
   title: string;
   toolbarContainer?: HTMLDivElement | undefined;
   config: LineConfig;
-  ignoreValue?: IgnoreValue;
 }
 
 function MappedLineVis(props: Props) {
@@ -73,7 +72,6 @@ function MappedLineVis(props: Props) {
     title,
     toolbarContainer,
     config,
-    ignoreValue,
   } = props;
 
   const {
@@ -85,6 +83,8 @@ function MappedLineVis(props: Props) {
     showErrors,
     interpolation,
   } = config;
+
+  const ignoreValue = useNcIgnoreValue(dataset);
 
   const { dims } = dataset.shape;
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);

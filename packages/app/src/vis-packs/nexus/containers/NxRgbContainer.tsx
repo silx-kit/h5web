@@ -2,11 +2,11 @@ import { DimensionMapper, getSliceSelection } from '@h5web/lib';
 import { assertGroup, assertMinDims } from '@h5web/shared/guards';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
-import { useDataContext } from '../../../providers/DataProvider';
+import { useAttrValue } from '../../../hooks';
+import { findScalarStrAttr } from '../../../utils';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useRgbConfig } from '../../core/rgb/config';
 import MappedRgbVis from '../../core/rgb/MappedRgbVis';
-import { assertImageSubclassIfPresent } from '../../core/rgb/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericNxData } from '../guards';
@@ -23,8 +23,11 @@ function NxRgbContainer(props: VisContainerProps) {
   const { signalDef, axisDefs, defaultSlice } = nxData;
   assertMinDims(signalDef.dataset, 3);
 
-  const { attrValuesStore } = useDataContext();
-  assertImageSubclassIfPresent(signalDef.dataset, attrValuesStore);
+  const subClassAttr = findScalarStrAttr(entity, 'IMAGE_SUBCLASS');
+  const imageSubClass = useAttrValue(entity, subClassAttr);
+  if (subClassAttr && imageSubClass !== 'IMAGE_TRUECOLOR') {
+    throw new Error('RGB visualization supports only IMAGE_TRUECOLOR');
+  }
 
   const { dims } = signalDef.dataset.shape;
   const [dimMapping, setDimMapping] = useDimMappingState({

@@ -10,27 +10,27 @@ import {
   type NumericType,
 } from '@h5web/shared/hdf5-models';
 
-import { type AttrValuesStore } from '../../providers/models';
+import { type DataContextValue } from '../../providers/DataProvider';
 import {
   findAttribute,
   findScalarNumAttr,
   getAttributeValue,
 } from '../../utils';
 
-export function getValidRange(
+export async function getValidRange(
   dataset: Dataset<ArrayShape, NumericType>,
-  attrValuesStore: AttrValuesStore,
-): [number, number] | undefined {
+  dataContext: DataContextValue,
+): Promise<[number, number] | undefined> {
   const minAttr = findScalarNumAttr(dataset, 'valid_min');
   const maxAttr = findScalarNumAttr(dataset, 'valid_max');
 
   if (minAttr || maxAttr) {
     const min = minAttr
-      ? getAttributeValue(dataset, minAttr, attrValuesStore)
+      ? await getAttributeValue(dataset, minAttr, dataContext)
       : -Infinity;
 
     const max = maxAttr
-      ? getAttributeValue(dataset, maxAttr, attrValuesStore)
+      ? await getAttributeValue(dataset, maxAttr, dataContext)
       : Infinity;
 
     return [Number(min), Number(max)];
@@ -39,7 +39,7 @@ export function getValidRange(
   const rangeAttr = findAttribute(dataset, 'valid_range');
 
   if (rangeAttr && hasArrayShape(rangeAttr) && hasNumericType(rangeAttr)) {
-    const range = getAttributeValue(dataset, rangeAttr, attrValuesStore);
+    const range = await getAttributeValue(dataset, rangeAttr, dataContext);
 
     if (range.length === 2) {
       const [min, max] = range;
@@ -50,14 +50,14 @@ export function getValidRange(
   return undefined;
 }
 
-export function getFillValue(
+export async function getFillValue(
   dataset: Dataset,
-  attrValuesStore: AttrValuesStore,
-): number | undefined {
+  dataContext: DataContextValue,
+): Promise<number | undefined> {
   const fillValueAttr = findScalarNumAttr(dataset, '_FillValue');
 
   return fillValueAttr
-    ? Number(getAttributeValue(dataset, fillValueAttr, attrValuesStore))
+    ? Number(await getAttributeValue(dataset, fillValueAttr, dataContext))
     : undefined;
 }
 

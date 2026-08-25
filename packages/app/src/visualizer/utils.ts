@@ -1,4 +1,4 @@
-import { isDataset, isGroup } from '@h5web/shared/guards';
+import { isDataset, isDefined, isGroup } from '@h5web/shared/guards';
 import {
   type ChildEntity,
   type Dataset,
@@ -7,7 +7,7 @@ import {
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
-import { type AttrValuesStore, type EntitiesStore } from '../providers/models';
+import { type DataContextValue } from '../providers/DataProvider';
 import { findScalarStrAttr, getAttributeValue } from '../utils';
 import {
   CORE_VIS,
@@ -23,42 +23,53 @@ import {
 } from '../vis-packs/nexus/utils';
 import { NX_DATA_VIS, NX_NOTE_VIS } from '../vis-packs/nexus/visualizations';
 
-export function resolvePath(
+export async function resolvePath(
   path: string,
-  entitiesStore: EntitiesStore,
-  attrValuesStore: AttrValuesStore,
-):
-  | { entity: ProvidedEntity; supportedVis: VisDef[]; primaryVis?: VisDef }
-  | undefined {
-  const entity = entitiesStore.get(path);
+  dataContext: DataContextValue,
+): Promise<{
+  entity: ProvidedEntity;
+  supportedVis: VisDef[];
+  primaryVis?: VisDef;
+} | null> {
+  const { queryClient, queries } = dataContext;
+  const entity = await queryClient.query(queries.entity(path));
 
   if (isDataset(entity)) {
-    const supportedVis = getSupportedCoreVis(entity, attrValuesStore);
-    return supportedVis.length > 0 ? { entity, supportedVis } : undefined;
+    const supportedVis = await getSupportedCoreVis(entity, dataContext);
+    return supportedVis.length > 0 ? { entity, supportedVis } : null;
   }
 
   if (!isGroup(entity)) {
-    return undefined;
+    return null;
   }
 
-  if (isNxNoteGroup(entity, attrValuesStore)) {
+  if (await isNxNoteGroup(entity, dataContext)) {
     return { entity, supportedVis: [NX_NOTE_VIS] };
   }
 
-  if (isNxDataGroup(entity, attrValuesStore)) {
-    const signal = findSignalDataset(entity, attrValuesStore);
+  if (await isNxDataGroup(entity, dataContext)) {
+    const signal = await findSignalDataset(entity, dataContext);
 
     const interpretationAttr = findScalarStrAttr(signal, 'interpretation');
-    const interpretation = getAttributeValue(
+    const interpretation = await getAttributeValue(
       signal,
       interpretationAttr,
-      attrValuesStore,
+      dataContext,
     );
 
-    const supportedVis = Object.values(NX_DATA_VIS).filter((vis) =>
-      vis.supports(entity, signal, interpretation, attrValuesStore),
+    const results = await Promise.all(
+      Object.values(NX_DATA_VIS).map(async (vis) => {
+        const supported = await vis.supports(
+          entity,
+          signal,
+          interpretation,
+          dataContext,
+        );
+        return supported ? vis : undefined;
+      }),
     );
 
+    const supportedVis = results.filter(isDefined);
     if (supportedVis.length > 0) {
       return {
         entity,
@@ -68,21 +79,27 @@ export function resolvePath(
     }
   }
 
-  const nxDefaultPath = getNxDefaultPath(entity, attrValuesStore);
+  const nxDefaultPath = await getNxDefaultPath(entity, dataContext);
   if (nxDefaultPath) {
-    return resolvePath(nxDefaultPath, entitiesStore, attrValuesStore);
+    return resolvePath(nxDefaultPath, dataContext);
   }
 
-  return undefined;
+  return null;
 }
 
-function getSupportedCoreVis(
+async function getSupportedCoreVis(
   dataset: Dataset,
-  attrValuesStore: AttrValuesStore,
-): CoreVisDef[] {
-  const supportedVis = Object.values(CORE_VIS).filter((vis) =>
-    vis.supportsDataset(dataset, attrValuesStore),
+  dataContext: DataContextValue,
+): Promise<CoreVisDef[]> {
+  const results = await Promise.all(
+    Object.values(CORE_VIS).map(async (vis) => {
+      return (await vis.supportsDataset(dataset, dataContext))
+        ? vis
+        : undefined;
+    }),
   );
+
+  const supportedVis = results.filter(isDefined);
 
   // Remove `Scalar` vis unless it's the only supported vis
   return supportedVis.length > 1
@@ -90,25 +107,26 @@ function getSupportedCoreVis(
     : supportedVis;
 }
 
-function getNxDefaultPath(
+async function getNxDefaultPath(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): string | undefined {
+  dataContext: DataContextValue,
+): Promise<string | undefined> {
   const defaultAttr = findScalarStrAttr(group, 'default');
   if (!defaultAttr) {
-    return getImplicitDefaultChild(group.children, attrValuesStore)?.path;
+    const child = await getImplicitDefaultChild(group.children, dataContext);
+    return child?.path;
   }
 
-  const defaultPath = getAttributeValue(group, defaultAttr, attrValuesStore);
+  const defaultPath = await getAttributeValue(group, defaultAttr, dataContext);
   return defaultPath.startsWith('/')
     ? defaultPath
     : buildEntityPath(group.path, defaultPath);
 }
 
-function getImplicitDefaultChild(
+async function getImplicitDefaultChild(
   children: ChildEntity[],
-  attrValuesStore: AttrValuesStore,
-): ChildEntity | undefined {
+  dataContext: DataContextValue,
+): Promise<ChildEntity | undefined> {
   let firstNxEntry: ChildEntity | undefined;
   let firstNxProcess: ChildEntity | undefined;
 
@@ -118,7 +136,7 @@ function getImplicitDefaultChild(
     }
 
     // Use first `NXdata` child group
-    const nxClass = getNxClass(child, attrValuesStore);
+    const nxClass = await getNxClass(child, dataContext); // eslint-disable-line no-await-in-loop -- stop at first `NXdata` group found
     if (nxClass === 'NXdata') {
       return child;
     }
