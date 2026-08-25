@@ -6,6 +6,7 @@ import {
   type ScalarShape,
   type ScalarValue,
 } from '@h5web/shared/hdf5-models';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { type ReactNode } from 'react';
 
 import { useDataContext } from '../../../providers/DataProvider';
@@ -23,16 +24,16 @@ function ScalarFetcher<D extends Dataset<ScalarShape | ArrayShape>>(
   props: Props<D>,
 ) {
   const { dataset, selection, render } = props;
-  const { valuesStore } = useDataContext();
+  const { queries } = useDataContext();
 
   if (selection && !isScalarSelection(selection)) {
     throw new Error('Expected scalar selection');
   }
 
-  const value = valuesStore.get({ dataset, selection });
-  assertScalarValue(value, dataset.type);
+  const { data } = useSuspenseQuery(queries.value(dataset, selection));
+  assertScalarValue(data, dataset.type);
 
-  return render(value);
+  return render(data);
 }
 
 export default ScalarFetcher;

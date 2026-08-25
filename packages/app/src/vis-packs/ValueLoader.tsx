@@ -12,14 +12,14 @@ interface Props {
 
 function ValueLoader(props: Props) {
   const { isSlice = false } = props;
-  const { valuesStore } = useDataContext();
+  const { filepath, queryClient, progressStore } = useDataContext();
 
   // Wait a bit before showing loader to avoid flash
   const [isReady, toggleReady] = useToggle();
   useTimeoutEffect(toggleReady, 100);
 
   // Track progress
-  const ongoing = useStore(valuesStore.progressStore, (state) => state.ongoing);
+  const ongoing = useStore(progressStore, (state) => state.ongoing);
 
   return (
     <div className={styles.loader} data-testid="LoadingDatasetValue">
@@ -40,11 +40,7 @@ function ValueLoader(props: Props) {
             {[...ongoing.entries()]
               .slice(0, MAX_PROGRESS_BARS)
               .map(([key, val]) => (
-                <progress
-                  className={styles.progress}
-                  key={`${key.dataset.path}_${key.selection || ''}`}
-                  value={val}
-                />
+                <progress key={key} className={styles.progress} value={val} />
               ))}
           </div>
           <p>{isSlice ? 'Loading current slice' : 'Loading data'}...</p>
@@ -52,7 +48,12 @@ function ValueLoader(props: Props) {
             <button
               className={styles.cancelBtn}
               type="button"
-              onClick={() => valuesStore.abortAll('cancelled by user')}
+              onClick={() => {
+                void queryClient.cancelQueries(
+                  { queryKey: [filepath, 'value'] },
+                  { revert: false },
+                );
+              }}
             >
               Cancel?
             </button>

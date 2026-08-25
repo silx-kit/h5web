@@ -4,6 +4,7 @@ import {
   assertShape,
   assertType,
   assertValue,
+  isDefined,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -14,6 +15,7 @@ import {
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
+import { useSuspenseQueries } from '@tanstack/react-query';
 
 import { useDataContext } from './providers/DataProvider';
 import { type ValuesStoreParams } from './providers/models';
@@ -65,17 +67,18 @@ export function useValue<D extends Dataset<ArrayShape | ScalarShape>>(
   dataset: D | undefined,
   selection?: string,
 ): Value<D> | undefined {
-  const { valuesStore } = useDataContext();
+  const { queries } = useDataContext();
+
+  const [result] = useSuspenseQueries({
+    queries: [...(dataset ? [queries.value(dataset, selection)] : [])],
+  });
 
   if (!dataset) {
     return undefined;
   }
 
-  // If `selection` is undefined, the entire dataset will be fetched
-  const value = valuesStore.get({ dataset, selection });
-
-  assertValue(value, dataset);
-  return value;
+  assertValue(result.data, dataset);
+  return result.data;
 }
 
 type ValueFromParams<
@@ -85,35 +88,42 @@ type ValueFromParams<
 export function useValues<
   R extends Record<string, ValuesStoreParams['dataset'] | ValuesStoreParams>,
 >(datasets: R): { [K in keyof R]: ValueFromParams<R[K]> } {
-  const { valuesStore } = useDataContext();
+  const { queries } = useDataContext();
 
-  const storeParams = Object.entries(datasets).map(
-    ([key, datasetOrStoreParams]) =>
-      [
-        key,
-        'dataset' in datasetOrStoreParams
-          ? datasetOrStoreParams // already store params => keep as is
-          : { dataset: datasetOrStoreParams, selection: undefined }, // dataset => prepare store params
-      ] as const,
-  );
+  const keys = Object.keys(datasets);
+  const storeParams = Object.values(datasets).map((datasetOrStoreParams) => {
+    return 'dataset' in datasetOrStoreParams
+      ? datasetOrStoreParams // already store params => keep as is
+      : { dataset: datasetOrStoreParams }; // dataset => prepare store params
+  });
 
-  storeParams.forEach(([, params]) => {
-    valuesStore.prefetch(params);
+  const results = useSuspenseQueries({
+    queries: storeParams.map(({ dataset, selection }) => {
+      return queries.value(dataset, selection);
+    }),
   });
 
   return Object.fromEntries(
-    storeParams.map(([key, params]) => [key, valuesStore.get(params)]),
+    results.map(({ data }, i) => {
+      assertValue(data, storeParams[i].dataset);
+      return [keys[i], data];
+    }),
   ) as { [K in keyof R]: ValueFromParams<R[K]> };
 }
 
 export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
 ): (dimMapping: DimensionMapping) => boolean {
-  const { valuesStore } = useDataContext();
+  const { queries, queryClient } = useDataContext();
+
+  const definedDatasets = datasets.filter(isDefined);
+
   return (nextMapping) => {
     const selection = getSliceSelection(nextMapping);
-    return datasets.every(
-      (dataset) => !dataset || valuesStore.has({ dataset, selection }),
-    );
+
+    return definedDatasets.every((dataset) => {
+      const { queryKey } = queries.value(dataset, selection);
+      return queryClient.getQueryData(queryKey) !== undefined;
+    });
   };
 }
