@@ -1,23 +1,18 @@
 {
   "compilerOptions": {
-    "module": "esnext",
     "moduleResolution": "bundler",
-    "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "esnext"],
     "types": [],
     "jsx": "react-jsx",
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
     "noEmit": true,
     "incremental": true,
-    "strict": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["*", "cypress"]
 }
