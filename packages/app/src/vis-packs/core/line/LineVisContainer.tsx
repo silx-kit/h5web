@@ -9,7 +9,6 @@ import { useDimMappingState } from '../../../dim-mapping-store';
 import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { type VisContainerProps } from '../../models';
-import { useNcIgnoreValue } from '../../netcdf/hooks';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
 import { useLineConfig } from './config';
@@ -29,7 +28,6 @@ function LineVisContainer(props: VisContainerProps) {
 
   const config = useLineConfig();
   const selection = getSliceSelection(dimMapping);
-  const ignoreValue = useNcIgnoreValue(entity);
 
   return (
     <>
@@ -52,7 +50,6 @@ function LineVisContainer(props: VisContainerProps) {
               title={entity.name}
               toolbarContainer={toolbarContainer}
               config={config}
-              ignoreValue={ignoreValue}
             />
           )}
         />

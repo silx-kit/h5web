@@ -14,7 +14,7 @@ import {
   type Value,
 } from '@h5web/shared/hdf5-models';
 
-import { type AttrValuesStore } from './providers/models';
+import { type DataContextValue } from './providers/DataProvider';
 
 export function hasAttribute(entity: Entity, attributeName: string): boolean {
   return entity.attributes.some((attr) => attr.name === attributeName);
@@ -45,30 +45,37 @@ export function findScalarStrAttr(
   return attr && hasScalarShape(attr) && hasStringType(attr) ? attr : undefined;
 }
 
-export function getAttributeValue<
+export async function getAttributeValue<
   A extends Attribute<ScalarShape | ArrayShape>,
->(entity: Entity, attribute: A, attrValuesStore: AttrValuesStore): Value<A>;
+>(
+  entity: Entity,
+  attribute: A,
+  dataContext: DataContextValue,
+): Promise<Value<A>>;
 
-export function getAttributeValue<
+export async function getAttributeValue<
   A extends Attribute<ScalarShape | ArrayShape>,
 >(
   entity: Entity,
   attribute: A | undefined,
-  attrValuesStore: AttrValuesStore,
-): Value<A> | undefined;
+  dataContext: DataContextValue,
+): Promise<Value<A> | undefined>;
 
-export function getAttributeValue<
+export async function getAttributeValue<
   A extends Attribute<ScalarShape | ArrayShape>,
 >(
   entity: Entity,
   attribute: A | undefined,
-  attrValuesStore: AttrValuesStore,
-): Value<A> | undefined {
+  dataContext: DataContextValue,
+): Promise<Value<A> | undefined> {
   if (!attribute) {
     return undefined;
   }
 
-  const value = attrValuesStore.get(entity)[attribute.name];
+  const { queryClient, queries } = dataContext;
+  const values = await queryClient.query(queries.attrValues(entity));
+
+  const value = values[attribute.name];
   assertValue(value, attribute);
   return value;
 }

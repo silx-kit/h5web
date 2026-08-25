@@ -51,7 +51,11 @@ function ValueLoader(props: Props) {
               onClick={() => {
                 void queryClient.cancelQueries(
                   { queryKey: [filepath, 'value'] },
-                  { revert: false },
+                  {
+                    /* Make sure the error stays in the query cache so the error boundary appears.
+                     * The boundary's `onError` callback then takes care of evicting errored queries from the cache. */
+                    revert: false,
+                  },
                 );
               }}
             >

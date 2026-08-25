@@ -2,10 +2,10 @@ import { isGroup } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type Dataset,
+  type Entity,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { getNameFromPath } from '@h5web/shared/hdf5-utils';
-import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
 import {
   hashKey,
   QueryClient,
@@ -21,7 +21,6 @@ import {
 } from 'react';
 
 import { type DataProviderApi } from './api';
-import { type AttrValuesStore, type EntitiesStore } from './models';
 import {
   createProgressStore,
   type ProgressStore,
@@ -31,9 +30,29 @@ import {
 function getQueryOptionsFactories(
   api: DataProviderApi,
   scope: string,
+  queryClient: QueryClient,
   progressStore: ProgressStore,
 ) {
   return {
+    entity: (path: string) => {
+      return queryOptions({
+        queryKey: [scope, 'entity', path] as const,
+        queryFn: async () => {
+          const entity = await api.getEntity(path);
+
+          if (isGroup(entity)) {
+            // Cache non-group children (datasets, datatypes and links)
+            entity.children
+              .filter((c) => !isGroup(c))
+              .forEach((c) => {
+                queryClient.setQueryData([scope, 'entity', c.path], c);
+              });
+          }
+
+          return entity;
+        },
+      });
+    },
     value: (dataset: Dataset<ScalarShape | ArrayShape>, selection?: string) => {
       const queryKey = [scope, 'value', dataset.path, selection] as const;
       const queryHash = hashKey(queryKey);
@@ -47,6 +66,12 @@ function getQueryOptionsFactories(
         },
       });
     },
+    attrValues: (entity: Entity) => {
+      return queryOptions({
+        queryKey: [scope, 'attrValues', entity.path] as const,
+        queryFn: async () => api.getAttrValues(entity),
+      });
+    },
   };
 }
 
@@ -56,9 +81,6 @@ export interface DataContextValue {
   queries: ReturnType<typeof getQueryOptionsFactories>;
   queryClient: QueryClient;
   progressStore: ProgressStore;
-  entitiesStore: EntitiesStore;
-  attrValuesStore: AttrValuesStore;
-
   // Undocumented
   getExportURL?: DataProviderApi['getExportURL'];
   getSearchablePaths?: DataProviderApi['getSearchablePaths'];
@@ -94,48 +116,24 @@ function DataProvider(props: PropsWithChildren<Props>) {
 
   const [progressStore] = useState(createProgressStore);
 
-  const entitiesStore = useMemo(() => {
-    const store = createFetchStore(async (path: string) => {
-      const entity = await api.getEntity(path);
-
-      if (isGroup(entity)) {
-        // Cache non-group children (datasets, datatypes and links)
-        entity.children.forEach((child) => {
-          if (!isGroup(child)) {
-            store.preset(child.path, child);
-          }
-        });
-      }
-
-      return entity;
-    });
-
-    store.prefetch('/'); // pre-fetch root group
-    return store;
-  }, [api]);
-
-  const attrValuesStore = useMemo(() => {
-    return createFetchStore(
-      api.getAttrValues.bind(api),
-      (a, b) => a.path === b.path,
-    );
-  }, [api]);
-
   const value = useMemo(() => {
     const { filepath } = api;
 
     return {
       filepath,
       filename: getNameFromPath(filepath),
-      queries: getQueryOptionsFactories(api, filepath, progressStore),
+      queries: getQueryOptionsFactories(
+        api,
+        filepath,
+        queryClient,
+        progressStore,
+      ),
       queryClient,
       progressStore,
-      entitiesStore,
-      attrValuesStore,
       getExportURL: api.getExportURL?.bind(api),
       getSearchablePaths: api.getSearchablePaths?.bind(api),
     };
-  }, [api, entitiesStore, attrValuesStore, queryClient, progressStore]);
+  }, [api, queryClient, progressStore]);
 
   return (
     <QueryClientProvider client={queryClient}>

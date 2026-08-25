@@ -1,5 +1,6 @@
 import { isComplexValue } from '@h5web/shared/guards';
 import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useDataContext } from '../providers/DataProvider';
 import AttributeLink from './AttributeLink';
@@ -20,8 +21,8 @@ interface Props {
 function AttributesInfo(props: Props) {
   const { entity, onFollowPath } = props;
 
-  const { attrValuesStore } = useDataContext();
-  const attrValues = attrValuesStore.get(entity);
+  const { queries } = useDataContext();
+  const { data: attrValues } = useSuspenseQuery(queries.attrValues(entity));
 
   return entity.attributes.map(({ name, type }) => {
     const value = attrValues[name];

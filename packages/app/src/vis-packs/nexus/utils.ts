@@ -28,7 +28,7 @@ import {
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
 import { castArray } from '@h5web/shared/vis-utils';
 
-import { type AttrValuesStore } from '../../providers/models';
+import { type DataContextValue } from '../../providers/DataProvider';
 import {
   findAttribute,
   findScalarStrAttr,
@@ -42,39 +42,39 @@ import {
   type SilxStyle,
 } from './models';
 
-export function getNxClass(
+export async function getNxClass(
   group: Group,
-  attrValuesStore: AttrValuesStore,
-): string | undefined {
+  dataContext: DataContextValue,
+): Promise<string | undefined> {
   const attr = findScalarStrAttr(group, 'NX_class');
-  return getAttributeValue(group, attr, attrValuesStore);
+  return getAttributeValue(group, attr, dataContext);
 }
 
-export function isNxDataGroup(
+export async function isNxDataGroup(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): boolean {
+  dataContext: DataContextValue,
+): Promise<boolean> {
   return (
-    getNxClass(group, attrValuesStore) === 'NXdata' &&
+    (await getNxClass(group, dataContext)) === 'NXdata' &&
     (hasAttribute(group, 'signal') ||
       group.children.some((child) => hasAttribute(child, 'signal')))
   );
 }
 
-export function assertNxDataGroup(
+export async function assertNxDataGroup(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): void {
-  if (!isNxDataGroup(group, attrValuesStore)) {
+  dataContext: DataContextValue,
+): Promise<void> {
+  if (!(await isNxDataGroup(group, dataContext))) {
     throw new Error('Expected NXdata group');
   }
 }
 
-export function isNxNoteGroup(
+export async function isNxNoteGroup(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): boolean {
-  return getNxClass(group, attrValuesStore) === 'NXnote';
+  dataContext: DataContextValue,
+): Promise<boolean> {
+  return (await getNxClass(group, dataContext)) === 'NXnote';
 }
 
 function findOldStyleSignalDataset(
@@ -91,10 +91,10 @@ function findOldStyleSignalDataset(
   return dataset;
 }
 
-export function findSignalDataset(
+export async function findSignalDataset(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericLikeType | ComplexType> {
+  dataContext: DataContextValue,
+): Promise<Dataset<ArrayShape, NumericLikeType | ComplexType>> {
   const signalAttr = findAttribute(group, 'signal');
   if (!signalAttr) {
     return findOldStyleSignalDataset(group);
@@ -102,7 +102,7 @@ export function findSignalDataset(
 
   assertScalarShape(signalAttr);
   assertStringType(signalAttr, "Expected 'signal' attribute to be a string");
-  const signal = getAttributeValue(group, signalAttr, attrValuesStore);
+  const signal = await getAttributeValue(group, signalAttr, dataContext);
 
   const dataset = getChildEntity(group, signal);
   assertDefined(dataset, `Expected "${signal}" signal entity to exist`);
@@ -146,17 +146,19 @@ export function findAuxErrorDataset(
   return dataset;
 }
 
-function findAssociatedDatasets(
+async function findAssociatedDatasets(
   group: GroupWithChildren,
   type: 'axes' | 'auxiliary_signals',
-  attrValuesStore: AttrValuesStore,
-): (Dataset<ArrayShape> | undefined)[] {
+  dataContext: DataContextValue,
+): Promise<(Dataset<ArrayShape> | undefined)[]> {
   const attr = findAttribute(group, type);
   if (!attr || !hasNonNullShape(attr) || !hasStringType(attr)) {
     return [];
   }
 
-  const dsetNames = castArray(getAttributeValue(group, attr, attrValuesStore));
+  const dsetNames = castArray(
+    await getAttributeValue(group, attr, dataContext),
+  );
 
   return dsetNames.map((name) => {
     if (name === '.') {
@@ -189,17 +191,17 @@ function parseAxesList(dsetList: string): string[] {
   return [dsetList];
 }
 
-function findOldStyleAxesDatasets(
+async function findOldStyleAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
-  attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericType>[] {
+  dataContext: DataContextValue,
+): Promise<Dataset<ArrayShape, NumericType>[]> {
   const axesAttr = findScalarStrAttr(signal, 'axes');
   if (!axesAttr) {
     return [];
   }
 
-  const axes = getAttributeValue(signal, axesAttr, attrValuesStore);
+  const axes = await getAttributeValue(signal, axesAttr, dataContext);
 
   return parseAxesList(axes).map((name) => {
     const dataset = getChildEntity(group, name);
@@ -211,35 +213,38 @@ function findOldStyleAxesDatasets(
   });
 }
 
-export function findAxesDatasets(
+export async function findAxesDatasets(
   group: GroupWithChildren,
   signal: Dataset,
-  attrValuesStore: AttrValuesStore,
-): (Dataset<ArrayShape, NumericType> | undefined)[] {
+  dataContext: DataContextValue,
+): Promise<(Dataset<ArrayShape, NumericType> | undefined)[]> {
   if (!hasAttribute(group, 'axes')) {
-    return findOldStyleAxesDatasets(group, signal, attrValuesStore);
+    return findOldStyleAxesDatasets(group, signal, dataContext);
   }
 
-  return findAssociatedDatasets(group, 'axes', attrValuesStore).map(
-    (dataset) => {
-      if (dataset) {
-        assertNumericType(dataset);
-      }
-      return dataset;
-    },
-  );
+  const associated = await findAssociatedDatasets(group, 'axes', dataContext);
+  return associated.map((dataset) => {
+    if (dataset) {
+      assertNumericType(dataset);
+    }
+    return dataset;
+  });
 }
 
-export function findAuxiliaryDatasets(
+export async function findAuxiliaryDatasets(
   group: GroupWithChildren,
-  attrValuesStore: AttrValuesStore,
-): Dataset<ArrayShape, NumericLikeType | ComplexType>[] {
-  return findAssociatedDatasets(group, 'auxiliary_signals', attrValuesStore)
-    .filter(isDefined)
-    .map((dataset) => {
-      assertNumericLikeOrComplexType(dataset);
-      return dataset;
-    });
+  dataContext: DataContextValue,
+): Promise<Dataset<ArrayShape, NumericLikeType | ComplexType>[]> {
+  const associated = await findAssociatedDatasets(
+    group,
+    'auxiliary_signals',
+    dataContext,
+  );
+
+  return associated.filter(isDefined).map((dataset) => {
+    assertNumericLikeOrComplexType(dataset);
+    return dataset;
+  });
 }
 
 export function findTitleDataset(
@@ -256,11 +261,11 @@ export function findTitleDataset(
   return dataset;
 }
 
-export function getDefaultSlice(
+export async function getDefaultSlice(
   group: Group,
   signalDims: number[],
-  attrValuesStore: AttrValuesStore,
-): DefaultSlice | undefined {
+  dataContext: DataContextValue,
+): Promise<DefaultSlice | undefined> {
   const defaultSliceAttr = findAttribute(group, 'default_slice');
 
   if (
@@ -271,10 +276,10 @@ export function getDefaultSlice(
     return undefined;
   }
 
-  const defaultSliceRaw = getAttributeValue(
+  const defaultSliceRaw = await getAttributeValue(
     group,
     defaultSliceAttr,
-    attrValuesStore,
+    dataContext,
   );
 
   if (defaultSliceRaw.length !== signalDims.length) {
@@ -305,16 +310,16 @@ export function getDefaultSlice(
   return defaultSlice;
 }
 
-export function getSilxStyle(
+export async function getSilxStyle(
   group: Group,
-  attrValuesStore: AttrValuesStore,
-): SilxStyle {
+  dataContext: DataContextValue,
+): Promise<SilxStyle> {
   const silxStyleAttr = findScalarStrAttr(group, 'SILX_style');
   if (!silxStyleAttr) {
     return {};
   }
 
-  const silxStyle = getAttributeValue(group, silxStyleAttr, attrValuesStore);
+  const silxStyle = await getAttributeValue(group, silxStyleAttr, dataContext);
 
   try {
     const rawSilxStyle = JSON.parse(silxStyle);
@@ -339,15 +344,15 @@ export function getSilxStyle(
   }
 }
 
-export function getFieldInfo(
+export async function getFieldInfo(
   dataset: Dataset,
-  attrValuesStore: AttrValuesStore,
-): FieldInfo {
+  dataContext: DataContextValue,
+): Promise<FieldInfo> {
   const longNameAttr = findScalarStrAttr(dataset, 'long_name');
-  const longName = getAttributeValue(dataset, longNameAttr, attrValuesStore);
+  const longName = await getAttributeValue(dataset, longNameAttr, dataContext);
 
   const unitsAttr = findScalarStrAttr(dataset, 'units');
-  const units = getAttributeValue(dataset, unitsAttr, attrValuesStore);
+  const units = await getAttributeValue(dataset, unitsAttr, dataContext);
 
   return {
     label: longName || (units ? `${dataset.name} (${units})` : dataset.name),

@@ -15,7 +15,7 @@ import { NxInterpretation } from '@h5web/shared/nexus-models';
 import { FiActivity, FiFileText, FiImage, FiMap } from 'react-icons/fi';
 import { MdGrain } from 'react-icons/md';
 
-import { type AttrValuesStore } from '../../providers/models';
+import { type DataContextValue } from '../../providers/DataProvider';
 import { findScalarStrAttr, getAttributeValue } from '../../utils';
 import {
   HeatmapConfigProvider,
@@ -53,8 +53,8 @@ export interface NxDataVisDef extends VisDef {
     group: GroupWithChildren,
     signal: Dataset<ArrayShape, NumericLikeType | ComplexType>,
     interpretation: string | undefined,
-    attrValuesStore: AttrValuesStore,
-  ) => boolean;
+    dataContext: DataContextValue,
+  ) => Promise<boolean>;
   isPrimary: (interpretation: string | undefined) => boolean;
 }
 
@@ -64,7 +64,7 @@ export const NX_DATA_VIS = {
     Icon: FiActivity,
     Container: NxLineContainer,
     ConfigProvider: LineConfigProvider,
-    supports: (_, signal) => !hasComplexType(signal),
+    supports: async (_, signal) => !hasComplexType(signal),
     isPrimary: (interpretation) => interpretation === NxInterpretation.Spectrum,
   },
 
@@ -73,7 +73,7 @@ export const NX_DATA_VIS = {
     Icon: FiActivity,
     Container: NxComplexLineContainer,
     ConfigProvider: LineConfigProvider,
-    supports: (_, signal) => hasComplexType(signal),
+    supports: async (_, signal) => hasComplexType(signal),
     isPrimary: (interpretation) => interpretation === NxInterpretation.Spectrum,
   },
 
@@ -82,7 +82,7 @@ export const NX_DATA_VIS = {
     Icon: FiMap,
     Container: NxHeatmapContainer,
     ConfigProvider: HeatmapConfigProvider,
-    supports: (_, signal) => hasMinDims(signal, 2),
+    supports: async (_, signal) => hasMinDims(signal, 2),
     isPrimary: (interpretation) => interpretation === NxInterpretation.Image,
   },
 
@@ -91,7 +91,7 @@ export const NX_DATA_VIS = {
     Icon: FiImage,
     Container: NxRgbContainer,
     ConfigProvider: RgbConfigProvider,
-    supports: (_, signal, interpretation, attrValuesStore) => {
+    supports: async (_, signal, interpretation, dataContext) => {
       if (
         !hasMinDims(signal, 3) || // 2 for axes + 1 for RGB(A) channels
         !hasNumericType(signal)
@@ -110,7 +110,7 @@ export const NX_DATA_VIS = {
       return (
         interpretation === NxInterpretation.RGB ||
         interpretation === NxInterpretation.RGBA ||
-        getAttributeValue(signal, classAttr, attrValuesStore) === 'IMAGE'
+        (await getAttributeValue(signal, classAttr, dataContext)) === 'IMAGE'
       );
     },
     isPrimary: () => true, // always primary if supported
@@ -121,12 +121,12 @@ export const NX_DATA_VIS = {
     Icon: MdGrain,
     Container: NxScatterContainer,
     ConfigProvider: ScatterConfigProvider,
-    supports: (group, signal, _, attrValuesStore) => {
+    supports: async (group, signal, _, dataContext) => {
       if (!hasNumDims(signal, 1)) {
         return false;
       }
 
-      const axisDatasets = findAxesDatasets(group, signal, attrValuesStore);
+      const axisDatasets = await findAxesDatasets(group, signal, dataContext);
       return (
         axisDatasets.length === 2 &&
         axisDatasets.every((d) => d && hasNumDims(d, 1))

@@ -8,35 +8,39 @@ import {
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
+  type Attribute,
   type Dataset,
   type DatasetDef,
   type DatasetFromDef,
+  type Entity,
   type ProvidedEntity,
   type ScalarShape,
   type Value,
 } from '@h5web/shared/hdf5-models';
-import { useSuspenseQueries } from '@tanstack/react-query';
+import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 
 import { useDataContext } from './providers/DataProvider';
 import { type ValuesStoreParams } from './providers/models';
 
 export function useEntity(path: string): ProvidedEntity {
-  const { entitiesStore } = useDataContext();
-  return entitiesStore.get(path);
+  const { queries } = useDataContext();
+  return useSuspenseQuery(queries.entity(path)).data;
 }
 
 export function useDatasets<R extends Record<string, DatasetDef>>(
   defs: R,
 ): { [K in keyof R]: DatasetFromDef<R[K]> } {
-  const { entitiesStore } = useDataContext();
+  const { queries } = useDataContext();
 
-  Object.values(defs).forEach((def) => {
-    entitiesStore.prefetch(def.path);
+  const results = useSuspenseQueries({
+    queries: Object.values(defs).map(({ path }) => {
+      return queries.entity(path);
+    }),
   });
 
   return Object.fromEntries(
-    Object.entries(defs).map(([key, def]) => {
-      const entity = entitiesStore.get(def.path);
+    Object.entries(defs).map(([key, def], i) => {
+      const entity = results[i].data;
 
       assertDataset(entity);
 
@@ -126,4 +130,33 @@ export function useValuesInCache(
       return queryClient.getQueryData(queryKey) !== undefined;
     });
   };
+}
+
+export function useAttrValue<A extends Attribute<ScalarShape | ArrayShape>>(
+  entity: Entity,
+  attr: A,
+): Value<A>;
+
+export function useAttrValue<A extends Attribute<ScalarShape | ArrayShape>>(
+  entity: Entity,
+  attr: A | undefined,
+): Value<A> | undefined;
+
+export function useAttrValue<A extends Attribute<ScalarShape | ArrayShape>>(
+  entity: Entity,
+  attr: A | undefined,
+): Value<A> | undefined {
+  const { queries } = useDataContext();
+
+  const [result] = useSuspenseQueries({
+    queries: [...(attr ? [queries.attrValues(entity)] : [])],
+  });
+
+  if (!attr) {
+    return undefined;
+  }
+
+  const attrValue = result.data[attr.name];
+  assertValue(attrValue, attr);
+  return attrValue;
 }
