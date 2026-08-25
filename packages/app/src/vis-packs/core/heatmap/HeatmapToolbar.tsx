@@ -11,11 +11,11 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import {
+  COLOR_SCALE_TYPES,
   type ComplexHeatmapVisType,
   ComplexVisType,
   type ExportEntry,
 } from '@h5web/shared/vis-models';
-import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import {
   MdAspectRatio,
   MdGridOn,

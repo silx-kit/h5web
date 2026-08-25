@@ -36,12 +36,13 @@ import {
 } from './hdf5-models';
 import {
   type AnyNumArray,
+  AXIS_SCALE_TYPES,
   type AxisScaleType,
   type BigIntTypedArray,
+  COLOR_SCALE_TYPES,
   type ColorScaleType,
   type NumArray,
 } from './vis-models';
-import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES, getValues } from './vis-utils';
 
 export function isAbsolutePath(path: string): boolean {
   return path.startsWith('/');
@@ -705,7 +706,7 @@ export function assertLength(
     return;
   }
 
-  const { length: arrLength } = getValues(arr);
+  const { length: arrLength } = isNdArray(arr) ? arr.data : arr;
   if (arrLength !== dataLength) {
     throw new Error(
       `Expected ${arrName} array to have length ${dataLength} instead of ${arrLength}`,

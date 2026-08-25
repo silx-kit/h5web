@@ -12,12 +12,12 @@ import {
   Toolbar,
 } from '@h5web/lib';
 import {
+  AXIS_SCALE_TYPES,
   type ComplexLineVisType,
   ComplexVisType,
   type Domain,
   type ExportEntry,
 } from '@h5web/shared/vis-models';
-import { AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
 import { MdAutoGraph, MdGridOn } from 'react-icons/md';
 
 import { CURVE_TYPE_LABELS, INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';

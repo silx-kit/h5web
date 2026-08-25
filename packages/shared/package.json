@@ -18,6 +18,7 @@
     "./mock-utils": "./src/mock-utils.ts",
     "./mock-values": "./src/mock-values.ts",
     "./react-suspense-fetch": "./src/react-suspense-fetch.ts",
+    "./rollup.utils.js": "./rollup.utils.js",
     ".": "./src/index.ts"
   },
   "scripts": {
@@ -72,7 +73,7 @@
     }
   },
   "devDependencies": {
-    "@esrf/eslint-config": "2.3.1",
+    "@esrf/eslint-config": "3.1.0",
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "~1.0.14",

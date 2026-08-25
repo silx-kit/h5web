@@ -171,7 +171,7 @@ export { default as ErrorBarsGeometry } from './vis/line/errorBarsGeometry';
 export { default as ErrorCapsGeometry } from './vis/line/errorCapsGeometry';
 
 // Constants
-export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared/vis-utils';
+export { COLOR_SCALE_TYPES, AXIS_SCALE_TYPES } from '@h5web/shared/vis-models';
 export { Z_MIN, Z_MAX } from './vis/utils';
 export { INTERPOLATORS } from './vis/heatmap/interpolators';
 

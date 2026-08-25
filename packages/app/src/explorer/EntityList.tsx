@@ -2,7 +2,7 @@ import { assertGroup } from '@h5web/shared/guards';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 
 import { useEntity } from '../hooks';
-import EntityItem from './EntityItem';
+import EntityItem from './EntityItem'; // eslint-disable-line import-x/no-cycle -- recusive components
 import styles from './Explorer.module.css';
 
 interface Props {

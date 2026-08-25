@@ -6,7 +6,8 @@ import {
   ScaleType,
 } from '@h5web/lib';
 import { assertDefined } from '@h5web/shared/guards';
-import { COLOR_SCALE_TYPES, toTypedNdArray } from '@h5web/shared/vis-utils';
+import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
+import { toTypedNdArray } from '@h5web/shared/vis-utils';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import ndarray from 'ndarray';
 import { LinearFilter, NearestFilter } from 'three';

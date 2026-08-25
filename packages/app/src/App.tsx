@@ -1,6 +1,6 @@
-import '@h5web/lib'; // eslint-disable-line import/no-duplicates -- make sure lib styles come first in CSS bundle
+import '@h5web/lib'; // eslint-disable-line import-x/no-duplicates -- make sure lib styles come first in CSS bundle
 
-import { KeepZoomProvider } from '@h5web/lib'; // eslint-disable-line import/no-duplicates
+import { KeepZoomProvider } from '@h5web/lib'; // eslint-disable-line import-x/no-duplicates
 import { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import {

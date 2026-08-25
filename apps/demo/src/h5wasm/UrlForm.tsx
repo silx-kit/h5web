@@ -1,9 +1,8 @@
-import { createBasicFetcher } from '@h5web/app';
+import { createBasicFetcher, FetcherError } from '@h5web/app';
 import { type FormEvent, useCallback, useEffect, useState } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import { useSearchParams } from 'wouter';
 
-import { FetcherError } from '../../../../packages/app/src/providers/utils';
 import { type RemoteFile } from './models';
 import styles from './UrlForm.module.css';
 

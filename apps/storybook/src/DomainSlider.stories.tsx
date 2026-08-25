@@ -5,8 +5,7 @@ import {
   useSafeDomain,
   useVisDomain,
 } from '@h5web/lib';
-import { type Domain } from '@h5web/shared/vis-models';
-import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-utils';
+import { COLOR_SCALE_TYPES, type Domain } from '@h5web/shared/vis-models';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useEffect, useState } from 'react';
 
