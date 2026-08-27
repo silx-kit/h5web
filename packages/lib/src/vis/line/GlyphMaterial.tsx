@@ -1,3 +1,5 @@
+import { useThree } from '@react-three/fiber';
+import { useLayoutEffect, useMemo } from 'react';
 import { Color } from 'three';
 
 import { getUniforms } from '../utils';
@@ -55,10 +57,18 @@ function GlyphMaterial(props: Props) {
   // If no `color` given, use vertex colors (i.e. buffer attribute on geometry)
   const withVertexColor = !color;
 
-  const shader = {
-    uniforms: getUniforms({ size, color: new Color(color) }),
-    vertexShader: `
-      ${color ? 'uniform vec3 color;' : ''}
+  const colorUniform = useMemo(() => new Color(), []); // updated in place, like `size`
+
+  /* Only the glyph type and whether a `color` is given at all appear in the
+     shader source, so the material can be reused for as long as those hold.
+     `size` and the colour itself are uniforms, updated in place below: passing
+     a new object in `args` would make R3F re-instantiate the material, which
+     recompiles and relinks the GLSL program on every render. */
+  const shader = useMemo(
+    () => ({
+      uniforms: getUniforms({ size: 1, color: colorUniform }),
+      vertexShader: `
+      ${withVertexColor ? '' : 'uniform vec3 color;'}
       uniform float size;
       varying vec3 vertexColor;
 
@@ -68,7 +78,7 @@ function GlyphMaterial(props: Props) {
         vertexColor = color;
       }
     `,
-    fragmentShader: `
+      fragmentShader: `
       uniform float size;
       varying vec3 vertexColor;
 
@@ -83,7 +93,22 @@ function GlyphMaterial(props: Props) {
         }
       }
     `,
-  };
+    }),
+    [glyphType, withVertexColor, colorUniform],
+  );
+
+  const invalidate = useThree((state) => state.invalidate);
+  const { uniforms } = shader; // same object the material holds, so mutating it updates the material
+
+  useLayoutEffect(() => {
+    uniforms.size.value = size;
+
+    if (color) {
+      colorUniform.set(color);
+    }
+
+    invalidate();
+  });
 
   return <shaderMaterial args={[shader]} vertexColors={withVertexColor} />;
 }

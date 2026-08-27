@@ -22,6 +22,7 @@ import { useDataContext } from './providers/DataProvider';
 import Sidebar from './Sidebar';
 import VisConfigProvider from './VisConfigProvider';
 import Visualizer from './visualizer/Visualizer';
+import { useWarmUpWebGL } from './webgl-warm-up';
 
 const SIDEBAR_ID = 'h5w-sidebar';
 const MAIN_AREA_ID = 'h5w-main-area';
@@ -46,6 +47,8 @@ function App(props: Props) {
 
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
   const [isInspecting, setInspecting] = useState(false);
+
+  useWarmUpWebGL();
 
   const { valuesStore } = useDataContext();
   function onSelectPath(path: string) {

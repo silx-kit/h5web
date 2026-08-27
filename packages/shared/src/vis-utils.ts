@@ -128,7 +128,12 @@ export function getBounds(
   const values = getValues(valuesArray);
   const valuesBounds = { ...INITIAL_BOUNDS };
 
-  for (const val of values) {
+  /* Iterate by index rather than with `for..of`: the iterator protocol
+     allocates a result object (and, for float arrays, a boxed number) per
+     element, which dominates the cost of the scan on large datasets. */
+  // eslint-disable-next-line unicorn/no-for-loop, @typescript-eslint/prefer-for-of -- see above
+  for (let i = 0; i < values.length; i += 1) {
+    const val = values[i];
     if (Number.isFinite(val) && !ignoreValue?.(val)) {
       mutateBounds(valuesBounds, val);
     }
@@ -153,7 +158,10 @@ export function getBoundsWithErrors(
   const boundsWithErrors = { ...INITIAL_BOUNDS };
   const boundsWithoutErrors = { ...INITIAL_BOUNDS };
 
-  for (const [i, val] of values.entries()) {
+  // Iterate by index rather than with `values.entries()`, which allocates per element
+  // eslint-disable-next-line unicorn/no-for-loop -- see above
+  for (let i = 0; i < values.length; i += 1) {
+    const val = values[i];
     if (!Number.isFinite(val) || ignoreValue?.(val)) {
       continue;
     }

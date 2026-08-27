@@ -1,7 +1,8 @@
 import { type Domain, ScaleType } from '@h5web/shared/vis-models';
+import { useThree } from '@react-three/fiber';
 import { rgb, type RGBColor } from 'd3-color';
 import { type NdArray } from 'ndarray';
-import { memo, useMemo } from 'react';
+import { memo, useLayoutEffect, useMemo } from 'react';
 import {
   DataTexture,
   DoubleSide,
@@ -91,32 +92,35 @@ function HeatmapMaterial(props: Props) {
     ? visScaleType
     : [visScaleType as ScaleType, 1];
 
-  const scaledDomain = scaleDomain(domain, scaleType);
+  const [scaledMin, scaledMax] = scaleDomain(domain, scaleType);
+  const [alphaMin, alphaMax] = alphaDomain;
 
   const badColorAsRgb = typeof badColor === 'string' ? rgb(badColor) : badColor;
+  const badColorVector = useMemo(() => new Vector4(), []); // updated in place, like the other uniform values
 
-  const shader = {
-    uniforms: getUniforms({
-      data: dataTexture,
-      mask: maskTexture,
-      colorMap: colorMapTexture,
-      min: scaledDomain[0],
-      oneOverRange: 1 / (scaledDomain[1] - scaledDomain[0]),
-      gammaExponent,
-      normRevertFactor: values.dtype === 'uint8' ? 255 : 1, // revert WebGL's automatic normalization of UNSIGNED_BYTE with RED format
-      alpha: alphaTexture,
-      withAlpha: alphaValues ? 1 : 0,
-      alphaMin: alphaDomain[0],
-      oneOverAlphaRange: 1 / (alphaDomain[1] - alphaDomain[0]),
-      badColor: new Vector4(
-        badColorAsRgb.r / 255,
-        badColorAsRgb.g / 255,
-        badColorAsRgb.b / 255,
-        badColorAsRgb.opacity,
-      ),
-    }),
-    vertexShader: VERTEX_SHADER,
-    fragmentShader: `
+  /* The scale type is the only prop that appears in the shader source, so the
+     material only has to be re-created when it changes. Everything else is a
+     uniform, updated in place below: passing a new object in `args` would make
+     R3F re-instantiate the material, which recompiles and relinks the GLSL
+     program — on every slice of a 3D dataset, for instance. */
+  const shader = useMemo(
+    () => ({
+      uniforms: getUniforms({
+        data: null,
+        mask: null,
+        colorMap: null,
+        min: 0,
+        oneOverRange: 1,
+        gammaExponent: 1,
+        normRevertFactor: 1,
+        alpha: null,
+        withAlpha: 0,
+        alphaMin: 0,
+        oneOverAlphaRange: 1,
+        badColor: badColorVector,
+      }),
+      vertexShader: VERTEX_SHADER,
+      fragmentShader: `
       uniform sampler2D data;
       uniform sampler2D colorMap;
 
@@ -163,7 +167,35 @@ function HeatmapMaterial(props: Props) {
         }
       }
     `,
-  };
+    }),
+    [scaleType, badColorVector],
+  );
+
+  const invalidate = useThree((state) => state.invalidate);
+  const { uniforms } = shader; // same object the material holds, so mutating it updates the material
+
+  useLayoutEffect(() => {
+    uniforms.data.value = dataTexture;
+    uniforms.mask.value = maskTexture;
+    uniforms.colorMap.value = colorMapTexture;
+    uniforms.min.value = scaledMin;
+    uniforms.oneOverRange.value = 1 / (scaledMax - scaledMin);
+    uniforms.gammaExponent.value = gammaExponent;
+    uniforms.normRevertFactor.value = values.dtype === 'uint8' ? 255 : 1; // revert WebGL's automatic normalization of UNSIGNED_BYTE with RED format
+    uniforms.alpha.value = alphaTexture;
+    uniforms.withAlpha.value = alphaValues ? 1 : 0;
+    uniforms.alphaMin.value = alphaMin;
+    uniforms.oneOverAlphaRange.value = 1 / (alphaMax - alphaMin);
+
+    badColorVector.set(
+      badColorAsRgb.r / 255,
+      badColorAsRgb.g / 255,
+      badColorAsRgb.b / 255,
+      badColorAsRgb.opacity,
+    );
+
+    invalidate();
+  });
 
   return <shaderMaterial args={[shader]} side={DoubleSide} />;
 }
