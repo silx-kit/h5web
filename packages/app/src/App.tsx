@@ -47,10 +47,13 @@ function App(props: Props) {
   const [selectedPath, setSelectedPath] = useState<string>(initialPath);
   const [isInspecting, setInspecting] = useState(false);
 
-  const { valuesStore } = useDataContext();
+  const { filepath, queryClient } = useDataContext();
   function onSelectPath(path: string) {
     setSelectedPath(path);
-    valuesStore.abortAll('entity changed', true);
+    void queryClient.cancelQueries(
+      { queryKey: [filepath, 'value'] },
+      { silent: true },
+    );
   }
 
   const { defaultLayout, onLayoutChanged } = useDefaultLayout({

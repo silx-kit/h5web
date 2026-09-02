@@ -29,10 +29,13 @@ function VisManager(props: Props) {
 
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
 
-  const { valuesStore } = useDataContext();
+  const { filepath, queryClient } = useDataContext();
   function onVisChange(index: number) {
     setActiveVis(index);
-    valuesStore.abortAll('visualization changed', true);
+    void queryClient.cancelQueries(
+      { queryKey: [filepath, 'value'] },
+      { silent: true },
+    );
   }
 
   return (

@@ -5,6 +5,7 @@ import {
   createBasicFetcher,
   HsdsProvider,
 } from '@h5web/app';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useMemo } from 'react';
 import { useSearchParams } from 'wouter';
 
@@ -15,6 +16,7 @@ const USERNAME = import.meta.env.VITE_HSDS_USERNAME;
 const PASSWORD = import.meta.env.VITE_HSDS_PASSWORD;
 const SUBDOMAIN = import.meta.env.VITE_HSDS_SUBDOMAIN;
 const FILEPATH = import.meta.env.VITE_HSDS_FALLBACK_FILEPATH;
+const DEVTOOLS = import.meta.env.VITE_QUERY_DEVTOOLS === 'true';
 
 function HsdsApp() {
   assertEnvVar(URL, 'VITE_HSDS_URL');
@@ -38,6 +40,7 @@ function HsdsApp() {
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}
       />
+      {DEVTOOLS && <ReactQueryDevtools />}
     </HsdsProvider>
   );
 }

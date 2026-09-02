@@ -1,10 +1,12 @@
 import { App, assertEnvVar, H5GroveProvider } from '@h5web/app';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useSearchParams } from 'wouter';
 
 import { getFeedbackURL } from './utils';
 
 const URL = import.meta.env.VITE_H5GROVE_URL;
 const FILEPATH = import.meta.env.VITE_H5GROVE_FALLBACK_FILEPATH;
+const DEVTOOLS = import.meta.env.VITE_QUERY_DEVTOOLS === 'true';
 
 function H5GroveApp() {
   assertEnvVar(URL, 'VITE_H5GROVE_URL');
@@ -19,6 +21,7 @@ function H5GroveApp() {
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}
       />
+      {DEVTOOLS && <ReactQueryDevtools />}
     </H5GroveProvider>
   );
 }
