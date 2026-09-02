@@ -21,6 +21,7 @@ import {
   buildEntityPath,
   cplxType,
   floatType,
+  getNameFromPath,
   intType,
   scalarShape,
   strType,
@@ -305,6 +306,60 @@ export function withNxAttr<T extends MockDataset<ArrayShape>>(
     ...(longName ? [scalarAttr('long_name', longName)] : []),
     ...(units ? [scalarAttr('units', units)] : []),
   ]);
+}
+
+/* --------------------------- */
+/* ----- DIMENSION SCALES ----- */
+
+/* Attach HDF5 dimension scales to a mock dataset, as `make_scale` and
+ * `attach_scale` would. `labels` is written as a real `DIMENSION_LABELS`
+ * attribute, since that is how providers expose it; `scales` holds the paths of
+ * the scale datasets attached to each dimension (several per dimension is legal
+ * HDF5) and stands in for the `DIMENSION_LIST` object references, which a mock
+ * entity cannot represent. `DIMENSION_LIST` is still written as an (empty)
+ * attribute, since the app checks for it before asking the provider to resolve
+ * the references. `scaleNames` overrides the name `make_scale` would have
+ * recorded, which need not match the scale dataset's own name. */
+export function withDimScales<T extends MockDataset<ArrayShape>>(
+  dat: T,
+  dimScales: {
+    labels?: (string | undefined)[];
+    scales?: (string | string[] | undefined)[];
+    scaleNames?: Record<string, string>;
+  },
+): T {
+  const { labels = [], scales = [], scaleNames = {} } = dimScales;
+  const { dims } = dat.shape;
+
+  const attributes: Attribute[] = [];
+
+  if (labels.some(Boolean)) {
+    attributes.push(
+      arrayAttr(
+        'DIMENSION_LABELS',
+        dims.map((_, index) => labels[index] || ''),
+      ),
+    );
+  }
+
+  if (scales.some(Boolean)) {
+    attributes.push(arrayAttr('DIMENSION_LIST', []));
+  }
+
+  return {
+    ...withAttr(dat, attributes),
+    dimScales: dims.map((_, index) => {
+      const paths = scales[index];
+      if (!paths) {
+        return [];
+      }
+
+      return (Array.isArray(paths) ? paths : [paths]).map((path) => ({
+        path,
+        name: scaleNames[path] || getNameFromPath(path),
+      }));
+    }),
+  };
 }
 
 /* ------------------------ */

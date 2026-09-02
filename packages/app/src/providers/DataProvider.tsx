@@ -11,6 +11,7 @@ import {
 import { type DataProviderApi } from './api';
 import {
   type AttrValuesStore,
+  type DimScalesStore,
   type EntitiesStore,
   type ValuesStore,
 } from './models';
@@ -25,6 +26,7 @@ export interface DataContextValue {
   // Undocumented
   getExportURL?: DataProviderApi['getExportURL'];
   getSearchablePaths?: DataProviderApi['getSearchablePaths'];
+  dimScalesStore?: DimScalesStore; // only if provider supports dimension scales
 }
 
 const DataContext = createContext({} as DataContextValue);
@@ -73,6 +75,17 @@ function DataProvider(props: PropsWithChildren<Props>) {
     );
   }, [api]);
 
+  const dimScalesStore = useMemo(() => {
+    if (!api.getDimensionScales) {
+      return undefined; // provider doesn't support dimension scales
+    }
+
+    return createFetchStore(
+      api.getDimensionScales.bind(api),
+      (a, b) => a.path === b.path,
+    );
+  }, [api]);
+
   return (
     <DataContext.Provider
       value={{
@@ -81,6 +94,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
         entitiesStore,
         valuesStore,
         attrValuesStore,
+        dimScalesStore,
         getExportURL: api.getExportURL?.bind(api),
         getSearchablePaths: api.getSearchablePaths?.bind(api),
       }}

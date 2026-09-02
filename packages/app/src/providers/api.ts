@@ -1,6 +1,7 @@
 import {
   type AttributeValues,
   type Dataset,
+  type DimensionScales,
   type Entity,
   type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
@@ -42,4 +43,12 @@ export abstract class DataProviderApi {
   ): ExportURL | undefined;
 
   public getSearchablePaths?(path: string): Promise<string[]>; // optional, so can't be abstract
+
+  /**
+   * Provide the labels and attached scale datasets of a dataset's dimensions,
+   * as defined by the HDF5 dimension scales specification. Providers that
+   * cannot resolve dimension scales should leave this method undefined, in
+   * which case datasets are plotted against their indices as before.
+   */
+  public getDimensionScales?(dataset: Dataset): Promise<DimensionScales>; // optional, so can't be abstract
 }

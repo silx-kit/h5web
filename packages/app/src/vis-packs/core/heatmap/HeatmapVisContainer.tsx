@@ -7,8 +7,10 @@ import {
 } from '@h5web/shared/guards';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
-import { useValuesInCache } from '../../../hooks';
+import { usePrefetchValue, useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import DimScaleFetcher from '../../dimscales/DimScaleFetcher';
+import { useDimLabels, useDimScaleDefs } from '../../dimscales/hooks';
 import { type VisContainerProps } from '../../models';
 import { useNcIgnoreValue } from '../../netcdf/hooks';
 import VisBoundary from '../../VisBoundary';
@@ -33,28 +35,44 @@ function HeatmapVisContainer(props: VisContainerProps) {
   const selection = getSliceSelection(dimMapping);
   const ignoreValue = useNcIgnoreValue(entity);
 
+  /* Request the values before resolving the scales, which suspends - anything
+   * after it would not run until the scales are resolved */
+  usePrefetchValue(entity, selection);
+
+  const dimLabels = useDimLabels(entity);
+  const dimScaleDefs = useDimScaleDefs(entity, dimLabels);
+  const axisLabels = dimScaleDefs.map((def) => def?.label);
+
   return (
     <>
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
+        dimHints={dimLabels}
         dimMapping={dimMapping}
         canSliceFast={useValuesInCache(entity)}
         onChange={setDimMapping}
       />
       <VisBoundary resetKey={dimMapping} isSlice={selection !== undefined}>
-        <ValueFetcher
-          dataset={entity}
-          selection={selection}
-          render={(value) => (
-            <MappedHeatmapVis
+        <DimScaleFetcher
+          defs={dimScaleDefs}
+          render={(axisValues) => (
+            <ValueFetcher
               dataset={entity}
-              value={value}
-              dimMapping={dimMapping}
-              title={entity.name}
-              toolbarContainer={toolbarContainer}
-              config={config}
-              ignoreValue={ignoreValue}
+              selection={selection}
+              render={(value) => (
+                <MappedHeatmapVis
+                  dataset={entity}
+                  value={value}
+                  dimMapping={dimMapping}
+                  axisLabels={axisLabels}
+                  axisValues={axisValues}
+                  title={entity.name}
+                  toolbarContainer={toolbarContainer}
+                  config={config}
+                  ignoreValue={ignoreValue}
+                />
+              )}
             />
           )}
         />

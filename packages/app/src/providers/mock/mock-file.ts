@@ -28,6 +28,7 @@ import {
   scalar,
   scalarAttr,
   unresolved,
+  withDimScales,
   withImageAttr,
   withNxAttr,
 } from '@h5web/shared/mock-utils';
@@ -495,6 +496,42 @@ export function makeMockFile(): GroupWithChildren {
         array('_FillValue (negative)', {
           valueId: 'twoD',
           attributes: [scalar('_FillValue', -9)],
+        }),
+      ]),
+      group('dimension_scales', [
+        array('X', { attributes: [scalarAttr('units', 'nm')] }),
+        array('Y'),
+        withDimScales(array('oneD', { valueId: 'oneD' }), {
+          labels: ['position'],
+          scales: ['/dimension_scales/X'],
+        }),
+        withDimScales(array('oneD_unlabelled', { valueId: 'oneD' }), {
+          scales: ['/dimension_scales/X'],
+          // Scale name differs from the dataset name, so the label shows which won
+          scaleNames: { '/dimension_scales/X': 'abscissa' },
+        }),
+        withDimScales(array('oneD_label_only', { valueId: 'oneD' }), {
+          labels: ['position'],
+        }),
+        withDimScales(array('oneD_multi_scale', { valueId: 'oneD' }), {
+          labels: ['position'],
+          scales: [['/dimension_scales/X', '/dimension_scales/Y']], // first scale wins
+        }),
+        withDimScales(array('oneD_multi_scale_fallback', { valueId: 'oneD' }), {
+          labels: ['position'],
+          // First scale is the wrong length, so the second one is used
+          scales: [['/dimension_scales/Y', '/dimension_scales/X']],
+        }),
+        withDimScales(array('oneD_mismatched', { valueId: 'oneD' }), {
+          labels: ['position'],
+          scales: ['/dimension_scales/Y'], // wrong length => index axis
+        }),
+        withDimScales(array('twoD', { valueId: 'twoD' }), {
+          labels: ['row', 'column'],
+          scales: ['/dimension_scales/Y', '/dimension_scales/X'],
+        }),
+        withDimScales(array('twoD_partial', { valueId: 'twoD' }), {
+          scales: [undefined, '/dimension_scales/X'], // only the last dimension has a scale
         }),
       ]),
       group('resilience', [

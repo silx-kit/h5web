@@ -7,6 +7,7 @@ import { H5T_CLASS, H5T_ORDER } from '@h5web/shared/h5t';
 import {
   type Attribute,
   type ChildEntity,
+  type DimensionScales,
   type DType,
   EntityKind,
   type Group,
@@ -298,6 +299,45 @@ function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
     file: file_name,
     path: dset_name,
   }));
+}
+
+/* Read the scale datasets attached to each of a dataset's dimensions.
+ * `DIMENSION_LIST` holds object references, which h5wasm resolves to paths on
+ * our behalf; the raw attribute value is not usable directly. Dimension names
+ * come from `DIMENSION_LABELS`, a plain attribute the app reads itself.
+ * `openScale` opens a scale by path, so that opening handles stays in `worker`. */
+export function parseDimensionScales(
+  h5wDataset: H5WasmDataset,
+  openScale: (path: string) => H5WasmDataset,
+): DimensionScales {
+  const { shape } = h5wDataset;
+  assertNonNull(shape);
+
+  return shape.map((_, index) => {
+    try {
+      return h5wDataset
+        .get_attached_scales(index)
+        .map((path) => ({ path, name: getScaleName(openScale, path) }));
+    } catch {
+      /* A dimension whose `DIMENSION_LIST` entry cannot be resolved - a
+       * reference to an unlinked object, say - is reported as unscaled so the
+       * app falls back to its index axis, rather than making the whole dataset
+       * unviewable over an axis it did not have before. */
+      return [];
+    }
+  });
+}
+
+function getScaleName(
+  openScale: (path: string) => H5WasmDataset,
+  scalePath: string,
+): string | undefined {
+  try {
+    // h5wasm returns an empty string for scales created without a name
+    return openScale(scalePath).get_scale_name() || undefined;
+  } catch {
+    return undefined; // scale can't be opened; the app falls back to its dataset name
+  }
 }
 
 export function readSelectedValue(

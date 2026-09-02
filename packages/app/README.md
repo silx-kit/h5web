@@ -514,10 +514,11 @@ interface DataContextValue {
   entitiesStore: EntitiesStore;
   valuesStore: ValuesStore;
   attrValuesStore: AttrValuesStore;
+  dimScalesStore: DimScalesStore | undefined; // undefined if the provider doesn't support HDF5 dimension scales
 }
 ```
 
-The three stores are created with the
+The stores are created with the
 [react-suspense-fetch](https://github.com/dai-shi/react-suspense-fetch) library,
 which relies on [React Suspense](https://react.dev/reference/react/Suspense). A
 component that uses one of these stores (e.g.

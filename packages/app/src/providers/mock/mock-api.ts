@@ -7,6 +7,7 @@ import {
   type ArrayShape,
   type AttributeValues,
   type Dataset,
+  type DimensionScales,
   type Entity,
   type GroupWithChildren,
   type ProvidedEntity,
@@ -127,5 +128,14 @@ export class MockApi extends DataProviderApi {
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
     return getChildrenPaths(this.mockFile, path);
+  }
+
+  public override async getDimensionScales(
+    dataset: Dataset,
+  ): Promise<DimensionScales> {
+    assertMockDataset(dataset);
+    assertArrayShape(dataset);
+
+    return dataset.dimScales || dataset.shape.dims.map(() => []);
   }
 }

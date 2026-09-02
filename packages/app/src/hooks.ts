@@ -106,6 +106,16 @@ export function useValues<
   ) as { [K in keyof R]: ValueFromParams<R[K]> };
 }
 
+/* Start fetching a dataset's values without suspending, so that they load in
+ * parallel with anything the caller fetches before reading them. */
+export function usePrefetchValue(
+  dataset: Dataset<ScalarShape | ArrayShape>,
+  selection?: string,
+): void {
+  const { valuesStore } = useDataContext();
+  valuesStore.prefetch({ dataset, selection });
+}
+
 export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
 ): (dimMapping: DimensionMapping) => boolean {
