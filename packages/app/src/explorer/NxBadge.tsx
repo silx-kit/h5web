@@ -1,7 +1,8 @@
 import { type Group } from '@h5web/shared/hdf5-models';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useDataContext } from '../providers/DataProvider';
-import { resolvePath } from '../visualizer/utils';
+import { resolvePathQuery } from '../visualizer/queries';
 import styles from './Explorer.module.css';
 
 interface Props {
@@ -10,20 +11,28 @@ interface Props {
 
 function NxBadge(props: Props) {
   const { group } = props;
-  const { entitiesStore, attrValuesStore } = useDataContext();
+  const dataContext = useDataContext();
+  const { queryClient } = dataContext;
 
-  try {
-    const resolution = resolvePath(group.path, entitiesStore, attrValuesStore);
+  const { data: show } = useSuspenseQuery({
+    queryKey: [dataContext.filepath, 'nxBadge', group.path],
+    queryFn: async () => {
+      try {
+        const resolution = await queryClient.query(
+          resolvePathQuery(group.path, dataContext),
+        );
 
-    if (!resolution?.supportedVis.some((vis) => vis.name.startsWith('NX'))) {
-      return null;
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return null; // no badge if malformed NeXus metadata
-    }
+        return !!resolution?.supportedVis.some((vis) =>
+          vis.name.startsWith('NX'),
+        );
+      } catch {
+        return false; // no badge if malformed NeXus metadata
+      }
+    },
+  });
 
-    throw error; // most likely a promise; rethrow to trigger Suspense boundary
+  if (!show) {
+    return null;
   }
 
   return (

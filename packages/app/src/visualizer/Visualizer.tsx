@@ -1,5 +1,7 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
+
 import { useDataContext } from '../providers/DataProvider';
-import { resolvePath } from './utils';
+import { resolvePathQuery } from './queries';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
 
@@ -10,8 +12,10 @@ interface Props {
 function Visualizer(props: Props) {
   const { path } = props;
 
-  const { entitiesStore, attrValuesStore } = useDataContext();
-  const resolution = resolvePath(path, entitiesStore, attrValuesStore);
+  const dataContext = useDataContext();
+  const { data: resolution } = useSuspenseQuery(
+    resolvePathQuery(path, dataContext),
+  );
 
   if (!resolution) {
     return (

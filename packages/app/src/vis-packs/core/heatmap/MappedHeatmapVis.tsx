@@ -2,7 +2,6 @@ import {
   type DimensionMapping,
   getSliceSelection,
   HeatmapVis,
-  type IgnoreValue,
   KeepZoom,
   useDomain,
   useSafeDomain,
@@ -20,6 +19,7 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useNcIgnoreValue } from '../../netcdf/hooks';
 import {
   useExportEntries,
   useMappedArray,
@@ -39,7 +39,6 @@ interface Props {
   title: string;
   toolbarContainer: HTMLDivElement | undefined;
   config: HeatmapConfig;
-  ignoreValue?: IgnoreValue;
 }
 
 function MappedHeatmapVis(props: Props) {
@@ -52,7 +51,6 @@ function MappedHeatmapVis(props: Props) {
     title,
     toolbarContainer,
     config,
-    ignoreValue,
   } = props;
 
   const {
@@ -65,6 +63,8 @@ function MappedHeatmapVis(props: Props) {
     flipXAxis,
     flipYAxis,
   } = config;
+
+  const ignoreValue = useNcIgnoreValue(dataset);
 
   const numArray = useToNumArray(value);
   const numAxisArrays = useToNumArrays(axisValues);
