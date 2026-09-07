@@ -17,7 +17,6 @@ import {
   type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
-import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import {
   type BuiltInExporter,
   type ExportFormat,
@@ -26,7 +25,11 @@ import {
 
 import { isScalarSelection } from '../../vis-packs/core/utils';
 import { DataProviderApi } from '../api';
-import { type Fetcher, type ValuesStoreParams } from '../models';
+import {
+  type Fetcher,
+  type OnProgress,
+  type ValuesStoreParams,
+} from '../models';
 import { FetcherError, toJSON } from '../utils';
 import {
   type BaseHsdsEntity,

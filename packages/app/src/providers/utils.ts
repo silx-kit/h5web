@@ -11,17 +11,13 @@ import {
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import {
-  AbortError,
-  type OnProgress,
-} from '@h5web/shared/react-suspense-fetch';
-import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
 import { type AxiosError, type AxiosInstance } from 'axios';
 
 import { type DataProviderApi } from './api';
-import { type Fetcher, type FetcherOptions } from './models';
+import { type Fetcher, type FetcherOptions, type OnProgress } from './models';
 
 export function typedArrayFromDType(
   dtype: DType,
@@ -114,27 +110,19 @@ export function createBasicFetcher(
     const { abortSignal, onProgress } = opts;
     const queryParams = new URLSearchParams(params);
 
-    try {
-      const response = await fetch(`${url}?${queryParams.toString()}`, {
-        ...fetchOpts,
-        signal: abortSignal,
-      });
+    const response = await fetch(`${url}?${queryParams.toString()}`, {
+      ...fetchOpts,
+      signal: abortSignal,
+    });
 
-      const tracked = trackProgress(response, onProgress);
-      const buffer = await tracked.arrayBuffer();
+    const tracked = trackProgress(response, onProgress);
+    const buffer = await tracked.arrayBuffer();
 
-      if (tracked.ok) {
-        return buffer;
-      }
-
-      throw new FetcherError(tracked.status, tracked.statusText, buffer);
-    } catch (error) {
-      if (abortSignal?.aborted && abortSignal.reason instanceof AbortError) {
-        throw abortSignal.reason;
-      }
-
-      throw error;
+    if (tracked.ok) {
+      return buffer;
     }
+
+    throw new FetcherError(tracked.status, tracked.statusText, buffer);
   };
 }
 
@@ -162,10 +150,6 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
 
       return data as ArrayBuffer;
     } catch (error) {
-      if (abortSignal?.aborted && abortSignal.reason instanceof AbortError) {
-        throw abortSignal.reason;
-      }
-
       if (isAxiosError(error) && error.response) {
         const { status, statusText, data } = error.response;
         throw new FetcherError(status, statusText, data as ArrayBuffer, error);

@@ -4,14 +4,13 @@ import {
   type Entity,
   type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
-import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import {
   type BuiltInExporter,
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
 
-import { type ValuesStoreParams } from './models';
+import { type OnProgress, type ValuesStoreParams } from './models';
 
 export abstract class DataProviderApi {
   public constructor(public readonly filepath: string) {}

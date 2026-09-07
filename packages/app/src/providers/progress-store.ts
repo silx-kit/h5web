@@ -1,5 +1,7 @@
 import { createStore, type StoreApi } from 'zustand';
 
+import { type OnProgress } from './models';
+
 interface ProgressState {
   ongoing: Map<string, number | undefined>;
   setProgress: (queryHash: string, value: number | undefined) => void;
@@ -26,8 +28,6 @@ export function createProgressStore(): ProgressStore {
       }),
   }));
 }
-
-export type OnProgress = (value: number) => void;
 
 export async function trackProgress<TResult>(
   progressStore: ProgressStore,

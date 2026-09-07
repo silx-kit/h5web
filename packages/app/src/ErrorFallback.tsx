@@ -1,4 +1,3 @@
-import { AbortError } from '@h5web/shared/react-suspense-fetch';
 import { CancelledError } from '@tanstack/react-query';
 import { type FallbackProps } from 'react-error-boundary';
 
@@ -12,7 +11,7 @@ interface Props extends FallbackProps {
 function ErrorFallback(props: Props) {
   const { className = '', error, resetErrorBoundary } = props;
 
-  if (error instanceof AbortError || error instanceof CancelledError) {
+  if (error instanceof CancelledError) {
     return (
       <p className={`${styles.error} ${className}`}>
         Request cancelled

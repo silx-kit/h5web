@@ -10,7 +10,6 @@ import {
   type Entity,
   type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
-import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import {
   type BuiltInExporter,
   type ExportFormat,
@@ -18,7 +17,11 @@ import {
 } from '@h5web/shared/vis-models';
 
 import { DataProviderApi } from '../api';
-import { type Fetcher, type ValuesStoreParams } from '../models';
+import {
+  type Fetcher,
+  type OnProgress,
+  type ValuesStoreParams,
+} from '../models';
 import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,

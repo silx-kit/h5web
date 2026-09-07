@@ -23,7 +23,6 @@ export {
 } from './utils';
 
 export { getFeedbackMailto } from './breadcrumbs/utils';
-export { AbortError } from '@h5web/shared/react-suspense-fetch';
 
 export type { FeedbackContext } from './breadcrumbs/models';
 export type GetExportURL = NonNullable<DataProviderApi['getExportURL']>;
@@ -38,10 +37,7 @@ export type {
 export { useDataContext } from './providers/DataProvider';
 export type { DataContextValue } from './providers/DataProvider';
 export type {
-  EntitiesStore,
-  ValuesStore,
   ValuesStoreParams,
-  AttrValuesStore,
   Fetcher,
   FetcherOptions,
 } from './providers/models';
