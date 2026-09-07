@@ -37,7 +37,7 @@ export type {
 export { useDataContext } from './providers/DataProvider';
 export type { DataContextValue } from './providers/DataProvider';
 export type {
-  ValuesStoreParams,
+  ValueQueryParams,
   Fetcher,
   FetcherOptions,
 } from './providers/models';

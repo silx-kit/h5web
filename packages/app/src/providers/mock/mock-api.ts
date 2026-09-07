@@ -10,6 +10,7 @@ import {
   type Entity,
   type GroupWithChildren,
   type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import {
   assertMockAttribute,
@@ -22,7 +23,6 @@ import {
 } from '@h5web/shared/vis-models';
 
 import { DataProviderApi } from '../api';
-import { type ValuesStoreParams } from '../models';
 import { makeMockFile } from './mock-file';
 import { delay, findMockEntity, getChildrenPaths, sliceValue } from './utils';
 
@@ -49,10 +49,10 @@ export class MockApi extends DataProviderApi {
   }
 
   public override async getValue(
-    params: ValuesStoreParams,
+    dataset: Dataset<ScalarShape | ArrayShape>,
+    selection?: string,
     abortSignal?: AbortSignal,
   ): Promise<unknown> {
-    const { dataset, selection } = params;
     assertMockDataset(dataset);
 
     if (dataset.name === 'unknown_large') {

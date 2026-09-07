@@ -1,4 +1,4 @@
-import { DataProviderApi, type ValuesStoreParams } from '@h5web/app';
+import { DataProviderApi } from '@h5web/app';
 import { assertDataset, isDefined } from '@h5web/shared/guards';
 import {
   type ArrayShape,
@@ -6,6 +6,7 @@ import {
   type Dataset,
   type Entity,
   type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import {
   type BuiltInExporter,
@@ -39,8 +40,10 @@ export class H5WasmApi extends DataProviderApi {
     }
   }
 
-  public override async getValue(params: ValuesStoreParams): Promise<unknown> {
-    const { dataset, selection } = params;
+  public override async getValue(
+    dataset: Dataset<ScalarShape | ArrayShape>,
+    selection?: string,
+  ): Promise<unknown> {
     const fileId = await this.fileId;
 
     await this.processFilters(dataset);

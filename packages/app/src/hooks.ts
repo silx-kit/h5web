@@ -20,7 +20,7 @@ import {
 import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 
 import { useDataContext } from './providers/DataProvider';
-import { type ValuesStoreParams } from './providers/models';
+import { type ValueQueryParams } from './providers/models';
 
 export function useEntity(path: string): ProvidedEntity {
   const { queries } = useDataContext();
@@ -85,12 +85,11 @@ export function useValue<D extends Dataset<ArrayShape | ScalarShape>>(
   return result.data;
 }
 
-type ValueFromParams<
-  T extends ValuesStoreParams['dataset'] | ValuesStoreParams,
-> = Value<T extends ValuesStoreParams ? T['dataset'] : T>;
+type ValueFromParams<T extends ValueQueryParams['dataset'] | ValueQueryParams> =
+  Value<T extends ValueQueryParams ? T['dataset'] : T>;
 
 export function useValues<
-  R extends Record<string, ValuesStoreParams['dataset'] | ValuesStoreParams>,
+  R extends Record<string, ValueQueryParams['dataset'] | ValueQueryParams>,
 >(datasets: R): { [K in keyof R]: ValueFromParams<R[K]> } {
   const { queries } = useDataContext();
 

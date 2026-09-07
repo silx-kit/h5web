@@ -82,7 +82,7 @@ export async function getValueOrError(
   dataset: Dataset<ArrayShape | ScalarShape>,
 ): Promise<unknown> {
   try {
-    return await api.getValue({ dataset });
+    return await api.getValue(dataset);
   } catch (error) {
     return isAxiosError(error) ? error.message : error;
   }

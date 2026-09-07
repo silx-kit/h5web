@@ -15,6 +15,7 @@ import {
   type Group,
   type GroupWithChildren,
   type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
 import {
@@ -25,11 +26,7 @@ import {
 
 import { isScalarSelection } from '../../vis-packs/core/utils';
 import { DataProviderApi } from '../api';
-import {
-  type Fetcher,
-  type OnProgress,
-  type ValuesStoreParams,
-} from '../models';
+import { type Fetcher, type OnProgress } from '../models';
 import { FetcherError, toJSON } from '../utils';
 import {
   type BaseHsdsEntity,
@@ -113,16 +110,16 @@ export class HsdsApi extends DataProviderApi {
   }
 
   public override async getValue(
-    params: ValuesStoreParams,
+    dataset: Dataset<ScalarShape | ArrayShape>,
+    selection?: string,
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
-    const { dataset, selection } = params;
     assertHsdsDataset(dataset);
 
     const value = await this.fetchValue(
       dataset.id,
-      params.selection,
+      selection,
       abortSignal,
       onProgress,
     );
