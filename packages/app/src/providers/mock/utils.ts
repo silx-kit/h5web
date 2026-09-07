@@ -13,8 +13,9 @@ import {
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
 import { getChildEntity } from '@h5web/shared/hdf5-utils';
+import { type BigIntTypedArray } from '@h5web/shared/vis-models';
 import { createArrayFromView } from '@h5web/shared/vis-utils';
-import ndarray from 'ndarray';
+import ndarray, { type TypedArray } from 'ndarray';
 
 import { isScalarSelection } from '../../vis-packs/core/utils';
 
@@ -47,7 +48,7 @@ export function findMockEntity(
 }
 
 export function sliceValue<T extends DType>(
-  value: unknown[],
+  value: unknown[] | TypedArray | BigIntTypedArray,
   dataset: Dataset<ArrayShape | ScalarShape, T>,
   selection: string,
 ): unknown {

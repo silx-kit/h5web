@@ -1,5 +1,5 @@
 import {
-  assertArray,
+  assertArrayOrAnyTypedArray,
   assertArrayShape,
   assertDefined,
 } from '@h5web/shared/guards';
@@ -75,7 +75,7 @@ export class MockApi extends DataProviderApi {
     }
 
     assertArrayShape(dataset);
-    assertArray(value);
+    assertArrayOrAnyTypedArray(value);
     return sliceValue(value, dataset, selection);
   }
 
