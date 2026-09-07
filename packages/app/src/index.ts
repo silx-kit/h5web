@@ -40,10 +40,28 @@ export type {
   ValueQueryParams,
   Fetcher,
   FetcherOptions,
+  OnProgress,
 } from './providers/models';
 
+// React Query
+export {
+  useQuery,
+  useQueries,
+  useSuspenseQuery,
+  useSuspenseQueries,
+  queryOptions,
+  hashKey,
+  CancelledError,
+} from '@tanstack/react-query';
+
 // Hooks
-export { useEntity, useDatasets, useValue, useValues } from './hooks';
+export {
+  useEntity,
+  useDatasets,
+  useValue,
+  useValues,
+  useAttrValue,
+} from './hooks';
 export { useBaseArray as useNdArray } from './vis-packs/core/hooks';
 
 // Models
