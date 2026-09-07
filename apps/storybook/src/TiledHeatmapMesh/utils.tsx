@@ -1,7 +1,5 @@
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
 
-import { type TileParams } from './models';
-
 export function renderTooltip(x: number, y: number, v: number) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -9,8 +7,4 @@ export function renderTooltip(x: number, y: number, v: number) {
       <strong>{formatTooltipVal(v)}</strong>
     </div>
   );
-}
-
-export function areTilesEqual(a: TileParams, b: TileParams) {
-  return a.layer === b.layer && a.offset.equals(b.offset);
 }

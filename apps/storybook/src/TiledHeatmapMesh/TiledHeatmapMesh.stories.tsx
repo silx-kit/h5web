@@ -2,8 +2,10 @@ import {
   type AxisConfig,
   DefaultInteractions,
   type Domain,
+  ResetZoomButton,
   TiledHeatmapMesh,
   type TiledHeatmapMeshProps,
+  TiledHeatmapProvider,
   TiledTooltipMesh,
   VisCanvas,
 } from '@h5web/lib';
@@ -75,6 +77,7 @@ export const Default = {
         aspect="equal"
       >
         <DefaultInteractions />
+        <ResetZoomButton />
         <group
           scale={[
             abscissaConfig.flip ? -1 : 1,
@@ -82,7 +85,9 @@ export const Default = {
             1,
           ]}
         >
-          <TiledHeatmapMesh {...tiledHeatmapProps} />
+          <TiledHeatmapProvider>
+            <TiledHeatmapMesh {...tiledHeatmapProps} />
+          </TiledHeatmapProvider>
         </group>
         <TiledTooltipMesh renderTooltip={renderTooltip} />
       </VisCanvas>
@@ -171,14 +176,19 @@ export const WithTransforms = {
         aspect="equal"
       >
         <DefaultInteractions />
+        <ResetZoomButton />
         <LinearAxesGroup>
           <group position={[1, 1, 0]} rotation={[0, 0, Math.PI / 4]}>
-            <TiledHeatmapMesh api={api} size={size} {...tiledHeatmapProps} />
-            <TiledTooltipMesh size={size} renderTooltip={renderTooltip} />
+            <TiledHeatmapProvider>
+              <TiledHeatmapMesh api={api} size={size} {...tiledHeatmapProps} />
+              <TiledTooltipMesh size={size} renderTooltip={renderTooltip} />
+            </TiledHeatmapProvider>
           </group>
           <group position={[-1, 1, 0]} scale={[2, 2, 1]}>
-            <TiledHeatmapMesh api={api} size={size} {...tiledHeatmapProps} />
-            <TiledTooltipMesh size={size} renderTooltip={renderTooltip} />
+            <TiledHeatmapProvider>
+              <TiledHeatmapMesh api={api} size={size} {...tiledHeatmapProps} />
+              <TiledTooltipMesh size={size} renderTooltip={renderTooltip} />
+            </TiledHeatmapProvider>
           </group>
         </LinearAxesGroup>
       </VisCanvas>

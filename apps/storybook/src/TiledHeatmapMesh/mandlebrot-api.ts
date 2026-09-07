@@ -1,12 +1,8 @@
 import { getLayerSizes, type Size, TilesApi } from '@h5web/lib';
-import { createFetchStore } from '@h5web/shared/react-suspense-fetch';
 import { type Domain } from '@h5web/shared/vis-models';
 import greenlet from 'greenlet';
 import ndarray, { type NdArray } from 'ndarray';
 import { MathUtils, type Vector2 } from 'three';
-
-import { type TileParams } from './models';
-import { areTilesEqual } from './utils';
 
 // https://en.wikipedia.org/wiki/Mandelbrot_set
 const mandlebrot = greenlet(
@@ -56,7 +52,6 @@ const mandlebrot = greenlet(
 export class MandelbrotTilesApi extends TilesApi {
   public readonly xDomain: Domain;
   public readonly yDomain: Domain;
-  private readonly store;
 
   public constructor(
     size: Size,
@@ -67,40 +62,38 @@ export class MandelbrotTilesApi extends TilesApi {
     super(tileSize, getLayerSizes(size, tileSize));
     this.xDomain = xDomain;
     this.yDomain = yDomain;
-
-    this.store = createFetchStore(async (tile: TileParams) => {
-      const { layer, offset } = tile;
-      const layerSize = this.layerSizes[layer];
-
-      // Clip slice to size of the level
-      const width = MathUtils.clamp(
-        layerSize.width - offset.x,
-        0,
-        this.tileSize.width,
-      );
-      const height = MathUtils.clamp(
-        layerSize.height - offset.y,
-        0,
-        this.tileSize.height,
-      );
-
-      const xScale = (this.xDomain[1] - this.xDomain[0]) / layerSize.width;
-      const xRange: Domain = [
-        this.xDomain[0] + xScale * offset.x,
-        this.xDomain[0] + xScale * (offset.x + width),
-      ];
-      const yScale = (this.yDomain[1] - this.yDomain[0]) / layerSize.height;
-      const yRange: Domain = [
-        this.yDomain[0] + yScale * offset.y,
-        this.yDomain[0] + yScale * (offset.y + height),
-      ];
-
-      const arr = await mandlebrot(50, xRange, yRange, width, height);
-      return ndarray(arr, [height, width]);
-    }, areTilesEqual);
   }
 
-  public get(layer: number, offset: Vector2): NdArray<Float32Array> {
-    return this.store.get({ layer, offset });
+  public async get(
+    layer: number,
+    offset: Vector2,
+  ): Promise<NdArray<Float32Array>> {
+    const layerSize = this.layerSizes[layer];
+
+    // Clip slice to size of the level
+    const width = MathUtils.clamp(
+      layerSize.width - offset.x,
+      0,
+      this.tileSize.width,
+    );
+    const height = MathUtils.clamp(
+      layerSize.height - offset.y,
+      0,
+      this.tileSize.height,
+    );
+
+    const xScale = (this.xDomain[1] - this.xDomain[0]) / layerSize.width;
+    const xRange: Domain = [
+      this.xDomain[0] + xScale * offset.x,
+      this.xDomain[0] + xScale * (offset.x + width),
+    ];
+    const yScale = (this.yDomain[1] - this.yDomain[0]) / layerSize.height;
+    const yRange: Domain = [
+      this.yDomain[0] + yScale * offset.y,
+      this.yDomain[0] + yScale * (offset.y + height),
+    ];
+
+    const arr = await mandlebrot(50, xRange, yRange, width, height);
+    return ndarray(arr, [height, width]);
   }
 }
