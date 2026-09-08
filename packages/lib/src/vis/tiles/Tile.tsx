@@ -1,6 +1,6 @@
 import { useThrottledCallback } from '@react-hookz/web';
 import { type ThreeEvent } from '@react-three/fiber';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { memo } from 'react';
 import { type MagnificationTextureFilter, Vector2 } from 'three';
 
@@ -21,20 +21,24 @@ function Tile(props: Props) {
   const { api, layer, x, y, magFilter, onPointerMove, ...colorMapProps } =
     props;
 
-  const { data: array } = useSuspenseQuery({
+  const { data: array } = useQuery({
     queryKey: ['tile', layer, x, y],
     queryFn: async () => api.get(layer, new Vector2(x, y)),
   });
 
-  const [height, width] = array.shape;
-
   const handlePointerMove = useThrottledCallback(
     (e: ThreeEvent<MouseEvent>) => {
-      onPointerMove?.(e, array);
+      onPointerMove!(e, array!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
     },
-    [onPointerMove],
+    [array, onPointerMove],
     50,
   );
+
+  if (!array) {
+    return null;
+  }
+
+  const [height, width] = array.shape;
 
   return (
     <group
