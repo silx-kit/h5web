@@ -5,6 +5,7 @@ import {
   type ChildEntity,
   type Dataset,
   type Datatype,
+  type DimensionScales,
   type DType,
   type Entity,
   EntityKind,
@@ -305,6 +306,34 @@ export function withNxAttr<T extends MockDataset<ArrayShape>>(
     ...(longName ? [scalarAttr('long_name', longName)] : []),
     ...(units ? [scalarAttr('units', units)] : []),
   ]);
+}
+
+/* ---------------------------- */
+/* ----- DIMENSION SCALES ----- */
+
+/* Attach HDF5 dimension scales to a mock dataset, as `make_scale` and
+ * `attach_scale` would: `labels` becomes a real `DIMENSION_LABELS` attribute,
+ * while `scales` stands in for the `DIMENSION_LIST` object references and is
+ * served by `MockApi#getDimensionScales`. */
+export function withDimScales<T extends MockDataset<ArrayShape>>(
+  dat: T,
+  dimScales: {
+    labels?: (string | undefined)[];
+    scales?: DimensionScales;
+  },
+): T {
+  const { labels, scales } = dimScales;
+
+  const withLabels = labels
+    ? withAttr(dat, [
+        arrayAttr(
+          'DIMENSION_LABELS',
+          dat.shape.dims.map((_, index) => labels[index] || ''),
+        ),
+      ])
+    : dat;
+
+  return { ...withLabels, dimScales: scales };
 }
 
 /* ------------------------ */

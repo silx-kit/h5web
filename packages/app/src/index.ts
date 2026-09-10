@@ -81,6 +81,7 @@ export type {
   Attribute,
   Filter,
   VirtualSource,
+  DimensionScales,
 
   // Definition
   DatasetDef,
