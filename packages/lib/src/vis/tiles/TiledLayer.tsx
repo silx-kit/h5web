@@ -1,5 +1,4 @@
 import { type ThreeEvent } from '@react-three/fiber';
-import { Suspense } from 'react';
 import { type Box3, LinearFilter, NearestFilter, Vector2 } from 'three';
 
 import { type Size } from '../models';
@@ -47,17 +46,16 @@ function TiledLayer(props: Props) {
       ]}
     >
       {tileOffsets.map((offset) => (
-        <Suspense key={`${offset.x},${offset.y}`} fallback={null}>
-          <Tile
-            api={api}
-            layer={layer}
-            x={offset.x}
-            y={offset.y}
-            {...colorMapProps}
-            magFilter={layer === baseLayerIndex ? NearestFilter : LinearFilter}
-            onPointerMove={onPointerMove}
-          />
-        </Suspense>
+        <Tile
+          key={`${offset.x},${offset.y}`}
+          api={api}
+          layer={layer}
+          x={offset.x}
+          y={offset.y}
+          {...colorMapProps}
+          magFilter={layer === baseLayerIndex ? NearestFilter : LinearFilter}
+          onPointerMove={onPointerMove}
+        />
       ))}
     </group>
   );

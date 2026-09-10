@@ -131,11 +131,7 @@ function EntityItem(props: Props) {
         <Icon className={styles.icon} />
         <span className={styles.name}>{entity.name}</span>
 
-        {isGroup(entity) && (
-          <Suspense fallback={<span data-testid="LoadingNxBadge" />}>
-            <NxBadge group={entity} />
-          </Suspense>
-        )}
+        {isGroup(entity) && <NxBadge group={entity} />}
       </button>
 
       {isGroup(entity) && isExpanded && (
