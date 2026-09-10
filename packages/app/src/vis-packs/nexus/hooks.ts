@@ -1,18 +1,16 @@
 import { type DimensionMapping } from '@h5web/lib';
-import { createMemo } from '@h5web/shared/createMemo';
-import { assertValue, isDefined } from '@h5web/shared/guards';
 import {
-  type ArrayShape,
   type ComplexType,
-  type Dataset,
   type GroupWithChildren,
   type NumericLikeType,
-  type ScalarShape,
-  type Value,
 } from '@h5web/shared/hdf5-models';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useValuesInCache } from '../../hooks';
-import { useDataContext } from '../../providers/DataProvider';
+import {
+  type DataContextValue,
+  useDataContext,
+} from '../../providers/DataProvider';
 import { type FieldDef, type NxData } from './models';
 import {
   assertNxDataGroup,
@@ -27,76 +25,55 @@ import {
   getSilxStyle,
 } from './utils';
 
-const useDefaultSlice = createMemo(getDefaultSlice);
-
 export function useNxData(group: GroupWithChildren): NxData {
-  const { attrValuesStore } = useDataContext();
+  const dataContext = useDataContext();
 
-  assertNxDataGroup(group, attrValuesStore);
-  const signalDataset = findSignalDataset(group, attrValuesStore);
-  const axisDatasets = findAxesDatasets(group, signalDataset, attrValuesStore);
-  const auxSignals = findAuxiliaryDatasets(group, attrValuesStore);
+  return useSuspenseQuery({
+    queryKey: [dataContext.filepath, 'nxData', group.path],
+    queryFn: async () => getNxData(group, dataContext),
+  }).data;
+}
+
+export async function getNxData(
+  group: GroupWithChildren,
+  dataContext: DataContextValue,
+): Promise<NxData> {
+  await assertNxDataGroup(group, dataContext);
+  const signalDataset = await findSignalDataset(group, dataContext);
+  const axisDatasets = await findAxesDatasets(
+    group,
+    signalDataset,
+    dataContext,
+  );
+  const auxSignals = await findAuxiliaryDatasets(group, dataContext);
 
   return {
     titleDataset: findTitleDataset(group),
     signalDef: {
       dataset: signalDataset,
       errorDataset: findErrorDataset(group, signalDataset.name),
-      ...getFieldInfo(signalDataset, attrValuesStore),
+      ...(await getFieldInfo(signalDataset, dataContext)),
     },
-    auxDefs: auxSignals.map((auxSignal) => ({
-      dataset: auxSignal,
-      errorDataset: findAuxErrorDataset(group, auxSignal.name),
-      ...getFieldInfo(auxSignal, attrValuesStore),
-    })),
-    axisDefs: axisDatasets.map(
-      (dataset) =>
-        dataset && { dataset, ...getFieldInfo(dataset, attrValuesStore) },
+    auxDefs: await Promise.all(
+      auxSignals.map(async (auxSignal) => ({
+        dataset: auxSignal,
+        errorDataset: findAuxErrorDataset(group, auxSignal.name),
+        ...(await getFieldInfo(auxSignal, dataContext)),
+      })),
     ),
-    defaultSlice: useDefaultSlice(
+    axisDefs: await Promise.all(
+      axisDatasets.map(
+        async (dataset) =>
+          dataset && { dataset, ...(await getFieldInfo(dataset, dataContext)) },
+      ),
+    ),
+    defaultSlice: await getDefaultSlice(
       group,
       signalDataset.shape.dims,
-      attrValuesStore,
+      dataContext,
     ),
-    silxStyle: getSilxStyle(group, attrValuesStore),
+    silxStyle: await getSilxStyle(group, dataContext),
   };
-}
-
-export function usePrefetchNxValues(
-  datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[],
-  selection?: string,
-): void {
-  const { valuesStore } = useDataContext();
-  datasets.filter(isDefined).forEach((dataset) => {
-    valuesStore.prefetch({ dataset, selection });
-  });
-}
-
-export function useNxValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: D[],
-  selection?: string,
-): Value<D>[];
-
-export function useNxValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: (D | undefined)[],
-  selection?: string,
-): (Value<D> | undefined)[];
-
-export function useNxValues<D extends Dataset<ArrayShape | ScalarShape>>(
-  datasets: (D | undefined)[],
-  selection?: string,
-): (Value<D> | undefined)[] {
-  const { valuesStore } = useDataContext();
-
-  return datasets.map((dataset) => {
-    if (!dataset) {
-      return undefined;
-    }
-
-    const value = valuesStore.get({ dataset, selection });
-    assertValue(value, dataset);
-    return value;
-  });
 }
 
 export function useNxHeatmapDataToFetch<

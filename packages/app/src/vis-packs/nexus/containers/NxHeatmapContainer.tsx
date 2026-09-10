@@ -14,7 +14,6 @@ import MappedComplexHeatmapVis from '../../core/complex/MappedComplexHeatmapVis'
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { type VisContainerProps } from '../../models';
-import { useNcIgnoreValue } from '../../netcdf/hooks';
 import VisBoundary from '../../VisBoundary';
 import {
   useNxData,
@@ -53,7 +52,6 @@ function NxHeatmapContainer(props: VisContainerProps) {
   });
 
   const nxDataToFetch = useNxHeatmapDataToFetch(nxData, selectedDef);
-  const ignoreValue = useNcIgnoreValue(selectedDataset);
 
   return (
     <>
@@ -111,7 +109,6 @@ function NxHeatmapContainer(props: VisContainerProps) {
                 title={title}
                 toolbarContainer={toolbarContainer}
                 config={config}
-                ignoreValue={ignoreValue}
               />
             );
           }}
