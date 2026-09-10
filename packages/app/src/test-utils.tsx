@@ -141,6 +141,19 @@ export function getDimMappingBtn(axis: 'x' | 'y', dim: number): Locator {
     .getByRole('radio', { name: `D${dim}` });
 }
 
+/* Scope queries to one axis, since the same text may appear elsewhere: the
+ * tooltip echoes the axis label, and `@visx/text` measures strings in a
+ * `<text>` element it appends to `document.body`. */
+export async function getAxis(type: 'abscissa' | 'ordinate'): Promise<Locator> {
+  // The visualization may still be mounting, so wait for the axis to appear
+  const axis = await vi.waitFor(() => {
+    const el = document.querySelector(`svg[data-type="${type}"]`);
+    assertNonNull(el, `Expected ${type} axis`);
+    return el;
+  });
+  return page.elementLocator(axis);
+}
+
 /**
  * Mock a console method.
  * Mocks are automatically cleared and restored after every test but you
