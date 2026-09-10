@@ -128,7 +128,9 @@ export function getBounds(
   const values = getValues(valuesArray);
   const valuesBounds = { ...INITIAL_BOUNDS };
 
-  for (const val of values) {
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of,unicorn/no-for-loop -- classic for loop is more efficient
+  for (let i = 0; i < values.length; i += 1) {
+    const val = values[i];
     if (Number.isFinite(val) && !ignoreValue?.(val)) {
       mutateBounds(valuesBounds, val);
     }
@@ -153,7 +155,9 @@ export function getBoundsWithErrors(
   const boundsWithErrors = { ...INITIAL_BOUNDS };
   const boundsWithoutErrors = { ...INITIAL_BOUNDS };
 
-  for (const [i, val] of values.entries()) {
+  // eslint-disable-next-line unicorn/no-for-loop -- classic for loop is more efficient
+  for (let i = 0; i < values.length; i += 1) {
+    const val = values[i];
     if (!Number.isFinite(val) || ignoreValue?.(val)) {
       continue;
     }
