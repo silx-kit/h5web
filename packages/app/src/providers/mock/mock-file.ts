@@ -28,6 +28,7 @@ import {
   scalar,
   scalarAttr,
   unresolved,
+  withDimScales,
   withImageAttr,
   withNxAttr,
 } from '@h5web/shared/mock-utils';
@@ -496,6 +497,53 @@ export function makeMockFile(): GroupWithChildren {
         array('_FillValue (negative)', {
           valueId: 'twoD',
           attributes: [scalar('_FillValue', -9)],
+        }),
+      ]),
+      group('dimension_scales', [
+        array('X', { attributes: [scalarAttr('units', 'nm')] }),
+        array('X_named', {
+          valueId: 'X',
+          attributes: [
+            scalarAttr('NAME', 'abscissa'),
+            scalarAttr('units', 'nm'),
+          ],
+        }),
+        array('Y'), // too short to scale a `oneD` or `twoD` dimension
+        withDimScales(array('oneD', { valueId: 'oneD' }), {
+          labels: ['position'],
+          scales: [['/dimension_scales/X']],
+        }),
+        withDimScales(array('oneD_named_scale', { valueId: 'oneD' }), {
+          // No dimension label, so the name given to `make_scale` is used
+          scales: [['/dimension_scales/X_named']],
+        }),
+        withDimScales(array('oneD_label_only', { valueId: 'oneD' }), {
+          labels: ['position'],
+        }),
+        withDimScales(array('oneD_multi_scale', { valueId: 'oneD' }), {
+          labels: ['position'],
+          // `Y` is attached first but is the wrong length, so `X` is used
+          scales: [['/dimension_scales/Y', '/dimension_scales/X']],
+        }),
+        array('error_value', { valueId: 'X' }), // fails to load, see `MockApi#getValue`
+        withDimScales(array('oneD_unreadable_scale', { valueId: 'oneD' }), {
+          // `error_value` has the right shape but can't be read, so `X` is used
+          scales: [['/dimension_scales/error_value', '/dimension_scales/X']],
+        }),
+        withDimScales(array('twoD', { valueId: 'twoD' }), {
+          labels: [undefined, 'column'],
+          scales: [[], ['/dimension_scales/X']],
+        }),
+        dataset(
+          'T',
+          arrayShape([10]),
+          floatType(),
+          [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+          { attributes: [scalarAttr('units', 'ms')] },
+        ),
+        withDimScales(array('oneD_complex'), {
+          labels: ['time'],
+          scales: [['/dimension_scales/T']],
         }),
       ]),
       group('resilience', [
