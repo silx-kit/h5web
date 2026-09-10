@@ -35,12 +35,7 @@ import {
   getAttributeValue,
   hasAttribute,
 } from '../../utils';
-import {
-  type AxisDef,
-  type DefaultSlice,
-  type FieldInfo,
-  type SilxStyle,
-} from './models';
+import { type DefaultSlice, type FieldInfo, type SilxStyle } from './models';
 
 export async function getNxClass(
   group: Group,
@@ -358,17 +353,6 @@ export async function getFieldInfo(
     label: longName || (units ? `${dataset.name} (${units})` : dataset.name),
     unit: units,
   };
-}
-
-export function guessKeepRatio(
-  xAxisDef: AxisDef | undefined,
-  yAxisDef: AxisDef | undefined,
-): boolean | undefined {
-  if (!xAxisDef?.unit && !yAxisDef?.unit) {
-    return undefined;
-  }
-
-  return xAxisDef?.unit === yAxisDef?.unit;
 }
 
 export function areSameDims(dims1: number[], dims2: number[]): boolean {

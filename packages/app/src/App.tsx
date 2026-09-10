@@ -129,6 +129,12 @@ function App(props: Props) {
                 <ErrorBoundary
                   resetKeys={[selectedPath, isInspecting]}
                   FallbackComponent={ErrorFallback}
+                  onError={() => {
+                    // Refetch on retry rather than throw the same error again, as in `VisBoundary`
+                    queryClient.removeQueries({
+                      predicate: (query) => query.state.status === 'error',
+                    });
+                  }}
                 >
                   <Suspense
                     fallback={<EntityLoader isInspecting={isInspecting} />}
