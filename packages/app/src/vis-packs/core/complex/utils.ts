@@ -19,32 +19,39 @@ export const COMPLEX_VIS_TYPE_LABELS = {
 } satisfies Record<ComplexVisType, string>;
 
 export function getPhaseAmplitude(values: H5WebComplex[]): {
-  phase: number[];
-  amplitude: number[];
+  phase: Float64Array;
+  amplitude: Float64Array;
 } {
-  const phase: number[] = Array.from({ length: values.length });
-  const amplitude: number[] = Array.from({ length: values.length });
+  const phase = new Float64Array(values.length);
+  const amplitude = new Float64Array(values.length);
 
-  values.forEach(([real, imag], i) => {
+  // eslint-disable-next-line unicorn/no-for-loop -- classic loop is more efficient
+  for (let i = 0; i < values.length; i += 1) {
+    const [real, imag] = values[i];
     phase[i] = Math.atan2(imag, real);
     amplitude[i] = Math.hypot(real, imag);
-  });
+  }
 
   return { phase, amplitude };
 }
 
 // Unwrap phase values by removing 2π discontinuities
-function unwrapPhase(values: number[]): number[] {
-  const unwrapped: number[] = Array.from({ length: values.length });
+export function unwrapPhase(values: Float64Array): Float64Array {
+  const unwrapped = new Float64Array(values.length);
 
-  for (const [i, val] of values.entries()) {
-    if (i === 0) {
-      unwrapped[0] = val;
-      continue;
-    }
+  if (values.length === 0) {
+    return unwrapped;
+  }
 
-    const diff = val - unwrapped[i - 1];
-    unwrapped[i] = val - TWO_PI * Math.round(diff / TWO_PI);
+  let previous = values[0]; // eslint-disable-line @typescript-eslint/prefer-destructuring
+  unwrapped[0] = previous;
+
+  for (let i = 1; i < values.length; i += 1) {
+    const val = values[i];
+    const diff = val - previous;
+
+    previous = val - TWO_PI * Math.round(diff / TWO_PI);
+    unwrapped[i] = previous;
   }
 
   return unwrapped;
