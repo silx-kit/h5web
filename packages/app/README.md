@@ -510,19 +510,23 @@ function MyApp() {
 interface DataContextValue {
   filepath: string;
   filename: string;
-
-  entitiesStore: EntitiesStore;
-  valuesStore: ValuesStore;
-  attrValuesStore: AttrValuesStore;
+  queries: {
+    entity: (path: string) => UseQueryOptions<ProvidedEntity>;
+    value: (
+      dataset: Dataset<ScalarShape | ArrayShape>,
+      selection?: string,
+    ) => UseQueryOptions<unknown>;
+    attrValues: (entity: Entity) => UseQueryOptions<AttributeValues>;
+  };
+  queryClient: QueryClient;
+  progressStore: ProgressStore;
 }
 ```
 
-The three stores are created with the
-[react-suspense-fetch](https://github.com/dai-shi/react-suspense-fetch) library,
-which relies on [React Suspense](https://react.dev/reference/react/Suspense). A
-component that uses one of these stores (e.g.
-`entitiesStore.get('/path/to/entity')`) must have a `Suspense` ancestor to
-manage the loading state.
+You can use [React Query](https://tanstack.com/query/latest) to query data in
+your components, for instance with the
+[`useSuspenseQuery`](https://tanstack.com/query/latest/docs/framework/react/guides/suspense)
+hook (available from `@h5web/app`):
 
 ```tsx
 <MockProvider>
@@ -532,11 +536,24 @@ manage the loading state.
 </MockProvider>;
 
 function MyApp() {
-  const { entitiesStore } = useDataContext();
-  const group = entitiesStore.get('/resilience/slow_metadata');
+  const { queries } = useDataContext();
+
+  const { data: group } = useSuspenseQuery(
+    queries.entity('/resilience/slow_metadata'),
+  );
+
   return <pre>{JSON.stringify(group, null, 2)}</pre>;
 }
 ```
+
+The following React Query hooks are available:
+[`useQuery`](https://tanstack.com/query/latest/docs/framework/react/guides/queries),
+[`useQueries`](https://tanstack.com/query/latest/docs/framework/react/guides/parallel-queries),
+[`useSuspenseQuery`](https://tanstack.com/query/latest/docs/framework/react/guides/suspense)
+and
+[`useSuspenseQuery`](https://tanstack.com/query/latest/docs/framework/react/guides/suspense).
+They can be imported from `@h5web/app` — you don't need to install the
+`@tanstack/react-query` package in your application.
 
 A common need is to find specific datasets in a file and retrieve their values.
 You can do so with hooks `useDatasets` and `useValues` as follows:
@@ -593,28 +610,14 @@ return (
 );
 ```
 
-Every store comes with a `prefetch` method that works like `get` but doesn't
-trigger the `Suspense` boundary and doesn't return a value. If you work with a
-remote provider like H5Grove and need to access multiple entities/values at
-once, it's important to prefetch every entity/value first so the requests are
-done in parallel. `useDatasets` and `useValues` do this automatically, but not
-`useEntity` and `useValue`:
+To retrieve the value of an HDF5 attribute:
+
+1. Retrieve the entity's object with `useEntity` or `useDatasets`.
+2. Find the attribute object you're interested in with `findAttribute`.
+3. Assert its type and shape.
+4. Use `useAttrValue` to query its value.
 
 ```ts
-const { valuesStore } = useDataContext();
-valuesStore.prefetch(abscissasDataset);
-valuesStore.prefetch(ordinatesDataset);
-
-const abscissas = useValue(abscissasDataset);
-const ordinates = useValue(ordinatesDataset);
-```
-
-To work with HDF5 attributes, retrieve an entity object with `useEntity` or
-`useDatasets` and pass it to `findAttribute`. Then, you can check or assert its
-type and shape and retrieve its value with `getAttributeValue`:
-
-```ts
-const { attrValuesStore } = useDataContext();
 const entity = useEntity('/arrays/twoD'); // ProvidedEntity
 
 // If you just want to know whether the attribute is present
@@ -623,32 +626,87 @@ const hasAttr = hasAttribute(entity, 'my_attr'); // boolean
 // Otherwise, find it
 const attribute = findAttribute(entity, 'my_attr'); // Attribute | undefined
 
-// If the attribute must be present and have the expected shape and type, use type assertions
+// Assert that it exists and has the expected shape and type
 assertDefined(attribute);
-assertArrayShape(attribute);
-assertStringType(attribute); // now `Attribute & HasShape<ArrayShape> & HasType<StringType>`
+assertScalarShape(attribute);
+assertStringType(attribute); // Attribute & HasShape<ScalarShape> & HasType<StringType>
 
-// Otherwise, use type guards and an `if` block
-if (
-  isDefined(attribute) &&
-  hasArrayShape(attribute) &&
-  hasStringType(attribute)
-) {
-  const someStr = getAttributeValue(entity, attribute, attrValuesStore); // string
-  someStr.startWith('foo'); // `someStr` is fully type-checked; no need to use `typeof`
-}
+// Query and use its value
+const someStr = useAttrValue(entity, attribute); // string
+someStr.startWith('foo'); // `someStr` is fully type-checked
 ```
 
-With scalar string and numeric attributes, use `findScalarStrAttr` and
-`findScalarNumAttr` for convenience:
+Alternatively, for scalar string and numeric attributes, use the more convenient
+`findScalarStrAttr` and `findScalarNumAttr`:
 
 ```ts
-const strAttr = findScalarStrAttr(entity, 'my_str_attr');
 const numAttr = findScalarNumAttr(entity, 'my_num_attr');
-
-assertDefined(strAttr); // or `isDefined` + `if` block
 assertDefined(numAttr);
 
-const str = getAttributeValue(entity, strAttr, attrValuesStore); // string
-const num = getAttributeValue(entity, numAttr, attrValuesStore); // number | bigint
+const num = useAttrValue(entity, numAttr); // number | bigint
+```
+
+If you do not assert the attribute object, the type of the value will be looser:
+
+```ts
+const maybeNumAttr = findScalarNumAttr(entity, 'my_num_attr');
+const maybeNum = useAttrValue(entity, maybeNumAttr); // number | bigint | undefined
+
+const attr = findAttribute(entity, 'my_attr');
+const val = useAttrValue(entity, attr); // unknown
+```
+
+Avoid calling query hooks multiple times in a row, as this will run the queries
+sequentially. Prefer running multiple queries in parallel with `useQueries` or
+`useSuspenseQueries`:
+
+```ts
+const strAttr = findScalarNumAttr(entity, 'my_str_attr');
+const numAttr = findScalarNumAttr(entity, 'my_num_attr');
+assertDefined(strAttr);
+assertDefined(numAttr);
+
+const { queries } = useDataContext();
+const [{ data: str }, { data: num }] = useSuspenseQueries({
+  queries: [
+    queries.attrValue(entity, strAttr),
+    queries.attrValue(entity, numAttr),
+  ],
+});
+```
+
+If you need to run a query conditionally, the simplest is to use
+`useQuery(ies)`'s
+[`enabled`](https://tanstack.com/query/latest/docs/framework/react/guides/disabling-queries)
+option. If you're set on using `useSuspenseQuery(ies)`, it is typically simpler
+to write a custom query and return `null` conditionally from the `queryFn`. Here
+is an example of a custom query:
+
+```ts
+const { filepath, queryClient, queries } = useDataContext();
+
+const entity = useEntity('/');
+const defaultDatasetAttr = findScalarStringAttr(entity, 'default_dataset');
+
+const { data: defaultDatasetValue } = useSuspenseQuery({
+  queryKey: [filepath, 'defaultDatasetValue'], // always start the `queryKey` with the `filepath` to scope the query to the file
+  queryFn: async () => {
+    if (!isDefined(defaultDatasetAttr)) {
+      return null;
+    }
+
+    const path = await getAttributeValue(entity, defaultDatasetAttr);
+    const dataset = await queryClient.query(queries.entity(path));
+
+    if (
+      !isDataset(dataset) ||
+      !hasArrayShape(dataset) ||
+      !hasNumericType(dataset)
+    ) {
+      return null;
+    }
+
+    return queryClient.query(queries.value(dataset));
+  },
+});
 ```

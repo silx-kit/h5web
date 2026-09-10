@@ -23,7 +23,6 @@ export {
 } from './utils';
 
 export { getFeedbackMailto } from './breadcrumbs/utils';
-export { AbortError } from '@h5web/shared/react-suspense-fetch';
 
 export type { FeedbackContext } from './breadcrumbs/models';
 export type GetExportURL = NonNullable<DataProviderApi['getExportURL']>;
@@ -38,16 +37,31 @@ export type {
 export { useDataContext } from './providers/DataProvider';
 export type { DataContextValue } from './providers/DataProvider';
 export type {
-  EntitiesStore,
-  ValuesStore,
-  ValuesStoreParams,
-  AttrValuesStore,
+  ValueQueryParams,
   Fetcher,
   FetcherOptions,
+  OnProgress,
 } from './providers/models';
 
+// React Query
+export {
+  useQuery,
+  useQueries,
+  useSuspenseQuery,
+  useSuspenseQueries,
+  queryOptions,
+  hashKey,
+  CancelledError,
+} from '@tanstack/react-query';
+
 // Hooks
-export { useEntity, useDatasets, useValue, useValues } from './hooks';
+export {
+  useEntity,
+  useDatasets,
+  useValue,
+  useValues,
+  useAttrValue,
+} from './hooks';
 export { useBaseArray as useNdArray } from './vis-packs/core/hooks';
 
 // Models

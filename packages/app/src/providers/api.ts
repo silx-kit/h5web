@@ -1,17 +1,18 @@
 import {
+  type ArrayShape,
   type AttributeValues,
   type Dataset,
   type Entity,
   type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import {
   type BuiltInExporter,
   type ExportFormat,
   type ExportURL,
 } from '@h5web/shared/vis-models';
 
-import { type ValuesStoreParams } from './models';
+import { type OnProgress } from './models';
 
 export abstract class DataProviderApi {
   public constructor(public readonly filepath: string) {}
@@ -19,7 +20,8 @@ export abstract class DataProviderApi {
   public abstract getEntity(path: string): Promise<ProvidedEntity>;
 
   public abstract getValue(
-    params: ValuesStoreParams,
+    dataset: Dataset<ScalarShape | ArrayShape>,
+    selection?: string, // if omitted or `undefined`, provider should return the full dataset
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown>;

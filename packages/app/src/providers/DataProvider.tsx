@@ -61,7 +61,7 @@ function getQueryOptionsFactories(
         queryKey,
         queryFn: async ({ signal }) => {
           return trackProgress(progressStore, queryHash, async (onProgress) => {
-            return api.getValue({ dataset, selection }, signal, onProgress);
+            return api.getValue(dataset, selection, signal, onProgress);
           });
         },
       });

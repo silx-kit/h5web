@@ -1,21 +1,10 @@
 import {
   type ArrayShape,
-  type AttributeValues,
   type Dataset,
-  type Entity,
-  type ProvidedEntity,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import {
-  type FetchStore,
-  type OnProgress,
-} from '@h5web/shared/react-suspense-fetch';
 
-export type EntitiesStore = FetchStore<string, ProvidedEntity>;
-export type ValuesStore = FetchStore<ValuesStoreParams, unknown>;
-export type AttrValuesStore = FetchStore<Entity, AttributeValues>;
-
-export interface ValuesStoreParams {
+export interface ValueQueryParams {
   dataset: Dataset<ScalarShape | ArrayShape>;
   selection?: string | undefined; // if omitted or `undefined`, provider should return the full dataset
 }
@@ -30,3 +19,5 @@ export interface FetcherOptions {
   abortSignal?: AbortSignal;
   onProgress?: OnProgress;
 }
+
+export type OnProgress = (value: number) => void;

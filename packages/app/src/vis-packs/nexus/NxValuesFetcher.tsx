@@ -6,7 +6,7 @@ import { getAssertedValue } from '@h5web/shared/hdf5-utils';
 import { type ReactNode } from 'react';
 
 import { useValues } from '../../hooks';
-import { type ValuesStoreParams } from '../../providers/models';
+import { type ValueQueryParams } from '../../providers/models';
 import { type NxData, type NxValues } from './models';
 
 interface Props<T extends NumericLikeType | ComplexType> {
@@ -22,7 +22,7 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
   const { signalDef, axisDefs, auxDefs, titleDataset } = nxData;
 
   // 1. Prepare record of defined `{ dataset, selection }` objects for `useValues`
-  const datasets: Record<string, ValuesStoreParams> = {
+  const datasets: Record<string, ValueQueryParams> = {
     signal: { dataset: signalDef.dataset, selection },
     ...(titleDataset && { title: { dataset: titleDataset } }),
     ...(signalDef.errorDataset && {

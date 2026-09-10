@@ -4,13 +4,14 @@ import {
   hasScalarShape,
 } from '@h5web/shared/guards';
 import {
+  type ArrayShape,
   type AttributeValues,
   type Dataset,
   DTypeClass,
   type Entity,
   type ProvidedEntity,
+  type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { type OnProgress } from '@h5web/shared/react-suspense-fetch';
 import {
   type BuiltInExporter,
   type ExportFormat,
@@ -18,7 +19,7 @@ import {
 } from '@h5web/shared/vis-models';
 
 import { DataProviderApi } from '../api';
-import { type Fetcher, type ValuesStoreParams } from '../models';
+import { type Fetcher, type OnProgress } from '../models';
 import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type H5GroveAttrValuesResponse,
@@ -58,11 +59,11 @@ export class H5GroveApi extends DataProviderApi {
   }
 
   public override async getValue(
-    storeParams: ValuesStoreParams,
+    dataset: Dataset<ScalarShape | ArrayShape>,
+    selection?: string,
     abortSignal?: AbortSignal,
     onProgress?: OnProgress,
   ): Promise<unknown> {
-    const { dataset, selection } = storeParams;
     const { path, type } = dataset;
 
     const url = `${this.baseURL}/data`;
