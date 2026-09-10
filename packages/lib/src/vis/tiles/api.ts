@@ -54,5 +54,5 @@ export abstract class TilesApi {
     return this.layerSizes.length;
   }
 
-  public abstract get(layer: number, offset: Vector2): TileArray;
+  public abstract get(layer: number, offset: Vector2): Promise<TileArray>;
 }
