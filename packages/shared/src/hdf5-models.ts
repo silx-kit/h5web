@@ -87,6 +87,13 @@ export interface VirtualSource {
   path: string;
 }
 
+/* Scale datasets attached to each of a dataset's dimensions, as recorded in its
+ * `DIMENSION_LIST` attribute. `path` is one of possibly several valid paths to
+ * the scale, since an object reference doesn't identify a single path; `name`
+ * is the name passed to `make_scale`, if any.
+ * https://support.hdfgroup.org/documentation/hdf5/latest/_h5_d_s__u_g.html */
+export type DimensionScales = { path: string; name?: string }[][];
+
 /* --------------------- */
 /* ---- DEFINITIONS ---- */
 
