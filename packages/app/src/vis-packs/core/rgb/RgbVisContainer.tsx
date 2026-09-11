@@ -10,6 +10,7 @@ import { useDimMappingState } from '../../../dim-mapping-store';
 import { useAttrValue, useValuesInCache } from '../../../hooks';
 import { findScalarStrAttr } from '../../../utils';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useDimScales } from '../../dimscales/hooks';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import ValueFetcher from '../ValueFetcher';
@@ -39,11 +40,16 @@ function RgbVisContainer(props: VisContainerProps) {
   const config = useRgbConfig();
   const selection = getSliceSelection(dimMapping);
 
+  const dimScales = useDimScales(entity);
+  const axisLabels = dimScales.map((scale) => scale?.label);
+  const axisValues = dimScales.map((scale) => scale?.value);
+
   return (
     <>
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
+        dimHints={axisLabels}
         dimMapping={dimMapping}
         canSliceFast={useValuesInCache(entity)}
         onChange={setDimMapping}
@@ -57,6 +63,8 @@ function RgbVisContainer(props: VisContainerProps) {
               dataset={entity}
               value={value}
               dimMapping={dimMapping}
+              axisLabels={axisLabels}
+              axisValues={axisValues}
               title={entity.name}
               toolbarContainer={toolbarContainer}
               config={config}

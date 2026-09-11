@@ -2,6 +2,7 @@ import {
   type ArrayShape,
   type AttributeValues,
   type Dataset,
+  type DimensionScales,
   type Entity,
   type ProvidedEntity,
   type ScalarShape,
@@ -44,4 +45,12 @@ export abstract class DataProviderApi {
   ): ExportURL | undefined;
 
   public getSearchablePaths?(path: string): Promise<string[]>; // optional, so can't be abstract
+
+  /**
+   * Resolve the `DIMENSION_LIST` attribute of a dataset into the scale datasets
+   * attached to each of its dimensions. Providers that can't dereference
+   * `DIMENSION_LIST` should leave this method undefined, in which case datasets
+   * are plotted against their indices as before.
+   */
+  public getDimensionScales?(dataset: Dataset): Promise<DimensionScales>; // optional, so can't be abstract
 }
