@@ -72,12 +72,12 @@ function MyApp() {
 export default MyApp;
 ```
 
-### Examples
+### Example
 
-The following code sandboxes demonstrate how to set up and use `@h5web/lib` with
-various front-end development stacks:
-
-- [Vite](https://codesandbox.io/p/sandbox/h5weblib-vite-xru04?file=%2Fsrc%2FApp.tsx)
+An example Vite project demonstrating the use of `@h5web/lib` is available under
+`/app/example-lib`. You can start it with `pnpm --filter example-lib start`. It
+is also available as a
+[codesandbox](https://codesandbox.io/p/sandbox/h5weblib-vite-xru04?file=%2Fsrc%2FApp.tsx).
 
 ### Browser support
 

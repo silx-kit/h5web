@@ -1,0 +1,23 @@
+@import 'modern-normalize/modern-normalize.css';
+/* In a real-world project, remember to import the lib's styles: */
+/* @import '@h5web/lib/styles.css'; */
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 1.125rem;
+  font-weight: normal;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100vh;
+  text-align: center;
+}

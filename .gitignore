@@ -2,13 +2,13 @@ node_modules/
 
 build/
 dist*/
+.sonda/
 
 /cypress/debug/
 /cypress/snapshots/**/__diff_output__
 /cypress/snapshots/**/__received_output__
 
 /coverage/
-/apps/demo/.sonda/
 /packages/app/src/__tests__/__screenshots__/
 /support/h5grove/__pycache__/
 
