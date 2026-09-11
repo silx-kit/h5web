@@ -17,8 +17,8 @@ const meta = preview.meta({
   decorators: [FillHeight],
   argTypes: {
     when: {
-      control: { type: 'inline-check' },
-      options: ['when-needed', 'always', 'never', undefined],
+      control: { type: 'inline-radio' },
+      options: ['as-needed', 'always', 'never', undefined],
     },
   },
 });
