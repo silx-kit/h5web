@@ -92,7 +92,6 @@ function App(props: Props) {
           defaultSize={initialSidebarOpen ? '25%' : '0%'}
           minSize={150}
           collapsible
-          groupResizeBehavior="preserve-pixel-size"
           onResize={({ inPixels: size }) => {
             const isNowOpen = size > 0;
             if (
