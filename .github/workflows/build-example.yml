@@ -1,0 +1,22 @@
+name: Publish packages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🏷️
+        uses: actions/checkout@v6
+
+      - name: Install ⚙️
+        uses: ./.github/actions/install
+
+      - name: Build lib example 📦
+        run: pnpm --filter example-lib build
