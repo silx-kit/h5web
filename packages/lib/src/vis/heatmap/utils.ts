@@ -153,21 +153,42 @@ export function scaleDomain(
 
 export function toTextureSafeNdArray(
   ndArr: NdArray<NumArray>,
-): NdArray<TextureSafeTypedArray>;
+): NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
 
 export function toTextureSafeNdArray(
   ndArr: NdArray<NumArray> | undefined,
-): NdArray<TextureSafeTypedArray> | undefined;
+): NdArray<TextureSafeTypedArray | Uint16Array> | undefined;
 
 export function toTextureSafeNdArray(
   ndArr: NdArray<NumArray> | undefined,
-): NdArray<TextureSafeTypedArray> | undefined {
+): NdArray<TextureSafeTypedArray | Uint16Array> | undefined {
   if (!ndArr) {
     return undefined;
   }
 
   if (ndArr.dtype === 'float32' || ndArr.dtype.startsWith('uint8')) {
     return ndArr as NdArray<TextureSafeTypedArray>;
+  }
+
+  if (ndArr.dtype === 'float16') {
+    /* A `Float16Array` already holds the bits a HALF_FLOAT texture wants, so
+     * view the same buffer as uint16 instead of widening to float32: no copy,
+     * and half the texture memory. Element width is unchanged, so the stride
+     * and offset carry over exactly. three's `DataTexture` does not accept a
+     * `Float16Array` at all, so the view is required rather than merely
+     * cheaper. (`Float16Array` is not named below: bare, it means
+     * `Float16Array<ArrayBufferLike>`, which does not satisfy `ndarray`'s
+     * `Float16Array<ArrayBuffer>` constraint.) */
+    const { shape, stride, offset } = ndArr;
+    const { buffer, byteOffset, length } = ndArr.data as ArrayBufferView & {
+      length: number;
+    };
+    return ndarray(
+      new Uint16Array(buffer, byteOffset, length),
+      shape,
+      stride,
+      offset,
+    );
   }
 
   return toTypedNdArray(ndArr, Float32Array);

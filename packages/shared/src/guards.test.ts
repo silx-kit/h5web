@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { assertScalarValue, assertValue } from './guards';
+import { assertScalarValue, assertValue, isTypedArray } from './guards';
 import {
   arrayShape,
   arrayType,
@@ -100,6 +100,20 @@ describe('assertScalarValue', () => {
     expect(() =>
       assertScalarValue([''], compoundType([['foo', intType()]])),
     ).toThrow('Expected number');
+  });
+});
+
+describe('isTypedArray', () => {
+  it('should accept every typed array a dataset value can hold', () => {
+    expect(isTypedArray(new Float16Array([1.5]))).toBe(true);
+    expect(isTypedArray(new Float32Array([1.5]))).toBe(true);
+    expect(isTypedArray(new Uint8Array([1]))).toBe(true);
+  });
+
+  it('should reject bigint typed arrays and non-typed arrays', () => {
+    expect(isTypedArray(new BigInt64Array([1n]))).toBe(false);
+    expect(isTypedArray([1.5])).toBe(false);
+    expect(isTypedArray(undefined)).toBe(false);
   });
 });
 

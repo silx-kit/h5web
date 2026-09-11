@@ -123,6 +123,7 @@ export function makeMockFile(): GroupWithChildren {
           array('uint8', { type: intType(false, 8) }),
           array('int16', { type: intType(true, 16) }),
           array('int64', { type: intType(true, 64) }),
+          array('float16', { type: floatType(16) }),
           array('float32', { type: floatType(32) }),
           array('float64', { type: floatType(64) }),
           withImageAttr(array('uint8_rgb', { type: intType(false, 8) })),
