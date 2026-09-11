@@ -1,7 +1,6 @@
 import '@h5web/lib'; // eslint-disable-line import-x/no-duplicates -- make sure lib styles come first in CSS bundle
 
 import { KeepZoomProvider } from '@h5web/lib'; // eslint-disable-line import-x/no-duplicates
-import { useDebouncedCallback } from '@react-hookz/web';
 import { Suspense, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
@@ -61,13 +60,6 @@ function App(props: Props) {
     id: 'h5web:layout',
   });
 
-  // Wait for layout to settle before persisting to avoid sidebar collapsing and other side effects
-  const onLayoutChangedDebounced = useDebouncedCallback(
-    onLayoutChanged,
-    [],
-    200,
-  );
-
   const sidebarPanelRef = usePanelRef();
   const [isSidebarOpen, setSidebarOpen] = useState(
     initialSidebarOpen
@@ -88,7 +80,7 @@ function App(props: Props) {
         className={styles.root}
         resizeTargetMinimumSize={RESIZE_TARGET_MIN_SIZE}
         defaultLayout={initialSidebarOpen ? defaultLayout : undefined}
-        onLayoutChanged={onLayoutChangedDebounced}
+        onLayoutChanged={onLayoutChanged}
         data-fullscreen-root
         data-allow-dark-mode={disableDarkMode ? undefined : ''}
         data-sidebar-collapsed={!isSidebarOpen || undefined}
