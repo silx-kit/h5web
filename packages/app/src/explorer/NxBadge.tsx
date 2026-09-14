@@ -2,8 +2,8 @@ import { type Group } from '@h5web/shared/hdf5-models';
 import { useQuery } from '@tanstack/react-query';
 
 import { useDataContext } from '../providers/DataProvider';
-import { resolvePathQuery } from '../visualizer/queries';
 import styles from './Explorer.module.css';
+import { nxBadgeQuery } from './utils';
 
 interface Props {
   group: Group;
@@ -13,15 +13,15 @@ function NxBadge(props: Props) {
   const { group } = props;
   const dataContext = useDataContext();
 
-  const { data: resolution, isPending } = useQuery(
-    resolvePathQuery(group.path, dataContext),
+  const { data: showBadge, isPending } = useQuery(
+    nxBadgeQuery(group, dataContext),
   );
 
   if (isPending) {
     return <span data-testid="LoadingNxBadge" />;
   }
 
-  if (!resolution?.supportedVis.some((vis) => vis.name.startsWith('NX'))) {
+  if (!showBadge) {
     return null;
   }
 
