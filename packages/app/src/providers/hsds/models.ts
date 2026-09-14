@@ -140,5 +140,5 @@ export interface HsdsCompoundType {
 export interface HsdsEnumType {
   class: 'H5T_ENUM';
   base: HsdsType;
-  mapping: Record<string, number>;
+  members: { name: string; value: number }[];
 }

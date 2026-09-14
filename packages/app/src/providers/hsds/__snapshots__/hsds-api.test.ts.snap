@@ -1,0 +1,1787 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`test file matches snapshot 1`] = `
+[
+  {
+    "name": "ascii_fixed_scalar",
+    "rawType": {
+      "charSet": "H5T_CSET_ASCII",
+      "class": "H5T_STRING",
+      "length": 9,
+      "strPad": "H5T_STR_NULLPAD",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "charSet": "ASCII",
+      "class": "String",
+      "length": 9,
+      "strPad": "null-padded",
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "ascii_vlen_empty",
+    "rawType": {
+      "charSet": "H5T_CSET_ASCII",
+      "class": "H5T_STRING",
+      "length": "H5T_VARIABLE",
+      "strPad": "H5T_STR_NULLTERM",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "charSet": "ASCII",
+      "class": "String",
+      "strPad": "null-terminated",
+    },
+    "value": 0,
+  },
+  {
+    "name": "ascii_vlen_scalar",
+    "rawType": {
+      "charSet": "H5T_CSET_ASCII",
+      "class": "H5T_STRING",
+      "length": "H5T_VARIABLE",
+      "strPad": "H5T_STR_NULLTERM",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "charSet": "ASCII",
+      "class": "String",
+      "strPad": "null-terminated",
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "bool_2D",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "FALSE",
+          "value": 0,
+        },
+        {
+          "name": "TRUE",
+          "value": 1,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        4,
+      ],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 8,
+      },
+      "class": "Boolean",
+    },
+    "value": [
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+    ],
+  },
+  {
+    "name": "bool_empty",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "FALSE",
+          "value": 0,
+        },
+        {
+          "name": "TRUE",
+          "value": 1,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 8,
+      },
+      "class": "Boolean",
+    },
+    "value": false,
+  },
+  {
+    "name": "bool_false_scalar",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "FALSE",
+          "value": 0,
+        },
+        {
+          "name": "TRUE",
+          "value": 1,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 8,
+      },
+      "class": "Boolean",
+    },
+    "value": false,
+  },
+  {
+    "name": "bool_true_scalar",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "FALSE",
+          "value": 0,
+        },
+        {
+          "name": "TRUE",
+          "value": 1,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 8,
+      },
+      "class": "Boolean",
+    },
+    "value": true,
+  },
+  {
+    "name": "byte_string_1D",
+    "rawType": {
+      "class": "H5T_OPAQUE",
+      "size": 1,
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
+    "type": {
+      "class": "Unknown",
+    },
+    "value": [
+      "",
+      "EQ==",
+      "Ig==",
+    ],
+  },
+  {
+    "name": "byte_string_scalar",
+    "rawType": {
+      "class": "H5T_OPAQUE",
+      "size": 3,
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Unknown",
+    },
+    "value": "ABEi",
+  },
+  {
+    "name": "complex128_2D",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "r",
+          "type": {
+            "base": "H5T_IEEE_F64LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "i",
+          "type": {
+            "base": "H5T_IEEE_F64LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+      ],
+    },
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+    },
+    "value": [
+      [
+        1,
+        2,
+      ],
+      [
+        3,
+        4,
+      ],
+      [
+        5,
+        6,
+      ],
+      [
+        7,
+        8,
+      ],
+    ],
+  },
+  {
+    "name": "complex128_BE_scalar",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "r",
+          "type": {
+            "base": "H5T_IEEE_F64BE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "i",
+          "type": {
+            "base": "H5T_IEEE_F64BE",
+            "class": "H5T_FLOAT",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "big-endian",
+        "size": 64,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "big-endian",
+        "size": 64,
+      },
+    },
+    "value": [
+      1,
+      2,
+    ],
+  },
+  {
+    "name": "complex128_scalar",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "r",
+          "type": {
+            "base": "H5T_IEEE_F64LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "i",
+          "type": {
+            "base": "H5T_IEEE_F64LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 64,
+      },
+    },
+    "value": [
+      2.2250738585072014e-308,
+      1.7976931348623157e+308,
+    ],
+  },
+  {
+    "name": "complex64_2D",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "r",
+          "type": {
+            "base": "H5T_IEEE_F32LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "i",
+          "type": {
+            "base": "H5T_IEEE_F32LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+      ],
+    },
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+    },
+    "value": [
+      [
+        1,
+        2,
+      ],
+      [
+        3,
+        4,
+      ],
+      [
+        5,
+        6,
+      ],
+      [
+        7,
+        8,
+      ],
+    ],
+  },
+  {
+    "name": "complex64_scalar",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "r",
+          "type": {
+            "base": "H5T_IEEE_F32LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "i",
+          "type": {
+            "base": "H5T_IEEE_F32LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Complex",
+      "imagType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "realType": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+    },
+    "value": [
+      1.1754943508222875e-38,
+      3.4028234663852886e+38,
+    ],
+  },
+  {
+    "name": "compound_1D",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "bigint",
+          "type": {
+            "base": "H5T_STD_I64LE",
+            "class": "H5T_INTEGER",
+          },
+        },
+        {
+          "name": "double",
+          "type": {
+            "base": "H5T_IEEE_F64LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "utf-8",
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
+    "type": {
+      "class": "Compound",
+      "fields": Map {
+        "bigint" => {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "double" => {
+          "class": "Float",
+          "endianness": "little-endian",
+          "size": 64,
+        },
+        "utf-8" => {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+      },
+    },
+    "value": [
+      [
+        1,
+        "NaN",
+        "foo",
+      ],
+      [
+        2,
+        "Infinity",
+        "bar",
+      ],
+      [
+        3,
+        -0,
+        "baz",
+      ],
+    ],
+  },
+  {
+    "name": "compound_num_keys_scalar",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "1",
+          "type": {
+            "base": "H5T_STD_I64LE",
+            "class": "H5T_INTEGER",
+          },
+        },
+        {
+          "name": "2",
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM",
+          },
+        },
+        {
+          "name": "0",
+          "type": {
+            "base": {
+              "base": "H5T_STD_I8LE",
+              "class": "H5T_INTEGER",
+            },
+            "class": "H5T_ENUM",
+            "members": [
+              {
+                "name": "FALSE",
+                "value": 0,
+              },
+              {
+                "name": "TRUE",
+                "value": 1,
+              },
+            ],
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Compound",
+      "fields": Map {
+        "1" => {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "2" => {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+        "0" => {
+          "base": {
+            "class": "Integer",
+            "endianness": "little-endian",
+            "signed": true,
+            "size": 8,
+          },
+          "class": "Boolean",
+        },
+      },
+    },
+    "value": [
+      5,
+      "foo",
+      false,
+    ],
+  },
+  {
+    "name": "compound_scalar",
+    "rawType": {
+      "class": "H5T_COMPOUND",
+      "fields": [
+        {
+          "name": "bigint",
+          "type": {
+            "base": "H5T_STD_I64LE",
+            "class": "H5T_INTEGER",
+          },
+        },
+        {
+          "name": "double",
+          "type": {
+            "base": "H5T_IEEE_F64LE",
+            "class": "H5T_FLOAT",
+          },
+        },
+        {
+          "name": "utf-8",
+          "type": {
+            "charSet": "H5T_CSET_UTF8",
+            "class": "H5T_STRING",
+            "length": "H5T_VARIABLE",
+            "strPad": "H5T_STR_NULLTERM",
+          },
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Compound",
+      "fields": Map {
+        "bigint" => {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "double" => {
+          "class": "Float",
+          "endianness": "little-endian",
+          "size": 64,
+        },
+        "utf-8" => {
+          "charSet": "UTF-8",
+          "class": "String",
+          "strPad": "null-terminated",
+        },
+      },
+    },
+    "value": [
+      1,
+      2,
+      "foo",
+    ],
+  },
+  {
+    "name": "datetime64_not-a-time_scalar",
+    "rawType": {
+      "class": "H5T_OPAQUE",
+      "size": 8,
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Unknown",
+    },
+    "value": "AAAAAAAAAIA=",
+  },
+  {
+    "name": "datetime64_scalar",
+    "rawType": {
+      "class": "H5T_OPAQUE",
+      "size": 8,
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Unknown",
+    },
+    "value": "lrGHXQAAAAA=",
+  },
+  {
+    "name": "enum_1D",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_U8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "A",
+          "value": 0,
+        },
+        {
+          "name": "B",
+          "value": 1,
+        },
+        {
+          "name": "C",
+          "value": 2,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        10,
+      ],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": false,
+        "size": 8,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "0": "A",
+        "1": "B",
+        "2": "C",
+      },
+    },
+    "value": [
+      0,
+      2,
+      2,
+      1,
+      1,
+      0,
+      2,
+      2,
+      1,
+      1,
+    ],
+  },
+  {
+    "name": "enum_2D",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_U8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "A",
+          "value": 0,
+        },
+        {
+          "name": "B",
+          "value": 1,
+        },
+        {
+          "name": "C",
+          "value": 2,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        10,
+      ],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": false,
+        "size": 8,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "0": "A",
+        "1": "B",
+        "2": "C",
+      },
+    },
+    "value": [
+      0,
+      2,
+      2,
+      1,
+      1,
+      0,
+      2,
+      2,
+      1,
+      1,
+      2,
+      0,
+      1,
+      1,
+      0,
+      2,
+      2,
+      2,
+      2,
+      1,
+    ],
+  },
+  {
+    "name": "enum_int32_scalar",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I32LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "A",
+          "value": 256,
+        },
+        {
+          "name": "B",
+          "value": 257,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 32,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "256": "A",
+        "257": "B",
+      },
+    },
+    "value": 256,
+  },
+  {
+    "name": "enum_uint8_scalar",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_U8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_ENUM",
+      "members": [
+        {
+          "name": "A",
+          "value": 0,
+        },
+        {
+          "name": "B",
+          "value": 1,
+        },
+      ],
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": false,
+        "size": 8,
+      },
+      "class": "Enumeration",
+      "mapping": {
+        "0": "A",
+        "1": "B",
+      },
+    },
+    "value": 1,
+  },
+  {
+    "name": "float16_2D",
+    "rawType": {
+      "base": "H5T_IEEE_F16LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "float16_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F16LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 16,
+    },
+    "value": 0.00006103515625,
+  },
+  {
+    "name": "float32_2D",
+    "rawType": {
+      "base": "H5T_IEEE_F32LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "float32_BE_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F32BE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "big-endian",
+      "size": 32,
+    },
+    "value": 0,
+  },
+  {
+    "name": "float32_empty",
+    "rawType": {
+      "base": "H5T_IEEE_F32LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": 0,
+  },
+  {
+    "name": "float32_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F32LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 32,
+    },
+    "value": 1.1754943508222875e-38,
+  },
+  {
+    "name": "float64_2D",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+        5,
+      ],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": [
+      0,
+      1,
+      "Infinity",
+      3,
+      4,
+      3,
+      4,
+      "NaN",
+      6,
+      7,
+      6,
+      7,
+      "-Infinity",
+      9,
+      10,
+    ],
+  },
+  {
+    "name": "float64_inf_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": "Infinity",
+  },
+  {
+    "name": "float64_nan_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": "NaN",
+  },
+  {
+    "name": "float64_ninf_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": "-Infinity",
+  },
+  {
+    "name": "float64_nzero_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 0,
+  },
+  {
+    "name": "float64_pi_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 3.141592653589793,
+  },
+  {
+    "name": "float64_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 2.2250738585072014e-308,
+  },
+  {
+    "name": "float64_zero_scalar",
+    "rawType": {
+      "base": "H5T_IEEE_F64LE",
+      "class": "H5T_FLOAT",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Float",
+      "endianness": "little-endian",
+      "size": 64,
+    },
+    "value": 0,
+  },
+  {
+    "name": "int16_2D",
+    "rawType": {
+      "base": "H5T_STD_I16LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 16,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int16_scalar",
+    "rawType": {
+      "base": "H5T_STD_I16LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 16,
+    },
+    "value": -32768,
+  },
+  {
+    "name": "int32_2D",
+    "rawType": {
+      "base": "H5T_STD_I32LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 32,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int32_BE_scalar",
+    "rawType": {
+      "base": "H5T_STD_I32BE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "big-endian",
+      "signed": true,
+      "size": 32,
+    },
+    "value": 0,
+  },
+  {
+    "name": "int32_scalar",
+    "rawType": {
+      "base": "H5T_STD_I32LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 32,
+    },
+    "value": -2147483648,
+  },
+  {
+    "name": "int64_2D",
+    "rawType": {
+      "base": "H5T_STD_I64LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 64,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int64_scalar",
+    "rawType": {
+      "base": "H5T_STD_I64LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 64,
+    },
+    "value": -9223372036854776000,
+  },
+  {
+    "name": "int8_2D",
+    "rawType": {
+      "base": "H5T_STD_I8LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 8,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "int8_scalar",
+    "rawType": {
+      "base": "H5T_STD_I8LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": true,
+      "size": 8,
+    },
+    "value": -128,
+  },
+  {
+    "name": "reference_scalar",
+    "rawType": {
+      "base": "H5T_STD_REF_OBJ",
+      "charSet": "H5T_CSET_ASCII",
+      "class": "H5T_REFERENCE",
+      "length": 48,
+      "strPad": "H5T_STR_NULLPAD",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Unknown",
+    },
+    "value": "<HDF5 object reference>",
+  },
+  {
+    "name": "uint16_2D",
+    "rawType": {
+      "base": "H5T_STD_U16LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 16,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint16_scalar",
+    "rawType": {
+      "base": "H5T_STD_U16LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 16,
+    },
+    "value": 65535,
+  },
+  {
+    "name": "uint32_2D",
+    "rawType": {
+      "base": "H5T_STD_U32LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 32,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint32_scalar",
+    "rawType": {
+      "base": "H5T_STD_U32LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 32,
+    },
+    "value": 4294967295,
+  },
+  {
+    "name": "uint64_3D",
+    "rawType": {
+      "base": "H5T_STD_U64LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        2,
+        2,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 64,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      18446744073709552000,
+    ],
+  },
+  {
+    "name": "uint64_scalar",
+    "rawType": {
+      "base": "H5T_STD_U64LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 64,
+    },
+    "value": 18446744073709552000,
+  },
+  {
+    "name": "uint8_2D",
+    "rawType": {
+      "base": "H5T_STD_U8LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+        3,
+      ],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 8,
+    },
+    "value": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+    ],
+  },
+  {
+    "name": "uint8_scalar",
+    "rawType": {
+      "base": "H5T_STD_U8LE",
+      "class": "H5T_INTEGER",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "class": "Integer",
+      "endianness": "little-endian",
+      "signed": false,
+      "size": 8,
+    },
+    "value": 255,
+  },
+  {
+    "name": "utf8_fixed_scalar",
+    "rawType": {
+      "charSet": "H5T_CSET_UTF8",
+      "class": "H5T_STRING",
+      "length": 9,
+      "strPad": "H5T_STR_NULLPAD",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+      "length": 9,
+      "strPad": "null-padded",
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "utf8_vlen_1D",
+    "rawType": {
+      "charSet": "H5T_CSET_UTF8",
+      "class": "H5T_STRING",
+      "length": "H5T_VARIABLE",
+      "strPad": "H5T_STR_NULLTERM",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+      "strPad": "null-terminated",
+    },
+    "value": [
+      "a",
+      "bc",
+      "def",
+    ],
+  },
+  {
+    "name": "utf8_vlen_scalar",
+    "rawType": {
+      "charSet": "H5T_CSET_UTF8",
+      "class": "H5T_STRING",
+      "length": "H5T_VARIABLE",
+      "strPad": "H5T_STR_NULLTERM",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "charSet": "UTF-8",
+      "class": "String",
+      "strPad": "null-terminated",
+    },
+    "value": "Some text",
+  },
+  {
+    "name": "vlen_float32_1D",
+    "rawType": {
+      "base": {
+        "base": "H5T_IEEE_F32LE",
+        "class": "H5T_FLOAT",
+      },
+      "class": "H5T_VLEN",
+      "size": "H5T_VARIABLE",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        2,
+      ],
+    },
+    "type": {
+      "base": {
+        "class": "Float",
+        "endianness": "little-endian",
+        "size": 32,
+      },
+      "class": "Array (variable length)",
+    },
+    "value": [
+      0,
+      [
+        0,
+      ],
+    ],
+  },
+  {
+    "name": "vlen_int64_1D",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I64LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_VLEN",
+      "size": "H5T_VARIABLE",
+    },
+    "shape": {
+      "class": "Array",
+      "dims": [
+        3,
+      ],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 64,
+      },
+      "class": "Array (variable length)",
+    },
+    "value": [
+      [
+        0,
+      ],
+      [
+        0,
+        1,
+      ],
+      [
+        0,
+        1,
+        2,
+      ],
+    ],
+  },
+  {
+    "name": "vlen_int8_scalar",
+    "rawType": {
+      "base": {
+        "base": "H5T_STD_I8LE",
+        "class": "H5T_INTEGER",
+      },
+      "class": "H5T_VLEN",
+      "size": "H5T_VARIABLE",
+    },
+    "shape": {
+      "class": "Scalar",
+      "dims": [],
+    },
+    "type": {
+      "base": {
+        "class": "Integer",
+        "endianness": "little-endian",
+        "signed": true,
+        "size": 8,
+      },
+      "class": "Array (variable length)",
+    },
+    "value": [
+      0,
+      1,
+    ],
+  },
+]
+`;
