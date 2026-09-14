@@ -141,9 +141,17 @@ function SelectionTool(props: Props) {
 
   useKeyboardEvent('Escape', cancelSelection, [], { event: 'keydown' });
   useEventListener(globalThis, 'contextmenu', (evt: MouseEvent) => {
+    /* If the context menu is triggered during a selection, disable it and cancel the selection instead.
+     * On Mac, if the modifier key is "Ctrl", this effectively disables showing the context menu with
+     * "Ctrl + left click". The context menu remains available with right click, though, unless
+     * `PreventDefaultContextMenu` disables it. */
     if (startEvtRef.current) {
       evt.preventDefault();
-      cancelSelection();
+
+      // Wait for an actual selection to avoid canceling too early with "Ctrl + left click" on Mac
+      if (rawSelection) {
+        cancelSelection();
+      }
     }
   });
 

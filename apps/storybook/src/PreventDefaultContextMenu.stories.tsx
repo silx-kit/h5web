@@ -23,7 +23,7 @@ const meta = preview.meta({
   },
 });
 
-export const WhenNeeded = meta.story({
+export const AsNeeded = meta.story({
   render: (args) => {
     const [withRightBtn, toggleRightBtn] = useToggle(false);
 
@@ -48,13 +48,13 @@ export const WhenNeeded = meta.story({
   },
 });
 
-export const Always = WhenNeeded.extend({
+export const Always = AsNeeded.extend({
   args: {
     when: 'always',
   },
 });
 
-export const Never = WhenNeeded.extend({
+export const Never = AsNeeded.extend({
   args: {
     when: 'never',
   },
