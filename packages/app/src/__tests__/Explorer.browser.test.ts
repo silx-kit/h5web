@@ -3,7 +3,6 @@ import { page } from 'vitest/browser';
 
 import {
   getExplorerItem,
-  getNexusExplorerItem,
   mockDelay,
   renderApp,
   waitForAllLoaders,
@@ -220,7 +219,7 @@ test('navigate with home and end keys', async () => {
   const { user } = await renderApp();
 
   const root = getExplorerItem('source.h5');
-  const lastItem = getNexusExplorerItem('resilience');
+  const lastItem = getExplorerItem('resilience');
 
   // From root to last item
   await user.keyboard('{End}');

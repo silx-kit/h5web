@@ -181,7 +181,8 @@ test('handle unknown/incompatible interpretation gracefully', async () => {
 
 test('show error/fallback for malformed NeXus entity', async () => {
   const errorSpy = mockConsoleMethod('error');
-  const { selectExplorerNode } = await renderApp('/nexus/malformed');
+  const { selectExplorerNode, selectNexusExplorerNode } =
+    await renderApp('/nexus/malformed');
 
   // `default` attribute points to non-existant entity
   await selectExplorerNode('default_not_found');
@@ -189,39 +190,39 @@ test('show error/fallback for malformed NeXus entity', async () => {
   errorSpy.mockClear();
 
   // No `signal` attribute
-  await selectExplorerNode('no_signal');
+  await selectNexusExplorerNode('no_signal');
   expect(page.getByText('Nothing to display')).toBeInTheDocument();
   expect(errorSpy).not.toHaveBeenCalled();
   errorSpy.mockClear();
 
   // `signal` attribute points to non-existant dataset
-  await selectExplorerNode('signal_not_found');
+  await selectNexusExplorerNode('signal_not_found');
   expect(
     page.getByText('Expected "unknown" signal entity to exist'),
   ).toBeVisible();
   errorSpy.mockClear();
 
   // Signal entity is not a dataset
-  await selectExplorerNode('signal_not_dataset');
+  await selectNexusExplorerNode('signal_not_dataset');
   expect(
     page.getByText('Expected "some_group" signal to be a dataset'),
   ).toBeVisible();
   errorSpy.mockClear();
 
   // Old-style signal entity is not a dataset
-  await selectExplorerNode('signal_old-style_not_dataset');
+  await selectNexusExplorerNode('signal_old-style_not_dataset');
   expect(
     page.getByText('Expected old-style "some_group" signal to be a dataset'),
   ).toBeVisible();
   errorSpy.mockClear();
 
   // Shape of signal dataset is not array
-  await selectExplorerNode('signal_not_array');
+  await selectNexusExplorerNode('signal_not_array');
   expect(page.getByText('Expected array shape')).toBeVisible();
   errorSpy.mockClear();
 
   // Type of signal dataset is not numeric
-  await selectExplorerNode('signal_not_numeric');
+  await selectNexusExplorerNode('signal_not_numeric');
   expect(
     page.getByText('Expected numeric, boolean, enum or complex type'),
   ).toBeVisible();

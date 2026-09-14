@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useDataContext } from '../providers/DataProvider';
-import { resolvePathQuery } from './queries';
+import { resolvePathQuery } from './utils';
 import VisManager from './VisManager';
 import styles from './Visualizer.module.css';
 

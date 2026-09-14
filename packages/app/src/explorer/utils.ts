@@ -6,7 +6,8 @@ import {
   isDatatype,
   isGroup,
 } from '@h5web/shared/guards';
-import { type ChildEntity } from '@h5web/shared/hdf5-models';
+import { type ChildEntity, type Group } from '@h5web/shared/hdf5-models';
+import { queryOptions } from '@tanstack/react-query';
 import { type KeyboardEvent } from 'react';
 import { type IconType } from 'react-icons';
 import {
@@ -19,6 +20,10 @@ import {
 import { PiEmptyBold, PiGridFourBold } from 'react-icons/pi';
 import { RxDotFilled } from 'react-icons/rx';
 import { TbCube, TbTimeline } from 'react-icons/tb';
+
+import { type DataContextValue } from '../providers/DataProvider';
+import { getNxClass } from '../vis-packs/nexus/utils';
+import { getNxDefaultPath } from '../visualizer/utils';
 
 const DATASET_ICONS = [RxDotFilled, TbTimeline, PiGridFourBold, TbCube];
 
@@ -106,4 +111,38 @@ export function focusLast(evt: KeyboardEvent<HTMLButtonElement>): void {
 
   buttonList[buttonList.length - 1]?.focus();
   evt.preventDefault();
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function nxBadgeQuery(group: Group, dataContext: DataContextValue) {
+  return queryOptions({
+    queryKey: [dataContext.filepath, 'nxBadge', group.path] as const,
+    queryFn: async () => needsNxBadge(group, dataContext),
+  });
+}
+
+async function needsNxBadge(
+  group: Group,
+  dataContext: DataContextValue,
+): Promise<boolean> {
+  const { queryClient, queries } = dataContext;
+
+  const nxClass = await getNxClass(group, dataContext);
+  if (nxClass === 'NXdata' || nxClass === 'NXnote') {
+    return true;
+  }
+
+  const nxDefaultPath = await getNxDefaultPath(group, dataContext);
+  if (!nxDefaultPath) {
+    return false;
+  }
+
+  const defaultEntity = await queryClient.query(queries.entity(nxDefaultPath));
+  if (!isGroup(defaultEntity)) {
+    return false;
+  }
+
+  return dataContext.queryClient.query(
+    nxBadgeQuery(defaultEntity, dataContext),
+  );
 }

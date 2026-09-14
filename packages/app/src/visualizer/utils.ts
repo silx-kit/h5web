@@ -2,10 +2,11 @@ import { isDataset, isDefined, isGroup } from '@h5web/shared/guards';
 import {
   type ChildEntity,
   type Dataset,
-  type GroupWithChildren,
+  type Group,
   type ProvidedEntity,
 } from '@h5web/shared/hdf5-models';
 import { buildEntityPath } from '@h5web/shared/hdf5-utils';
+import { queryOptions } from '@tanstack/react-query';
 
 import { type DataContextValue } from '../providers/DataProvider';
 import { findScalarStrAttr, getAttributeValue } from '../utils';
@@ -23,7 +24,15 @@ import {
 } from '../vis-packs/nexus/utils';
 import { NX_DATA_VIS, NX_NOTE_VIS } from '../vis-packs/nexus/visualizations';
 
-export async function resolvePath(
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function resolvePathQuery(path: string, dataContext: DataContextValue) {
+  return queryOptions({
+    queryKey: [dataContext.filepath, 'resolution', path] as const,
+    queryFn: async () => resolvePath(path, dataContext),
+  });
+}
+
+async function resolvePath(
   path: string,
   dataContext: DataContextValue,
 ): Promise<{
@@ -79,12 +88,17 @@ export async function resolvePath(
     }
   }
 
-  const nxDefaultPath = await getNxDefaultPath(entity, dataContext);
-  if (nxDefaultPath) {
-    return resolvePath(nxDefaultPath, dataContext);
+  const nxDefaultPath =
+    (await getNxDefaultPath(entity, dataContext)) ||
+    (await getImplicitNxDefaultPath(entity.children, dataContext));
+
+  if (!nxDefaultPath) {
+    return null;
   }
 
-  return null;
+  return dataContext.queryClient.query(
+    resolvePathQuery(nxDefaultPath, dataContext),
+  );
 }
 
 async function getSupportedCoreVis(
@@ -107,14 +121,13 @@ async function getSupportedCoreVis(
     : supportedVis;
 }
 
-async function getNxDefaultPath(
-  group: GroupWithChildren,
+export async function getNxDefaultPath(
+  group: Group,
   dataContext: DataContextValue,
 ): Promise<string | undefined> {
   const defaultAttr = findScalarStrAttr(group, 'default');
   if (!defaultAttr) {
-    const child = await getImplicitDefaultChild(group.children, dataContext);
-    return child?.path;
+    return undefined;
   }
 
   const defaultPath = await getAttributeValue(group, defaultAttr, dataContext);
@@ -123,10 +136,10 @@ async function getNxDefaultPath(
     : buildEntityPath(group.path, defaultPath);
 }
 
-async function getImplicitDefaultChild(
+async function getImplicitNxDefaultPath(
   children: ChildEntity[],
   dataContext: DataContextValue,
-): Promise<ChildEntity | undefined> {
+): Promise<string | undefined> {
   let firstNxEntry: ChildEntity | undefined;
   let firstNxProcess: ChildEntity | undefined;
 
@@ -138,7 +151,7 @@ async function getImplicitDefaultChild(
     // Use first `NXdata` child group
     const nxClass = await getNxClass(child, dataContext); // eslint-disable-line no-await-in-loop -- stop at first `NXdata` group found
     if (nxClass === 'NXdata') {
-      return child;
+      return child.path;
     }
 
     if (nxClass === 'NXentry' && !firstNxEntry) {
@@ -151,5 +164,5 @@ async function getImplicitDefaultChild(
   }
 
   // No `NXdata`; use first `NXentry` or `NXprocess` if any
-  return firstNxEntry || firstNxProcess;
+  return (firstNxEntry || firstNxProcess)?.path;
 }
