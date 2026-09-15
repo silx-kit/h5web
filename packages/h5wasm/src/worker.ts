@@ -1,5 +1,8 @@
 import { isTypedArray } from '@h5web/shared/guards';
-import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
+import {
+  type DimensionScales,
+  type ProvidedEntity,
+} from '@h5web/shared/hdf5-models';
 import { expose, transfer } from 'comlink';
 import { Attribute, Dataset, File as H5WasmFile } from 'h5wasm';
 
@@ -72,6 +75,29 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
+/* h5wasm dereferences the object references in `DIMENSION_LIST` for us; the raw
+ * attribute value is not usable directly. Dimension names come from
+ * `DIMENSION_LABELS`, a plain attribute the app reads itself. */
+async function getDimensionScales(
+  fileId: bigint,
+  path: string,
+): Promise<DimensionScales> {
+  const dataset = new Dataset(fileId, path);
+
+  return (dataset.shape || []).map((_, index) => {
+    try {
+      return dataset.get_attached_scales(index).map((scalePath) => ({
+        path: scalePath,
+        // h5wasm returns an empty name for a scale created without one
+        name: new Dataset(fileId, scalePath).get_scale_name() || undefined,
+      }));
+    } catch {
+      // Reference to an unlinked object, say; the app falls back to the index axis
+      return [];
+    }
+  });
+}
+
 async function getDescendantPaths(
   fileId: bigint,
   rootPath: string,
@@ -103,6 +129,7 @@ const api = {
   getEntity,
   getValue,
   getAttrValue,
+  getDimensionScales,
   getDescendantPaths,
   isPluginLoaded,
   loadPlugin,

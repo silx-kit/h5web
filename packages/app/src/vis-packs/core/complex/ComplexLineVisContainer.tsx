@@ -8,6 +8,7 @@ import {
 import { useDimMappingState } from '../../../dim-mapping-store';
 import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useDimScales } from '../../dimscales/hooks';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { useLineConfig } from '../line/config';
@@ -29,11 +30,16 @@ function ComplexLineVisContainer(props: VisContainerProps) {
   const config = useLineConfig();
   const selection = getSliceSelection(dimMapping);
 
+  const dimScales = useDimScales(entity);
+  const axisLabels = dimScales.map((scale) => scale?.label);
+  const axisValues = dimScales.map((scale) => scale?.value);
+
   return (
     <>
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
+        dimHints={axisLabels}
         dimMapping={dimMapping}
         canSliceFast={useValuesInCache(entity)}
         onChange={setDimMapping}
@@ -47,6 +53,8 @@ function ComplexLineVisContainer(props: VisContainerProps) {
               value={value}
               dims={dims}
               dimMapping={dimMapping}
+              axisLabels={axisLabels}
+              axisValues={axisValues}
               title={entity.name}
               toolbarContainer={toolbarContainer}
               config={config}
