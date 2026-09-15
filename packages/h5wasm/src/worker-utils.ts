@@ -2,6 +2,7 @@ import {
   assertDefined,
   assertNonNull,
   isNumericType,
+  isTypedArray,
 } from '@h5web/shared/guards';
 import { H5T_CLASS, H5T_ORDER } from '@h5web/shared/h5t';
 import {
@@ -10,6 +11,7 @@ import {
   type DType,
   EntityKind,
   type Group,
+  type H5WebComplex,
   type ProvidedEntity,
   type VirtualSource,
 } from '@h5web/shared/hdf5-models';
@@ -18,6 +20,7 @@ import {
   bitfieldType,
   buildEntityPath,
   compoundOrCplxType,
+  cplxType,
   enumOrBoolType,
   floatType,
   getNameFromPath,
@@ -30,6 +33,7 @@ import {
   unknownType,
   vlenType,
 } from '@h5web/shared/hdf5-utils';
+import { type NumArray } from '@h5web/shared/vis-models';
 import { SCALAR_SELECTION_REGEXP } from '@h5web/shared/vis-utils';
 import {
   type Dataset as H5WasmDataset,
@@ -213,7 +217,7 @@ function parseAttributes(
 }
 
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-function parseDType(metadata: Metadata): DType {
+export function parseDType(metadata: Metadata): DType {
   const { type: h5tClass, size } = metadata;
 
   if (h5tClass === H5T_CLASS.INTEGER) {
@@ -289,6 +293,16 @@ function parseDType(metadata: Metadata): DType {
     return arrayType(parseDType(array_type), array_type.shape);
   }
 
+  if (h5tClass === H5T_CLASS.COMPLEX) {
+    const { littleEndian } = metadata;
+
+    /* Both components of an `H5T_COMPLEX` are the same float type, so each one
+     * is exactly half the itemsize and needs no metadata of its own. */
+    return cplxType(
+      floatType((size / 2) * 8, littleEndian ? H5T_ORDER.LE : H5T_ORDER.BE),
+    );
+  }
+
   return unknownType();
 }
 /* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
@@ -300,12 +314,63 @@ function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
   }));
 }
 
+/* h5wasm hands back a typed array for a dataset value but a plain array for an
+ * attribute's `json_value`, so both layouts have to be recognised. Only the
+ * plain array pays for the element check; a typed array is numeric by type. */
+function isComponentArray(value: unknown): value is NumArray {
+  return (
+    isTypedArray(value) ||
+    (Array.isArray(value) && value.every((val) => typeof val === 'number'))
+  );
+}
+
+/* h5wasm exposes an `H5T_COMPLEX` value as a flat typed array of interleaved
+ * components, which keeps them at storage precision and avoids allocating one
+ * object per element. H5Web's value model is one `[real, imag]` pair per
+ * element, so the components are paired up here. Exported for testing. */
+export function pairComplexComponents(
+  components: NumArray,
+): H5WebComplex[] | undefined {
+  if (components.length % 2 !== 0) {
+    return undefined; // not an interleaved component array after all
+  }
+
+  const pairs: H5WebComplex[] = [];
+  for (let i = 0; i < components.length; i += 2) {
+    pairs.push([components[i], components[i + 1]]);
+  }
+
+  return pairs;
+}
+
+/* `isScalar` covers both a scalar dataset and a scalar selection of an array
+ * one: H5Web expects a bare `[real, imag]` pair rather than an array of one. */
+export function parseComplexValue(value: unknown, isScalar: boolean): unknown {
+  if (!isComponentArray(value)) {
+    return value; // unexpected layout - leave it to the caller's type guards
+  }
+
+  const pairs = pairComplexComponents(value);
+  if (!pairs) {
+    return value;
+  }
+
+  return isScalar ? pairs[0] : pairs;
+}
+
 export function readSelectedValue(
   h5wDataset: H5WasmDataset,
   selection: string | undefined,
 ): unknown {
+  /* eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison --
+   * h5wasm types the class as a plain number */
+  const isComplex = h5wDataset.metadata.type === H5T_CLASS.COMPLEX;
+
   if (!selection) {
-    return h5wDataset.value;
+    const { value } = h5wDataset;
+    return isComplex
+      ? parseComplexValue(value, h5wDataset.shape?.length === 0)
+      : value;
   }
 
   const { shape } = h5wDataset;
@@ -321,10 +386,15 @@ export function readSelectedValue(
   });
 
   const slicedValue = h5wDataset.slice(ranges);
+  const isScalarSelection = SCALAR_SELECTION_REGEXP.test(selection);
+
+  if (isComplex) {
+    return parseComplexValue(slicedValue, isScalarSelection);
+  }
 
   /* h5wasm unwraps scalar slices inconsistently - e.g. it does so for opaque
    * datasets but not for compound, vlen, etc. */
-  if (SCALAR_SELECTION_REGEXP.test(selection) && Array.isArray(slicedValue)) {
+  if (isScalarSelection && Array.isArray(slicedValue)) {
     return slicedValue[0];
   }
 
