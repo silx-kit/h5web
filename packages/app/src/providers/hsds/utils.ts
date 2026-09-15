@@ -100,9 +100,13 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
 }
 
 function convertHsdsEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
-  const { base, mapping } = hsdsType;
+  const { base, members } = hsdsType;
   assertHsdsNumericType(base);
-  return enumOrBoolType(convertHsdsNumericType(base), mapping);
+
+  return enumOrBoolType(
+    convertHsdsNumericType(base),
+    Object.fromEntries(members.map(({ name, value }) => [name, value])),
+  );
 }
 
 export function convertHsdsType(hsdsType: HsdsType): DType {

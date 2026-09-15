@@ -26,8 +26,8 @@ import {
 
 import { isScalarSelection } from '../../vis-packs/core/utils';
 import { DataProviderApi } from '../api';
-import { type Fetcher, type OnProgress } from '../models';
-import { FetcherError, toJSON } from '../utils';
+import { type OnProgress } from '../models';
+import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
   type BaseHsdsEntity,
   type HsdsAttribute,
@@ -57,11 +57,11 @@ import {
 export class HsdsApi extends DataProviderApi {
   private readonly entities = new Map<string, HsdsEntity<ProvidedEntity>>();
 
-  /* API compatible with HSDS@6717a7bb8c2245492090be34ec3ccd63ecb20b70 */
+  /* API compatible with hsds@1.0.1 */
   public constructor(
     private readonly baseURL: string,
     filepath: string,
-    private readonly fetcher: Fetcher,
+    private readonly fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
     super(filepath);

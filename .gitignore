@@ -11,11 +11,13 @@ dist*/
 /coverage/
 /packages/app/src/__tests__/__screenshots__/
 /support/h5grove/__pycache__/
+/support/hsds/hsdstest/
 
 .env.local
 .env.*.local
 
 .DS_Store
 Thumbs.db
-*.log
-*.tsbuildinfo
+
+**/*.log
+**/*.tsbuildinfo

@@ -1,0 +1,2 @@
+default_public: True # allow unauthorized read access
+max_task_count: 10000 # allow more parallel requests

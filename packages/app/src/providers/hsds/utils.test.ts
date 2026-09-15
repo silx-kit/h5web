@@ -125,7 +125,10 @@ describe('convertHsdsType', () => {
     const boolEnum: HsdsEnumType = {
       class: 'H5T_ENUM',
       base: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
-      mapping: { FALSE: 0, TRUE: 1 },
+      members: [
+        { name: 'FALSE', value: 0 },
+        { name: 'TRUE', value: 1 },
+      ],
     };
 
     expect(convertHsdsType(boolEnum)).toStrictEqual(boolType(intType(true, 8)));
