@@ -4,11 +4,14 @@ import {
   type ArrayShape,
   type Attribute,
   type BooleanType,
+  type ChildEntity,
   type Dataset,
   type DType,
   type Entity,
+  EntityKind,
   type EnumType,
   type Group,
+  type Link,
   type NumericType,
   type ScalarShape,
   type Shape,
@@ -21,6 +24,8 @@ import {
   floatType,
   intType,
   nullShape,
+  opaqueType,
+  referenceType,
   scalarShape,
   strType,
   unknownType,
@@ -30,9 +35,12 @@ import {
 import {
   type HsdsAttribute,
   type HsdsEntity,
+  type HsdsEntityFromResponse,
+  type HsdsEntityResponse,
   type HsdsEnumType,
   type HsdsNumericType,
   type HsdsShape,
+  type HsdsSymbolicLink,
   type HsdsType,
 } from './models';
 
@@ -43,7 +51,7 @@ export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
 export function assertHsdsEntity<T extends Entity>(
   entity: T,
 ): asserts entity is HsdsEntity<T> {
-  if (!('id' in entity)) {
+  if (!('id' in entity) || !('collection' in entity)) {
     throw new Error('Expected entity to be HSDS entity');
   }
 }
@@ -51,7 +59,9 @@ export function assertHsdsEntity<T extends Entity>(
 export function assertHsdsDataset(
   dataset: Dataset<ScalarShape | ArrayShape>,
 ): asserts dataset is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
-  if (!('id' in dataset)) {
+  assertHsdsEntity(dataset);
+
+  if (dataset.collection !== 'datasets') {
     throw new Error('Expected entity to be HSDS dataset');
   }
 }
@@ -62,6 +72,72 @@ function assertHsdsNumericType(
   if (type.class !== 'H5T_INTEGER' && type.class !== 'H5T_FLOAT') {
     throw new Error('Expected HSDS numeric type');
   }
+}
+
+export function convertHsdsEntity<R extends HsdsEntityResponse>(
+  path: string,
+  response: R,
+): HsdsEntityFromResponse<R>;
+
+export function convertHsdsEntity<R extends HsdsEntityResponse>(
+  path: string,
+  response: R,
+): HsdsEntity<ChildEntity> {
+  const { id, class: kind, attributes: hsdsAttributes } = response;
+
+  const name = path.slice(path.lastIndexOf('/') + 1);
+  const attributes = convertHsdsAttributes(hsdsAttributes);
+
+  switch (kind) {
+    case 'group':
+      return {
+        id,
+        collection: 'groups',
+        name,
+        path,
+        kind: EntityKind.Group,
+        attributes,
+      };
+
+    case 'dataset': {
+      const { shape, type } = response;
+      return {
+        id,
+        collection: 'datasets',
+        name,
+        path,
+        kind: EntityKind.Dataset,
+        attributes,
+        shape: convertHsdsShape(shape),
+        type: convertHsdsType(type),
+        rawType: type,
+      };
+    }
+    case 'datatype': {
+      const { type } = response;
+      return {
+        id,
+        collection: 'datatypes',
+        name,
+        path,
+        kind: EntityKind.Datatype,
+        attributes,
+        type: convertHsdsType(type),
+        rawType: type,
+      };
+    }
+    default:
+      throw new Error('Unknown entity class');
+  }
+}
+
+export function convertHsdsSymbolicLink(hsdsLink: HsdsSymbolicLink): Link {
+  const { h5path, file, class: linkClass } = hsdsLink;
+  return {
+    class: linkClass === 'H5L_TYPE_SOFT' ? 'Soft' : 'External',
+    path: h5path,
+    file,
+  };
 }
 
 export function convertHsdsShape(shape: HsdsShape): Shape {
@@ -142,14 +218,20 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
     case 'H5T_ENUM':
       return convertHsdsEnumType(hsdsType);
 
+    case 'H5T_REFERENCE':
+      return referenceType();
+
+    case 'H5T_OPAQUE':
+      return opaqueType();
+
     default:
       return unknownType();
   }
 }
 
 export function convertHsdsAttributes(attrs: HsdsAttribute[]): Attribute[] {
-  return attrs.map((attr) => ({
-    name: attr.name,
+  return Object.entries(attrs).map(([name, attr]) => ({
+    name,
     shape: convertHsdsShape(attr.shape),
     type: convertHsdsType(attr.type),
   }));
