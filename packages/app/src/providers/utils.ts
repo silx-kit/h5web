@@ -107,11 +107,12 @@ export function createBasicFetcher(
     params: Record<string, string>,
     opts: FetcherOptions = {},
   ): Promise<ArrayBuffer> => {
-    const { abortSignal, onProgress } = opts;
+    const { abortSignal, onProgress, ...moreFetchOpts } = opts;
     const queryParams = new URLSearchParams(params);
 
     const response = await fetch(`${url}?${queryParams.toString()}`, {
       ...fetchOpts,
+      ...moreFetchOpts,
       signal: abortSignal,
     });
 

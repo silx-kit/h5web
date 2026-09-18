@@ -95,15 +95,15 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": [
-      true,
-      false,
-      true,
-      true,
-      false,
-      false,
-      true,
-      false,
+    "value": Int8Array [
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
     ],
   },
   {
@@ -138,7 +138,7 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": false,
+    "value": 0,
   },
   {
     "name": "bool_false_scalar",
@@ -172,7 +172,7 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": false,
+    "value": 0,
   },
   {
     "name": "bool_true_scalar",
@@ -206,7 +206,7 @@ exports[`test file matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": true,
+    "value": 1,
   },
   {
     "name": "byte_string_1D",
@@ -221,12 +221,13 @@ exports[`test file matches snapshot 1`] = `
       ],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
-    "value": [
-      "",
-      "EQ==",
-      "Ig==",
+    "value": Uint8Array [
+      0,
+      17,
+      34,
     ],
   },
   {
@@ -240,9 +241,14 @@ exports[`test file matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
-    "value": "ABEi",
+    "value": Uint8Array [
+      0,
+      17,
+      34,
+    ],
   },
   {
     "name": "complex128_2D",
@@ -718,9 +724,19 @@ exports[`test file matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
-    "value": "AAAAAAAAAIA=",
+    "value": Uint8Array [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      128,
+    ],
   },
   {
     "name": "datetime64_scalar",
@@ -733,9 +749,19 @@ exports[`test file matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
-    "value": "lrGHXQAAAAA=",
+    "value": Uint8Array [
+      150,
+      177,
+      135,
+      93,
+      0,
+      0,
+      0,
+      0,
+    ],
   },
   {
     "name": "enum_1D",
@@ -780,7 +806,7 @@ exports[`test file matches snapshot 1`] = `
         "2": "C",
       },
     },
-    "value": [
+    "value": Uint8Array [
       0,
       2,
       2,
@@ -837,7 +863,7 @@ exports[`test file matches snapshot 1`] = `
         "2": "C",
       },
     },
-    "value": [
+    "value": Uint8Array [
       0,
       2,
       2,
@@ -998,7 +1024,7 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 32,
     },
-    "value": [
+    "value": Float32Array [
       0,
       1,
       2,
@@ -1076,20 +1102,20 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": [
+    "value": Float64Array [
       0,
       1,
-      "Infinity",
+      Infinity,
       3,
       4,
       3,
       4,
-      "NaN",
+      NaN,
       6,
       7,
       6,
       7,
-      "-Infinity",
+      -Infinity,
       9,
       10,
     ],
@@ -1109,7 +1135,7 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": "Infinity",
+    "value": Infinity,
   },
   {
     "name": "float64_nan_scalar",
@@ -1126,7 +1152,7 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": "NaN",
+    "value": NaN,
   },
   {
     "name": "float64_ninf_scalar",
@@ -1143,7 +1169,7 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": "-Infinity",
+    "value": -Infinity,
   },
   {
     "name": "float64_nzero_scalar",
@@ -1232,7 +1258,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 16,
     },
-    "value": [
+    "value": Int16Array [
       0,
       1,
       2,
@@ -1278,7 +1304,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 32,
     },
-    "value": [
+    "value": Int32Array [
       0,
       1,
       2,
@@ -1342,14 +1368,14 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 64,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-    ],
+    "value": BigInt64Array {
+      "0": 0n,
+      "1": 1n,
+      "2": 2n,
+      "3": 3n,
+      "4": 4n,
+      "5": 5n,
+    },
   },
   {
     "name": "int64_scalar",
@@ -1367,7 +1393,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 64,
     },
-    "value": -9223372036854776000,
+    "value": -9223372036854775808n,
   },
   {
     "name": "int8_2D",
@@ -1388,7 +1414,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": true,
       "size": 8,
     },
-    "value": [
+    "value": Int8Array [
       0,
       1,
       2,
@@ -1429,7 +1455,7 @@ exports[`test file matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Reference",
     },
     "value": "<HDF5 object reference>",
   },
@@ -1452,7 +1478,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 16,
     },
-    "value": [
+    "value": Uint16Array [
       0,
       1,
       2,
@@ -1498,7 +1524,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 32,
     },
-    "value": [
+    "value": Uint32Array [
       0,
       1,
       2,
@@ -1545,16 +1571,16 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 64,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      18446744073709552000,
-    ],
+    "value": BigUint64Array {
+      "0": 0n,
+      "1": 1n,
+      "2": 2n,
+      "3": 3n,
+      "4": 4n,
+      "5": 5n,
+      "6": 6n,
+      "7": 18446744073709551615n,
+    },
   },
   {
     "name": "uint64_scalar",
@@ -1572,7 +1598,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 64,
     },
-    "value": 18446744073709552000,
+    "value": 18446744073709551615n,
   },
   {
     "name": "uint8_2D",
@@ -1593,7 +1619,7 @@ exports[`test file matches snapshot 1`] = `
       "signed": false,
       "size": 8,
     },
-    "value": [
+    "value": Uint8Array [
       0,
       1,
       2,

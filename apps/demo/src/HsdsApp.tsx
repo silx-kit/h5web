@@ -1,6 +1,7 @@
 import {
   App,
   assertEnvVar,
+  assertStr,
   buildBasicAuthHeader,
   createBasicFetcher,
   HsdsProvider,
@@ -20,22 +21,24 @@ const DEVTOOLS = import.meta.env.VITE_QUERY_DEVTOOLS === 'true';
 
 function HsdsApp() {
   assertEnvVar(URL, 'VITE_HSDS_URL');
-  assertEnvVar(USERNAME, 'VITE_HSDS_USERNAME');
-  assertEnvVar(PASSWORD, 'VITE_HSDS_PASSWORD');
   assertEnvVar(SUBDOMAIN, 'VITE_HSDS_SUBDOMAIN');
   assertEnvVar(FILEPATH, 'VITE_HSDS_FALLBACK_FILEPATH');
+  assertStr(USERNAME);
+  assertStr(PASSWORD);
 
   const [searchParams] = useSearchParams();
   const filepath = `${SUBDOMAIN}${searchParams.get('file') || FILEPATH}`;
 
   const fetcher = useMemo(() => {
-    return createBasicFetcher({
-      headers: buildBasicAuthHeader(USERNAME, PASSWORD),
-    });
+    return USERNAME
+      ? createBasicFetcher({
+          headers: buildBasicAuthHeader(USERNAME, PASSWORD),
+        })
+      : undefined;
   }, []);
 
   return (
-    <HsdsProvider url={URL} filepath={filepath} fetcher={fetcher}>
+    <HsdsProvider url={URL} domain={filepath} fetcher={fetcher}>
       <App
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}
