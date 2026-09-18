@@ -12,12 +12,12 @@ import HeatmapMaterial from './HeatmapMaterial';
 import { type ColorMap, type TextureSafeTypedArray } from './models';
 
 interface Props extends VisMeshProps {
-  values: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
+  values: NdArray<TextureSafeTypedArray>;
   domain: Domain;
   scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap?: boolean;
-  alphaValues?: NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
+  alphaValues?: NdArray<TextureSafeTypedArray>;
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
   magFilter?: MagnificationTextureFilter;

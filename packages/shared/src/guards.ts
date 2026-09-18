@@ -1,4 +1,9 @@
-import { type Data, type NdArray, type TypedArray } from 'ndarray';
+import {
+  type Data,
+  type MaybeFloat16Array,
+  type NdArray,
+  type TypedArray,
+} from 'ndarray';
 
 import {
   type ArrayShape,
@@ -169,6 +174,10 @@ export function isComplexArray(val: unknown): val is H5WebComplex[] {
   return Array.isArray(val) && isComplex(val[0]);
 }
 
+export function isFloat16Array(val: unknown): val is MaybeFloat16Array {
+  return 'Float16Array' in globalThis && val instanceof globalThis.Float16Array;
+}
+
 export function isTypedArray(val: unknown): val is TypedArray {
   return (
     val instanceof Int8Array ||
@@ -178,6 +187,7 @@ export function isTypedArray(val: unknown): val is TypedArray {
     val instanceof Uint8ClampedArray ||
     val instanceof Uint16Array ||
     val instanceof Uint32Array ||
+    isFloat16Array(val) || // recent addition to the web platform
     val instanceof Float32Array ||
     val instanceof Float64Array
   );

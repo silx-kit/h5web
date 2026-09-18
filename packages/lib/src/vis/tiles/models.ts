@@ -11,4 +11,4 @@ export interface ColorMapProps {
   invertColorMap?: boolean;
 }
 
-export type TileArray = NdArray<TextureSafeTypedArray | Uint16Array>; // uint16 values are treated as half floats
+export type TileArray = NdArray<TextureSafeTypedArray>;

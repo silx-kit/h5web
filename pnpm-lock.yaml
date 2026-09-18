@@ -399,8 +399,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1
       ndarray:
-        specifier: 1.0.19
-        version: 1.0.19
+        specifier: 1.1.1
+        version: 1.1.1
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -433,8 +433,8 @@ importers:
         specifier: ~3.0.4
         version: 3.0.4
       '@types/ndarray':
-        specifier: 1.0.14
-        version: 1.0.14
+        specifier: 1.1.0
+        version: 1.1.0
       '@types/node':
         specifier: ^24.13.2
         version: 24.13.2
@@ -481,14 +481,14 @@ importers:
         specifier: ~3.0.4
         version: 3.0.4
       '@types/ndarray':
-        specifier: 1.0.14
-        version: 1.0.14
+        specifier: 1.1.0
+        version: 1.1.0
       d3-format:
         specifier: 3.1.2
         version: 3.1.2
       ndarray:
-        specifier: 1.0.19
-        version: 1.0.19
+        specifier: 1.1.1
+        version: 1.1.1
       ndarray-ops:
         specifier: 1.2.2
         version: 1.2.2
@@ -669,8 +669,8 @@ importers:
         specifier: ~3.1.0
         version: 3.1.0
       '@types/ndarray':
-        specifier: ~1.0.14
-        version: 1.0.14
+        specifier: 1.1.0
+        version: 1.1.0
       '@types/react-slider':
         specifier: ~1.3.6
         version: 1.3.6
@@ -708,8 +708,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0
       ndarray:
-        specifier: 1.0.19
-        version: 1.0.19
+        specifier: 1.1.1
+        version: 1.1.1
       ndarray-ops:
         specifier: 1.2.2
         version: 1.2.2
@@ -805,8 +805,8 @@ importers:
         specifier: ~3.0.4
         version: 3.0.4
       '@types/ndarray':
-        specifier: ~1.0.14
-        version: 1.0.14
+        specifier: 1.1.0
+        version: 1.1.0
       '@types/ndarray-ops':
         specifier: ~1.2.7
         version: 1.2.7
@@ -826,8 +826,8 @@ importers:
         specifier: 9.39.4
         version: 9.39.4(supports-color@8.1.1)
       ndarray:
-        specifier: 1.0.19
-        version: 1.0.19
+        specifier: 1.1.1
+        version: 1.1.1
       ndarray-ops:
         specifier: 1.2.2
         version: 1.2.2
@@ -2086,8 +2086,8 @@ packages:
   '@types/ndarray-ops@1.2.7':
     resolution: {integrity: sha512-dQKT1Kfpw83LhzuJp6N7nO03m8Bjv84E1cew3poHK5DgojCXppJPLONQafVzOK3gQNW5sZfjRQgOZG2aSZdQJg==}
 
-  '@types/ndarray@1.0.14':
-    resolution: {integrity: sha512-oANmFZMnFQvb219SSBIhI1Ih/r4CvHDOzkWyJS/XRqkMrGH5/kaPSA1hQhdIBzouaE+5KpE/f5ylI9cujmckQg==}
+  '@types/ndarray@1.1.0':
+    resolution: {integrity: sha512-go+C6vHBUuO9jH6Tj6qEZ63JEGoMSxFdmd+6QAtthGD6xumBfIz3RbNDDs2aoRVLf9naH8lk5jnWy2UHHKgYQQ==}
 
   '@types/node@24.13.2':
     resolution: {integrity: sha512-fRa09kZTgu8o71KFcDjUFuc7F+dEbZYZmkI0mg5YBTRs0yMKjYHsq/c0urDKeDb+D5qVgXOdFcuu+DZPKOITwA==}
@@ -4264,8 +4264,8 @@ packages:
   ndarray-ops@1.2.2:
     resolution: {integrity: sha512-BppWAFRjMYF7N/r6Ie51q6D4fs0iiGmeXIACKY66fLpnwIui3Wc3CXiD/30mgLbDjPpSLrsqcp3Z62+IcHZsDw==}
 
-  ndarray@1.0.19:
-    resolution: {integrity: sha512-B4JHA4vdyZU30ELBw3g7/p9bZupyew5a7tX1Y/gGeF2hafrPaQZhgrGQfsvgfYbgdFZjYwuEcnaobeM/WMW+HQ==}
+  ndarray@1.1.1:
+    resolution: {integrity: sha512-AsE8w/M2MS+0pD3nP5qbRRtJFeJJJaJ+qXZaZr0XjVGXhy6LIj2TERTlkpdK2AI3WufoOP+pwPk3q2ilAJcZ9g==}
 
   node-exports-info@1.6.2:
     resolution: {integrity: sha512-kXs9Go0cah0qHVV2v389IXQLdLCeE1xfFtjOAF+iobu0OIoG1pje8At2vMHyaPMiPMnG/LWP50twML21eMcAag==}
@@ -6515,9 +6515,9 @@ snapshots:
 
   '@types/ndarray-ops@1.2.7':
     dependencies:
-      '@types/ndarray': 1.0.14
+      '@types/ndarray': 1.1.0
 
-  '@types/ndarray@1.0.14': {}
+  '@types/ndarray@1.1.0': {}
 
   '@types/node@24.13.2':
     dependencies:
@@ -9032,7 +9032,7 @@ snapshots:
     dependencies:
       cwise-compiler: 1.1.3
 
-  ndarray@1.0.19:
+  ndarray@1.1.1:
     dependencies:
       iota-array: 1.0.0
       is-buffer: 1.1.6
