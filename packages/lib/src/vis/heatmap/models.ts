@@ -14,4 +14,4 @@ export interface TooltipData {
 }
 
 export type TextureSafeTypedArray =
-  Float32Array | Uint8Array | Uint8ClampedArray;
+  Float32Array | Uint8Array | Uint8ClampedArray | Uint16Array; // uint16 values are treated as half floats

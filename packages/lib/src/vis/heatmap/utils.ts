@@ -170,6 +170,12 @@ export function toTextureSafeNdArray(
     return ndArr as NdArray<TextureSafeTypedArray>;
   }
 
+  // Pass float16 through as uint16 without copying
+  if (ndArr.data instanceof Float16Array) {
+    const { buffer, byteOffset, length } = ndArr.data;
+    return ndarray(new Uint16Array(buffer, byteOffset, length), ndArr.shape);
+  }
+
   return toTypedNdArray(ndArr, Float32Array);
 }
 
@@ -183,7 +189,7 @@ export function toTextureSafeNdArray(
  * Uint8Array/Uint8ClampedArray (UNSIGNED_BYTE_TYPE).
  */
 export function getDataTexture(
-  values: NdArray<TextureSafeTypedArray | Uint16Array>,
+  values: NdArray<TextureSafeTypedArray>,
   magFilter?: MagnificationTextureFilter,
   minFilter?: MinificationTextureFilter,
 ): DataTexture;
@@ -193,12 +199,12 @@ export function getDataTexture(
   minFilter?: MinificationTextureFilter,
 ): undefined;
 export function getDataTexture(
-  values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
+  values: NdArray<TextureSafeTypedArray> | undefined,
   magFilter?: MagnificationTextureFilter,
   minFilter?: MinificationTextureFilter,
 ): DataTexture | undefined;
 export function getDataTexture(
-  values: NdArray<TextureSafeTypedArray | Uint16Array> | undefined,
+  values: NdArray<TextureSafeTypedArray> | undefined,
   magFilter: MagnificationTextureFilter = NearestFilter,
   minFilter: MinificationTextureFilter = NearestFilter,
 ): DataTexture | undefined {
