@@ -1,6 +1,7 @@
 import {
   type Attribute,
   type Dataset,
+  type DimensionScales,
   type DType,
   type Shape,
 } from './hdf5-models';
@@ -11,6 +12,7 @@ export interface MockDataset<
   T extends DType = DType,
 > extends Dataset<S, T> {
   value: unknown;
+  dimScales?: DimensionScales; // stands in for `DIMENSION_LIST`, whose object references a mock entity can't represent
 }
 
 export interface MockAttribute<
