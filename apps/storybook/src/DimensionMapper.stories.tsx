@@ -82,3 +82,9 @@ export const LockedDimensions = Default.extend({
     dimMapping: [0, 'x', null, null],
   },
 });
+
+export const WithSlicingControls = Default.extend({
+  args: {
+    withSlicingControls: true,
+  },
+});

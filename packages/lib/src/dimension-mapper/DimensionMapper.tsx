@@ -9,6 +9,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   dims: number[];
   dimHints?: (string | undefined)[];
   dimMapping: DimensionMapping;
+  withSlicingControls?: boolean;
   canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
 }
@@ -19,6 +20,7 @@ function DimensionMapper(props: Props) {
     dims,
     dimHints,
     dimMapping,
+    withSlicingControls = false,
     canSliceFast,
     onChange,
     ...htmlProps
@@ -67,6 +69,7 @@ function DimensionMapper(props: Props) {
               dimension={index}
               length={dims[index]}
               initialValue={val}
+              withControls={withSlicingControls}
               isFastSlice={
                 canSliceFast &&
                 ((newVal) => {
