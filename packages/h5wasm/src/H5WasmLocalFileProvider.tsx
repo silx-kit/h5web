@@ -15,7 +15,7 @@ interface Props {
 function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
   const { file, resetKeys = [], getExportURL, getPlugin, children } = props;
 
-  const prevApiRef = useRef<H5WasmApi>();
+  const prevApiRef = useRef<H5WasmApi>(undefined);
 
   const api = useMemo(() => {
     const remote = getH5WasmRemote();

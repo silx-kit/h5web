@@ -1,9 +1,5 @@
 import { type CustomDomain } from '@h5web/lib';
-import {
-  type ColorScaleType,
-  type NoProps,
-  ScaleType,
-} from '@h5web/shared/vis-models';
+import { type ColorScaleType, ScaleType } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -56,14 +52,12 @@ function createSurfaceConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<SurfaceConfig>);
 
-export function SurfaceConfigProvider(props: PropsWithChildren<NoProps>) {
+export function SurfaceConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createSurfaceConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useSurfaceConfig(

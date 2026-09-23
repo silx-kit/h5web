@@ -1,4 +1,3 @@
-import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -47,7 +46,7 @@ function createKeepZoomStore() {
 
 const StoreContext = createContext({} as StoreApi<KeepZoomState>);
 
-export function KeepZoomProvider(props: PropsWithChildren<NoProps>) {
+export function KeepZoomProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createKeepZoomStore);

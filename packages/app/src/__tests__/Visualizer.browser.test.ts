@@ -43,7 +43,7 @@ test("show error when dataset value can't be fetched", async () => {
 
   // Make sure error boundary resets when selecting another entity
   await selectExplorerNode('entities');
-  expect(page.getByText('Nothing to display')).toBeVisible();
+  await expect.element(page.getByText('Nothing to display')).toBeVisible();
 });
 
 test('cancel and retry slow fetch of dataset value', async () => {

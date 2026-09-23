@@ -1,8 +1,7 @@
 import { useVisCanvasContext } from '@h5web/lib';
-import { type NoProps } from '@h5web/shared/vis-models';
 import { type PropsWithChildren } from 'react';
 
-function LinearAxesGroup(props: PropsWithChildren<NoProps>) {
+function LinearAxesGroup(props: PropsWithChildren) {
   const { children } = props;
   const { abscissaConfig, ordinateConfig, visSize } = useVisCanvasContext();
   const { width, height } = visSize;

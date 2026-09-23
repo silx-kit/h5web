@@ -1,11 +1,10 @@
-import { type NoProps } from '@h5web/shared/vis-models';
 import { type PropsWithChildren } from 'react';
 import { createPortal } from 'react-dom';
 
 import Html from '../../vis/shared/Html';
 import { useVisCanvasContext } from '../../vis/shared/VisCanvasProvider';
 
-function FloatingControl(props: PropsWithChildren<NoProps>) {
+function FloatingControl(props: PropsWithChildren) {
   const { children } = props;
   const { floatingToolbar } = useVisCanvasContext();
 

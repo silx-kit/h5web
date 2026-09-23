@@ -13,6 +13,9 @@ pmOnFail: ignore
 strictPeerDependencies: true
 autoInstallPeers: false
 resolvePeersFromWorkspaceRoot: false
+peerDependencyRules:
+  allowedVersions:
+    'react-slider>react': '19'
 
 # Approve specific build scripts
 allowBuilds:
@@ -24,6 +27,8 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - '@h5web/*'
   - '@esrf/eslint-config'
+  - '@react-three/fiber'
+  - its-fine@2.1.1
 
 # Save exact dependency versions in `package.json`
 savePrefix: ''

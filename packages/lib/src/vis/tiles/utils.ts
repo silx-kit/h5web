@@ -54,7 +54,7 @@ export function sortTilesByDistanceTo(
 
 export function getNdcToObject3DMatrix(
   camera: Camera,
-  object3DRef: RefObject<Object3D>,
+  object3DRef: RefObject<Object3D | null>,
 ): Matrix4 | undefined {
   const object3D = object3DRef.current;
   if (!object3D) {

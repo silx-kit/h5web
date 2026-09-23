@@ -1,6 +1,6 @@
 import { formatBoundInput } from '@h5web/shared/vis-utils';
 import {
-  forwardRef,
+  type Ref,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -14,6 +14,7 @@ import styles from './BoundEditor.module.css';
 import domainControlsStyles from './DomainControls.module.css';
 
 interface Props {
+  ref?: Ref<Handle | null>;
   bound: Bound;
   value: number;
   isEditing: boolean;
@@ -26,8 +27,9 @@ interface Handle {
   cancel: () => void;
 }
 
-const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
-  const { bound, value, isEditing, hasError, onEditToggle, onChange } = props;
+function BoundEditor(props: Props) {
+  const { ref, bound, value, isEditing, hasError, onEditToggle, onChange } =
+    props;
 
   const id = `${bound}-bound`;
   const inputRef = useRef<HTMLInputElement>(null);
@@ -119,9 +121,7 @@ const BoundEditor = forwardRef<Handle, Props>((props, ref) => {
       </button>
     </form>
   );
-});
-
-BoundEditor.displayName = 'BoundEditor';
+}
 
 export type { Handle as BoundEditorHandle };
 export default BoundEditor;

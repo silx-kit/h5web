@@ -1,6 +1,6 @@
-import { type StoryContext, type StoryFn } from '@storybook/react-vite';
+import { type Decorator } from '@storybook/react-vite';
 
-function FillHeight(Story: StoryFn, context: StoryContext) {
+function FillHeight(...[Story, context]: Parameters<Decorator>) {
   const { viewMode } = context;
 
   return (
