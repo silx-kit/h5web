@@ -12,6 +12,10 @@ import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
 import LineConstantGeometry from './lineConstantGeometry';
 import LineGeometry from './lineGeometry';
+import LinePchipGeometry, {
+  pchipOnBeforeCompile,
+  pchipOnBeforeRender,
+} from './linePchipGeometry';
 import { Interpolation } from './models';
 
 extend({ Line2, LineMaterial });
@@ -48,10 +52,13 @@ function Line(props: Props) {
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
+  const isPchip = interpolation === Interpolation.Pchip;
   const Geometry =
     interpolation === Interpolation.Constant
       ? LineConstantGeometry
-      : LineGeometry;
+      : isPchip
+        ? LinePchipGeometry
+        : LineGeometry;
 
   const geometry = useMemo(
     () =>
@@ -72,7 +79,14 @@ function Line(props: Props) {
 
   return (
     <line2 geometry={geometry} visible={visible} {...lineProps}>
-      <lineMaterial color={color} linewidth={width} {...materialProps} />
+      <lineMaterial
+        key={interpolation} // recompile shader when switching to/from PCHIP
+        color={color}
+        linewidth={width}
+        onBeforeCompile={isPchip ? pchipOnBeforeCompile : undefined}
+        onBeforeRender={isPchip ? pchipOnBeforeRender : undefined}
+        {...materialProps}
+      />
     </line2>
   );
 }
