@@ -20,14 +20,20 @@ import {
 
 import { DataProviderApi } from '../api';
 import { type OnProgress } from '../models';
-import { createBasicFetcher, FetcherError, toJSON } from '../utils';
+import {
+  bigIntTypedArrayFromDType,
+  createBasicFetcher,
+  FetcherError,
+  toJSON,
+  typedArrayFromDType,
+} from '../utils';
 import {
   type H5GroveAttrValuesResponse,
   type H5GroveEntityResponse,
   type H5GrovePathsResponse,
 } from './models';
 import {
-  h5groveTypedArrayFromDType,
+  h5groveSafeTypedArrayFromDType,
   isH5GroveErrorResponse,
   parseEntity,
 } from './utils';
@@ -82,9 +88,19 @@ export class H5GroveApi extends DataProviderApi {
         return new Uint8Array(buffer);
       }
 
-      const DTypedArray = h5groveTypedArrayFromDType(type);
+      const SafeDTypedArray = h5groveSafeTypedArrayFromDType(type);
+      const DTypedArray =
+        SafeDTypedArray ||
+        typedArrayFromDType(type) ||
+        bigIntTypedArrayFromDType(type);
+
       if (DTypedArray) {
-        const params = { ...baseParams, format: 'bin', dtype: 'safe' };
+        const params = {
+          ...baseParams,
+          format: 'bin',
+          ...(SafeDTypedArray && { dtype: 'safe' }),
+        };
+
         const buffer = await this.fetcher(url, params, opts);
 
         const array = new DTypedArray(buffer);

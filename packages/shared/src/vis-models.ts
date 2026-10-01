@@ -20,12 +20,19 @@ export type TypedArrayConstructor =
   | Uint8ClampedArrayConstructor
   | Uint16ArrayConstructor
   | Uint32ArrayConstructor
+  | MaybeFloat16ArrayConstructor
   | Float32ArrayConstructor
   | Float64ArrayConstructor;
 
 export type BigIntTypedArray = MaybeBigInt64Array | MaybeBigUint64Array;
 export type BigIntTypedArrayConstructor =
   BigInt64ArrayConstructor | BigUint64ArrayConstructor;
+
+export type MaybeFloat16ArrayConstructor = typeof globalThis extends {
+  Float16Array: infer T;
+}
+  ? T
+  : never;
 
 export type Domain = [min: number, max: number];
 export type Axis = 'x' | 'y';
