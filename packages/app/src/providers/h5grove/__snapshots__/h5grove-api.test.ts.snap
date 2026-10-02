@@ -481,14 +481,14 @@ exports[`test file matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 16,
     },
-    "value": Float32Array [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-    ],
+    "value": Float16Array {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+    },
   },
   {
     "name": "float32_empty",

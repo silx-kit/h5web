@@ -4,6 +4,7 @@ import {
   type AxisScaleType,
   type ColorScaleType,
   type Domain,
+  type MaybeFloat16ArrayConstructor,
   type NumArray,
   ScaleType,
   type TypedArrayConstructor,
@@ -404,7 +405,10 @@ function toArray(arr: NumArray): number[] {
 export function createBufferAttr(
   dataLength: number,
   itemSize = 3,
-  TypedArrayCtor: TypedArrayConstructor = Float32Array,
+  TypedArrayCtor: Exclude<
+    TypedArrayConstructor,
+    MaybeFloat16ArrayConstructor // not supported by Three's `BufferAttribute` yet
+  > = Float32Array,
 ): BufferAttribute {
   return new BufferAttribute(
     new TypedArrayCtor(dataLength * itemSize),

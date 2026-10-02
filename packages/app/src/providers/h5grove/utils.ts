@@ -30,7 +30,6 @@ import {
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
 
-import { bigIntTypedArrayFromDType, typedArrayFromDType } from '../utils';
 import {
   type H5GroveAttribute,
   type H5GroveEntity,
@@ -230,18 +229,14 @@ export function parseDType(type: H5GroveType): DType {
  * to allow fetching more data as binary.
  * https://github.com/silx-kit/h5grove/blob/3c851e748d52f5bb8eab12a7f8368781b86772da/h5grove/utils.py#L196
  */
-export function h5groveTypedArrayFromDType(
+export function h5groveSafeTypedArrayFromDType(
   dtype: DType,
 ): TypedArrayConstructor | BigIntTypedArrayConstructor | undefined {
   const { class: dtypeClass } = dtype;
-
-  if (dtypeClass === DTypeClass.Float && dtype.size === 16) {
-    return Float32Array; // also saves a number[]->Float32Array conversion in texture-based visualizations
-  }
 
   if (dtypeClass === DTypeClass.Float && dtype.size === 128) {
     return Float64Array;
   }
 
-  return typedArrayFromDType(dtype) || bigIntTypedArrayFromDType(dtype);
+  return undefined;
 }

@@ -19,6 +19,7 @@ import { type AxiosError, type AxiosInstance } from 'axios';
 import { type DataProviderApi } from './api';
 import { type Fetcher, type FetcherOptions, type OnProgress } from './models';
 
+// eslint-disable-next-line complexity
 export function typedArrayFromDType(
   dtype: DType,
 ): TypedArrayConstructor | undefined {
@@ -54,13 +55,16 @@ export function typedArrayFromDType(
 
   if (isFloatType(dtype)) {
     switch (dtype.size) {
-      case 16: // no support for 16-bit floating values in JS
-      case 128: // no support for 128-bit floating values in JS
-        return undefined;
+      case 16:
+        return 'Float16Array' in globalThis
+          ? globalThis.Float16Array
+          : undefined;
       case 32:
         return Float32Array;
       case 64:
         return Float64Array;
+      case 128: // no support for 128-bit floating values in JS
+        return undefined;
     }
   }
 
