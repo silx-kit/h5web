@@ -136,6 +136,13 @@ export const IgnoreValue = {
   },
 } satisfies Story;
 
+export const IgnoreColor = {
+  args: {
+    ignoreValue: (val) => val >= 0 && val <= 100,
+    ignoredColor: 'lightblue',
+  },
+} satisfies Story;
+
 export const TypedArray = {
   args: {
     dataArray: toTypedNdArray(twoD, Float32Array),
