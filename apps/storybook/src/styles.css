@@ -36,6 +36,7 @@ body {
   --h5w-btnPressed--bgColor: var(--secondary-light);
   --h5w-toolbar--bgColor: var(--secondary-light-bg);
   --h5w-toolbar-label--color: var(--secondary-dark);
+  --h5w-toolbar-input-focus--shadowColor: var(--secondary-darker);
   --h5w-domainSlider-track--bgColor: var(--secondary-dark-15);
   --h5w-domainSlider-dataTrack--bgColor: var(--secondary-dark);
   --h5w-domainSlider-dataTrack--shadowColor: var(--secondary-darker);
