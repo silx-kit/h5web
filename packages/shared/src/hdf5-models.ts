@@ -65,7 +65,7 @@ export interface UnresolvedEntity extends Entity {
 }
 
 export type LinkClass = 'Hard' | 'Soft' | 'External';
-interface Link {
+export interface Link {
   class: LinkClass;
   file?: string;
   path?: string;

@@ -1,23 +1,19 @@
 import {
   assertArray,
   assertDefined,
-  assertGroup,
   hasScalarShape,
 } from '@h5web/shared/guards';
 import {
   type ArrayShape,
   type AttributeValues,
-  type ChildEntity,
   type Dataset,
-  type Datatype,
+  DTypeClass,
   type Entity,
   EntityKind,
-  type Group,
-  type GroupWithChildren,
   type ProvidedEntity,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
-import { buildEntityPath, getChildEntity } from '@h5web/shared/hdf5-utils';
+import { buildEntityPath } from '@h5web/shared/hdf5-utils';
 import {
   type BuiltInExporter,
   type ExportFormat,
@@ -27,86 +23,83 @@ import {
 import { isScalarSelection } from '../../vis-packs/core/utils';
 import { DataProviderApi } from '../api';
 import { type OnProgress } from '../models';
-import { createBasicFetcher, FetcherError, toJSON } from '../utils';
 import {
-  type BaseHsdsEntity,
-  type HsdsAttribute,
-  type HsdsAttributesResponse,
-  type HsdsAttributeWithValueResponse,
+  bigIntTypedArrayFromDType,
+  createBasicFetcher,
+  FetcherError,
+  toJSON,
+  typedArrayFromDType,
+} from '../utils';
+import {
+  type HsdsAttributesWithValuesResponse,
   type HsdsCollection,
-  type HsdsDatasetResponse,
-  type HsdsDatatypeResponse,
+  type HsdsEntitiesResponse,
   type HsdsEntity,
-  type HsdsGroupResponse,
+  type HsdsEntityResponse,
   type HsdsId,
-  type HsdsLink,
-  type HsdsLinksResponse,
-  type HsdsRootResponse,
   type HsdsValueResponse,
 } from './models';
 import {
   assertHsdsDataset,
   assertHsdsEntity,
-  convertHsdsAttributes,
-  convertHsdsShape,
-  convertHsdsType,
-  isHsdsGroup,
+  convertHsdsEntity,
+  convertHsdsSymbolicLink,
   toExtendedJSON,
 } from './utils';
 
 export class HsdsApi extends DataProviderApi {
-  private readonly entities = new Map<string, HsdsEntity<ProvidedEntity>>();
-
   /* API compatible with hsds@1.0.1 */
   public constructor(
     private readonly baseURL: string,
-    filepath: string,
+    private readonly domain: string,
     private readonly fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
-    super(filepath);
+    super(domain);
   }
 
   public override async getEntity(
     path: string,
   ): Promise<HsdsEntity<ProvidedEntity>> {
-    const cachedEntity = this.entities.get(path);
-    if (cachedEntity) {
-      return cachedEntity;
+    const response = await this.fetchEntity(path);
+
+    if (response.class === 'group') {
+      const hsdsGroup = convertHsdsEntity(path, response);
+
+      const { id, links } = response;
+      const linksEntries = Object.entries(links).sort(
+        (a, b) => a[0].localeCompare(b[0]), // `GET /` with `include_links` doesn't sort links predictably
+      );
+
+      const hardLinkedChildren = await this.fetchHardLinkedEntities(
+        id,
+        linksEntries
+          .filter(([_, link]) => link.class === 'H5L_TYPE_HARD')
+          .map(([title]) => title),
+      );
+
+      return {
+        ...hsdsGroup,
+        children: linksEntries.map(([name, link]) => {
+          const childPath = buildEntityPath(path, name);
+
+          if (link.class === 'H5L_TYPE_HARD') {
+            assertDefined(hardLinkedChildren[name]);
+            return convertHsdsEntity(childPath, hardLinkedChildren[name]);
+          }
+
+          return {
+            name: link.title,
+            path: childPath,
+            kind: EntityKind.Unresolved,
+            attributes: [],
+            link: convertHsdsSymbolicLink(link),
+          };
+        }),
+      };
     }
 
-    if (path === '/') {
-      const rootId = await this.fetchRootId();
-      const root = await this.processGroup({
-        id: rootId,
-        collection: 'groups',
-        path: '/',
-        name: this.filepath,
-      });
-
-      this.entities.set(path, root);
-      return root;
-    }
-
-    /* HSDS doesn't allow fetching entities by path.
-     * We need to fetch every ascendant group right up to the root group
-     * in order to find the ID of the entity at the requested path.
-     * Entities are cached along the way for efficiency. */
-    const parentPath = path.slice(0, path.lastIndexOf('/')) || '/';
-    const parentGroup = await this.getEntity(parentPath);
-    assertGroup(parentGroup);
-
-    const childName = path.slice(path.lastIndexOf('/') + 1);
-    const child = getChildEntity(parentGroup, childName);
-    assertDefined(child, `No entity found at ${path}`);
-    assertHsdsEntity(child);
-
-    const entity = isHsdsGroup(child)
-      ? await this.processGroup({ ...child, path })
-      : child;
-
-    this.entities.set(path, entity);
-    return entity;
+    return convertHsdsEntity(path, response);
   }
 
   public override async getValue(
@@ -117,25 +110,56 @@ export class HsdsApi extends DataProviderApi {
   ): Promise<unknown> {
     assertHsdsDataset(dataset);
 
-    const value = await this.fetchValue(
-      dataset.id,
-      selection,
-      abortSignal,
-      onProgress,
-    );
+    const { id, type } = dataset;
 
-    if (hasScalarShape(dataset)) {
-      return value;
+    const url = `${this.baseURL}/datasets/${id}/value`;
+    const baseOpts = { abortSignal, onProgress };
+    const params = {
+      domain: this.domain,
+      ...(selection && { select: `[${selection}]` }),
+    };
+
+    try {
+      if (type.class === DTypeClass.Opaque) {
+        const buffer = await this.fetcher(url, params, {
+          ...baseOpts,
+          headers: { Accept: 'application/octet-stream' },
+        });
+
+        return new Uint8Array(buffer);
+      }
+
+      const DTypedArray =
+        typedArrayFromDType(type) || bigIntTypedArrayFromDType(type);
+
+      if (DTypedArray) {
+        const buffer = await this.fetcher(url, params, {
+          ...baseOpts,
+          headers: { Accept: 'application/octet-stream' },
+        });
+
+        const array = new DTypedArray(buffer);
+        return hasScalarShape(dataset) ? array[0] : array;
+      }
+
+      const buffer = await this.fetcher(url, params, baseOpts);
+      const { value } = toExtendedJSON(buffer) as HsdsValueResponse;
+
+      if (hasScalarShape(dataset)) {
+        return value;
+      }
+
+      // HSDS doesn't reduce the number of dimensions correctly when slicing
+      // https://github.com/HDFGroup/hsds/issues/88
+      assertArray(value);
+      const flattened = value.flat(dataset.shape.dims.length - 1);
+
+      return selection && isScalarSelection(selection)
+        ? flattened[0] // unwrap scalar slice from flattened array
+        : flattened;
+    } catch (error) {
+      throw this.wrapHsdsError(error) || error;
     }
-
-    // HSDS doesn't reduce the number of dimensions correctly when slicing
-    // https://github.com/HDFGroup/hsds/issues/88
-    assertArray(value);
-    const flattened = value.flat(dataset.shape.dims.length - 1);
-
-    return selection && isScalarSelection(selection)
-      ? flattened[0] // unwrap scalar slice from flattened array
-      : flattened;
   }
 
   public override async getAttrValues(
@@ -148,14 +172,8 @@ export class HsdsApi extends DataProviderApi {
       return {};
     }
 
-    const attrsPromises = attributes.map(async (attr) =>
-      this.fetchAttributeWithValue(collection, id, attr.name),
-    );
-
-    const attrsWithValues = await Promise.all(attrsPromises);
-    return Object.fromEntries(
-      attrsWithValues.map((attr) => [attr.name, attr.value]),
-    );
+    const attrs = await this.fetchAttributesWithValues(id, collection);
+    return Object.fromEntries(attrs.map((attr) => [attr.name, attr.value]));
   }
 
   public override getExportURL(
@@ -182,237 +200,68 @@ export class HsdsApi extends DataProviderApi {
     return async () => new Blob([builtInExporter()]);
   }
 
-  private async fetchRootId(): Promise<HsdsId> {
+  private async fetchEntity(path: string): Promise<HsdsEntityResponse> {
     try {
       const buffer = await this.fetcher(`${this.baseURL}/`, {
-        domain: this.filepath,
+        domain: this.domain,
+        h5path: path,
+        include_links: 'true',
+        include_attrs: 'true',
       });
 
-      return (toJSON(buffer) as HsdsRootResponse).root;
+      return toJSON(buffer) as HsdsEntityResponse;
     } catch (error) {
       throw this.wrapHsdsError(error) || error;
     }
   }
 
-  private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
+  private async fetchHardLinkedEntities(
+    parentId: string,
+    linkNames: string[],
+  ): Promise<HsdsEntitiesResponse['h5paths']> {
     try {
-      const buffer = await this.fetcher(`${this.baseURL}/datasets/${id}`, {
-        domain: this.filepath,
-      });
+      const buffer = await this.fetcher(
+        `${this.baseURL}/`,
+        {
+          domain: this.domain,
+          parent_id: parentId,
+          include_attrs: 'true',
+        },
+        {
+          method: 'POST',
+          body: JSON.stringify({ h5paths: linkNames }),
+        },
+      );
 
-      return toJSON(buffer) as HsdsDatasetResponse;
+      return (toJSON(buffer) as HsdsEntitiesResponse).h5paths;
     } catch (error) {
       throw this.wrapHsdsError(error) || error;
     }
   }
 
-  private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
-    try {
-      const buffer = await this.fetcher(`${this.baseURL}/datatypes/${id}`, {
-        domain: this.filepath,
-      });
-
-      return toJSON(buffer) as HsdsDatatypeResponse;
-    } catch (error) {
-      throw this.wrapHsdsError(error) || error;
-    }
-  }
-
-  private async fetchGroup(id: HsdsId): Promise<HsdsGroupResponse> {
-    try {
-      const buffer = await this.fetcher(`${this.baseURL}/groups/${id}`, {
-        domain: this.filepath,
-      });
-
-      return toJSON(buffer) as HsdsGroupResponse;
-    } catch (error) {
-      throw this.wrapHsdsError(error) || error;
-    }
-  }
-
-  private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
-    try {
-      const buffer = await this.fetcher(`${this.baseURL}/groups/${id}/links`, {
-        domain: this.filepath,
-      });
-
-      return (toJSON(buffer) as HsdsLinksResponse).links;
-    } catch (error) {
-      throw this.wrapHsdsError(error) || error;
-    }
-  }
-
-  private async fetchAttributes(
-    entityCollection: HsdsCollection,
+  private async fetchAttributesWithValues(
     entityId: HsdsId,
-  ): Promise<HsdsAttribute[]> {
+    entityCollection: HsdsCollection,
+  ): Promise<HsdsAttributesWithValuesResponse['attributes']> {
     try {
       const buffer = await this.fetcher(
         `${this.baseURL}/${entityCollection}/${entityId}/attributes`,
-        { domain: this.filepath },
-      );
-
-      return (toJSON(buffer) as HsdsAttributesResponse).attributes;
-    } catch (error) {
-      throw this.wrapHsdsError(error) || error;
-    }
-  }
-
-  private async fetchValue(
-    entityId: HsdsId,
-    selection?: string,
-    abortSignal?: AbortSignal,
-    onProgress?: OnProgress,
-  ): Promise<unknown> {
-    try {
-      const buffer = await this.fetcher(
-        `${this.baseURL}/datasets/${entityId}/value`,
         {
-          domain: this.filepath,
-          ...(selection && { select: `[${selection}]` }),
+          domain: this.domain,
+          IncludeData: 'true',
         },
-        { abortSignal, onProgress },
       );
 
-      return (toExtendedJSON(buffer) as HsdsValueResponse).value;
+      return (toExtendedJSON(buffer) as HsdsAttributesWithValuesResponse)
+        .attributes;
     } catch (error) {
       throw this.wrapHsdsError(error) || error;
     }
-  }
-
-  private async fetchAttributeWithValue(
-    entityCollection: HsdsCollection,
-    entityId: HsdsId,
-    attributeName: string,
-  ): Promise<HsdsAttributeWithValueResponse> {
-    try {
-      const buffer = await this.fetcher(
-        `${this.baseURL}/${entityCollection}/${entityId}/attributes/${attributeName}`,
-        { domain: this.filepath },
-      );
-
-      return toExtendedJSON(buffer) as HsdsAttributeWithValueResponse;
-    } catch (error) {
-      throw this.wrapHsdsError(error) || error;
-    }
-  }
-
-  private async resolveLink(
-    link: HsdsLink,
-    path: string,
-  ): Promise<ChildEntity> {
-    if (link.class !== 'H5L_TYPE_HARD') {
-      return {
-        name: link.title,
-        path,
-        kind: EntityKind.Unresolved,
-        attributes: [],
-        link: {
-          class: link.class === 'H5L_TYPE_SOFT' ? 'Soft' : 'External',
-          path: link.h5path,
-          file: link.file,
-        },
-      };
-    }
-
-    const { id, title, collection } = link;
-    const baseEntity: BaseHsdsEntity = { id, collection, path, name: title };
-
-    switch (collection) {
-      case 'groups':
-        return this.processGroup(baseEntity, true);
-      case 'datasets':
-        return this.processDataset(baseEntity);
-      case 'datatypes':
-        return this.processDatatype(baseEntity);
-      default:
-        throw new Error('Unknown collection !');
-    }
-  }
-
-  private async processGroup(
-    baseEntity: BaseHsdsEntity,
-    isChild: true,
-  ): Promise<HsdsEntity<Group>>;
-
-  private async processGroup(
-    baseEntity: BaseHsdsEntity,
-    isChild?: false,
-  ): Promise<HsdsEntity<GroupWithChildren>>;
-
-  private async processGroup(
-    baseEntity: BaseHsdsEntity,
-    isChild = false,
-  ): Promise<HsdsEntity<Group | GroupWithChildren>> {
-    const { id, path } = baseEntity;
-    const { attributeCount, linkCount } = await this.fetchGroup(id);
-
-    // Fetch attributes and links in parallel
-    const [attributes, links] = await Promise.all([
-      attributeCount > 0
-        ? this.fetchAttributes('groups', id)
-        : Promise.resolve([]),
-      linkCount > 0 && !isChild ? this.fetchLinks(id) : Promise.resolve([]),
-    ]);
-
-    const group: HsdsEntity<Group> = {
-      ...baseEntity,
-      kind: EntityKind.Group,
-      attributes: convertHsdsAttributes(attributes),
-    };
-
-    if (isChild) {
-      return group; // don't fetch nested group's children
-    }
-
-    return {
-      ...group,
-      children: await Promise.all(
-        links.map(async (link) =>
-          this.resolveLink(link, buildEntityPath(path, link.title)),
-        ),
-      ),
-    };
-  }
-
-  private async processDataset(
-    baseEntity: BaseHsdsEntity,
-  ): Promise<HsdsEntity<Dataset>> {
-    const { id } = baseEntity;
-    const dataset = await this.fetchDataset(id);
-    const { shape, type, attributeCount } = dataset;
-
-    const attributes =
-      attributeCount > 0 ? await this.fetchAttributes('datasets', id) : [];
-
-    return {
-      ...baseEntity,
-      kind: EntityKind.Dataset,
-      attributes: convertHsdsAttributes(attributes),
-      shape: convertHsdsShape(shape),
-      type: convertHsdsType(type),
-      rawType: type,
-    };
-  }
-
-  private async processDatatype(
-    baseEntity: BaseHsdsEntity,
-  ): Promise<HsdsEntity<Datatype>> {
-    const { id } = baseEntity;
-    const { type } = await this.fetchDatatype(id);
-
-    return {
-      ...baseEntity,
-      kind: EntityKind.Datatype,
-      attributes: [],
-      type: convertHsdsType(type),
-      rawType: type,
-    };
   }
 
   private wrapHsdsError(error: unknown): Error | undefined {
-    if (error instanceof FetcherError && error.status === 400) {
-      return new Error(`File not found: ${this.filepath}`, { cause: error });
+    if (error instanceof FetcherError && error.status === 404) {
+      return new Error(`File not found: ${this.domain}`, { cause: error });
     }
 
     return undefined;
