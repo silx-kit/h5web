@@ -77,6 +77,14 @@ export const ConstantWithWidth = Default.extend({
   },
 });
 
+export const PchipInterpolation = Default.extend({
+  args: {
+    abscissas: [0, 1, 1.5, 4, 5, 7, 7.5, 10],
+    ordinates: [0, 2, 1, 1.2, 3, -1, -1, 0.5],
+    interpolation: Interpolation.Pchip,
+  },
+});
+
 export const IgnoreValue = Default.extend({
   args: {
     ignoreValue: (val) => val % 5 === 0,
