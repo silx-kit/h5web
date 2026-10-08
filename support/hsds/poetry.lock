@@ -891,14 +891,14 @@ tqdm = ["tqdm"]
 
 [[package]]
 name = "h5json"
-version = "2.0.0"
+version = "2.0.1"
 description = "HDF5/JSON Tools"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "h5json-2.0.0-py3-none-any.whl", hash = "sha256:369043d5cd27c4ca53ffc0cc8f82679737bf202df1af116c7eed503c045758cb"},
-    {file = "h5json-2.0.0.tar.gz", hash = "sha256:f859aabdd51a0c5a8fc8fa1d40821e24d1431c6161f6ed36bcaef4831869b1bd"},
+    {file = "h5json-2.0.1-py3-none-any.whl", hash = "sha256:d9b9272689af032aa814bf61f0526176a707834cb435793c2727e07cbc2a93d6"},
+    {file = "h5json-2.0.1.tar.gz", hash = "sha256:3badd990d2c663f3c1d6827a243f8a76fdd479a933aef936a435a32c82822bb1"},
 ]
 
 [package.dependencies]
@@ -991,14 +991,14 @@ hdf5 = ["h5py"]
 
 [[package]]
 name = "hsds"
-version = "1.0.1"
+version = "1.0.2"
 description = "Rest-based Web Service for HDF data"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "hsds-1.0.1-py3-none-any.whl", hash = "sha256:bf9a2e8299c9a62d87b7ad6c3ecc8ac60713095d9e3dd9e5722c579a3e51de28"},
-    {file = "hsds-1.0.1.tar.gz", hash = "sha256:b0a8f1d1071c45b2c8355a92e9e500a327eea0eb38c039aaf8b141c105918426"},
+    {file = "hsds-1.0.2-py3-none-any.whl", hash = "sha256:a5065e529886d4300a937b7c4e8a944454d21d82855d3f195eb46a400cc6a0bc"},
+    {file = "hsds-1.0.2.tar.gz", hash = "sha256:071d040e37b19477b2963637abb6052d59311a24620897fff92a96d2d256bc4f"},
 ]
 
 [package.dependencies]
@@ -1009,7 +1009,7 @@ aiohttp_cors = "*"
 azure-storage-blob = "*"
 bitshuffle = ">=0.5.2"
 cryptography = "*"
-h5json = ">=2.0.0"
+h5json = ">=2.0.1"
 h5py = ">=3.6.0"
 importlib_resources = "*"
 numcodecs = "<=0.15.1"
@@ -2351,4 +2351,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "28197c9129f5255303b5afbba50da3edfa2cb87b3fdb5329c24e62697fd31cd6"
+content-hash = "69350e5177ce3dc46cdae2153a1d341855499741515176b1f007d97f18eb81df"

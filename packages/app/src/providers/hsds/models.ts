@@ -1,80 +1,88 @@
 import { type H5T_CSET, type H5T_STR } from '@h5web/shared/h5t';
-import { type Entity } from '@h5web/shared/hdf5-models';
+import {
+  type Dataset,
+  type Datatype,
+  type Entity,
+  type Group,
+} from '@h5web/shared/hdf5-models';
 
 /* --------------------- */
 /* ----- RESPONSES ----- */
 
-export type HsdsId = string;
+export type HsdsEntityResponse =
+  HsdsGroupResponse | HsdsDatasetResponse | HsdsDatatypeResponse;
 
-export interface HsdsRootResponse {
-  root: HsdsId;
+export interface HsdsEntitiesResponse {
+  h5paths: Record<string, HsdsEntityResponse>;
 }
 
 export interface HsdsGroupResponse {
-  id: HsdsId;
-  linkCount: number;
-  attributeCount: number;
+  id: string;
+  domain: string;
+  class: 'group';
+  attributes: HsdsAttribute[];
+  links: Record<string, HsdsLink>;
 }
 
-export interface HsdsDatasetResponse {
-  id: HsdsId;
+interface HsdsDatasetResponse {
+  id: string;
+  domain: string;
+  class: 'dataset';
   shape: HsdsShape;
   type: HsdsType;
-  attributeCount: number;
-}
-
-export interface HsdsDatatypeResponse {
-  id: HsdsId;
-  type: HsdsType;
-}
-
-export interface HsdsAttributesResponse {
   attributes: HsdsAttribute[];
 }
 
-export interface HsdsLinksResponse {
-  links: HsdsLink[];
+interface HsdsDatatypeResponse {
+  id: string;
+  domain: string;
+  class: 'datatype';
+  type: HsdsType;
+  attributes: HsdsAttribute[];
 }
 
 export interface HsdsValueResponse {
   value: unknown;
 }
 
-export interface HsdsAttributeWithValueResponse extends HsdsAttribute {
-  value: unknown;
+export interface HsdsAttributesWithValuesResponse {
+  attributes: (HsdsAttribute & HsdsValueResponse)[];
 }
 
 /* ----------------- */
 /* ----- LINKS ----- */
 
-export type HsdsLink = HsdsHardLink | HsdsSymbolicLink;
-export type HsdsCollection = 'groups' | 'datasets' | 'datatypes';
+export type HsdsLink = HsdsHardLink | HsdsSoftLink | HsdsExternalLink;
 
 interface HsdsHardLink {
   class: 'H5L_TYPE_HARD';
-  title: string;
-  collection: HsdsCollection;
-  id: HsdsId;
+  id: string;
 }
 
-interface HsdsSymbolicLink {
-  class: 'H5L_TYPE_SOFT' | 'H5L_TYPE_EXTERNAL';
-  title: string;
-  file?: string;
+interface HsdsSoftLink {
+  class: 'H5L_TYPE_SOFT';
+  h5path: string;
+}
+
+interface HsdsExternalLink {
+  class: 'H5L_TYPE_EXTERNAL';
+  h5domain: string;
   h5path: string;
 }
 
 /* ------------------- */
 /* ----- ENTITIES----- */
 
-export type BaseHsdsEntity = Pick<
-  HsdsEntity,
-  'id' | 'collection' | 'path' | 'name'
->;
+export type HsdsEntityFromResponse<R extends HsdsEntityResponse> =
+  R extends HsdsGroupResponse
+    ? HsdsEntity<Group>
+    : R extends HsdsDatasetResponse
+      ? HsdsEntity<Dataset>
+      : HsdsEntity<Datatype>;
 
 export type HsdsEntity<T extends Entity = Entity> = T & {
-  id: HsdsId;
-  collection: HsdsCollection;
+  id: string;
+  domain: string;
 };
 
 export interface HsdsAttribute {
@@ -107,7 +115,9 @@ export type HsdsType =
   | HsdsVLenType
   | HsdsArrayType
   | HsdsCompoundType
-  | HsdsEnumType;
+  | HsdsEnumType
+  | HsdsReferenceType
+  | HsdsOpaqueType;
 
 export interface HsdsNumericType {
   class: 'H5T_INTEGER' | 'H5T_FLOAT';
@@ -141,4 +151,12 @@ export interface HsdsEnumType {
   class: 'H5T_ENUM';
   base: HsdsType;
   members: { name: string; value: number }[];
+}
+
+interface HsdsReferenceType {
+  class: 'H5T_REFERENCE';
+}
+
+interface HsdsOpaqueType {
+  class: 'H5T_OPAQUE';
 }

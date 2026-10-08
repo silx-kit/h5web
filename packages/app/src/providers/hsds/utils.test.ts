@@ -7,6 +7,8 @@ import {
   cplxType,
   floatType,
   intType,
+  opaqueType,
+  referenceType,
   strType,
   unknownType,
   vlenType,
@@ -21,7 +23,7 @@ import {
   type HsdsType,
   type HsdsVLenType,
 } from './models';
-import { convertHsdsType } from './utils';
+import { parseType } from './utils';
 
 interface TestType {
   hsds: HsdsType;
@@ -48,7 +50,7 @@ const beFloat = {
   hdf5: floatType(64, H5T_ORDER.BE),
 } satisfies TestType;
 
-describe('convertHsdsType', () => {
+describe('parseType', () => {
   it('should convert ASCII string type', () => {
     const asciiStr: HsdsStringType = {
       class: 'H5T_STRING',
@@ -57,7 +59,7 @@ describe('convertHsdsType', () => {
       length: 25,
     };
 
-    expect(convertHsdsType(asciiStr)).toStrictEqual(
+    expect(parseType(asciiStr)).toStrictEqual(
       strType(H5T_CSET.ASCII, H5T_STR.NULLTERM, 25),
     );
   });
@@ -70,41 +72,41 @@ describe('convertHsdsType', () => {
       length: 'H5T_VARIABLE',
     };
 
-    expect(convertHsdsType(unicodeStr)).toStrictEqual(
+    expect(parseType(unicodeStr)).toStrictEqual(
       strType(H5T_CSET.UTF8, H5T_STR.NULLPAD),
     );
   });
 
   it('should convert integer types', () => {
-    expect(convertHsdsType(leInt.hsds)).toStrictEqual(leInt.hdf5);
-    expect(convertHsdsType(beUint.hsds)).toStrictEqual(beUint.hdf5);
+    expect(parseType(leInt.hsds)).toStrictEqual(leInt.hdf5);
+    expect(parseType(beUint.hsds)).toStrictEqual(beUint.hdf5);
   });
 
   it('should convert float types', () => {
-    expect(convertHsdsType(leFloat.hsds)).toStrictEqual(leFloat.hdf5);
-    expect(convertHsdsType(beFloat.hsds)).toStrictEqual(beFloat.hdf5);
+    expect(parseType(leFloat.hsds)).toStrictEqual(leFloat.hdf5);
+    expect(parseType(beFloat.hsds)).toStrictEqual(beFloat.hdf5);
   });
 
-  it('should convert the base of VLen type', () => {
+  it('should convert vlen type', () => {
     const vlen: HsdsVLenType = {
       class: 'H5T_VLEN',
       base: leInt.hsds,
     };
 
-    expect(convertHsdsType(vlen)).toStrictEqual(vlenType(leInt.hdf5));
+    expect(parseType(vlen)).toStrictEqual(vlenType(leInt.hdf5));
   });
 
-  it('should convert the base of Array type', () => {
+  it('should convert array type', () => {
     const arr: HsdsArrayType = {
       class: 'H5T_ARRAY',
       base: leInt.hsds,
       dims: [4, 5],
     };
 
-    expect(convertHsdsType(arr)).toStrictEqual(arrayType(leInt.hdf5, [4, 5]));
+    expect(parseType(arr)).toStrictEqual(arrayType(leInt.hdf5, [4, 5]));
   });
 
-  it('should convert the field types of Compound type', () => {
+  it('should convert compound type', () => {
     const vlen: HsdsVLenType = { class: 'H5T_VLEN', base: leInt.hsds };
     const compound: HsdsCompoundType = {
       class: 'H5T_COMPOUND',
@@ -113,7 +115,7 @@ describe('convertHsdsType', () => {
         { name: 'f2', type: vlen },
       ],
     };
-    expect(convertHsdsType(compound)).toStrictEqual(
+    expect(parseType(compound)).toStrictEqual(
       compoundType([
         ['f1', beFloat.hdf5],
         ['f2', vlenType(leInt.hdf5)],
@@ -121,7 +123,7 @@ describe('convertHsdsType', () => {
     );
   });
 
-  it('should convert the enum with the boolean mapping to Boolean type', () => {
+  it('should convert enum and boolean types', () => {
     const boolEnum: HsdsEnumType = {
       class: 'H5T_ENUM',
       base: { class: 'H5T_INTEGER', base: 'H5T_STD_I8LE' },
@@ -131,10 +133,10 @@ describe('convertHsdsType', () => {
       ],
     };
 
-    expect(convertHsdsType(boolEnum)).toStrictEqual(boolType(intType(true, 8)));
+    expect(parseType(boolEnum)).toStrictEqual(boolType(intType(true, 8)));
   });
 
-  it('should convert the complex compound type into Complex type', () => {
+  it('should convert complex type', () => {
     const complexCompound: HsdsCompoundType = {
       class: 'H5T_COMPOUND',
       fields: [
@@ -143,12 +145,19 @@ describe('convertHsdsType', () => {
       ],
     };
 
-    expect(convertHsdsType(complexCompound)).toEqual(cplxType(leFloat.hdf5));
+    expect(parseType(complexCompound)).toEqual(cplxType(leFloat.hdf5));
+  });
+
+  it('should convert other types', () => {
+    expect(parseType({ class: 'H5T_REFERENCE' })).toStrictEqual(
+      referenceType(),
+    );
+    expect(parseType({ class: 'H5T_OPAQUE' })).toStrictEqual(opaqueType());
   });
 
   it('should handle unknown type', () => {
-    expect(
-      convertHsdsType({ class: 'NO_CLASS' } as unknown as HsdsType),
-    ).toEqual(unknownType());
+    expect(parseType({ class: 'NO_CLASS' } as unknown as HsdsType)).toEqual(
+      unknownType(),
+    );
   });
 });
