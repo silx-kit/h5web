@@ -6,6 +6,7 @@ import {
   ScaleType,
 } from '@h5web/shared/vis-models';
 import { formatTooltipVal } from '@h5web/shared/vis-utils';
+import { type RGBColor } from 'd3-color';
 import { type NdArray } from 'ndarray';
 import { type PropsWithChildren, type ReactElement } from 'react';
 import {
@@ -53,6 +54,7 @@ interface Props extends ClassStyleAttrs {
   renderTooltip?: (data: TooltipData) => ReactElement;
   interactions?: DefaultInteractionsConfig;
   ignoreValue?: IgnoreValue;
+  ignoredColor?: RGBColor | string;
 }
 
 function HeatmapVis(props: PropsWithChildren<Props>) {
@@ -77,6 +79,7 @@ function HeatmapVis(props: PropsWithChildren<Props>) {
     children,
     interactions,
     ignoreValue,
+    ignoredColor,
     className = '',
     style,
   } = props;
@@ -165,6 +168,7 @@ function HeatmapVis(props: PropsWithChildren<Props>) {
           magFilter={magFilter}
           minFilter={minFilter}
           mask={maskArray}
+          badColor={ignoredColor}
         />
 
         {children}
