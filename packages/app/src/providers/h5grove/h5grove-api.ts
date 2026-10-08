@@ -90,15 +90,15 @@ export class H5GroveApi extends DataProviderApi {
 
       const SafeDTypedArray = h5groveSafeTypedArrayFromDType(type);
       const DTypedArray =
-        SafeDTypedArray ||
         typedArrayFromDType(type) ||
-        bigIntTypedArrayFromDType(type);
+        bigIntTypedArrayFromDType(type) ||
+        SafeDTypedArray;
 
       if (DTypedArray) {
         const params = {
           ...baseParams,
           format: 'bin',
-          ...(SafeDTypedArray && { dtype: 'safe' }),
+          ...(DTypedArray === SafeDTypedArray && { dtype: 'safe' }),
         };
 
         const buffer = await this.fetcher(url, params, opts);

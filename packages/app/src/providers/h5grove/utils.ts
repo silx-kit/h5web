@@ -234,6 +234,10 @@ export function h5groveSafeTypedArrayFromDType(
 ): TypedArrayConstructor | BigIntTypedArrayConstructor | undefined {
   const { class: dtypeClass } = dtype;
 
+  if (dtypeClass === DTypeClass.Float && dtype.size === 16) {
+    return Float32Array;
+  }
+
   if (dtypeClass === DTypeClass.Float && dtype.size === 128) {
     return Float64Array;
   }
