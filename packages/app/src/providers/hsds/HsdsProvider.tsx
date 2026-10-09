@@ -7,16 +7,16 @@ import { HsdsApi } from './hsds-api';
 
 interface Props {
   url: string;
-  filepath: string;
+  domain: string;
   resetKeys?: unknown[];
-  fetcher: Fetcher;
+  fetcher?: Fetcher;
   getExportURL?: DataProviderApi['getExportURL'];
 }
 
 function HsdsProvider(props: PropsWithChildren<Props>) {
   const {
     url,
-    filepath,
+    domain,
     resetKeys = [],
     fetcher,
     getExportURL,
@@ -24,8 +24,8 @@ function HsdsProvider(props: PropsWithChildren<Props>) {
   } = props;
 
   const api = useMemo(
-    () => new HsdsApi(url, filepath, fetcher, getExportURL),
-    [url, filepath, ...resetKeys, fetcher, getExportURL], // eslint-disable-line react-hooks/exhaustive-deps
+    () => new HsdsApi(url, domain, fetcher, getExportURL),
+    [url, domain, ...resetKeys, fetcher, getExportURL], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;

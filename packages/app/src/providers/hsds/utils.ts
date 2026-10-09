@@ -1,17 +1,16 @@
-import { isGroup } from '@h5web/shared/guards';
 import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import {
-  type ArrayShape,
   type Attribute,
   type BooleanType,
-  type Dataset,
+  type ChildEntity,
   type DType,
   type Entity,
+  EntityKind,
   type EnumType,
-  type Group,
+  type Link,
   type NumericType,
-  type ScalarShape,
   type Shape,
+  type UnresolvedEntity,
 } from '@h5web/shared/hdf5-models';
 import {
   arrayShape,
@@ -21,6 +20,8 @@ import {
   floatType,
   intType,
   nullShape,
+  opaqueType,
+  referenceType,
   scalarShape,
   strType,
   unknownType,
@@ -30,29 +31,20 @@ import {
 import {
   type HsdsAttribute,
   type HsdsEntity,
+  type HsdsEntityFromResponse,
+  type HsdsEntityResponse,
   type HsdsEnumType,
+  type HsdsLink,
   type HsdsNumericType,
   type HsdsShape,
   type HsdsType,
 } from './models';
 
-export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
-  return isGroup(entity);
-}
-
 export function assertHsdsEntity<T extends Entity>(
   entity: T,
 ): asserts entity is HsdsEntity<T> {
-  if (!('id' in entity)) {
+  if (!('id' in entity) || !('domain' in entity)) {
     throw new Error('Expected entity to be HSDS entity');
-  }
-}
-
-export function assertHsdsDataset(
-  dataset: Dataset<ScalarShape | ArrayShape>,
-): asserts dataset is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
-  if (!('id' in dataset)) {
-    throw new Error('Expected entity to be HSDS dataset');
   }
 }
 
@@ -64,11 +56,96 @@ function assertHsdsNumericType(
   }
 }
 
-export function convertHsdsShape(shape: HsdsShape): Shape {
-  const { class: shapeClass } = shape;
+export function parseEntity<R extends HsdsEntityResponse>(
+  path: string,
+  response: R,
+  hsdsLink?: HsdsLink,
+): HsdsEntityFromResponse<R>;
+
+export function parseEntity(
+  path: string,
+  response: HsdsEntityResponse | undefined,
+  hsdsLink?: HsdsLink,
+): HsdsEntity<ChildEntity> | UnresolvedEntity;
+
+export function parseEntity(
+  path: string,
+  response: HsdsEntityResponse | undefined,
+  hsdsLink?: HsdsLink,
+): HsdsEntity<ChildEntity> | UnresolvedEntity {
+  const name = path.slice(path.lastIndexOf('/') + 1);
+  const link = hsdsLink && parseLink(hsdsLink);
+
+  if (!response) {
+    return {
+      name,
+      path,
+      kind: EntityKind.Unresolved as const,
+      attributes: [],
+      link,
+    };
+  }
+
+  const { id, domain, class: kind, attributes: hsdsAttributes } = response;
+  const baseEntity = {
+    id,
+    domain,
+    name,
+    path,
+    attributes: parseAttributes(hsdsAttributes),
+    ...(link && { link }),
+  };
+
+  switch (kind) {
+    case 'group':
+      return {
+        ...baseEntity,
+        kind: EntityKind.Group,
+      };
+
+    case 'dataset': {
+      const { shape, type } = response;
+      return {
+        ...baseEntity,
+        kind: EntityKind.Dataset,
+        shape: parseShape(shape),
+        type: parseType(type),
+        rawType: type,
+      };
+    }
+    case 'datatype': {
+      const { type } = response;
+      return {
+        ...baseEntity,
+        kind: EntityKind.Datatype,
+        type: parseType(type),
+        rawType: type,
+      };
+    }
+    default:
+      throw new Error('Unknown entity class');
+  }
+}
+
+function parseLink(hsdsLink: HsdsLink): Link {
+  const { class: linkClass } = hsdsLink;
+
+  if (linkClass === 'H5L_TYPE_HARD') {
+    return { class: 'Hard' };
+  }
+
+  if (linkClass === 'H5L_TYPE_SOFT') {
+    return { class: 'Soft', path: hsdsLink.h5path };
+  }
+
+  return { class: 'External', file: hsdsLink.h5domain, path: hsdsLink.h5path };
+}
+
+function parseShape(hsdsShape: HsdsShape): Shape {
+  const { class: shapeClass } = hsdsShape;
 
   if (shapeClass === 'H5S_SIMPLE') {
-    return arrayShape(shape.dims);
+    return arrayShape(hsdsShape.dims);
   }
 
   if (shapeClass === 'H5S_SCALAR') {
@@ -78,7 +155,7 @@ export function convertHsdsShape(shape: HsdsShape): Shape {
   return nullShape();
 }
 
-function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
+function parseNumericType(hsdsType: HsdsNumericType): NumericType {
   const { class: hsdsClass, base } = hsdsType;
 
   const regex = /H5T_(?:IEEE|STD)_([A-Z])(\d+)(BE|LE)/u;
@@ -99,25 +176,25 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   return intType(sign === 'I', size, h5tOrder);
 }
 
-function convertHsdsEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
+function parseEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
   const { base, members } = hsdsType;
   assertHsdsNumericType(base);
 
   return enumOrBoolType(
-    convertHsdsNumericType(base),
+    parseNumericType(base),
     Object.fromEntries(members.map(({ name, value }) => [name, value])),
   );
 }
 
-export function convertHsdsType(hsdsType: HsdsType): DType {
+export function parseType(hsdsType: HsdsType): DType {
   switch (hsdsType.class) {
     case 'H5T_INTEGER':
     case 'H5T_FLOAT':
-      return convertHsdsNumericType(hsdsType);
+      return parseNumericType(hsdsType);
 
     case 'H5T_COMPOUND':
       return compoundOrCplxType(
-        hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)]),
+        hsdsType.fields.map((v) => [v.name, parseType(v.type)]),
       );
 
     case 'H5T_STRING': {
@@ -134,24 +211,30 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
     }
 
     case 'H5T_VLEN':
-      return vlenType(convertHsdsType(hsdsType.base));
+      return vlenType(parseType(hsdsType.base));
 
     case 'H5T_ARRAY':
-      return arrayType(convertHsdsType(hsdsType.base), hsdsType.dims);
+      return arrayType(parseType(hsdsType.base), hsdsType.dims);
 
     case 'H5T_ENUM':
-      return convertHsdsEnumType(hsdsType);
+      return parseEnumType(hsdsType);
+
+    case 'H5T_REFERENCE':
+      return referenceType();
+
+    case 'H5T_OPAQUE':
+      return opaqueType();
 
     default:
       return unknownType();
   }
 }
 
-export function convertHsdsAttributes(attrs: HsdsAttribute[]): Attribute[] {
-  return attrs.map((attr) => ({
-    name: attr.name,
-    shape: convertHsdsShape(attr.shape),
-    type: convertHsdsType(attr.type),
+function parseAttributes(attrs: HsdsAttribute[]): Attribute[] {
+  return Object.entries(attrs).map(([name, attr]) => ({
+    name,
+    shape: parseShape(attr.shape),
+    type: parseType(attr.type),
   }));
 }
 

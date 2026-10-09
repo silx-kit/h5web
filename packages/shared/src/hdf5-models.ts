@@ -37,8 +37,8 @@ export interface Group extends Entity {
   kind: EntityKind.Group;
 }
 
-export interface GroupWithChildren extends Group {
-  children: ChildEntity[];
+export interface GroupWithChildren<C = ChildEntity> extends Group {
+  children: C[];
 }
 
 export interface Dataset<
@@ -65,7 +65,7 @@ export interface UnresolvedEntity extends Entity {
 }
 
 export type LinkClass = 'Hard' | 'Soft' | 'External';
-interface Link {
+export interface Link {
   class: LinkClass;
   file?: string;
   path?: string;
