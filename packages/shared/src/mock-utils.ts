@@ -307,6 +307,34 @@ export function withNxAttr<T extends MockDataset<ArrayShape>>(
   ]);
 }
 
+/* ---------------------------- */
+/* ----- DIMENSION SCALES ----- */
+
+/* Attach HDF5 dimension scales to a mock dataset, as `make_scale` and
+ * `attach_scale` would: `labels` becomes a real `DIMENSION_LABELS` attribute,
+ * while `scales` stands in for the `DIMENSION_LIST` object references and is
+ * served by `MockApi#getDimensionScales`. */
+export function withDimScales<T extends MockDataset<ArrayShape>>(
+  dat: T,
+  dimScales: {
+    labels?: (string | undefined)[];
+    scales?: string[][];
+  },
+): T {
+  const { labels, scales } = dimScales;
+
+  const labelsAttr = labels
+    ? [
+        arrayAttr(
+          'DIMENSION_LABELS',
+          dat.shape.dims.map((_, index) => labels[index] || ''),
+        ),
+      ]
+    : [];
+
+  return { ...withAttr(dat, labelsAttr), dimScales: scales };
+}
+
 /* ------------------------ */
 /* --- INTERNAL HELPERS --- */
 

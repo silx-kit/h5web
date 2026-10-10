@@ -128,4 +128,11 @@ export class MockApi extends DataProviderApi {
   public override async getSearchablePaths(path: string): Promise<string[]> {
     return getChildrenPaths(this.mockFile, path);
   }
+
+  public override async getDimensionScales(
+    dataset: Dataset<ArrayShape>,
+  ): Promise<string[][]> {
+    assertMockDataset(dataset);
+    return dataset.dimScales || [];
+  }
 }
