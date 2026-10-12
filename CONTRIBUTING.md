@@ -297,9 +297,9 @@ install the recommended extensions.
 > installed with Playwright; see [_Browser tests_](#browser-tests) section.
 
 > For the providers tests to work (`h5grove-api.test.ts` and
-> `h5wasm-api.test.ts`), the sample HDF5 file must first be created and the
-> h5grove support server must be running in a separate terminal; see
-> `pnpm support:*` scripts and [_Providers tests_](#providers-tests) section.
+> `h5wasm-api.test.ts`), the test files must first be created and the h5grove
+> support server must be running in a separate terminal; see `pnpm support:*`
+> scripts and [_Providers tests_](#providers-tests) section.
 
 - `pnpm test:headless` - use headless mode for browser tests, typically in the
   CI
@@ -314,11 +314,11 @@ install the recommended extensions.
   without coverage)
 - `pnpm support:setup` - create/update Poetry environments required for
   [testing the providers](#providers-tests)
-- `pnpm support:sample` - create `sample.h5` (for h5grove and h5wasm)
-- `pnpm support:sample --hsds` - create `sample-hsds.h5` (for HSDS)
+- `pnpm support:files` - create test files (for h5grove and h5wasm)
+- `pnpm support:files --hsds` - create test files (for HSDS)
 - `pnpm support:h5grove` - start h5grove support server
 - `pnpm support:hsds` - start HSDS support server
-- `pnpm support:hsds:load` - load HSDS sample file (HSDS support server must be
+- `pnpm support:hsds:load` - load HSDS test files (HSDS support server must be
   running in separate terminal)
 
 We also use Cypress to run end-to-end and visual regression testing:
@@ -394,16 +394,15 @@ when calling `pnpm test` (cf. `.env.test` and your own `.env.test.local`).
 
 ### Providers
 
-Two data providers are currently tested through their respective APIs:
-`H5GroveApi` and `H5WasmApi`. Each API test (`<provider>-api.test.ts`) works as
-follows:
+The data providers are tested through their respective APIs: `H5GroveApi`,
+`HsdsApi` and `H5WasmApi`. Each provider's API test (`<provider>-api.test.ts`)
+loops over its assigned test files `support/files/dist` and does the following
+for each file:
 
-1. It instanciates the API using a sample file called `sample.h5`, located in
-   `support/sample/dist`, that contains a lot of HDF5 datasets of various shapes
-   and types.
-1. It retrieves the values of all the datasets in the sample file and stores
-   them in an object.
-1. It takes a snapshot of that object and compares it to the existing snapshot
+1. It instanciates the API with the given test file.
+1. It generates a metadata tree of the entire file and retrieves the values of
+   all the datasets.
+1. It takes a snapshot of that tree and compares it to the existing snapshot
    (`<provider>-api.test.ts.snap`).
 1. If the new snapshot is the same, the test succeeds; if the new snapshot
    differs, the test fails and the differences are shown.
@@ -426,11 +425,11 @@ pyenv and Poetry:
    pyenv exec pnpm support:setup
    ```
 
-Once the Poetry environments are created, you can create `sample.h5`, start
+Once the Poetry environments are created, you can create the test files, start
 h5grove and run the API tests:
 
 ```bash
-pyenv exec pnpm support:sample
+pyenv exec pnpm support:files
 pyenv exec pnpm support:h5grove
 pnpm test api
 ```
@@ -448,11 +447,12 @@ pnpm test api
     pyenv exec poetry -C support/<project> run python <script>.py
     ```
 
-If you're unable to create the sample file (for instance because your
-environment lacks support for `float128`), you may
-[download it from silx.org](http://www.silx.org/pub/h5web/sample.h5) and place
-it into the `support/sample/dist` folder. However, please beware that the file
-may not be up to date.
+If you're unable to create the test files (for instance because your environment
+lacks support for `float128`), you may
+[download them](http://www.silx.org/pub/h5web/) and place them into the
+`support/files/dist` folder. The files to download are `sample.h5`,
+`sample-hsds.h5`, `links.h5` and `link-hsds.h5`. Please beware that they may not
+be up to date.
 
 ### Visual regression
 

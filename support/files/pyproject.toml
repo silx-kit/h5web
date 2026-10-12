@@ -1,7 +1,7 @@
 [project]
-name = "sample"
+name = "files"
 version = "0.1.0"
-description = "Script to create HDF5 sample file for testing purposes"
+description = "Script to create HDF5 files for testing purposes"
 authors = [{name = "ESRF"}]
 requires-python = ">=3.12"
 dependencies = [

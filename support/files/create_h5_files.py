@@ -15,9 +15,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--hsds", action=argparse.BooleanOptionalAction)
 args = parser.parse_args()
 
-filename = "sample-hsds.h5" if args.hsds else "sample.h5"
-
 h5py.get_config().track_order = True
+
+def get_filename(basename):
+    return f"{basename}-hsds.h5" if args.hsds else f"{basename}.h5"
 
 
 def add_empty(group, name, dtype=None):
@@ -42,7 +43,7 @@ def print_h5t_class(dataset):
     print("H5T_class=" + str(dataset.id.get_type().get_class()))
 
 
-with h5py.File(os.path.join(DIST_PATH, filename), "w") as h5:
+with h5py.File(os.path.join(DIST_PATH, get_filename("sample")), "w") as h5:
     # === H5T_INTEGER ===
 
     add_scalar(h5, "int8", np.int8(np.iinfo(np.int8).min))
@@ -144,7 +145,7 @@ with h5py.File(os.path.join(DIST_PATH, filename), "w") as h5:
     )
     add_array(
         h5, "complex64", np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex64)
-    ),
+    )
     add_scalar(
         h5,
         "complex128",
@@ -155,7 +156,7 @@ with h5py.File(os.path.join(DIST_PATH, filename), "w") as h5:
     add_scalar(h5, "complex128_BE", 1 + 2j, np.dtype(">c16"))
     add_array(
         h5, "complex128", np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex128)
-    ),
+    )
 
     if not args.hsds:
         add_scalar(
@@ -170,7 +171,7 @@ with h5py.File(os.path.join(DIST_PATH, filename), "w") as h5:
             h5,
             "complex256",
             np.array([[1 + 2j, 3 + 4j], [5 + 6j, 7 + 8j]], np.complex256),
-        ),
+        )
 
     add_scalar(
         h5,
@@ -312,3 +313,34 @@ with h5py.File(os.path.join(DIST_PATH, filename), "w") as h5:
     # === H5T_ARRAY ===
 
     # cf. section `H5T_COMPOUND` above
+
+
+with h5py.File(os.path.join(DIST_PATH, get_filename("links")), "w") as h5:
+
+    group = h5.create_group("group")
+    dataset = group.create_dataset("dataset", data=np.array([[0, 1]]))
+
+    layout = h5py.VirtualLayout(shape=(2, 1, 1), dtype=dataset.dtype)
+
+    vsource = h5py.VirtualSource(dataset)
+    layout[0] = vsource[:, :1]
+    layout[1] = vsource[:, 1:]
+
+    group.create_virtual_dataset("virtual", layout)
+
+    group_hard = h5.create_group("hard")
+    group_hard["group"] = group
+    group_hard["dataset"] = dataset
+
+    group_soft = h5.create_group("soft")
+    group_soft["group"] = h5py.SoftLink("/group")
+    group_soft["dataset"] = h5py.SoftLink("/group/dataset")
+    group_soft["relative"] = h5py.SoftLink("dataset")
+    group_soft["broken"] = h5py.SoftLink("foo")
+
+    # HSDS expects external "domains" to be absolute paths - https://github.com/HDFGroup/hsds/issues/488
+    group_ext = h5.create_group("external")
+    group_ext["group_self"] = h5py.ExternalLink("/links-hsds.h5" if args.hsds else "links.h5", "/group")
+    group_ext["dataset"] = h5py.ExternalLink("/sample-hsds.h5" if args.hsds else "sample.h5", "/int8_2D")
+    group_ext["broken_file"] = h5py.ExternalLink("foo.h5", "/foo")
+    group_ext["broken_path"] = h5py.ExternalLink("/sample-hsds.h5" if args.hsds else "sample.h5", "/foo")

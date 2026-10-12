@@ -1,64 +1,31 @@
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import path from 'node:path';
+import { resolve } from 'node:path';
 
-import { getValueOrError } from '@h5web/app';
-import {
-  assertDataset,
-  assertEnvVar,
-  assertGroup,
-  assertGroupWithChildren,
-  hasNonNullShape,
-} from '@h5web/shared/guards';
+import { getGroupSnapshot } from '@h5web/app';
 import { type Dataset, DTypeClass } from '@h5web/shared/hdf5-models';
-import { beforeAll, expect, test } from 'vitest';
+import { expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
 import remote from './worker';
 
 const SKIP = import.meta.env.VITE_H5WASM_SKIP === 'true';
-const H5WASM_TEST_FILE = import.meta.env.VITE_H5WASM_TEST_FILE;
-assertEnvVar(H5WASM_TEST_FILE, 'VITE_H5WASM_TEST_FILE');
 
-const TEST_FILE = path.resolve(process.cwd(), H5WASM_TEST_FILE);
+test.skipIf(SKIP).each(['sample.h5', 'links.h5'])(
+  'test file `%s` matches snapshot',
+  async (filename) => {
+    const filePath = resolve(process.cwd(), `support/files/dist/${filename}`);
+    expect(existsSync(filePath), `${filename} doesn't exist`).toBe(true);
 
-beforeAll(() => {
-  if (!existsSync(TEST_FILE)) {
-    throw new Error("Sample file doesn't exist");
-  }
-});
+    const { buffer } = new Uint8Array(await readFile(filePath)); // https://stackoverflow.com/a/79345743
+    const fileId = remote.openFileBuffer(buffer);
 
-test.skipIf(SKIP)('test file matches snapshot', async () => {
-  const { buffer } = new Uint8Array(await readFile(TEST_FILE)); // https://stackoverflow.com/a/79345743
-  const fileId = remote.openFileBuffer(buffer);
+    const api = new H5WasmApi(remote, filename, fileId);
+    const root = await getGroupSnapshot(api, '/', processValue);
 
-  const api = new H5WasmApi(remote, 'sample.h5', fileId);
-
-  const root = await api.getEntity('/');
-  assertGroup(root);
-  assertGroupWithChildren(root);
-
-  const children = await Promise.all(
-    root.children.map(async (child) => {
-      assertDataset(child);
-      const { name, shape, type, rawType } = child;
-
-      const value = hasNonNullShape(child)
-        ? await getValueOrError(api, child)
-        : null;
-
-      return {
-        name,
-        shape,
-        type,
-        rawType,
-        value: processValue(value, child),
-      };
-    }),
-  );
-
-  expect(children).toMatchSnapshot();
-});
+    expect(root.children).toMatchSnapshot();
+  },
+);
 
 function processValue(value: unknown, child: Dataset): unknown {
   const { type } = child;
