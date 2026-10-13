@@ -7,6 +7,7 @@ import {
 import { type ReactNode } from 'react';
 
 import { useValue } from '../../hooks';
+import LargeValueGuard from '../LargeValueGuard';
 
 interface Props<D extends Dataset> {
   dataset: D;
@@ -15,6 +16,18 @@ interface Props<D extends Dataset> {
 }
 
 function ValueFetcher<D extends Dataset<ArrayShape | ScalarShape>>(
+  props: Props<D>,
+) {
+  const { dataset, selection } = props;
+
+  return (
+    <LargeValueGuard requests={[{ dataset, selection }]}>
+      <ValueRenderer {...props} />
+    </LargeValueGuard>
+  );
+}
+
+function ValueRenderer<D extends Dataset<ArrayShape | ScalarShape>>(
   props: Props<D>,
 ) {
   const { dataset, selection, render } = props;
