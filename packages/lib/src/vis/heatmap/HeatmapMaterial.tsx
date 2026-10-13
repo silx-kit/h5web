@@ -1,14 +1,11 @@
-import { type Domain, ScaleType } from '@h5web/shared/vis-models';
+import { type Domain, type ScaleType } from '@h5web/shared/vis-models';
 import { rgb, type RGBColor } from 'd3-color';
 import { type NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
 import {
-  DataTexture,
   DoubleSide,
   type MagnificationTextureFilter,
   type MinificationTextureFilter,
-  RGBAFormat,
-  UnsignedByteType,
   Vector4,
 } from 'three';
 
@@ -17,7 +14,12 @@ import { type VisMeshProps } from '../shared/VisMesh';
 import { DEFAULT_DOMAIN, getUniforms, VERTEX_SHADER } from '../utils';
 import { useDataTexture } from './hooks';
 import { type ColorMap, type TextureSafeTypedArray } from './models';
-import { getInterpolator, scaleDomain } from './utils';
+import {
+  getColorMapTexture,
+  GLSL_IS_SUPPORTED,
+  GLSL_SCALE,
+  scaleDomain,
+} from './utils';
 
 interface Props extends VisMeshProps {
   values: NdArray<TextureSafeTypedArray>;
@@ -34,19 +36,6 @@ interface Props extends VisMeshProps {
 }
 
 const DEFAULT_BAD_COLOR = rgb(255, 255, 255, 0);
-
-const CMAP_SIZE = 256;
-
-const IMPL_SCALE: Partial<Record<ScaleType, string>> = {
-  [ScaleType.Log]: 'log(value) * oneOverLog10',
-  [ScaleType.SymLog]: 'sign(value) * log(1. + abs(value)) * oneOverLog10',
-  [ScaleType.Sqrt]: 'sqrt(value)',
-};
-
-const IMPL_IS_SUPPORTED: Partial<Record<ScaleType, string>> = {
-  [ScaleType.Log]: 'value > 0.',
-  [ScaleType.Sqrt]: 'value >= 0.',
-};
 
 function HeatmapMaterial(props: Props) {
   const {
@@ -67,25 +56,10 @@ function HeatmapMaterial(props: Props) {
   const alphaTexture = useDataTexture(alphaValues);
   const maskTexture = useDataTexture(mask);
 
-  const colorMapTexture = useMemo(() => {
-    const interpolator = getInterpolator(colorMap, invertColorMap);
-
-    const colors = Array.from({ length: CMAP_SIZE }).flatMap((_, i) => {
-      const { r, g, b } = rgb(interpolator(i / (CMAP_SIZE - 1)));
-      return [r, g, b, 255];
-    });
-
-    const texture = new DataTexture(
-      Uint8Array.from(colors),
-      CMAP_SIZE,
-      1,
-      RGBAFormat,
-      UnsignedByteType,
-    );
-    texture.needsUpdate = true;
-
-    return texture;
-  }, [colorMap, invertColorMap]);
+  const colorMapTexture = useMemo(
+    () => getColorMapTexture(colorMap, invertColorMap),
+    [colorMap, invertColorMap],
+  );
 
   const [scaleType, gammaExponent] = Array.isArray(visScaleType)
     ? visScaleType
@@ -138,11 +112,11 @@ function HeatmapMaterial(props: Props) {
       varying vec2 coords;
 
       bool isSupported(float value) {
-        return ${IMPL_IS_SUPPORTED[scaleType] || 'true'};
+        return ${GLSL_IS_SUPPORTED[scaleType] || 'true'};
       }
 
       float scale(float value) {
-        return ${IMPL_SCALE[scaleType] || 'value'};
+        return ${GLSL_SCALE[scaleType] || 'value'};
       }
 
       void main() {
