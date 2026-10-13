@@ -1,7 +1,9 @@
 import {
   assertDefined,
   assertNonNull,
+  isBigIntTypedArray,
   isNumericType,
+  isTypedArray,
 } from '@h5web/shared/guards';
 import { H5T_CLASS, H5T_ORDER } from '@h5web/shared/h5t';
 import {
@@ -30,6 +32,7 @@ import {
   unknownType,
   vlenType,
 } from '@h5web/shared/hdf5-utils';
+import { type BigIntTypedArray, type NumArray } from '@h5web/shared/vis-models';
 import { SCALAR_SELECTION_REGEXP } from '@h5web/shared/vis-utils';
 import {
   type Dataset as H5WasmDataset,
@@ -37,6 +40,8 @@ import {
   ready as h5wasmReady,
 } from 'h5wasm';
 import { nanoid } from 'nanoid';
+
+import { type LazyFile } from './lazy-file';
 
 export const PLUGINS_FOLDER = 'plugins'; // path to plugins on EMScripten virtual file system
 export const WORKERFS_FOLDER = 'workerfs';
@@ -78,6 +83,71 @@ export async function mountWorkerFS(
 
   return workerFSRootNode;
 }
+
+let lastReadError: unknown; // cause of last failed read of a lazy file, if any
+
+/* Report the actual cause of failed reads of lazy files (e.g. network error,
+ * file changed on server, etc.) instead of the generic HDF5 error. */
+export function withReadErrors<T>(fn: () => T): T {
+  lastReadError = undefined;
+
+  try {
+    return fn();
+  } catch (error) {
+    throw lastReadError ?? error;
+  }
+}
+
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+export function createLazyFileNode(
+  FS: FS.FileSystemType,
+  rootNode: unknown,
+  fileName: string,
+  lazyFile: LazyFile,
+): () => void {
+  const { WORKERFS } = FS.filesystems;
+  const { ErrnoError, destroyNode } = FS as unknown as {
+    ErrnoError: new (errno: number) => Error;
+    destroyNode: (node: unknown) => void;
+  };
+
+  // Create read-only file node with WORKERFS, then override its `read` operation
+  const node = WORKERFS.createNode(
+    rootNode,
+    fileName,
+    WORKERFS.FILE_MODE,
+    0,
+    lazyFile, // WORKERFS only uses `size` when creating the node
+  );
+
+  node.stream_ops = {
+    ...WORKERFS.stream_ops,
+    read(
+      _: unknown,
+      buffer: Int8Array,
+      offset: number,
+      length: number,
+      position: number,
+    ): number {
+      try {
+        const bytes = new Uint8Array(buffer.buffer, buffer.byteOffset);
+        return lazyFile.read(bytes, offset, length, position);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        lastReadError = error;
+        throw new ErrnoError(29); // EIO - lets HDF5 fail gracefully
+      }
+    },
+  };
+
+  // WORKERFS doesn't support unlinking files, so remove node manually
+  return () => {
+    destroyNode(node);
+    delete node.parent.contents[fileName]; // eslint-disable-line @typescript-eslint/no-dynamic-delete
+  };
+}
+/* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 
 export function getAvailableFileName(
   FS: FS.FileSystemType,
@@ -300,15 +370,80 @@ function parseVirtualSources(metadata: Metadata): VirtualSource[] | undefined {
   }));
 }
 
+type TypedArray = Exclude<NumArray, number[]> | BigIntTypedArray;
+
+export const SLAB_SIZE = 32 * 1024 * 1024; // in bytes
+
+/* Read large numeric selections slab by slab (along their first dimension) into a single
+ * typed array, so the WebAssembly heap doesn't need to grow to the size of the entire
+ * selection (it never shrinks back) and only a small buffer is copied out of it at a time. */
+export function readInSlabs(
+  h5wDataset: H5WasmDataset,
+  ranges: [number, number][],
+  slabSize = SLAB_SIZE,
+): TypedArray | undefined {
+  const { type, size, chunks } = h5wDataset.metadata;
+  /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison -- h5wasm types the class as a plain number */
+  if (type !== H5T_CLASS.INTEGER && type !== H5T_CLASS.FLOAT) {
+    return undefined;
+  }
+  /* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
+
+  const [[start, stop], ...otherRanges] = ranges;
+  const count = stop - start;
+  const slabItems = otherRanges.reduce((acc, [a, b]) => acc * (b - a), 1);
+
+  // Indices along first dimension per slab, in whole chunks so each chunk is read (and fetched) once
+  const chunkCount = chunks?.[0] ?? 1;
+  const slabCount =
+    chunkCount *
+    Math.max(1, Math.floor(slabSize / (slabItems * size * chunkCount)));
+
+  if (count <= slabCount || slabItems === 0) {
+    return undefined; // selection fits in a single slab
+  }
+
+  let output: TypedArray | undefined;
+  for (let i = start; i < stop;) {
+    const slabStop = Math.min(i + slabCount - (i % chunkCount), stop); // align slabs with chunks
+    const slab = h5wDataset.slice([[i, slabStop], ...otherRanges]);
+
+    if (!isTypedArray(slab) && !isBigIntTypedArray(slab)) {
+      return undefined; // let caller read selection in one go (only happens on first slab)
+    }
+
+    if (!output) {
+      const Constructor = slab.constructor as new (
+        length: number,
+      ) => TypedArray;
+      output = new Constructor(count * slabItems);
+    }
+
+    // `set` is typed per array type, but `output` is always of the same type as `slab`
+    (output as Float64Array).set(slab as Float64Array, (i - start) * slabItems);
+    i = slabStop;
+  }
+
+  return output;
+}
+
 export function readSelectedValue(
   h5wDataset: H5WasmDataset,
   selection: string | undefined,
 ): unknown {
+  const { shape } = h5wDataset;
+
   if (!selection) {
-    return h5wDataset.value;
+    return (
+      (shape?.length &&
+        readInSlabs(
+          h5wDataset,
+          shape.map((dim) => [0, dim]),
+        )) ||
+      h5wDataset.value
+    );
   }
 
-  const { shape } = h5wDataset;
   assertNonNull(shape);
 
   const selectionMembers = selection.split(',');
@@ -320,7 +455,8 @@ export function readSelectedValue(
     return [Number(member), Number(member) + 1];
   });
 
-  const slicedValue = h5wDataset.slice(ranges);
+  const slicedValue =
+    readInSlabs(h5wDataset, ranges) ?? h5wDataset.slice(ranges);
 
   /* h5wasm unwraps scalar slices inconsistently - e.g. it does so for opaque
    * datasets but not for compound, vlen, etc. */

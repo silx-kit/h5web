@@ -137,8 +137,9 @@ function Home() {
             </p>
             <p>
               You can also provide the URL of a file hosted on a{' '}
-              <strong>static server</strong>. For instance, try these files
-              hosted on{' '}
+              <strong>static server</strong>. If the server supports{' '}
+              <strong>range requests</strong>, only the parts of the file that
+              are needed get fetched. For instance, try these files hosted on{' '}
               <a
                 href="http://www.silx.org/pub/h5web/"
                 target="_blank"
