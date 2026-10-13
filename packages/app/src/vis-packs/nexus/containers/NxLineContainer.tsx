@@ -88,9 +88,12 @@ function NxLineContainer(props: VisContainerProps) {
                 valueLabel={signalDef.label}
                 valueVisible={isSignalVisible}
                 errors={errors}
+                errorsDataset={signalDef.errorDataset}
                 auxLabels={auxLabels}
                 auxValues={auxValues}
+                auxDatasets={auxDefs.map((def) => def.dataset)}
                 auxErrors={auxErrors}
+                auxErrorsDatasets={auxDefs.map((def) => def.errorDataset)}
                 auxVisible={auxVisible}
                 dimMapping={dimMapping}
                 axisLabels={axisLabels}
