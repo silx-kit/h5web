@@ -1,4 +1,3 @@
-import { type NoProps } from '@h5web/shared/vis-models';
 import { castArray } from '@h5web/shared/vis-utils';
 import {
   createContext,
@@ -27,7 +26,7 @@ export function useInteractionsContext() {
   return useContext(InteractionsContext);
 }
 
-function InteractionsProvider(props: PropsWithChildren<NoProps>) {
+function InteractionsProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [interactionMap] = useState(new Map<string, Interaction>());
@@ -115,7 +114,7 @@ function InteractionsProvider(props: PropsWithChildren<NoProps>) {
   );
 
   return (
-    <InteractionsContext.Provider
+    <InteractionsContext
       value={{
         registerInteraction,
         unregisterInteraction,
@@ -124,7 +123,7 @@ function InteractionsProvider(props: PropsWithChildren<NoProps>) {
       }}
     >
       {children}
-    </InteractionsContext.Provider>
+    </InteractionsContext>
   );
 }
 

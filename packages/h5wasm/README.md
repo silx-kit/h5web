@@ -34,7 +34,7 @@ for a demonstration of how to set up `@h5web/h5wasm` and use
 ## Prerequisites
 
 The `react` dependency must be installed in your project. Note that as of
-version 10, `@h5web/h5wasm` requires **React 18**.
+version 19, `@h5web/h5wasm` requires **React 19**.
 
 This package supports TypeScript out of the box without the need to install a
 separate `@types/` package.

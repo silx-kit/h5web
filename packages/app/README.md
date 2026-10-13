@@ -24,7 +24,7 @@ built-in data providers:
 ## Prerequisites
 
 The `react` and `react-dom` dependencies must be installed in your project. Note
-that as of version 10, `@h5web/app` requires **React 18**.
+that as of version 19, `@h5web/app` requires **React 19**.
 
 This package supports TypeScript out of the box without the need to install a
 separate `@types/` package.
@@ -66,6 +66,26 @@ various front-end development stacks:
 H5Web works out of the box on **Firefox 102 ESR**. Support for older versions
 might be achieved by polyfilling specific web platform features like
 [`Object.hasOwn()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn).
+
+### Suspense fallback throttling
+
+React 19 keeps every `Suspense` fallback visible for at least 300 ms
+([facebook/react#31819](https://github.com/facebook/react/issues/31819)). Since
+H5Web relies on `Suspense` to show loaders while fetching metadata and values,
+this makes navigating and slicing through datasets noticeably slower. If your
+app is built with Vite, we recommend removing this delay with
+[`vite-plugin-react-fallback-throttle`](https://www.npmjs.com/package/vite-plugin-react-fallback-throttle):
+
+```js
+// vite.config.js
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import reactFallbackThrottlePlugin from 'vite-plugin-react-fallback-throttle';
+
+export default defineConfig({
+  plugins: [react(), reactFallbackThrottlePlugin()],
+});
+```
 
 ## API reference
 

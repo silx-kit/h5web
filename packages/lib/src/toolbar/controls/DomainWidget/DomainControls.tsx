@@ -1,6 +1,6 @@
 import { type Domain } from '@h5web/shared/vis-models';
 import { formatBound } from '@h5web/shared/vis-utils';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { type Ref, useImperativeHandle, useRef } from 'react';
 
 import { DomainError, type DomainErrors } from '../../../vis/models';
 import ToggleBtn from '../ToggleBtn';
@@ -9,6 +9,7 @@ import styles from './DomainControls.module.css';
 import ErrorMessage from './ErrorMessage';
 
 interface Props {
+  ref?: Ref<Handle | null>;
   sliderDomain: Domain;
   dataDomain: Domain;
   errors: DomainErrors;
@@ -29,8 +30,8 @@ interface Handle {
   cancelEditing: () => void;
 }
 
-const DomainControls = forwardRef<Handle, Props>((props, ref) => {
-  const { sliderDomain, dataDomain, errors } = props;
+function DomainControls(props: Props) {
+  const { ref, sliderDomain, dataDomain, errors } = props;
   const { isAutoMin, isAutoMax, isEditingMin, isEditingMax } = props;
   const {
     onAutoMinToggle,
@@ -118,9 +119,7 @@ const DomainControls = forwardRef<Handle, Props>((props, ref) => {
       </p>
     </div>
   );
-});
-
-DomainControls.displayName = 'DomainControls';
+}
 
 export type { Handle as DomainControlsHandle };
 export type { Props as DomainControlsProps };

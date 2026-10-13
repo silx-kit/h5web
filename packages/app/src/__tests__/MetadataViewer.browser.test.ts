@@ -32,21 +32,23 @@ test('inspect scalar datasets', async () => {
   expect(pathRow).toHaveTextContent(/\/scalars\/number$/);
   expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian$/);
   expect(shapeRow).toHaveTextContent(/Scalar$/);
-  expect(attrRow).toHaveTextContent(/0$/);
+  await expect.element(attrRow).toHaveTextContent(/0$/);
 
   await selectExplorerNode('bigint');
-  expect(typeRow).toHaveTextContent(
-    /Integer \(signed\), 64-bit, little-endian$/,
-  );
-  expect(attrRow).toHaveTextContent(/"9007199254740992n"$/);
+  await expect
+    .element(typeRow)
+    .toHaveTextContent(/Integer \(signed\), 64-bit, little-endian$/);
+  await expect.element(attrRow).toHaveTextContent(/"9007199254740992n"$/);
 
   await selectExplorerNode('string');
-  expect(typeRow).toHaveTextContent(/ASCII string, variable length$/);
-  expect(attrRow).toHaveTextContent(/"foo"$/);
+  await expect
+    .element(typeRow)
+    .toHaveTextContent(/ASCII string, variable length$/);
+  await expect.element(attrRow).toHaveTextContent(/"foo"$/);
 
   await selectExplorerNode('complex');
-  expect(typeRow).toHaveTextContent(/Complex$/);
-  expect(attrRow).toHaveTextContent(/1 \+ 5 i$/);
+  await expect.element(typeRow).toHaveTextContent(/Complex$/);
+  await expect.element(attrRow).toHaveTextContent(/1 \+ 5 i$/);
 });
 
 test('inspect array dataset', async () => {
@@ -145,6 +147,6 @@ test("show error when attribute values can't be fetched", async () => {
   runAll();
 
   await page.getByRole('tab', { name: 'Inspect' }).click();
-  expect(page.getByText('some error')).toBeVisible();
+  await expect.element(page.getByText('some error')).toBeVisible();
   errorSpy.mockRestore();
 });

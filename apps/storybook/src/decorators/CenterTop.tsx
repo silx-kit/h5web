@@ -1,6 +1,6 @@
-import { type StoryFn } from '@storybook/react-vite';
+import { type Decorator } from '@storybook/react-vite';
 
-function CenterTop(Story: StoryFn) {
+function CenterTop(...[Story]: Parameters<Decorator>) {
   return (
     <div
       style={{

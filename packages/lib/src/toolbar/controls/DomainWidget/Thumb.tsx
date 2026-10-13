@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLProps } from 'react';
+import { type HTMLProps, type Ref } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
 import { type IconType } from 'react-icons/lib';
 
@@ -6,6 +6,7 @@ import { type Bound } from '../../../vis/models';
 import styles from './Thumb.module.css';
 
 interface Props extends HTMLProps<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement | null>;
   bound: Bound;
   isAuto: boolean;
   hasError: boolean;
@@ -13,8 +14,9 @@ interface Props extends HTMLProps<HTMLDivElement> {
   AutoIcon: IconType;
 }
 
-const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { bound, isAuto, hasError, disabled, AutoIcon, ...thumbProps } = props;
+function Thumb(props: Props) {
+  const { ref, bound, isAuto, hasError, disabled, AutoIcon, ...thumbProps } =
+    props;
 
   return (
     <div
@@ -35,7 +37,6 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
       </div>
     </div>
   );
-});
+}
 
-Thumb.displayName = 'Thumb';
 export default Thumb;
