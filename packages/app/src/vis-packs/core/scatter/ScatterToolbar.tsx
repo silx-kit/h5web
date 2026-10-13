@@ -4,12 +4,14 @@ import {
   DomainWidget,
   ScaleSelector,
   Separator,
+  SnapshotBtn,
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
 import { AXIS_SCALE_TYPES, COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
 import { MdGridOn } from 'react-icons/md';
 
+import { useVisArea } from '../../../visualizer/vis-area';
 import { BASE_INTERACTIONS } from '../utils';
 import { type ScatterConfig } from './config';
 
@@ -19,6 +21,7 @@ interface Props {
 }
 
 function ScatterToolbar(props: Props) {
+  const visArea = useVisArea();
   const { dataDomain, config } = props;
   const {
     customDomain,
@@ -85,6 +88,10 @@ function ScatterToolbar(props: Props) {
         value={showGrid}
         onToggle={() => setShowGrid(!showGrid)}
       />
+
+      <Separator />
+
+      <SnapshotBtn target={visArea} />
     </Toolbar>
   );
 }
