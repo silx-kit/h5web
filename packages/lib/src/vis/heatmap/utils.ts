@@ -6,6 +6,7 @@ import {
 } from '@h5web/shared/vis-models';
 import { toTypedNdArray } from '@h5web/shared/vis-utils';
 import { range } from 'd3-array';
+import { rgb } from 'd3-color';
 import ndarray, { type NdArray } from 'ndarray';
 import {
   ClampToEdgeWrapping,
@@ -16,6 +17,7 @@ import {
   type MinificationTextureFilter,
   NearestFilter,
   RedFormat,
+  RGBAFormat,
   UnsignedByteType,
   UVMapping,
 } from 'three';
@@ -44,7 +46,21 @@ const SCALE_FNS: Record<ScaleType, (val: number) => number> = {
   [ScaleType.Gamma]: (val) => val,
 };
 
-const TEXTURE_TYPES = {
+const CMAP_SIZE = 256;
+
+// GLSL implementations of scale functions, for use in shaders with a `float value` in scope
+export const GLSL_SCALE: Partial<Record<ScaleType, string>> = {
+  [ScaleType.Log]: 'log(value) * oneOverLog10',
+  [ScaleType.SymLog]: 'sign(value) * log(1. + abs(value)) * oneOverLog10',
+  [ScaleType.Sqrt]: 'sqrt(value)',
+};
+
+export const GLSL_IS_SUPPORTED: Partial<Record<ScaleType, string>> = {
+  [ScaleType.Log]: 'value > 0.',
+  [ScaleType.Sqrt]: 'value >= 0.',
+};
+
+export const TEXTURE_TYPES = {
   float32: FloatType,
   uint16: HalfFloatType,
   uint8: UnsignedByteType,
@@ -141,6 +157,29 @@ export function getInterpolator(
 ): D3Interpolator {
   const interpolator = INTERPOLATORS[colorMap];
   return reverse ? (t: number) => interpolator(1 - t) : interpolator;
+}
+
+export function getColorMapTexture(
+  colorMap: ColorMap,
+  invertColorMap: boolean,
+): DataTexture {
+  const interpolator = getInterpolator(colorMap, invertColorMap);
+
+  const colors = Array.from({ length: CMAP_SIZE }).flatMap((_, i) => {
+    const { r, g, b } = rgb(interpolator(i / (CMAP_SIZE - 1)));
+    return [r, g, b, 255];
+  });
+
+  const texture = new DataTexture(
+    Uint8Array.from(colors),
+    CMAP_SIZE,
+    1,
+    RGBAFormat,
+    UnsignedByteType,
+  );
+  texture.needsUpdate = true;
+
+  return texture;
 }
 
 export function scaleDomain(
