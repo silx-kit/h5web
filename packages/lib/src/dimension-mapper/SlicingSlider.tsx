@@ -1,7 +1,11 @@
+import {
+  Root as SliderRoot,
+  Thumb as SliderThumb,
+} from '@radix-ui/react-slider';
+import { useSize } from '@radix-ui/react-use-size';
 import { useMeasure } from '@react-hookz/web';
 import { useId, useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import Btn from '../toolbar/controls/Btn';
 import { useDynamicDebouncedCallback } from './hooks';
@@ -46,6 +50,12 @@ function SlicingSlider(props: Props) {
   );
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
+
+  // Once Radix has measured the thumb, it offsets it to keep it within the bounds of the slider;
+  // measure it the same way to cancel this offset, so the thumb ends up centred on its value
+  const [thumb, setThumb] = useState<HTMLSpanElement | null>(null);
+  const thumbSize = useSize(thumb);
+
   const sliderLabelId = `${ID}-${dimension}-label`;
 
   return (
@@ -56,41 +66,41 @@ function SlicingSlider(props: Props) {
       <span className={styles.sublabel}>0:{length - 1}</span>
       {length > 1 && (
         <>
-          <ReactSlider
+          <SliderRoot
             className={styles.slider}
-            ariaLabelledby={sliderLabelId}
+            orientation="vertical"
             min={0}
             max={length - 1}
             step={1}
-            marks={
-              containerSize &&
-              containerSize.height / length >= MIN_HEIGHT_PER_MARK
-            }
-            markClassName={styles.mark}
-            orientation="vertical"
-            invert
-            value={value}
-            onChange={(newValue) => {
+            value={[value]}
+            onValueChange={([newValue]) => {
               setValue(newValue);
               onDebouncedChange(newValue);
             }}
-            /* When slicing in E2E tests, `onChange` is called with the old value.
-             The `onChange` event is fired via a `setState` callback in `ReactSlider`:
-             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
-             Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
-            onAfterChange={(newValue) => {
-              setValue(newValue);
-              onDebouncedChange(newValue);
-            }}
-            renderThumb={({ key, ...thumbProps }, state) => (
-              <div key={key} {...thumbProps} className={styles.thumb}>
-                <span className={styles.thumbValue}>{state.valueNow}</span>
-              </div>
-            )}
-            renderTrack={({ key }, { index }) =>
-              index === 0 ? <div key={key} className={styles.track} /> : null
-            }
-          />
+          >
+            <span className={styles.track} />
+            {containerSize &&
+              containerSize.height / length >= MIN_HEIGHT_PER_MARK &&
+              Array.from({ length }, (_, index) => (
+                <span
+                  key={index}
+                  className={styles.mark}
+                  style={{ bottom: `${(index / (length - 1)) * 100}%` }}
+                />
+              ))}
+            <SliderThumb
+              ref={setThumb}
+              className={styles.thumb}
+              aria-labelledby={sliderLabelId}
+              style={
+                thumbSize?.height
+                  ? { translate: `0 ${(0.5 - value / (length - 1)) * 100}%` }
+                  : {}
+              }
+            >
+              <span className={styles.thumbValue}>{value}</span>
+            </SliderThumb>
+          </SliderRoot>
 
           {withControls && (
             <div className={styles.slicingControls}>

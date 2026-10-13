@@ -1,16 +1,17 @@
 .thumb {
-  top: 0;
-  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: var(--thumb-size); /*  fixed size regardless of autoscale */
+  height: 100%;
   cursor: ew-resize;
+  touch-action: none;
 }
 
 .thumbBtnLike {
   position: relative;
   padding: 0;
+  pointer-events: none; /* so Radix knows when the thumb itself is pressed */
   border-radius: 50%;
   box-shadow: -1px -1px 2px inset
     var(--h5w-btnRaised-hover--shadowColor, dimgray);

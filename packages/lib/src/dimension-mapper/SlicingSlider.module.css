@@ -23,17 +23,26 @@
 }
 
 .slider {
-  flex: 1 1 3rem;
+  position: relative;
+  flex: 1 1 calc(3rem - var(--thumb-size));
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 5rem;
+  min-height: calc(5rem - var(--thumb-size));
+  margin: calc(var(--thumb-size) / 2) 0; /* make track end in middle of thumb */
   cursor: pointer;
+  touch-action: pan-x; /* let pointer interactions along slider through, but allow scrolling horizontally */
+}
+
+/* Extend interactive area to the thumb's overflow */
+.slider::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--thumb-size) / -2) 0;
 }
 
 .track {
   flex: 1;
-  margin: calc(var(--thumb-size) / 2) 0;
   border-left: var(--track-width) solid var(--track-color);
   border-radius: var(--track-width);
 }
@@ -50,13 +59,16 @@
   height: var(--thumb-size);
   min-width: var(--thumb-size);
   cursor: grab;
+  touch-action: none;
 }
 
 .thumbValue {
   font-size: 0.625em;
+  pointer-events: none; /* so Radix knows when the thumb itself is pressed */
 }
 
 .mark {
+  position: absolute;
   width: 0.5rem;
   height: 0.5rem;
   background-color: var(
@@ -66,7 +78,7 @@
   border: 2px solid
     var(--h5w-slicingSlider-mark--borderColor, var(--track-color));
   border-radius: 50%;
-  transform: translateY(-100%);
+  transform: translateY(50%);
 }
 
 .slicingControls {

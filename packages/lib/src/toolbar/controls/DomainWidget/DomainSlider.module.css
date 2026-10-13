@@ -1,11 +1,32 @@
 .slider {
+  position: relative;
   display: flex;
-  margin-right: -0.25rem;
+  /* Make track end in middle of thumbs */
+  margin: 0 calc(var(--thumb-size) / 2 - 0.25rem) 0 calc(var(--thumb-size) / 2);
   font-size: 0.75rem;
   cursor: pointer;
+  touch-action: pan-y; /* let pointer interactions along slider through, but allow scrolling vertically */
+  isolation: isolate;
 
   --track-width: var(--h5w-domainSlider-track--width, 8rem);
   --track-height: var(--h5w-domainSlider-track--height, 0.625rem);
   --thumb-size: calc(var(--track-height) * 2.5);
   --thumb-size-auto: calc(var(--thumb-size) * 0.9);
+}
+
+/* Extend interactive area to the thumbs' overflow, but not over the adjacent element */
+.slider::before {
+  content: '';
+  position: absolute;
+  inset: 0 calc(0.25rem - var(--thumb-size) / 2) 0 calc(var(--thumb-size) / -2);
+}
+
+/* Absolutely-positioned wrapper of each thumb (rendered by Radix) */
+.slider > span {
+  top: 0;
+  bottom: 0;
+}
+
+.slider > span:focus-within {
+  z-index: 1; /* keep focused thumb on top when thumbs overlap */
 }
