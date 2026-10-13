@@ -392,6 +392,20 @@ test('retry fetching automatically when selecting other NxHeatmap slice', async 
   await expect.element(page.getByRole('figure')).toBeVisible();
 });
 
+test('plot all slices of signal and errors on NxLine', async () => {
+  const { selectNexusExplorerNode } = await renderApp('/nexus/spectrum');
+
+  const checkbox = page.getByRole('checkbox', { name: 'Plot all D0 slices' });
+  await checkbox.click();
+  expect(checkbox).toBeChecked();
+  await expect.element(page.getByTestId('y,x')).toBeVisible();
+
+  // Multi-plotting is not supported alongside auxiliary signals
+  await selectNexusExplorerNode('spectrum_with_aux');
+  expect(page.getByRole('slider', { name: 'D0' })).toBeVisible();
+  expect(checkbox).not.toBeInTheDocument();
+});
+
 test('visualize NXnote group', async () => {
   await renderApp('/nexus/NXnote');
   expect(page.getByText('"energy": 10.2')).toBeVisible();
