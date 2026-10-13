@@ -86,6 +86,32 @@ export function toJSON(buffer: ArrayBuffer): unknown {
   }
 }
 
+// Failing to read a response this large is most likely due to the browser failing to allocate enough memory
+const LARGE_RESPONSE_SIZE = 1024 ** 3; // 1 GiB
+
+function createReadError(
+  size: number | undefined,
+  mayBeTooLarge: boolean,
+  cause?: unknown,
+): Error {
+  if (!mayBeTooLarge) {
+    return new Error('Failed to read response', { cause });
+  }
+
+  const sizeStr = size === undefined ? '' : ` of ${(size / 1e9).toFixed(1)} GB`;
+  return new Error(
+    `Failed to read response${sizeStr}; the requested data may be too large to be loaded in the browser`,
+    { cause },
+  );
+}
+
+function parseContentLength(
+  contentLength: string | null | undefined,
+): number | undefined {
+  const size = contentLength ? Number.parseInt(contentLength, 10) : Number.NaN;
+  return Number.isNaN(size) ? undefined : size;
+}
+
 export function createBasicFetcher(
   fetchOpts: {
     headers?: Record<string, string>;
@@ -109,7 +135,25 @@ export function createBasicFetcher(
     });
 
     const tracked = trackProgress(response, onProgress);
-    const buffer = await tracked.arrayBuffer();
+
+    let buffer: ArrayBuffer;
+    try {
+      buffer = await tracked.arrayBuffer();
+    } catch (error) {
+      if (abortSignal?.aborted) {
+        throw error;
+      }
+
+      if (!tracked.ok) {
+        // Keep HTTP status so providers can still handle the error
+        const { status, statusText } = tracked;
+        throw new FetcherError(status, statusText, new ArrayBuffer(0), error);
+      }
+
+      const size = parseContentLength(response.headers.get('content-length'));
+      const mayBeTooLarge = size !== undefined && size >= LARGE_RESPONSE_SIZE;
+      throw createReadError(size, mayBeTooLarge, error);
+    }
 
     if (tracked.ok) {
       return buffer;
@@ -128,7 +172,7 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
     const { method, headers, body, abortSignal, onProgress } = opts;
 
     try {
-      const { data } = await axiosInstance({
+      const res = await axiosInstance<ArrayBuffer | null>({
         url,
         method,
         headers,
@@ -145,7 +189,15 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
           }),
       });
 
-      return data as ArrayBuffer;
+      // XHR gives `null` when response body cannot be allocated (i.e. too large)
+      if (!res.data) {
+        const size = parseContentLength(
+          res.headers['content-length']?.toString(),
+        );
+        throw createReadError(size, true);
+      }
+
+      return res.data;
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         const { status, statusText, data } = error.response;
@@ -169,10 +221,9 @@ function trackProgress(response: Response, onProgress?: OnProgress): Response {
     return response;
   }
 
-  const contentLength = response.headers.get('content-length');
-  const total = contentLength ? Number.parseInt(contentLength, 10) : null;
+  const total = parseContentLength(response.headers.get('content-length'));
 
-  if (total === null || Number.isNaN(total)) {
+  if (total === undefined) {
     return response;
   }
 
