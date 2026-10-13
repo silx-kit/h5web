@@ -44,6 +44,9 @@ export interface HeatmapConfig {
 
   flipYAxis: boolean;
   setFlipYAxis: (flipYAxis: boolean) => void;
+
+  surface: boolean;
+  setSurface: (surface: boolean) => void;
 }
 
 function createHeatmapConfigStore() {
@@ -76,6 +79,9 @@ function createHeatmapConfigStore() {
 
         flipXAxis: false,
         setFlipXAxis: (flipXAxis) => set({ flipXAxis }),
+
+        surface: false,
+        setSurface: (surface) => set({ surface }),
       }),
       {
         name: 'h5web:heatmap',

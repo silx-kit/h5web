@@ -21,9 +21,10 @@ import {
   MdGridOn,
   MdSwapHoriz,
   MdSwapVert,
+  MdViewInAr,
 } from 'react-icons/md';
 
-import { getImageInteractions } from '../utils';
+import { getImageInteractions, SURFACE_INTERACTIONS } from '../utils';
 import { type HeatmapConfig } from './config';
 
 const COMPLEX_VIS_TYPES: ComplexHeatmapVisType[] = [
@@ -52,6 +53,7 @@ function HeatmapToolbar(props: Props) {
     keepRatio,
     flipXAxis,
     flipYAxis,
+    surface,
     setCustomDomain,
     setColorMap,
     setInvertColorMap,
@@ -61,10 +63,17 @@ function HeatmapToolbar(props: Props) {
     setKeepRatio,
     setFlipXAxis,
     setFlipYAxis,
+    setSurface,
   } = config;
 
   return (
-    <Toolbar interactions={getImageInteractions(keepRatio)}>
+    <Toolbar
+      interactions={
+        !isComplex && surface
+          ? SURFACE_INTERACTIONS
+          : getImageInteractions(keepRatio)
+      }
+    >
       <DomainWidget
         dataDomain={dataDomain}
         customDomain={customDomain}
@@ -119,6 +128,16 @@ function HeatmapToolbar(props: Props) {
         value={keepRatio}
         onToggle={() => setKeepRatio(!keepRatio)}
       />
+
+      {!isComplex && (
+        <ToggleBtn
+          label="3D"
+          aria-label="Show as 3D surface"
+          Icon={MdViewInAr}
+          value={surface}
+          onToggle={() => setSurface(!surface)}
+        />
+      )}
 
       <ToggleBtn
         label="Grid"
