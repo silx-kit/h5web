@@ -21,10 +21,11 @@ built-in data providers:
 - `HsdsProvider` for use with [HSDS](https://github.com/HDFGroup/hsds);
 - `MockProvider` for testing purposes.
 
-This package, `@h5web/h5wasm`, provides two additional data providers that can
+This package, `@h5web/h5wasm`, provides three additional data providers that can
 **read HDF5 files straight in the browser** thanks to the
-[h5wasm](https://github.com/usnistgov/h5wasm) library: `H5WasmLocalFileProvider`
-and `H5WasmBufferProvider`.
+[h5wasm](https://github.com/usnistgov/h5wasm) library:
+`H5WasmLocalFileProvider`, `H5WasmRemoteFileProvider` and
+`H5WasmBufferProvider`.
 
 Check out
 [this code sandbox](https://codesandbox.io/p/sandbox/h5web-h5wasm-77j67x?file=%2Fsrc%2FMyApp.tsx)
@@ -205,6 +206,61 @@ The name of the file to display in the UI.
 #### `buffer: ArrayBuffer` (required)
 
 The entire file's content as a binary buffer.
+
+#### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
+
+See
+[`H5WasmLocalFileProvider#getExportURL`](#getexporturl-args--url----promiseurl--blob--undefined-optional)
+
+#### `getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>`
+
+See
+[`H5WasmLocalFileProvider#getPlugin`](#getplugin-name-plugin--promisearraybuffer--undefined)
+
+### `H5WasmRemoteFileProvider`
+
+- `url: string` (required) - the URL of a remote HDF5 file
+
+```tsx
+<H5WasmRemoteFileProvider url="https://example.com/foo.h5">
+  <App />
+</H5WasmRemoteFileProvider>
+```
+
+The file is read lazily: only the parts of the file that are needed to display
+the requested entities and values are fetched, with
+[HTTP range requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests).
+This makes it possible to explore files that are too big to be downloaded in
+full.
+
+The server must support range requests (i.e. respond with `206 Partial Content`
+to requests with a `Range` header). If the file is hosted on another origin, the
+server must also allow the `Range` request header and either expose the
+`Content-Range` response header (i.e.
+`Access-Control-Expose-Headers: Content-Range`) or respond to `HEAD` requests
+with a `Content-Length` header.
+
+If the server ignores range requests (or if its CORS policy rejects the `Range`
+header), the file gets fetched in full, like with `H5WasmBufferProvider`.
+
+If the file changes on the server while it is open (as detected with the `ETag`
+and `Last-Modified` response headers), further reads fail with an error rather
+than mixing content from different versions of the file. Range requests that
+don't complete within 30 seconds also fail with an error.
+
+#### `url: string` (required)
+
+The URL of the file. Relative URLs are resolved against the document's base URL.
+
+#### `filename?: string` (optional)
+
+The name of the file to display in the UI. Defaults to the last segment of the
+URL's path.
+
+#### `resetKeys?: unknown[]` (optional)
+
+See
+[`H5GroveProvider#resetKeys`](https://github.com/silx-kit/h5web/blob/main/packages/app/README.md#resetkeys-unknown-optional).
 
 #### `getExportURL?: (...args) => URL | (() => Promise<URL | Blob>) | undefined` (optional)
 
