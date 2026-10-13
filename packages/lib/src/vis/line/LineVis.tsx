@@ -201,18 +201,18 @@ function LineVis(props: PropsWithChildren<Props>) {
           visible={visible}
         />
 
-        {auxiliaries.map(({ array, label, errors, visible: auxVisible }, i) => (
+        {auxiliaries.map((aux, i) => (
           <DataCurve
-            key={label}
+            key={aux.label}
             abscissas={abscissas}
-            ordinates={array.data}
-            errors={errors?.data}
+            ordinates={aux.array.data}
+            errors={aux.errors?.data}
             showErrors={showErrors}
             color={auxColors[i % auxColors.length]}
             curveType={curveType}
-            ignoreValue={ignoreValue}
+            ignoreValue={aux.ignoreValue ?? ignoreValue}
             interpolation={interpolation}
-            visible={auxVisible}
+            visible={aux.visible}
           />
         ))}
 

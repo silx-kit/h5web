@@ -1,4 +1,4 @@
-import { type NumArray } from '@h5web/shared/vis-models';
+import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
 import { type NdArray } from 'ndarray';
 
 export enum CurveType {
@@ -25,6 +25,7 @@ export interface AuxiliaryParams {
   label?: string;
   errors?: NdArray<NumArray>;
   visible?: boolean;
+  ignoreValue?: IgnoreValue; // overrides `ignoreValue` prop of `LineVis`
 }
 
 export enum Interpolation {
