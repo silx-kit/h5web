@@ -1,59 +1,79 @@
 import {
-  type ColorScaleType,
   type Domain,
+  type IgnoreValue,
   type NumArray,
 } from '@h5web/shared/vis-models';
+import { useThree } from '@react-three/fiber';
 import { type NdArray } from 'ndarray';
-import { useMemo } from 'react';
-import { LinearFilter } from 'three';
+import { useEffect, useLayoutEffect, useMemo } from 'react';
+import { DoubleSide } from 'three';
 
-import HeatmapMaterial from '../heatmap/HeatmapMaterial';
-import { useTextureSafeNdArray } from '../heatmap/hooks';
 import { type ColorMap } from '../heatmap/models';
 import { useUpdateGeometry } from '../hooks';
-import GlyphMaterial from '../line/GlyphMaterial';
-import { GlyphType } from '../line/models';
+import { type VisScaleType } from '../models';
 import SurfaceMeshGeometry from './surfaceMeshGeometry';
+import { getLinearColorLut } from './utils';
 
 interface Props {
-  dataArray: NdArray<NumArray>;
+  values: NdArray<NumArray>;
+  xCoords: number[];
+  yCoords: number[];
   domain: Domain;
-  scaleType: ColorScaleType;
+  scaleType: VisScaleType;
   colorMap: ColorMap;
   invertColorMap: boolean;
-  showPoints: boolean;
+  ignoreValue?: IgnoreValue;
+  zHeight: number;
 }
 
 function SurfaceMesh(props: Props) {
-  const { dataArray, domain, colorMap, invertColorMap, scaleType, showPoints } =
-    props;
+  const {
+    values,
+    xCoords,
+    yCoords,
+    domain,
+    scaleType,
+    colorMap,
+    invertColorMap,
+    ignoreValue,
+    zHeight,
+  } = props;
 
-  const [rows, cols] = dataArray.shape;
-  const safeDataArray = useTextureSafeNdArray(dataArray);
+  const invalidate = useThree((state) => state.invalidate);
 
+  const colorLut = useMemo(
+    () => getLinearColorLut(colorMap, invertColorMap),
+    [colorMap, invertColorMap],
+  );
+
+  // Update positions only when data, scale or domain change
   const geometry = useMemo(
-    () => new SurfaceMeshGeometry({ dataArray, rows, cols }),
-    [dataArray, rows, cols],
+    () =>
+      new SurfaceMeshGeometry({
+        values,
+        xCoords,
+        yCoords,
+        domain,
+        scaleType,
+        ignoreValue,
+      }),
+    [values, xCoords, yCoords, domain, scaleType, ignoreValue],
   );
 
   useUpdateGeometry(geometry);
+  useEffect(() => () => geometry.dispose(), [geometry]);
 
+  // Update colours alone when colour map changes (after positions, before next frame)
+  useLayoutEffect(() => {
+    geometry.updateColors(colorLut);
+    invalidate();
+  }, [geometry, colorLut, invalidate]);
+
+  // Geometry height is normalized and stretched by the mesh scale
   return (
-    <group position={[-cols / 2, -rows / 2, 0]}>
-      <mesh geometry={geometry}>
-        <HeatmapMaterial
-          values={safeDataArray}
-          domain={domain}
-          colorMap={colorMap}
-          scaleType={scaleType}
-          invertColorMap={invertColorMap}
-          magFilter={LinearFilter}
-        />
-      </mesh>
-      <points geometry={geometry} visible={showPoints}>
-        <GlyphMaterial size={5} glyphType={GlyphType.Circle} color="black" />
-      </points>
-    </group>
+    <mesh geometry={geometry} scale={[1, 1, zHeight]}>
+      <meshBasicMaterial vertexColors side={DoubleSide} />
+    </mesh>
   );
 }
 
