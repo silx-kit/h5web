@@ -16,6 +16,7 @@ import DefaultInteractions, {
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import { useAxisDomain, useCssColors, useValueToIndexScale } from '../hooks';
 import { type AxisParams, type ClassStyleAttrs } from '../models';
+import Overlay from '../shared/Overlay';
 import TooltipMesh from '../shared/TooltipMesh';
 import VisCanvas from '../shared/VisCanvas';
 import { DEFAULT_DOMAIN, extendDomain } from '../utils';
@@ -215,6 +216,36 @@ function LineVis(props: PropsWithChildren<Props>) {
             visible={auxVisible}
           />
         ))}
+
+        {hasVisibleAux && (
+          /* Legend is only shown in snapshots (cf. `[data-snapshot]` in CSS) */
+          <Overlay>
+            <ul className={styles.legend}>
+              {visible && (
+                <li className={styles.legendItem}>
+                  <span
+                    className={styles.legendMark}
+                    data-keep-colors
+                    style={{ color: curveColor }}
+                  />
+                  {ordinateLabel || 'Signal'}
+                </li>
+              )}
+              {auxiliaries.map(({ label, visible: auxVisible }, index) =>
+                auxVisible ? (
+                  <li className={styles.legendItem} key={label || index}>
+                    <span
+                      className={styles.legendMark}
+                      data-keep-colors
+                      style={{ color: auxColors[index % auxColors.length] }}
+                    />
+                    {label || `Auxiliary ${index + 1}`}
+                  </li>
+                ) : null,
+              )}
+            </ul>
+          </Overlay>
+        )}
 
         {children}
       </VisCanvas>

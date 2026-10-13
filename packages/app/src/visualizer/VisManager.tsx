@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useDataContext } from '../providers/DataProvider';
 import { type VisDef } from '../vis-packs/models';
 import { useActiveVis } from './hooks';
+import { VisAreaContext } from './vis-area';
 import VisSelector from './VisSelector';
 import styles from './Visualizer.module.css';
 
@@ -28,6 +29,7 @@ function VisManager(props: Props) {
   const { Container } = activeVis;
 
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
+  const [visAreaElem, setVisAreaElem] = useState<HTMLDivElement | null>(null);
 
   const { filepath, queryClient } = useDataContext();
   function onVisChange(index: number) {
@@ -51,8 +53,10 @@ function VisManager(props: Props) {
         />
       </div>
 
-      <div className={styles.visArea}>
-        <Container entity={entity} toolbarContainer={visBarElem} />
+      <div ref={setVisAreaElem} className={styles.visArea}>
+        <VisAreaContext.Provider value={visAreaElem}>
+          <Container entity={entity} toolbarContainer={visBarElem} />
+        </VisAreaContext.Provider>
       </div>
     </div>
   );
