@@ -95,6 +95,65 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
   expect(page.getByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 });
 
+test('plot all slices of 2D dataset as Line', async () => {
+  await renderApp({
+    initialPath: '/arrays/twoD',
+    preferredVis: Vis.Line,
+  });
+
+  const checkbox = page.getByRole('checkbox', { name: 'Plot all D0 slices' });
+  expect(checkbox).toBeEnabled();
+  expect(checkbox).not.toBeChecked();
+  expect(page.getByTestId('0,x')).toBeVisible();
+
+  await checkbox.click();
+  expect(checkbox).toBeChecked();
+  await expect.element(page.getByTestId('y,x')).toBeVisible();
+
+  await checkbox.click();
+  expect(checkbox).not.toBeChecked();
+  await expect.element(page.getByTestId('0,x')).toBeVisible();
+});
+
+test('allow only one multi-plotting dimension at a time', async () => {
+  await renderApp({
+    initialPath: '/arrays/threeD',
+    preferredVis: Vis.Line,
+  });
+
+  const d0Checkbox = page.getByRole('checkbox', { name: 'Plot all D0 slices' });
+  const d1Checkbox = page.getByRole('checkbox', { name: 'Plot all D1 slices' });
+
+  await d1Checkbox.click();
+  expect(d1Checkbox).toBeChecked();
+  expect(d0Checkbox).toBeDisabled();
+  await expect.element(page.getByTestId('0,y,x')).toBeVisible();
+
+  // Mapping multi-plotting dimension to x axis disables multi-plotting
+  await getDimMappingBtn('x', 1).click();
+  expect(d0Checkbox).toBeEnabled();
+  expect(d0Checkbox).not.toBeChecked();
+  await expect.element(page.getByTestId('0,x,0')).toBeVisible();
+
+  // Dimension too long to plot all slices at once
+  expect(
+    page.getByRole('checkbox', { name: 'Plot all D2 slices' }),
+  ).toBeDisabled();
+});
+
+test('show multi-plotting checkboxes only on Line visualization', async () => {
+  const { selectVisTab } = await renderApp({
+    initialPath: '/arrays/threeD',
+    preferredVis: Vis.Heatmap,
+  });
+
+  expect(page.getByRole('slider', { name: 'D0' })).toBeVisible();
+  expect(page.getByRole('checkbox')).not.toBeInTheDocument();
+
+  await selectVisTab(Vis.Line);
+  expect(page.getByRole('checkbox')).toHaveLength(2);
+});
+
 test('slice through 2D dataset', async () => {
   const { user } = await renderApp({
     initialPath: '/arrays/twoD',
