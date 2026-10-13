@@ -1,6 +1,5 @@
 import { format } from 'd3-format';
 import ndarray, { type NdArray } from 'ndarray';
-import { assign } from 'ndarray-ops';
 
 import { assertLength, isNdArray, isTypedArray } from './guards';
 import {
@@ -86,20 +85,197 @@ export function toTypedNdArray<T extends TypedArrayConstructor>(
   return ndarray(Constructor.from(arr.data) as InstanceType<T>, arr.shape);
 }
 
+type ElementView = Uint8Array | Uint16Array | Uint32Array | Float64Array;
+
+type RowCopier<A> = (
+  src: A,
+  dst: A,
+  srcStart: number,
+  dstStart: number,
+  len: number,
+  srcStride: number,
+) => void;
+
+/* eslint-disable func-style, no-param-reassign */
+// One function per element type, so element accesses remain monomorphic
+const copyRow: RowCopier<unknown[]> = (src, dst, k, i, len, step) => {
+  for (const end = i + len; i < end; i += 1, k += step) {
+    dst[i] = src[k];
+  }
+};
+const copyRow8: RowCopier<Uint8Array> = (src, dst, k, i, len, step) => {
+  for (const end = i + len; i < end; i += 1, k += step) {
+    dst[i] = src[k];
+  }
+};
+const copyRow16: RowCopier<Uint16Array> = (src, dst, k, i, len, step) => {
+  for (const end = i + len; i < end; i += 1, k += step) {
+    dst[i] = src[k];
+  }
+};
+const copyRow32: RowCopier<Uint32Array> = (src, dst, k, i, len, step) => {
+  for (const end = i + len; i < end; i += 1, k += step) {
+    dst[i] = src[k];
+  }
+};
+const copyRow64: RowCopier<Float64Array> = (src, dst, k, i, len, step) => {
+  for (const end = i + len; i < end; i += 1, k += step) {
+    dst[i] = src[k];
+  }
+};
+const copyRowNative: RowCopier<ElementView> = (src, dst, k, i, len) => {
+  dst.set(src.subarray(k, k + len), i);
+};
+const copyRowReversed: RowCopier<ElementView> = (src, dst, k, i, len) => {
+  dst.set(src.subarray(k - len + 1, k + 1), i);
+  dst.subarray(i, i + len).reverse();
+};
+/* eslint-enable func-style, no-param-reassign */
+
+// Typed arrays are copied through views with the same element size
+const ROW_COPIERS = {
+  1: [Uint8Array, copyRow8],
+  2: [Uint16Array, copyRow16],
+  4: [Uint32Array, copyRow32],
+  8: [Float64Array, copyRow64],
+} as const;
+
+const COPY_TILE_SIZE = 64;
+
 export function createArrayFromView<T extends ArrayValue>(
   view: NdArray<T>,
 ): NdArray<T> {
-  const { data, size, shape } = view;
+  const { data, size, shape, stride, offset } = view;
 
-  const array = ndarray(
-    (Array.isArray(data)
-      ? []
-      : new (data.constructor as TypedArrayConstructor)(size)) as T,
-    shape,
+  // Ignore dimensions of length 1, since they don't affect iteration order
+  const dims = shape.flatMap((len, i) => (len > 1 ? [i] : []));
+  const lens = dims.map((i) => shape[i]);
+  const strides = dims.map((i) => stride[i]);
+
+  // Fast path: view is contiguous in C order, so copy its data in one go
+  if (size === 0 || isCOrderContiguous(lens, strides)) {
+    const [start, end] = [offset, offset + size];
+    return ndarray(
+      (Array.isArray(data)
+        ? data.slice(start, end)
+        : // Not `slice`, which doesn't copy Node.js buffers
+          new (data.constructor as TypedArrayConstructor)(
+            (data as Float64Array).subarray(start, end),
+          )) as T,
+      shape,
+    );
+  }
+
+  const array = (
+    Array.isArray(data)
+      ? Array.from({ length: size })
+      : new (data.constructor as TypedArrayConstructor)(size)
+  ) as T;
+
+  // BigInt values can't go through a numeric view, so copy them generically
+  if (
+    Array.isArray(data) ||
+    data instanceof BigInt64Array ||
+    data instanceof BigUint64Array
+  ) {
+    const [src, dst] = [data, array] as unknown as unknown[][];
+    copyStrided(copyRow, src, dst, lens, strides, offset);
+  } else {
+    const [src, dst] = [data, array] as unknown as Float64Array<ArrayBuffer>[];
+    const [View, copier] = ROW_COPIERS[src.BYTES_PER_ELEMENT as 1 | 2 | 4 | 8];
+    const innerStride = strides[strides.length - 1];
+
+    copyStrided<ElementView>(
+      innerStride === 1
+        ? copyRowNative
+        : innerStride === -1
+          ? copyRowReversed
+          : (copier as RowCopier<ElementView>),
+      new View(src.buffer, src.byteOffset, src.length),
+      new View(dst.buffer),
+      lens,
+      strides,
+      offset,
+    );
+  }
+
+  return ndarray(array, shape);
+}
+
+function isCOrderContiguous(lens: number[], strides: number[]): boolean {
+  let expectedStride = 1;
+
+  for (let dim = lens.length - 1; dim >= 0; dim -= 1) {
+    if (strides[dim] !== expectedStride) {
+      return false;
+    }
+    expectedStride *= lens[dim];
+  }
+
+  return true;
+}
+
+function copyStrided<A>(
+  copier: RowCopier<A>,
+  src: A,
+  dst: A,
+  lens: number[],
+  srcStrides: number[],
+  srcOffset: number,
+): void {
+  // Output is contiguous in C order
+  const dstStrides = lens.map((_, dim) =>
+    lens.slice(dim + 1).reduce((acc, len) => acc * len, 1),
   );
 
-  assign(array, view);
-  return array;
+  // Copy rows along innermost output dimension `a`; if the source is faster
+  // along another dimension `p`, copy in tiles over both to stay cache-friendly
+  const a = lens.length - 1;
+  let p = -1;
+  for (let dim = 0; dim < a; dim += 1) {
+    const s = Math.abs(srcStrides[dim]);
+    if (s > 0 && s < Math.abs(srcStrides[p < 0 ? a : p])) {
+      p = dim;
+    }
+  }
+
+  const [lenA, srcStrideA] = [lens[a], srcStrides[a]];
+  const [lenP, srcStrideP, dstStrideP] =
+    p < 0 ? [1, 0, 0] : [lens[p], srcStrides[p], dstStrides[p]];
+  const tileA = p < 0 ? lenA : COPY_TILE_SIZE;
+  const tileP = p < 0 ? 1 : COPY_TILE_SIZE;
+
+  // Iterate over remaining dimensions recursively, then copy tiles of rows
+  const outerDims = lens.flatMap((_, dim) =>
+    dim === a || dim === p ? [] : [dim],
+  );
+
+  function copyFrom(level: number, srcBase: number, dstBase: number): void {
+    if (level < outerDims.length) {
+      const dim = outerDims[level];
+      for (let i = 0; i < lens[dim]; i += 1) {
+        const srcStart = srcBase + i * srcStrides[dim];
+        copyFrom(level + 1, srcStart, dstBase + i * dstStrides[dim]);
+      }
+      return;
+    }
+
+    for (let p0 = 0; p0 < lenP; p0 += tileP) {
+      const pEnd = Math.min(p0 + tileP, lenP);
+
+      for (let a0 = 0; a0 < lenA; a0 += tileA) {
+        const len = Math.min(tileA, lenA - a0);
+
+        for (let ip = p0; ip < pEnd; ip += 1) {
+          const srcStart = srcBase + ip * srcStrideP + a0 * srcStrideA;
+          const dstStart = dstBase + ip * dstStrideP + a0;
+          copier(src, dst, srcStart, dstStart, len, srcStrideA);
+        }
+      }
+    }
+  }
+
+  copyFrom(0, srcOffset, 0);
 }
 
 const INITIAL_BOUNDS = {

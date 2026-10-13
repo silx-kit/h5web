@@ -30,12 +30,10 @@
     "@types/d3-array": "*",
     "@types/d3-format": "*",
     "@types/ndarray": "*",
-    "@types/ndarray-ops": "*",
     "@types/react": "*",
     "d3-array": "*",
     "d3-format": "*",
     "ndarray": "*",
-    "ndarray-ops": "*",
     "react": "*",
     "zustand": "*"
   },
@@ -47,9 +45,6 @@
       "optional": true
     },
     "@types/ndarray": {
-      "optional": true
-    },
-    "@types/ndarray-ops": {
       "optional": true
     },
     "@types/react": {
@@ -64,9 +59,6 @@
     "ndarray": {
       "optional": true
     },
-    "ndarray-ops": {
-      "optional": true
-    },
     "zustand": {
       "optional": true
     }
@@ -76,14 +68,12 @@
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.1.0",
-    "@types/ndarray-ops": "~1.2.7",
     "@types/node": "^24.13.2",
     "@types/react": "^18.3.31",
     "d3-array": "3.2.4",
     "d3-format": "3.1.2",
     "eslint": "9.39.4",
     "ndarray": "1.1.1",
-    "ndarray-ops": "1.2.2",
     "react": "18.3.1",
     "typescript": "6.0.3",
     "vitest": "4.1.9",
