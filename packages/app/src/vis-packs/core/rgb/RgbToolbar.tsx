@@ -1,6 +1,7 @@
 import {
   ImageType,
   Separator,
+  SnapshotBtn,
   ToggleBtn,
   ToggleGroup,
   Toolbar,
@@ -12,6 +13,7 @@ import {
   MdSwapVert,
 } from 'react-icons/md';
 
+import { useVisArea } from '../../../visualizer/vis-area';
 import { getImageInteractions } from '../utils';
 import { type RgbVisConfig } from './config';
 
@@ -20,6 +22,7 @@ interface Props {
 }
 
 function RgbToolbar(props: Props) {
+  const visArea = useVisArea();
   const { config } = props;
   const {
     imageType,
@@ -78,6 +81,10 @@ function RgbToolbar(props: Props) {
         value={showGrid}
         onToggle={() => setShowGrid(!showGrid)}
       />
+
+      <Separator />
+
+      <SnapshotBtn target={visArea} />
     </Toolbar>
   );
 }

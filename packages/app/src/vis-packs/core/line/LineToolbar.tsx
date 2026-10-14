@@ -8,6 +8,7 @@ import {
   RadioGroup,
   ScaleSelector,
   Separator,
+  SnapshotBtn,
   ToggleBtn,
   Toolbar,
 } from '@h5web/lib';
@@ -20,6 +21,7 @@ import {
 } from '@h5web/shared/vis-models';
 import { MdAutoGraph, MdGridOn } from 'react-icons/md';
 
+import { useVisArea } from '../../../visualizer/vis-area';
 import { CURVE_TYPE_LABELS, INTERACTIONS_WITH_AXIAL_ZOOM } from '../utils';
 import { type LineConfig } from './config';
 import ErrorsIcon from './ErrorsIcon';
@@ -40,6 +42,7 @@ interface Props {
 }
 
 function LineToolbar(props: Props) {
+  const visArea = useVisArea();
   const { dataDomain, isSlice, isComplex, withErrors, config, exportEntries } =
     props;
 
@@ -132,12 +135,13 @@ function LineToolbar(props: Props) {
         />
       </Menu>
 
+      <Separator />
+
       {exportEntries && exportEntries.length > 0 && (
-        <>
-          <Separator />
-          <ExportMenu isSlice={isSlice} entries={exportEntries} />
-        </>
+        <ExportMenu isSlice={isSlice} entries={exportEntries} />
       )}
+
+      <SnapshotBtn target={visArea} />
     </Toolbar>
   );
 }

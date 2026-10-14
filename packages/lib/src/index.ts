@@ -233,6 +233,15 @@ export { mockValues } from '@h5web/shared/mock-values';
 
 // Undocumented and/or experimental
 export { default as SnapshotBtn } from './toolbar/controls/SnapshotBtn';
+export type { SnapshotBtnProps } from './toolbar/controls/SnapshotBtn';
+export {
+  renderSnapshot,
+  exportSnapshot,
+  findVisElement,
+  SNAPSHOT_ATTR,
+  SNAPSHOT_IGNORE_ATTR,
+} from './vis/snapshot/render';
+export type { SnapshotOptions } from './vis/snapshot/render';
 export { default as ExportMenu } from './toolbar/controls/ExportMenu';
 export { default as CellWidthInput } from './toolbar/controls/CellWidthInput';
 export { default as ScalarVis } from './vis/scalar/ScalarVis';
