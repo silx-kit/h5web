@@ -25,7 +25,8 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
         "path": "/external/broken_path",
       },
       {
-        "kind": "unresolved",
+        "domain": "/sample-hsds.h5",
+        "kind": "dataset",
         "link": {
           "class": "External",
           "file": "/sample-hsds.h5",
@@ -33,19 +34,91 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
         },
         "name": "dataset",
         "path": "/external/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            2,
+            3,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 8,
+        },
+        "value": Int8Array [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+        ],
       },
       {
-        "kind": "unresolved",
-        "link": {
-          "class": "External",
-          "file": "/links-hsds.h5",
-          "path": "/group",
-        },
+        "children": [
+          {
+            "domain": "/links-hsds.h5",
+            "kind": "dataset",
+            "link": {
+              "class": "Hard",
+            },
+            "name": "dataset",
+            "path": "/external/group_self/dataset",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                1,
+                2,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+          },
+          {
+            "domain": "/links-hsds.h5",
+            "kind": "dataset",
+            "link": {
+              "class": "Hard",
+            },
+            "name": "virtual",
+            "path": "/external/group_self/virtual",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                2,
+                1,
+                1,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+          },
+        ],
+        "domain": "/links-hsds.h5",
+        "kind": "group",
         "name": "group_self",
         "path": "/external/group_self",
       },
     ],
-    "collection": "groups",
+    "domain": "/links-hsds.h5",
     "kind": "group",
     "name": "external",
     "path": "/external",
@@ -53,8 +126,11 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
   {
     "children": [
       {
-        "collection": "datasets",
+        "domain": "/links-hsds.h5",
         "kind": "dataset",
+        "link": {
+          "class": "Hard",
+        },
         "name": "dataset",
         "path": "/group/dataset",
         "shape": {
@@ -70,14 +146,17 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
           "signed": true,
           "size": 64,
         },
-        "value": [
-          0,
-          1,
-        ],
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
       },
       {
-        "collection": "datasets",
+        "domain": "/links-hsds.h5",
         "kind": "dataset",
+        "link": {
+          "class": "Hard",
+        },
         "name": "virtual",
         "path": "/group/virtual",
         "shape": {
@@ -94,13 +173,13 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
           "signed": true,
           "size": 64,
         },
-        "value": [
-          0,
-          1,
-        ],
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
       },
     ],
-    "collection": "groups",
+    "domain": "/links-hsds.h5",
     "kind": "group",
     "name": "group",
     "path": "/group",
@@ -108,8 +187,11 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
   {
     "children": [
       {
-        "collection": "datasets",
+        "domain": "/links-hsds.h5",
         "kind": "dataset",
+        "link": {
+          "class": "Hard",
+        },
         "name": "dataset",
         "path": "/hard/dataset",
         "shape": {
@@ -125,16 +207,19 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
           "signed": true,
           "size": 64,
         },
-        "value": [
-          0,
-          1,
-        ],
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
       },
       {
         "children": [
           {
-            "collection": "datasets",
+            "domain": "/links-hsds.h5",
             "kind": "dataset",
+            "link": {
+              "class": "Hard",
+            },
             "name": "dataset",
             "path": "/hard/group/dataset",
             "shape": {
@@ -150,14 +235,17 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
               "signed": true,
               "size": 64,
             },
-            "value": [
-              0,
-              1,
-            ],
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
           },
           {
-            "collection": "datasets",
+            "domain": "/links-hsds.h5",
             "kind": "dataset",
+            "link": {
+              "class": "Hard",
+            },
             "name": "virtual",
             "path": "/hard/group/virtual",
             "shape": {
@@ -174,19 +262,19 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
               "signed": true,
               "size": 64,
             },
-            "value": [
-              0,
-              1,
-            ],
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
           },
         ],
-        "collection": "groups",
+        "domain": "/links-hsds.h5",
         "kind": "group",
         "name": "group",
         "path": "/hard/group",
       },
     ],
-    "collection": "groups",
+    "domain": "/links-hsds.h5",
     "kind": "group",
     "name": "hard",
     "path": "/hard",
@@ -197,44 +285,128 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
         "kind": "unresolved",
         "link": {
           "class": "Soft",
-          "file": undefined,
           "path": "foo",
         },
         "name": "broken",
         "path": "/soft/broken",
       },
       {
-        "kind": "unresolved",
+        "domain": "/links-hsds.h5",
+        "kind": "dataset",
         "link": {
           "class": "Soft",
-          "file": undefined,
           "path": "/group/dataset",
         },
         "name": "dataset",
         "path": "/soft/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
       },
       {
-        "kind": "unresolved",
-        "link": {
-          "class": "Soft",
-          "file": undefined,
-          "path": "/group",
-        },
+        "children": [
+          {
+            "domain": "/links-hsds.h5",
+            "kind": "dataset",
+            "link": {
+              "class": "Hard",
+            },
+            "name": "dataset",
+            "path": "/soft/group/dataset",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                1,
+                2,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+          },
+          {
+            "domain": "/links-hsds.h5",
+            "kind": "dataset",
+            "link": {
+              "class": "Hard",
+            },
+            "name": "virtual",
+            "path": "/soft/group/virtual",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                2,
+                1,
+                1,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+          },
+        ],
+        "domain": "/links-hsds.h5",
+        "kind": "group",
         "name": "group",
         "path": "/soft/group",
       },
       {
-        "kind": "unresolved",
+        "domain": "/links-hsds.h5",
+        "kind": "dataset",
         "link": {
           "class": "Soft",
-          "file": undefined,
           "path": "dataset",
         },
         "name": "relative",
         "path": "/soft/relative",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
       },
     ],
-    "collection": "groups",
+    "domain": "/links-hsds.h5",
     "kind": "group",
     "name": "soft",
     "path": "/soft",
@@ -245,8 +417,11 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
 exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
 [
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "ascii_fixed_scalar",
     "path": "/ascii_fixed_scalar",
     "shape": {
@@ -262,8 +437,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": "Some text",
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "ascii_vlen_empty",
     "path": "/ascii_vlen_empty",
     "shape": {
@@ -278,8 +456,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "ascii_vlen_scalar",
     "path": "/ascii_vlen_scalar",
     "shape": {
@@ -294,8 +475,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": "Some text",
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "bool_2D",
     "path": "/bool_2D",
     "shape": {
@@ -314,20 +498,23 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": [
-      true,
-      false,
-      true,
-      true,
-      false,
-      false,
-      true,
-      false,
+    "value": Int8Array [
+      1,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "bool_empty",
     "path": "/bool_empty",
     "shape": {
@@ -343,11 +530,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": false,
+    "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "bool_false_scalar",
     "path": "/bool_false_scalar",
     "shape": {
@@ -363,11 +553,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": false,
+    "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "bool_true_scalar",
     "path": "/bool_true_scalar",
     "shape": {
@@ -383,11 +576,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       },
       "class": "Boolean",
     },
-    "value": true,
+    "value": 1,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "byte_string_1D",
     "path": "/byte_string_1D",
     "shape": {
@@ -400,15 +596,18 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": [
-      "",
-      "EQ==",
-      "Ig==",
+    "value": Uint8Array [
+      0,
+      17,
+      34,
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "byte_string_scalar",
     "path": "/byte_string_scalar",
     "shape": {
@@ -419,11 +618,18 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": "ABEi",
+    "value": Uint8Array [
+      0,
+      17,
+      34,
+    ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "complex128_2D",
     "path": "/complex128_2D",
     "shape": {
@@ -466,8 +672,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "complex128_BE_scalar",
     "path": "/complex128_BE_scalar",
     "shape": {
@@ -493,8 +702,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "complex128_scalar",
     "path": "/complex128_scalar",
     "shape": {
@@ -520,8 +732,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "complex64_2D",
     "path": "/complex64_2D",
     "shape": {
@@ -564,8 +779,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "complex64_scalar",
     "path": "/complex64_scalar",
     "shape": {
@@ -591,8 +809,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "compound_1D",
     "path": "/compound_1D",
     "shape": {
@@ -641,8 +862,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "compound_num_keys_scalar",
     "path": "/compound_num_keys_scalar",
     "shape": {
@@ -681,8 +905,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "compound_scalar",
     "path": "/compound_scalar",
     "shape": {
@@ -717,8 +944,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "datetime64_not-a-time_scalar",
     "path": "/datetime64_not-a-time_scalar",
     "shape": {
@@ -729,11 +959,23 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": "AAAAAAAAAIA=",
+    "value": Uint8Array [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      128,
+    ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "datetime64_scalar",
     "path": "/datetime64_scalar",
     "shape": {
@@ -744,11 +986,23 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "class": "Opaque",
       "tag": "",
     },
-    "value": "lrGHXQAAAAA=",
+    "value": Uint8Array [
+      150,
+      177,
+      135,
+      93,
+      0,
+      0,
+      0,
+      0,
+    ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "enum_1D",
     "path": "/enum_1D",
     "shape": {
@@ -771,7 +1025,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
         "2": "C",
       },
     },
-    "value": [
+    "value": Uint8Array [
       0,
       2,
       2,
@@ -785,8 +1039,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "enum_2D",
     "path": "/enum_2D",
     "shape": {
@@ -810,7 +1067,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
         "2": "C",
       },
     },
-    "value": [
+    "value": Uint8Array [
       0,
       2,
       2,
@@ -834,8 +1091,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "enum_int32_scalar",
     "path": "/enum_int32_scalar",
     "shape": {
@@ -858,8 +1118,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 256,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "enum_uint8_scalar",
     "path": "/enum_uint8_scalar",
     "shape": {
@@ -882,8 +1145,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 1,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float16_2D",
     "path": "/float16_2D",
     "shape": {
@@ -898,18 +1164,21 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 16,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-    ],
+    "value": Float16Array {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 4,
+      "5": 5,
+    },
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float16_scalar",
     "path": "/float16_scalar",
     "shape": {
@@ -924,8 +1193,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0.00006103515625,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float32_2D",
     "path": "/float32_2D",
     "shape": {
@@ -940,7 +1212,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 32,
     },
-    "value": [
+    "value": Float32Array [
       0,
       1,
       2,
@@ -950,8 +1222,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float32_BE_scalar",
     "path": "/float32_BE_scalar",
     "shape": {
@@ -966,8 +1241,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float32_empty",
     "path": "/float32_empty",
     "shape": {
@@ -982,8 +1260,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float32_scalar",
     "path": "/float32_scalar",
     "shape": {
@@ -998,8 +1279,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 1.1754943508222875e-38,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_2D",
     "path": "/float64_2D",
     "shape": {
@@ -1014,27 +1298,30 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": [
+    "value": Float64Array [
       0,
       1,
-      "Infinity",
+      Infinity,
       3,
       4,
       3,
       4,
-      "NaN",
+      NaN,
       6,
       7,
       6,
       7,
-      "-Infinity",
+      -Infinity,
       9,
       10,
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_inf_scalar",
     "path": "/float64_inf_scalar",
     "shape": {
@@ -1046,11 +1333,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": "Infinity",
+    "value": Infinity,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_nan_scalar",
     "path": "/float64_nan_scalar",
     "shape": {
@@ -1062,11 +1352,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": "NaN",
+    "value": NaN,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_ninf_scalar",
     "path": "/float64_ninf_scalar",
     "shape": {
@@ -1078,11 +1371,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "endianness": "little-endian",
       "size": 64,
     },
-    "value": "-Infinity",
+    "value": -Infinity,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_nzero_scalar",
     "path": "/float64_nzero_scalar",
     "shape": {
@@ -1097,8 +1393,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_pi_scalar",
     "path": "/float64_pi_scalar",
     "shape": {
@@ -1113,8 +1412,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 3.141592653589793,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_scalar",
     "path": "/float64_scalar",
     "shape": {
@@ -1129,8 +1431,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 2.2250738585072014e-308,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "float64_zero_scalar",
     "path": "/float64_zero_scalar",
     "shape": {
@@ -1145,8 +1450,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int16_2D",
     "path": "/int16_2D",
     "shape": {
@@ -1162,7 +1470,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": true,
       "size": 16,
     },
-    "value": [
+    "value": Int16Array [
       0,
       1,
       2,
@@ -1172,8 +1480,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int16_scalar",
     "path": "/int16_scalar",
     "shape": {
@@ -1189,8 +1500,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": -32768,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int32_2D",
     "path": "/int32_2D",
     "shape": {
@@ -1206,7 +1520,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": true,
       "size": 32,
     },
-    "value": [
+    "value": Int32Array [
       0,
       1,
       2,
@@ -1216,8 +1530,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int32_BE_scalar",
     "path": "/int32_BE_scalar",
     "shape": {
@@ -1233,8 +1550,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 0,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int32_scalar",
     "path": "/int32_scalar",
     "shape": {
@@ -1250,8 +1570,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": -2147483648,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int64_2D",
     "path": "/int64_2D",
     "shape": {
@@ -1267,18 +1590,21 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": true,
       "size": 64,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-    ],
+    "value": BigInt64Array {
+      "0": 0n,
+      "1": 1n,
+      "2": 2n,
+      "3": 3n,
+      "4": 4n,
+      "5": 5n,
+    },
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int64_scalar",
     "path": "/int64_scalar",
     "shape": {
@@ -1291,11 +1617,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": true,
       "size": 64,
     },
-    "value": -9223372036854776000,
+    "value": -9223372036854775808n,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int8_2D",
     "path": "/int8_2D",
     "shape": {
@@ -1311,7 +1640,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": true,
       "size": 8,
     },
-    "value": [
+    "value": Int8Array [
       0,
       1,
       2,
@@ -1321,8 +1650,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "int8_scalar",
     "path": "/int8_scalar",
     "shape": {
@@ -1338,8 +1670,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": -128,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "reference_scalar",
     "path": "/reference_scalar",
     "shape": {
@@ -1352,8 +1687,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": "<HDF5 object reference>",
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint16_2D",
     "path": "/uint16_2D",
     "shape": {
@@ -1369,7 +1707,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": false,
       "size": 16,
     },
-    "value": [
+    "value": Uint16Array [
       0,
       1,
       2,
@@ -1379,8 +1717,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint16_scalar",
     "path": "/uint16_scalar",
     "shape": {
@@ -1396,8 +1737,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 65535,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint32_2D",
     "path": "/uint32_2D",
     "shape": {
@@ -1413,7 +1757,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": false,
       "size": 32,
     },
-    "value": [
+    "value": Uint32Array [
       0,
       1,
       2,
@@ -1423,8 +1767,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint32_scalar",
     "path": "/uint32_scalar",
     "shape": {
@@ -1440,8 +1787,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 4294967295,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint64_3D",
     "path": "/uint64_3D",
     "shape": {
@@ -1458,20 +1808,23 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": false,
       "size": 64,
     },
-    "value": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      18446744073709552000,
-    ],
+    "value": BigUint64Array {
+      "0": 0n,
+      "1": 1n,
+      "2": 2n,
+      "3": 3n,
+      "4": 4n,
+      "5": 5n,
+      "6": 6n,
+      "7": 18446744073709551615n,
+    },
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint64_scalar",
     "path": "/uint64_scalar",
     "shape": {
@@ -1484,11 +1837,14 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": false,
       "size": 64,
     },
-    "value": 18446744073709552000,
+    "value": 18446744073709551615n,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint8_2D",
     "path": "/uint8_2D",
     "shape": {
@@ -1504,7 +1860,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "signed": false,
       "size": 8,
     },
-    "value": [
+    "value": Uint8Array [
       0,
       1,
       2,
@@ -1514,8 +1870,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "uint8_scalar",
     "path": "/uint8_scalar",
     "shape": {
@@ -1531,8 +1890,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": 255,
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "utf8_fixed_scalar",
     "path": "/utf8_fixed_scalar",
     "shape": {
@@ -1548,8 +1910,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": "Some text",
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "utf8_vlen_1D",
     "path": "/utf8_vlen_1D",
     "shape": {
@@ -1570,8 +1935,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "utf8_vlen_scalar",
     "path": "/utf8_vlen_scalar",
     "shape": {
@@ -1586,8 +1954,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     "value": "Some text",
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "vlen_float32_1D",
     "path": "/vlen_float32_1D",
     "shape": {
@@ -1612,8 +1983,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "vlen_int64_1D",
     "path": "/vlen_int64_1D",
     "shape": {
@@ -1647,8 +2021,11 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
     ],
   },
   {
-    "collection": "datasets",
+    "domain": "/sample-hsds.h5",
     "kind": "dataset",
+    "link": {
+      "class": "Hard",
+    },
     "name": "vlen_int8_scalar",
     "path": "/vlen_int8_scalar",
     "shape": {
