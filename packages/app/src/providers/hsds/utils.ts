@@ -21,6 +21,8 @@ import {
   floatType,
   intType,
   nullShape,
+  opaqueType,
+  referenceType,
   scalarShape,
   strType,
   unknownType,
@@ -64,7 +66,7 @@ function assertHsdsNumericType(
   }
 }
 
-export function convertHsdsShape(shape: HsdsShape): Shape {
+export function parseShape(shape: HsdsShape): Shape {
   const { class: shapeClass } = shape;
 
   if (shapeClass === 'H5S_SIMPLE') {
@@ -78,7 +80,7 @@ export function convertHsdsShape(shape: HsdsShape): Shape {
   return nullShape();
 }
 
-function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
+function parseNumericType(hsdsType: HsdsNumericType): NumericType {
   const { class: hsdsClass, base } = hsdsType;
 
   const regex = /H5T_(?:IEEE|STD)_([A-Z])(\d+)(BE|LE)/u;
@@ -99,25 +101,25 @@ function convertHsdsNumericType(hsdsType: HsdsNumericType): NumericType {
   return intType(sign === 'I', size, h5tOrder);
 }
 
-function convertHsdsEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
+function parseEnumType(hsdsType: HsdsEnumType): EnumType | BooleanType {
   const { base, members } = hsdsType;
   assertHsdsNumericType(base);
 
   return enumOrBoolType(
-    convertHsdsNumericType(base),
+    parseNumericType(base),
     Object.fromEntries(members.map(({ name, value }) => [name, value])),
   );
 }
 
-export function convertHsdsType(hsdsType: HsdsType): DType {
+export function parseType(hsdsType: HsdsType): DType {
   switch (hsdsType.class) {
     case 'H5T_INTEGER':
     case 'H5T_FLOAT':
-      return convertHsdsNumericType(hsdsType);
+      return parseNumericType(hsdsType);
 
     case 'H5T_COMPOUND':
       return compoundOrCplxType(
-        hsdsType.fields.map((v) => [v.name, convertHsdsType(v.type)]),
+        hsdsType.fields.map((v) => [v.name, parseType(v.type)]),
       );
 
     case 'H5T_STRING': {
@@ -134,24 +136,30 @@ export function convertHsdsType(hsdsType: HsdsType): DType {
     }
 
     case 'H5T_VLEN':
-      return vlenType(convertHsdsType(hsdsType.base));
+      return vlenType(parseType(hsdsType.base));
 
     case 'H5T_ARRAY':
-      return arrayType(convertHsdsType(hsdsType.base), hsdsType.dims);
+      return arrayType(parseType(hsdsType.base), hsdsType.dims);
 
     case 'H5T_ENUM':
-      return convertHsdsEnumType(hsdsType);
+      return parseEnumType(hsdsType);
+
+    case 'H5T_REFERENCE':
+      return referenceType();
+
+    case 'H5T_OPAQUE':
+      return opaqueType();
 
     default:
       return unknownType();
   }
 }
 
-export function convertHsdsAttributes(attrs: HsdsAttribute[]): Attribute[] {
+export function parseAttributes(attrs: HsdsAttribute[]): Attribute[] {
   return attrs.map((attr) => ({
     name: attr.name,
-    shape: convertHsdsShape(attr.shape),
-    type: convertHsdsType(attr.type),
+    shape: parseShape(attr.shape),
+    type: parseType(attr.type),
   }));
 }
 

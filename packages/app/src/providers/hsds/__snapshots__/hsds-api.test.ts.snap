@@ -397,7 +397,8 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       ],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": [
       "",
@@ -415,7 +416,8 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": "ABEi",
   },
@@ -724,7 +726,8 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": "AAAAAAAAAIA=",
   },
@@ -738,7 +741,8 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Opaque",
+      "tag": "",
     },
     "value": "lrGHXQAAAAA=",
   },
@@ -1343,7 +1347,7 @@ exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
       "dims": [],
     },
     "type": {
-      "class": "Unknown",
+      "class": "Reference",
     },
     "value": "<HDF5 object reference>",
   },
