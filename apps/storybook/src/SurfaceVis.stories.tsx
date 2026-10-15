@@ -47,8 +47,9 @@ export const Default = meta.story();
 export const AxisValues = meta.story({
   args: {
     title: 'With axis values',
-    abscissaParams: { value: abscissas },
-    ordinateParams: { value: ordinates },
+    abscissaParams: { label: 'Position (mm)', value: abscissas },
+    ordinateParams: { label: 'Time (s)', value: ordinates },
+    valueLabel: 'Intensity',
   },
 });
 
@@ -78,6 +79,7 @@ export const LogScale = meta.story({
     dataArray: peaksArray,
     domain: getDomain(peaksArray.data, { scaleType: ScaleType.Log }),
     scaleType: ScaleType.Log,
+    valueLabel: 'Counts',
   },
 });
 

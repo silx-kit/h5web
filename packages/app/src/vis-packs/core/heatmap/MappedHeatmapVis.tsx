@@ -124,9 +124,11 @@ function MappedHeatmapVis(props: Props) {
           invertColorMap={invertColorMap}
           abscissaParams={abscissaParams}
           ordinateParams={ordinateParams}
+          valueLabel={title}
           flipXAxis={flipXAxis}
           flipYAxis={flipYAxis}
           keepRatio={keepRatio}
+          showGrid={showGrid}
           heightScale={heightScale}
           ignoreValue={ignoreValue}
         />
