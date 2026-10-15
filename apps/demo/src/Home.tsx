@@ -198,11 +198,13 @@ function Home() {
               object storage (AWS S3, Azure Blob Storage, or OpenIO).
             </p>
             <p>
-              This demo communicates with an HSDS test server, which serves the
-              following files:{' '}
-              <Link to="/hsds?file=links-hsds.h5">links-hsds.h5.h5</Link>,{' '}
-              <Link to="/hsds?file=links-hsds.h5">sample-hsds.h5</Link>,{' '}
-              <Link to="/hsds?file=tall.h5">tall.h5</Link>.
+              This demo communicates with an HSDS test server with the following
+              HDF5 files:{' '}
+              <Link to="/hsds?domain=sample-hsds.h5">
+                <b>sample-hsds.h5</b>
+              </Link>
+              , <Link to="/hsds?domain=links-hsds.h5">links-hsds.h5</Link>,{' '}
+              <Link to="/hsds?domain=tall.h5">tall.h5</Link>.
             </p>
           </section>
           <section>
