@@ -16,6 +16,7 @@ import {
 } from '../models';
 import R3FCanvas from '../shared/R3FCanvas';
 import { createScale, DEFAULT_DOMAIN } from '../utils';
+import SurfaceAxes, { type SurfaceAxisConfig } from './SurfaceAxes';
 import SurfaceControls from './SurfaceControls';
 import SurfaceMesh from './SurfaceMesh';
 import styles from './SurfaceVis.module.css';
@@ -39,10 +40,13 @@ interface Props extends ClassStyleAttrs {
   title?: string;
   abscissaParams?: AxisParams;
   ordinateParams?: AxisParams;
+  valueLabel?: string;
   flipXAxis?: boolean;
   flipYAxis?: boolean;
   keepRatio?: boolean;
   heightScale?: number;
+  showAxes?: boolean;
+  showGrid?: boolean;
   ignoreValue?: IgnoreValue;
   maxVertices?: number;
 }
@@ -57,10 +61,13 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
     title,
     abscissaParams = {},
     ordinateParams = {},
+    valueLabel,
     flipXAxis = false,
     flipYAxis = false,
     keepRatio = true,
     heightScale = 0.5,
+    showAxes = true,
+    showGrid = true,
     ignoreValue,
     maxVertices = DEFAULT_MAX_VERTICES,
     children,
@@ -76,8 +83,8 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
     throw new Error('Expected at least two rows and two columns');
   }
 
-  const { value: abscissaValue } = abscissaParams;
-  const { value: ordinateValue } = ordinateParams;
+  const { label: abscissaLabel, value: abscissaValue } = abscissaParams;
+  const { label: ordinateLabel, value: ordinateValue } = ordinateParams;
   const [rows, cols] = dataArray.shape;
 
   const xCenters = useMemo(
@@ -128,6 +135,26 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
     flipYAxis,
   ]);
 
+  const abscissaConfig = useMemo<SurfaceAxisConfig>(
+    () => ({
+      domain: xDomain,
+      isIndexAxis: !abscissaValue || abscissaValue.length < cols, // see `getCellCenters`
+      label: abscissaLabel,
+      flip: flipXAxis,
+    }),
+    [xDomain, abscissaValue, cols, abscissaLabel, flipXAxis],
+  );
+
+  const ordinateConfig = useMemo<SurfaceAxisConfig>(
+    () => ({
+      domain: yDomain,
+      isIndexAxis: !ordinateValue || ordinateValue.length < rows,
+      label: ordinateLabel,
+      flip: flipYAxis,
+    }),
+    [yDomain, ordinateValue, rows, ordinateLabel, flipYAxis],
+  );
+
   const resetRef = useRef<() => void>();
 
   return (
@@ -156,6 +183,18 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
               ignoreValue={ignoreValue}
               zHeight={heightScale}
             />
+            {showAxes && (
+              <SurfaceAxes
+                footprint={[w, h]}
+                zHeight={heightScale}
+                abscissaConfig={abscissaConfig}
+                ordinateConfig={ordinateConfig}
+                valueDomain={domain}
+                valueLabel={valueLabel}
+                scaleType={scaleType}
+                showGrid={showGrid}
+              />
+            )}
             {children}
           </R3FCanvas>
           <button

@@ -1,11 +1,15 @@
-import { type Domain, type NumArray } from '@h5web/shared/vis-models';
+import {
+  type Domain,
+  type NumArray,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 import { rgb } from 'd3-color';
 import ndarray, { type NdArray } from 'ndarray';
 import { Color, SRGBColorSpace } from 'three';
 
 import { type ColorMap } from '../heatmap/models';
 import { getInterpolator } from '../heatmap/utils';
-import { getAxisDomain } from '../utils';
+import { createScale, getAxisDomain, getIntegerTicks } from '../utils';
 
 /* Above this number of vertices, the surface is downsampled (by decimation)
  * to keep geometry generation and rendering responsive (~1024 x 1024). */
@@ -141,6 +145,19 @@ export function getFootprint(
 
   const ratio = Math.abs((xDomain[1] - xDomain[0]) / (yDomain[1] - yDomain[0]));
   return ratio >= 1 ? [1, 1 / ratio] : [ratio, 1];
+}
+
+/** Nice ticks within domain (ascending or descending); integer ticks only for axes of indices. */
+export function getAxisTicks(
+  domain: Domain,
+  count: number,
+  isIndexAxis: boolean,
+): number[] {
+  if (isIndexAxis) {
+    return getIntegerTicks(domain, count);
+  }
+
+  return createScale(ScaleType.Linear, { domain }).ticks(count);
 }
 
 /** Colour map lookup table in linear RGB, as expected by three.js vertex colours. */

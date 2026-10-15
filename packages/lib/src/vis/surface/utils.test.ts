@@ -2,6 +2,7 @@ import ndarray from 'ndarray';
 import { describe, expect, it } from 'vitest';
 
 import {
+  getAxisTicks,
   getCellCenters,
   getCoordsDomain,
   getDownsamplingStride,
@@ -119,6 +120,21 @@ describe('isSurfaceSupported', () => {
     expect(isSurfaceSupported([1, 3])).toBe(false);
     expect(isSurfaceSupported([3, 1])).toBe(false);
     expect(isSurfaceSupported([2, 2])).toBe(true);
+  });
+});
+
+describe('getAxisTicks', () => {
+  it('should return nice ticks within domain', () => {
+    expect(getAxisTicks([0, 1], 5, false)).toEqual([0, 0.2, 0.4, 0.6, 0.8, 1]);
+    expect(getAxisTicks([-18, 21], 4, false)).toEqual([-10, 0, 10, 20]);
+  });
+
+  it('should support descending domains', () => {
+    expect(getAxisTicks([21, -18], 4, false)).toEqual([20, 10, 0, -10]);
+  });
+
+  it('should return integer ticks for index axes', () => {
+    expect(getAxisTicks([0, 3], 10, true)).toEqual([0, 1, 2, 3]);
   });
 });
 
