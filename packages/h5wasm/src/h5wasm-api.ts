@@ -99,8 +99,15 @@ export class H5WasmApi extends DataProviderApi {
     return this.remote.getDescendantPaths(fileId, root);
   }
 
-  public async cleanUp(): Promise<number> {
-    return this.remote.closeFile(await this.fileId);
+  public async cleanUp(): Promise<number | undefined> {
+    let fileId: bigint;
+    try {
+      fileId = await this.fileId;
+    } catch {
+      return undefined; // file could not be opened
+    }
+
+    return this.remote.closeFile(fileId);
   }
 
   private async processFilters(dataset: Dataset): Promise<void> {
