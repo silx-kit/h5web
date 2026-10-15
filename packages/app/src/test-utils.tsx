@@ -1,6 +1,6 @@
 import { assertDefined, assertNonNull } from '@h5web/shared/guards';
 import { expect, type MockInstance, vi } from 'vitest';
-import { type Locator, page, userEvent } from 'vitest/browser';
+import { commands, type Locator, page, userEvent } from 'vitest/browser';
 import { render, type RenderResult } from 'vitest-browser-react';
 
 import App from './App';
@@ -8,6 +8,12 @@ import MockProvider from './providers/mock/MockProvider';
 import { delay } from './providers/mock/utils';
 import { type Vis } from './vis-packs/core/visualizations';
 import { type NxDataVis } from './vis-packs/nexus/visualizations';
+
+declare module 'vitest/browser' {
+  interface BrowserCommands {
+    mouseDrag: (path: [number, number][]) => Promise<void>;
+  }
+}
 
 interface RenderAppResult extends RenderResult {
   user: ReturnType<typeof userEvent.setup>;
@@ -133,6 +139,26 @@ export function getSelectedVisTab(): string {
   assertDefined(selectedTab);
   assertNonNull(selectedTab.textContent);
   return selectedTab.textContent;
+}
+
+/**
+ * Drag element with real mouse events: press mouse button at centre of element,
+ * move pointer horizontally through the given offsets (in px), then release.
+ */
+export async function dragHorizontally(
+  locator: Locator,
+  offsets: number[],
+): Promise<void> {
+  const { left, top, width, height } = locator
+    .element()
+    .getBoundingClientRect();
+
+  const x = left + width / 2;
+  const y = top + height / 2;
+  await commands.mouseDrag([
+    [x, y],
+    ...offsets.map((dx): [number, number] => [x + dx, y]),
+  ]);
 }
 
 export function getDimMappingBtn(axis: 'x' | 'y', dim: number): Locator {

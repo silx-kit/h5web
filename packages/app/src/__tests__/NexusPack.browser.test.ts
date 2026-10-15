@@ -148,14 +148,14 @@ test('follow default slice on NXdata group', async () => {
   const { selectVisTab } = await renderApp('/nexus/default_slice');
 
   expect(getSelectedVisTab()).toBe(NxDataVis.NxHeatmap);
-  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(1);
-  expect(page.getByRole('slider', { name: 'D2' })).toHaveValue(2);
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue('1');
+  expect(page.getByRole('slider', { name: 'D2' })).toHaveValue('2');
 
   // Ignore `default_slice` meant for heatmap
   await selectVisTab(NxDataVis.NxLine);
-  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
-  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue(0);
-  expect(page.getByRole('slider', { name: 'D2' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue('0');
+  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue('0');
+  expect(page.getByRole('slider', { name: 'D2' })).toHaveValue('0');
 });
 
 test('follow SILX styles on NXdata group', async () => {
@@ -242,16 +242,16 @@ test('ignore malformed `default_slice` attribute', async () => {
   // Check that `default_slice` is not applied
   expect(getSelectedVisTab()).toBe(NxDataVis.NxHeatmap);
   expect(page.getByRole('figure', { name: 'fourD' })).toBeVisible();
-  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
-  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue('0');
+  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue('0');
   expect(warningSpy).toHaveBeenCalledWith(
     "Malformed 'default_slice' attribute: expected same length as signal dimensions",
   );
 
   // Slicing index out of bound
   await selectNexusExplorerNode('default_slice_out_of_bounds');
-  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
-  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue('0');
+  expect(page.getByRole('slider', { name: 'D1' })).toHaveValue('0');
   expect(warningSpy).toHaveBeenCalledWith(
     "Malformed 'default_slice' attribute: expected indices within bounds of signal dimensions",
   );

@@ -202,8 +202,8 @@ describe('/mock', () => {
     cy.findByRole('slider', { name: 'D1' })
       .as('d1Slider')
       .should('have.attr', 'aria-valuenow', 0)
-      .and('have.attr', 'aria-valuemin', 0)
-      .and('have.attr', 'aria-valuemax', 8);
+      .and('have.attr', 'min', 0)
+      .and('have.attr', 'max', 8);
 
     // Move slider up by three marks and check value
     cy.get('@d1Slider').focus();

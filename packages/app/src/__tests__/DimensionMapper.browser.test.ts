@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { page } from 'vitest/browser';
+import { commands, page } from 'vitest/browser';
 
 import { getDimMappingBtn, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
@@ -25,7 +25,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
   // Ensure that only one dimension slider for D0 is visible
   const d0Slider = page.getByRole('slider', { name: 'D0' });
   expect(d0Slider).toBeVisible();
-  expect(d0Slider).toHaveValue(0);
+  expect(d0Slider).toHaveValue('0');
   expect(page.getByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 
   // Change mapping from [0, 'x'] to ['x', 0]
@@ -36,7 +36,7 @@ test('control mapping for X axis when visualizing 2D dataset as Line', async () 
   // Ensure that the dimension slider is now for D1
   const d1Slider = page.getByRole('slider', { name: 'D1' });
   expect(d1Slider).toBeVisible();
-  expect(d1Slider).toHaveValue(0);
+  expect(d1Slider).toHaveValue('0');
   expect(page.getByRole('slider', { name: 'D0' })).not.toBeInTheDocument();
 });
 
@@ -91,7 +91,7 @@ test('display one slider and two mappers when visualizing 3D dataset as Matrix',
   expect(yDimsButtons.nth(1)).toBeChecked();
 
   // Ensure that only one dimension slider for D0 is visible
-  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue(0);
+  expect(page.getByRole('slider', { name: 'D0' })).toHaveValue('0');
   expect(page.getByRole('slider', { name: 'D1' })).not.toBeInTheDocument();
 });
 
@@ -105,7 +105,29 @@ test('slice through 2D dataset', async () => {
   const d0Slider = page.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
 
-  expect(d0Slider).toHaveValue(1);
+  expect(d0Slider).toHaveValue('1');
+});
+
+test('slice through 2D dataset by dragging slider thumb', async () => {
+  await renderApp({ initialPath: '/arrays/twoD', preferredVis: Vis.Line });
+
+  const d0Slider = page.getByRole('slider', { name: 'D0' });
+  const { left, top, width } = d0Slider.element().getBoundingClientRect();
+  const [x, y] = [left + width / 2, top + 2]; // grab thumb above its centre
+
+  // Thumb doesn't jump when grabbed off-centre
+  await commands.mouseDrag([
+    [x, y],
+    [x, y - 1],
+  ]);
+  await expect.element(d0Slider).toHaveValue('0');
+
+  // Drag thumb to top of slider
+  await commands.mouseDrag([
+    [x, y],
+    [x, y - 1000],
+  ]);
+  await expect.element(d0Slider).toHaveValue('19');
 });
 
 test('slice through 2D opaque dataset', async () => {
@@ -117,7 +139,7 @@ test('slice through 2D opaque dataset', async () => {
   const d0Slider = page.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
 
-  expect(d0Slider).toHaveValue(1);
+  expect(d0Slider).toHaveValue('1');
   await expect.element(page.getByText('Uint8Array [ 4,5 ]')).toBeVisible();
 });
 

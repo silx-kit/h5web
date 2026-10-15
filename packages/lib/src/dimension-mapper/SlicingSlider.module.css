@@ -31,14 +31,23 @@
   cursor: pointer;
 }
 
-.track {
+.control {
   flex: 1;
-  margin: calc(var(--thumb-size) / 2) 0;
-  border-left: var(--track-width) solid var(--track-color);
+  display: flex;
+  padding: calc(var(--thumb-size) / 2) 0; /* make track end in middle of thumb */
+  touch-action: pan-x;
+}
+
+.track {
+  display: flex;
+  justify-content: center;
+  width: var(--track-width);
+  background-color: var(--track-color);
   border-radius: var(--track-width);
 }
 
 .thumb {
+  composes: sliderThumb from '../toolbar/utils.module.css';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,6 +66,7 @@
 }
 
 .mark {
+  position: absolute;
   width: 0.5rem;
   height: 0.5rem;
   background-color: var(
@@ -66,7 +76,7 @@
   border: 2px solid
     var(--h5w-slicingSlider-mark--borderColor, var(--track-color));
   border-radius: 50%;
-  transform: translateY(-100%);
+  transform: translateY(50%);
 }
 
 .slicingControls {

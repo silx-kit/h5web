@@ -70,10 +70,10 @@ export const Default = {
             isAutoMax={isAutoMax}
             disabled={disabled}
             onChange={setSliderDomain}
-            onAfterChange={(hasMinChanged, hasMaxChanged) => {
+            onAfterChange={(hasMinChanged, hasMaxChanged, newValue) => {
               setCustomDomain([
-                hasMinChanged ? sliderDomain[0] : customDomain[0],
-                hasMaxChanged ? sliderDomain[1] : customDomain[1],
+                hasMinChanged ? newValue[0] : customDomain[0],
+                hasMaxChanged ? newValue[1] : customDomain[1],
               ]);
             }}
           />

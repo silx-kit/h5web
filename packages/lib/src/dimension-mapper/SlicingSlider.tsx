@@ -1,7 +1,7 @@
+import { Slider } from '@base-ui/react/slider';
 import { useMeasure } from '@react-hookz/web';
 import { useId, useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import Btn from '../toolbar/controls/Btn';
 import { useDynamicDebouncedCallback } from './hooks';
@@ -56,41 +56,38 @@ function SlicingSlider(props: Props) {
       <span className={styles.sublabel}>0:{length - 1}</span>
       {length > 1 && (
         <>
-          <ReactSlider
+          <Slider.Root
             className={styles.slider}
-            ariaLabelledby={sliderLabelId}
             min={0}
             max={length - 1}
             step={1}
-            marks={
-              containerSize &&
-              containerSize.height / length >= MIN_HEIGHT_PER_MARK
-            }
-            markClassName={styles.mark}
             orientation="vertical"
-            invert
             value={value}
-            onChange={(newValue) => {
+            onValueChange={(newValue) => {
               setValue(newValue);
               onDebouncedChange(newValue);
             }}
-            /* When slicing in E2E tests, `onChange` is called with the old value.
-             The `onChange` event is fired via a `setState` callback in `ReactSlider`:
-             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
-             Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
-            onAfterChange={(newValue) => {
-              setValue(newValue);
-              onDebouncedChange(newValue);
-            }}
-            renderThumb={({ key, ...thumbProps }, state) => (
-              <div key={key} {...thumbProps} className={styles.thumb}>
-                <span className={styles.thumbValue}>{state.valueNow}</span>
-              </div>
-            )}
-            renderTrack={({ key }, { index }) =>
-              index === 0 ? <div key={key} className={styles.track} /> : null
-            }
-          />
+          >
+            <Slider.Control className={styles.control}>
+              <Slider.Track className={styles.track}>
+                {containerSize &&
+                  containerSize.height / length >= MIN_HEIGHT_PER_MARK &&
+                  Array.from({ length }, (_, index) => (
+                    <span
+                      key={index}
+                      className={styles.mark}
+                      style={{ bottom: `${(index / (length - 1)) * 100}%` }}
+                    />
+                  ))}
+                <Slider.Thumb
+                  className={styles.thumb}
+                  aria-labelledby={sliderLabelId}
+                >
+                  <span className={styles.thumbValue}>{value}</span>
+                </Slider.Thumb>
+              </Slider.Track>
+            </Slider.Control>
+          </Slider.Root>
 
           {withControls && (
             <div className={styles.slicingControls}>

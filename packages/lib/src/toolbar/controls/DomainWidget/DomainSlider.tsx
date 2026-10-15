@@ -1,7 +1,7 @@
+import { Slider } from '@base-ui/react/slider';
 import { type ColorScaleType, type Domain } from '@h5web/shared/vis-models';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
@@ -24,7 +24,11 @@ interface Props {
   isAutoMax: boolean;
   disabled?: boolean;
   onChange: (newValue: Domain) => void;
-  onAfterChange: (hasMinChanged: boolean, hasMaxChanged: boolean) => void;
+  onAfterChange: (
+    hasMinChanged: boolean,
+    hasMaxChanged: boolean,
+    newValue: Domain,
+  ) => void;
 }
 
 function DomainSlider(props: Props) {
@@ -52,53 +56,62 @@ function DomainSlider(props: Props) {
   const [safeValue] = getSafeDomain(value, dataDomain, scaleType);
   const scaledValue = safeValue.map(scale).map(Math.round) as Domain;
 
-  const [beforeChangeValue, setBeforeChangeValue] = useState(scaledValue);
+  const beforeChangeRef = useRef([value, scaledValue]); // reset when interaction starts
+  function startChange() {
+    beforeChangeRef.current = [value, scaledValue];
+  }
 
-  function handleChange(newScaledValue: Domain, done = false) {
+  function handleChange(newScaledValue: readonly number[], done = false) {
+    const [beforeValue, beforeChangeValue] = beforeChangeRef.current;
     const [newScaledMin, newScaledMax] = newScaledValue;
     const hasMinChanged = newScaledMin !== beforeChangeValue[0];
     const hasMaxChanged = newScaledMax !== beforeChangeValue[1];
 
     const newValue: Domain = [
-      hasMinChanged ? scale.invert(newScaledMin) : value[0],
-      hasMaxChanged ? scale.invert(newScaledMax) : value[1],
+      hasMinChanged ? scale.invert(newScaledMin) : beforeValue[0],
+      hasMaxChanged ? scale.invert(newScaledMax) : beforeValue[1],
     ];
 
     if (done) {
-      onDone(hasMinChanged, hasMaxChanged);
+      // Base UI may commit in same event as last change, so pass new value
+      onDone(hasMinChanged, hasMaxChanged, newValue);
     } else {
       onChange(newValue);
     }
   }
 
   return (
-    <ReactSlider
+    <Slider.Root
       className={styles.slider}
-      pearling
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}
       value={scaledValue}
       disabled={disabled}
-      onBeforeChange={setBeforeChangeValue}
-      onChange={(bounds) => handleChange(bounds)}
-      onAfterChange={(bounds) => handleChange(bounds, true)}
-      renderThumb={({ key, ...thumbProps }, { index }) => (
-        <Thumb
-          key={key}
-          bound={index === 0 ? 'min' : 'max'}
-          isAuto={index === 0 ? isAutoMin : isAutoMax}
-          hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
-          disabled={disabled}
-          AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
-          {...thumbProps}
-        />
-      )}
-      renderTrack={({ key }, { index }) =>
-        index === 0 ? (
-          <Track key={key} scale={scale} dataDomain={dataDomain} />
-        ) : null
-      }
-    />
+      onPointerDownCapture={startChange}
+      onValueChange={(bounds, { reason }) => {
+        if (reason !== 'drag' && reason !== 'track-press') {
+          startChange(); // keyboard and assistive-technology changes are committed immediately
+        }
+        handleChange(bounds);
+      }}
+      onValueCommitted={(bounds) => handleChange(bounds, true)}
+    >
+      <Slider.Control className={styles.control}>
+        <Slider.Track className={styles.track}>
+          <Track scale={scale} dataDomain={dataDomain} />
+          {[0, 1].map((index) => (
+            <Thumb
+              key={index}
+              index={index}
+              bound={index === 0 ? 'min' : 'max'}
+              isAuto={index === 0 ? isAutoMin : isAutoMax}
+              hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
+              AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
+            />
+          ))}
+        </Slider.Track>
+      </Slider.Control>
+    </Slider.Root>
   );
 }
 

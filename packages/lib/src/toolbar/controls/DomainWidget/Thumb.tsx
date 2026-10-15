@@ -1,29 +1,26 @@
-import { forwardRef, type HTMLProps } from 'react';
+import { Slider } from '@base-ui/react/slider';
 import { FiAlertCircle } from 'react-icons/fi';
 import { type IconType } from 'react-icons/lib';
 
 import { type Bound } from '../../../vis/models';
 import styles from './Thumb.module.css';
 
-interface Props extends HTMLProps<HTMLDivElement> {
+interface Props {
+  index: number;
   bound: Bound;
   isAuto: boolean;
   hasError: boolean;
-  disabled: boolean;
   AutoIcon: IconType;
 }
 
-const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { bound, isAuto, hasError, disabled, AutoIcon, ...thumbProps } = props;
+function Thumb(props: Props) {
+  const { index, bound, isAuto, hasError, AutoIcon } = props;
 
   return (
-    <div
-      ref={ref}
-      {...thumbProps}
+    <Slider.Thumb
+      index={index}
       className={styles.thumb}
       aria-label={`Change ${bound} limit`}
-      aria-disabled={disabled || undefined}
-      tabIndex={disabled ? -1 : thumbProps.tabIndex} // prevent tabbing when disabled
       data-auto={isAuto}
       data-error={hasError || undefined}
     >
@@ -33,9 +30,8 @@ const Thumb = forwardRef<HTMLDivElement, Props>((props, ref) => {
           <FiAlertCircle className={styles.icon} strokeWidth="3" />
         )}
       </div>
-    </div>
+    </Slider.Thumb>
   );
-});
+}
 
-Thumb.displayName = 'Thumb';
 export default Thumb;

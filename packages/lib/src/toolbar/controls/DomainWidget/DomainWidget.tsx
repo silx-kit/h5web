@@ -85,10 +85,10 @@ function DomainWidget(props: Props) {
             setSliderDomain(newValue);
             toggleEditing(false);
           }}
-          onAfterChange={(hasMinChanged, hasMaxChanged) => {
+          onAfterChange={(hasMinChanged, hasMaxChanged, newValue) => {
             onCustomDomainChange([
-              hasMinChanged ? sliderDomain[0] : customDomain[0],
-              hasMaxChanged ? sliderDomain[1] : customDomain[1],
+              hasMinChanged ? newValue[0] : customDomain[0],
+              hasMaxChanged ? newValue[1] : customDomain[1],
             ]);
           }}
         />

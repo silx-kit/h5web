@@ -135,3 +135,8 @@ a.btn {
     rgba(0, 0, 0, 0.1) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.1) 0px 4px 11px;
 }
+
+/* Base UI slider thumbs: focus is on visually-hidden input */
+.sliderThumb:has(:focus-visible) {
+  outline: auto;
+}

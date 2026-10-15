@@ -9,3 +9,13 @@
   --thumb-size: calc(var(--track-height) * 2.5);
   --thumb-size-auto: calc(var(--thumb-size) * 0.9);
 }
+
+.control {
+  display: flex;
+  padding: 0 calc(var(--thumb-size) / 2); /* make track end in middle of thumbs */
+  touch-action: pan-y;
+}
+
+.track {
+  display: flex;
+}

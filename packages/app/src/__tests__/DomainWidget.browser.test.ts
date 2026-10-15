@@ -1,15 +1,15 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { renderApp } from '../test-utils';
+import { dragHorizontally, renderApp } from '../test-utils';
 
 test('show slider with two thumbs and reveal popup on hover', async () => {
   const { user } = await renderApp('/nexus/NXdata');
 
   const thumbs = page.getByRole('slider');
   expect(thumbs).toHaveLength(2);
-  expect(thumbs.nth(0)).toHaveValue(20);
-  expect(thumbs.nth(1)).toHaveValue(81);
+  expect(thumbs.nth(0)).toHaveValue('20');
+  expect(thumbs.nth(1)).toHaveValue('81');
 
   const editBtn = page.getByRole('button', { name: 'Edit domain' });
   const popup = page.getByRole('dialog', {
@@ -59,9 +59,9 @@ test('show min/max and data range in popup', async () => {
 test('move thumbs with keyboard to update domain', async () => {
   const { user } = await renderApp('/nexus/NXdata');
 
-  // Hover min thumb to reveal tooltip
+  // Hover edit button to reveal tooltip
   const minThumb = page.getByRole('slider', { name: /min/ });
-  await minThumb.hover();
+  await page.getByRole('button', { name: 'Edit domain' }).hover();
 
   const minInput = page.getByLabelText('min', { exact: true });
   const maxInput = page.getByLabelText('max', { exact: true });
@@ -73,25 +73,64 @@ test('move thumbs with keyboard to update domain', async () => {
 
   // Move min thumb five steps to the left (in a single press)
   await user.type(minThumb, '{ArrowLeft>5/}'); // press key and hold for 5 keydown events, then release
-  await expect.element(minInput).toHaveValue('−2.30818e+2');
-  expect(page.getByLabelText('Min: −2.308e+2')).toBeVisible();
+  await expect.element(minInput).toHaveValue('−1.72037e+2'); // slider extent updated after each step
+  expect(page.getByLabelText('Min: −1.72e+2')).toBeVisible();
 
-  expect(minThumb).toHaveValue(20); // still at original position
+  expect(minThumb).toHaveValue('20'); // still at original position
   expect(maxInput).toHaveValue('4e+2'); // unaffected
 
   // Move max thumb ten steps to the left
   const maxThumb = page.getByRole('slider', { name: /max/ });
   await user.type(maxThumb, '{PageDown}');
-  expect(maxInput).toHaveValue('5.72182e+1');
-  expect(page.getByLabelText('Max: 5.722e+1')).toBeVisible();
+  expect(maxInput).toHaveValue('6.01623e+1');
+  expect(page.getByLabelText('Max: 6.016e+1')).toBeVisible();
 
   // Move max thumb ten steps to the right
   await user.type(maxThumb, '{PageUp}');
-  expect(maxInput).toHaveValue('3.68841e+2'); // not back to 4e+2 because 4e+2 is not exactly on a slider division
-  expect(page.getByLabelText('Max: 3.688e+2')).toBeInTheDocument();
+  expect(maxInput).toHaveValue('3.69607e+2'); // not back to 4e+2 because 4e+2 is not exactly on a slider division
+  expect(page.getByLabelText('Max: 3.696e+2')).toBeInTheDocument();
 
-  expect(maxThumb).toHaveValue(81); // still at original position
-  expect(minInput).toHaveValue('−2.30818e+2'); // unaffected
+  expect(maxThumb).toHaveValue('81'); // still at original position
+  expect(minInput).toHaveValue('−1.72037e+2'); // unaffected
+});
+
+test('move thumbs with pointer to update domain', async () => {
+  await renderApp('/nexus/NXdata');
+
+  const minThumb = page.getByRole('slider', { name: /min/ });
+  const maxThumb = page.getByRole('slider', { name: /max/ });
+  const minInput = page.getByLabelText('min', { exact: true });
+  const maxInput = page.getByLabelText('max', { exact: true });
+  const minBtn = page.getByRole('button', { name: 'Min', exact: true });
+  const maxBtn = page.getByRole('button', { name: 'Max', exact: true });
+
+  // Drag min thumb and bring it back to its initial position
+  await dragHorizontally(minThumb, [20, 0]);
+  await expect.element(minInput).toHaveValue('−9.5e+1'); // not changed
+  expect(minThumb).toHaveValue('20');
+  expect(minBtn).toHaveAttribute('aria-pressed', 'true'); // still autoscaling
+
+  // Drag min thumb past max thumb, then back a little
+  const { left: minLeft } = minThumb.element().getBoundingClientRect();
+  const { left: maxLeft } = maxThumb.element().getBoundingClientRect();
+  await dragHorizontally(minThumb, [maxLeft - minLeft + 20, maxLeft - minLeft]);
+
+  // Min thumb pushes max thumb and keeps focus
+  await expect.element(minBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(minInput).toHaveValue('3.71154e+2');
+  expect(maxInput).toHaveValue('4.81114e+3');
+  expect(minThumb).toHaveFocus();
+});
+
+test('toggle popup when clicking left edge of edit button', async () => {
+  const { user } = await renderApp('/nexus/NXdata');
+
+  const editBtn = page.getByRole('button', { name: 'Edit domain' });
+  await user.click(editBtn, { position: { x: 1, y: 10 } });
+
+  expect(editBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(page.getByRole('slider', { name: /max/ })).toHaveValue('81');
 });
 
 test('edit bounds manually', async () => {
@@ -149,23 +188,23 @@ test('clamp domain in symlog scale', async () => {
   await minInput.fill('-1e+1000');
   await page.getByRole('button', { name: 'Apply min' }).click();
   expect(minInput).toHaveValue('−8.98847e+307');
-  expect(minThumb).toHaveValue(1);
+  expect(minThumb).toHaveValue('1');
 
   await maxInput.fill('1e+1000');
   await page.getByRole('button', { name: 'Apply max' }).click();
   expect(maxInput).toHaveValue('8.98847e+307');
-  expect(maxThumb).toHaveValue(100);
+  expect(maxThumb).toHaveValue('100');
 
   await user.type(maxThumb, '{ArrowLeft}');
   expect(maxInput).toHaveValue('5.40006e+301');
-  expect(maxThumb).toHaveValue(99); // does not jump back to 81
+  expect(maxThumb).toHaveValue('99'); // does not jump back to 81
 });
 
 test('control min/max autoscale behaviour', async () => {
   const { user } = await renderApp('/nexus/NXdata');
 
   const minThumb = page.getByRole('slider', { name: /min/ });
-  await minThumb.hover();
+  await page.getByRole('button', { name: 'Edit domain' }).hover();
 
   const minBtn = page.getByRole('button', { name: 'Min', exact: true });
   const maxBtn = page.getByRole('button', { name: 'Max', exact: true });
@@ -205,23 +244,15 @@ test('handle empty domain', async () => {
   // Give min the same value as max
   await minInput.fill('400');
   await page.getByRole('button', { name: 'Apply min' }).click();
-  expect(minThumb).toHaveValue(81);
-  expect(maxThumb).toHaveValue(81);
+  expect(minThumb).toHaveValue('81');
+  expect(maxThumb).toHaveValue('81');
   expect(page.getByLabelText('Min: −∞')).toBeVisible();
   expect(page.getByLabelText('Max: +∞')).toBeVisible();
 
-  // Check that pearling works (i.e. that one thumb can push the other)
-  await user.type(maxThumb, '{ArrowLeft}');
-  expect(minInput).toHaveValue('3.12772e+2');
-  expect(maxInput).toHaveValue('3.12772e+2');
-  expect(minThumb).toHaveValue(80);
-  expect(maxThumb).toHaveValue(80);
-
-  // Ensure thumbs can be separated again
+  // Ensure thumbs can be separated again (with keyboard, thumbs don't push each other)
   await user.type(maxThumb, '{ArrowRight}');
-  expect(maxInput).toHaveValue('3.71154e+2');
-  expect(minThumb).toHaveValue(80);
-  expect(maxThumb).toHaveValue(81);
+  expect(minInput).toHaveValue('4e+2');
+  expect(maxInput).toHaveValue('4.40398e+2');
 });
 
 test('handle min > max', async () => {

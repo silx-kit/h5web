@@ -1,6 +1,5 @@
 .thumb {
-  top: 0;
-  bottom: 0;
+  composes: sliderThumb from '../../utils.module.css';
   display: flex;
   justify-content: center;
   align-items: center;
