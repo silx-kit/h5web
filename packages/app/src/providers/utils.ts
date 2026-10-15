@@ -87,20 +87,25 @@ export function toJSON(buffer: ArrayBuffer): unknown {
 }
 
 export function createBasicFetcher(
-  fetchOpts: Omit<RequestInit, 'signal'> = {},
+  fetchOpts: {
+    headers?: Record<string, string>;
+  } & Omit<RequestInit, keyof FetcherOptions> = {},
 ): Fetcher {
   return async (
     url: string,
     params: Record<string, string>,
     opts: FetcherOptions = {},
   ): Promise<ArrayBuffer> => {
-    const { abortSignal, onProgress, ...moreFetchOpts } = opts;
+    const { headers: defaultHeaders, ...moreFetchOpts } = fetchOpts;
+    const { method, headers, body, abortSignal, onProgress } = opts;
     const queryParams = new URLSearchParams(params);
 
     const response = await fetch(`${url}?${queryParams.toString()}`, {
-      ...fetchOpts,
-      ...moreFetchOpts,
+      method,
+      headers: { ...defaultHeaders, ...headers },
+      body,
       signal: abortSignal,
+      ...moreFetchOpts,
     });
 
     const tracked = trackProgress(response, onProgress);
@@ -120,12 +125,16 @@ export function createAxiosFetcher(axiosInstance: AxiosInstance): Fetcher {
     params: Record<string, string>,
     opts: FetcherOptions = {},
   ): Promise<ArrayBuffer> => {
-    const { abortSignal, onProgress } = opts;
+    const { method, headers, body, abortSignal, onProgress } = opts;
 
     try {
-      const { data } = await axiosInstance.get(url, {
+      const { data } = await axiosInstance({
+        url,
+        method,
+        headers,
         responseType: 'arraybuffer',
         params: { ...axiosInstance.defaults.params, ...params },
+        data: body,
         signal: abortSignal,
         onDownloadProgress:
           onProgress &&
