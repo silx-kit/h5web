@@ -16,7 +16,7 @@ const URL = import.meta.env.VITE_HSDS_URL;
 const USERNAME = import.meta.env.VITE_HSDS_USERNAME;
 const PASSWORD = import.meta.env.VITE_HSDS_PASSWORD;
 const SUBDOMAIN = import.meta.env.VITE_HSDS_SUBDOMAIN;
-const FILEPATH = import.meta.env.VITE_HSDS_FALLBACK_FILEPATH;
+const FALLBACK_DOMAIN = import.meta.env.VITE_HSDS_FALLBACK_DOMAIN;
 const DEVTOOLS = import.meta.env.VITE_QUERY_DEVTOOLS === 'true';
 
 function HsdsApp() {
@@ -24,10 +24,10 @@ function HsdsApp() {
   assertStr(USERNAME);
   assertStr(PASSWORD);
   assertEnvVar(SUBDOMAIN, 'VITE_HSDS_SUBDOMAIN');
-  assertEnvVar(FILEPATH, 'VITE_HSDS_FALLBACK_FILEPATH');
+  assertEnvVar(FALLBACK_DOMAIN, 'VITE_HSDS_FALLBACK_DOMAIN');
 
   const [searchParams] = useSearchParams();
-  const filepath = `${SUBDOMAIN}${searchParams.get('file') || FILEPATH}`;
+  const filepath = `${SUBDOMAIN}${searchParams.get('domain') || FALLBACK_DOMAIN}`;
 
   const fetcher = useMemo(() => {
     return USERNAME
