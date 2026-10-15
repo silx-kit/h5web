@@ -1,17 +1,16 @@
-import { isGroup } from '@h5web/shared/guards';
 import { H5T_CSET, H5T_ORDER, H5T_STR } from '@h5web/shared/h5t';
 import {
-  type ArrayShape,
   type Attribute,
   type BooleanType,
-  type Dataset,
+  type ChildEntity,
   type DType,
   type Entity,
+  EntityKind,
   type EnumType,
-  type Group,
+  type Link,
   type NumericType,
-  type ScalarShape,
   type Shape,
+  type UnresolvedEntity,
 } from '@h5web/shared/hdf5-models';
 import {
   arrayShape,
@@ -32,29 +31,20 @@ import {
 import {
   type HsdsAttribute,
   type HsdsEntity,
+  type HsdsEntityFromResponse,
+  type HsdsEntityResponse,
   type HsdsEnumType,
+  type HsdsLink,
   type HsdsNumericType,
   type HsdsShape,
   type HsdsType,
 } from './models';
 
-export function isHsdsGroup(entity: HsdsEntity): entity is HsdsEntity<Group> {
-  return isGroup(entity);
-}
-
 export function assertHsdsEntity<T extends Entity>(
   entity: T,
 ): asserts entity is HsdsEntity<T> {
-  if (!('id' in entity)) {
+  if (!('id' in entity) || !('domain' in entity)) {
     throw new Error('Expected entity to be HSDS entity');
-  }
-}
-
-export function assertHsdsDataset(
-  dataset: Dataset<ScalarShape | ArrayShape>,
-): asserts dataset is HsdsEntity<Dataset<ScalarShape | ArrayShape>> {
-  if (!('id' in dataset)) {
-    throw new Error('Expected entity to be HSDS dataset');
   }
 }
 
@@ -66,7 +56,92 @@ function assertHsdsNumericType(
   }
 }
 
-export function parseShape(shape: HsdsShape): Shape {
+export function parseEntity<R extends HsdsEntityResponse>(
+  path: string,
+  response: R,
+  hsdsLink?: HsdsLink,
+): HsdsEntityFromResponse<R>;
+
+export function parseEntity(
+  path: string,
+  response: HsdsEntityResponse | undefined,
+  hsdsLink?: HsdsLink,
+): HsdsEntity<ChildEntity> | UnresolvedEntity;
+
+export function parseEntity(
+  path: string,
+  response: HsdsEntityResponse | undefined,
+  hsdsLink?: HsdsLink,
+): HsdsEntity<ChildEntity> | UnresolvedEntity {
+  const name = path.slice(path.lastIndexOf('/') + 1);
+  const link = hsdsLink && parseLink(hsdsLink);
+
+  if (!response) {
+    return {
+      name,
+      path,
+      kind: EntityKind.Unresolved as const,
+      attributes: [],
+      link,
+    };
+  }
+
+  const { id, domain, class: kind, attributes: hsdsAttributes } = response;
+  const baseEntity = {
+    id,
+    domain,
+    name,
+    path,
+    attributes: parseAttributes(hsdsAttributes),
+    ...(link && { link }),
+  };
+
+  switch (kind) {
+    case 'group':
+      return {
+        ...baseEntity,
+        kind: EntityKind.Group,
+      };
+
+    case 'dataset': {
+      const { shape, type } = response;
+      return {
+        ...baseEntity,
+        kind: EntityKind.Dataset,
+        shape: parseShape(shape),
+        type: parseType(type),
+        rawType: type,
+      };
+    }
+    case 'datatype': {
+      const { type } = response;
+      return {
+        ...baseEntity,
+        kind: EntityKind.Datatype,
+        type: parseType(type),
+        rawType: type,
+      };
+    }
+    default:
+      throw new Error('Unknown entity class');
+  }
+}
+
+function parseLink(hsdsLink: HsdsLink): Link {
+  const { class: linkClass } = hsdsLink;
+
+  if (linkClass === 'H5L_TYPE_HARD') {
+    return { class: 'Hard' };
+  }
+
+  if (linkClass === 'H5L_TYPE_SOFT') {
+    return { class: 'Soft', path: hsdsLink.h5path };
+  }
+
+  return { class: 'External', file: hsdsLink.h5domain, path: hsdsLink.h5path };
+}
+
+function parseShape(shape: HsdsShape): Shape {
   const { class: shapeClass } = shape;
 
   if (shapeClass === 'H5S_SIMPLE') {
@@ -155,9 +230,9 @@ export function parseType(hsdsType: HsdsType): DType {
   }
 }
 
-export function parseAttributes(attrs: HsdsAttribute[]): Attribute[] {
-  return attrs.map((attr) => ({
-    name: attr.name,
+function parseAttributes(attrs: HsdsAttribute[]): Attribute[] {
+  return Object.entries(attrs).map(([name, attr]) => ({
+    name,
     shape: parseShape(attr.shape),
     type: parseType(attr.type),
   }));
