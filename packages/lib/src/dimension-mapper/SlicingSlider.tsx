@@ -17,19 +17,27 @@ interface Props {
   length: number;
   value: number;
   withControls: boolean;
+  defaultStride?: number;
   isFastSlice?: (value: number) => boolean;
   onChange: (value: number) => void;
 }
 
 function SlicingSlider(props: Props) {
-  const { dimension, length, value, withControls, isFastSlice, onChange } =
-    props;
+  const {
+    dimension,
+    length,
+    value,
+    withControls,
+    defaultStride = 1,
+    isFastSlice,
+    onChange,
+  } = props;
 
   if (length <= 0) {
     throw new Error('Expected non-empty dimension');
   }
 
-  const [stride, setStride] = useState(1);
+  const [stride, setStride] = useState(defaultStride);
   const strideInputId = useId();
 
   const [localValue, setLocalValue] = useState(value);
