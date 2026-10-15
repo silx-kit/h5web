@@ -68,7 +68,7 @@ function DimensionMapper(props: Props) {
               key={index} // eslint-disable-line react/no-array-index-key
               dimension={index}
               length={dims[index]}
-              initialValue={val}
+              value={val}
               withControls={withSlicingControls}
               isFastSlice={
                 canSliceFast &&
