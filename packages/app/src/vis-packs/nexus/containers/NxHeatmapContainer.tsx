@@ -13,6 +13,7 @@ import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import MappedComplexHeatmapVis from '../../core/complex/MappedComplexHeatmapVis';
 import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
+import { guessKeepRatio } from '../../core/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import {
@@ -22,7 +23,6 @@ import {
 } from '../hooks';
 import NxHeatmapSignalPicker from '../NxHeatmapSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { guessKeepRatio } from '../utils';
 
 function NxHeatmapContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
