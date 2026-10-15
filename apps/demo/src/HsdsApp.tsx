@@ -38,7 +38,7 @@ function HsdsApp() {
   }, []);
 
   return (
-    <HsdsProvider url={URL} filepath={filepath} fetcher={fetcher}>
+    <HsdsProvider url={URL} domain={filepath} fetcher={fetcher}>
       <App
         sidebarOpen={!searchParams.has('wide')}
         getFeedbackURL={getFeedbackURL}

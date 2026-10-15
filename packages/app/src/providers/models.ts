@@ -15,7 +15,7 @@ export type Fetcher = (
   opts?: FetcherOptions,
 ) => Promise<ArrayBuffer>;
 
-export interface FetcherOptions {
+export interface FetcherOptions extends RequestInit {
   abortSignal?: AbortSignal;
   onProgress?: OnProgress;
 }

@@ -47,24 +47,24 @@ import {
 import {
   assertHsdsDataset,
   assertHsdsEntity,
-  convertHsdsAttributes,
-  convertHsdsShape,
-  convertHsdsType,
   isHsdsGroup,
+  parseAttributes,
+  parseShape,
+  parseType,
   toExtendedJSON,
 } from './utils';
 
 export class HsdsApi extends DataProviderApi {
   private readonly entities = new Map<string, HsdsEntity<ProvidedEntity>>();
 
-  /* API compatible with hsds@1.0.1 */
+  /* API compatible with hsds@1.0.2 */
   public constructor(
     private readonly baseURL: string,
-    filepath: string,
+    private readonly domain: string,
     private readonly fetcher = createBasicFetcher(),
     private readonly _getExportURL?: DataProviderApi['getExportURL'],
   ) {
-    super(filepath);
+    super(domain);
   }
 
   public override async getEntity(
@@ -81,7 +81,7 @@ export class HsdsApi extends DataProviderApi {
         id: rootId,
         collection: 'groups',
         path: '/',
-        name: this.filepath,
+        name: this.domain,
       });
 
       this.entities.set(path, root);
@@ -185,7 +185,7 @@ export class HsdsApi extends DataProviderApi {
   private async fetchRootId(): Promise<HsdsId> {
     try {
       const buffer = await this.fetcher(`${this.baseURL}/`, {
-        domain: this.filepath,
+        domain: this.domain,
       });
 
       return (toJSON(buffer) as HsdsRootResponse).root;
@@ -197,7 +197,7 @@ export class HsdsApi extends DataProviderApi {
   private async fetchDataset(id: HsdsId): Promise<HsdsDatasetResponse> {
     try {
       const buffer = await this.fetcher(`${this.baseURL}/datasets/${id}`, {
-        domain: this.filepath,
+        domain: this.domain,
       });
 
       return toJSON(buffer) as HsdsDatasetResponse;
@@ -209,7 +209,7 @@ export class HsdsApi extends DataProviderApi {
   private async fetchDatatype(id: HsdsId): Promise<HsdsDatatypeResponse> {
     try {
       const buffer = await this.fetcher(`${this.baseURL}/datatypes/${id}`, {
-        domain: this.filepath,
+        domain: this.domain,
       });
 
       return toJSON(buffer) as HsdsDatatypeResponse;
@@ -221,7 +221,7 @@ export class HsdsApi extends DataProviderApi {
   private async fetchGroup(id: HsdsId): Promise<HsdsGroupResponse> {
     try {
       const buffer = await this.fetcher(`${this.baseURL}/groups/${id}`, {
-        domain: this.filepath,
+        domain: this.domain,
       });
 
       return toJSON(buffer) as HsdsGroupResponse;
@@ -233,7 +233,7 @@ export class HsdsApi extends DataProviderApi {
   private async fetchLinks(id: HsdsId): Promise<HsdsLink[]> {
     try {
       const buffer = await this.fetcher(`${this.baseURL}/groups/${id}/links`, {
-        domain: this.filepath,
+        domain: this.domain,
       });
 
       return (toJSON(buffer) as HsdsLinksResponse).links;
@@ -249,7 +249,7 @@ export class HsdsApi extends DataProviderApi {
     try {
       const buffer = await this.fetcher(
         `${this.baseURL}/${entityCollection}/${entityId}/attributes`,
-        { domain: this.filepath },
+        { domain: this.domain },
       );
 
       return (toJSON(buffer) as HsdsAttributesResponse).attributes;
@@ -268,7 +268,7 @@ export class HsdsApi extends DataProviderApi {
       const buffer = await this.fetcher(
         `${this.baseURL}/datasets/${entityId}/value`,
         {
-          domain: this.filepath,
+          domain: this.domain,
           ...(selection && { select: `[${selection}]` }),
         },
         { abortSignal, onProgress },
@@ -288,7 +288,7 @@ export class HsdsApi extends DataProviderApi {
     try {
       const buffer = await this.fetcher(
         `${this.baseURL}/${entityCollection}/${entityId}/attributes/${attributeName}`,
-        { domain: this.filepath },
+        { domain: this.domain },
       );
 
       return toExtendedJSON(buffer) as HsdsAttributeWithValueResponse;
@@ -358,7 +358,7 @@ export class HsdsApi extends DataProviderApi {
     const group: HsdsEntity<Group> = {
       ...baseEntity,
       kind: EntityKind.Group,
-      attributes: convertHsdsAttributes(attributes),
+      attributes: parseAttributes(attributes),
     };
 
     if (isChild) {
@@ -388,9 +388,9 @@ export class HsdsApi extends DataProviderApi {
     return {
       ...baseEntity,
       kind: EntityKind.Dataset,
-      attributes: convertHsdsAttributes(attributes),
-      shape: convertHsdsShape(shape),
-      type: convertHsdsType(type),
+      attributes: parseAttributes(attributes),
+      shape: parseShape(shape),
+      type: parseType(type),
       rawType: type,
     };
   }
@@ -405,14 +405,14 @@ export class HsdsApi extends DataProviderApi {
       ...baseEntity,
       kind: EntityKind.Datatype,
       attributes: [],
-      type: convertHsdsType(type),
+      type: parseType(type),
       rawType: type,
     };
   }
 
   private wrapHsdsError(error: unknown): Error | undefined {
     if (error instanceof FetcherError && error.status === 400) {
-      return new Error(`File not found: ${this.filepath}`, { cause: error });
+      return new Error(`Domain not found: ${this.domain}`, { cause: error });
     }
 
     return undefined;

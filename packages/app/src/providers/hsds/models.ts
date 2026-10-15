@@ -107,7 +107,9 @@ export type HsdsType =
   | HsdsVLenType
   | HsdsArrayType
   | HsdsCompoundType
-  | HsdsEnumType;
+  | HsdsEnumType
+  | HsdsReferenceType
+  | HsdsOpaqueType;
 
 export interface HsdsNumericType {
   class: 'H5T_INTEGER' | 'H5T_FLOAT';
@@ -141,4 +143,12 @@ export interface HsdsEnumType {
   class: 'H5T_ENUM';
   base: HsdsType;
   members: { name: string; value: number }[];
+}
+
+interface HsdsReferenceType {
+  class: 'H5T_REFERENCE';
+}
+
+interface HsdsOpaqueType {
+  class: 'H5T_OPAQUE';
 }
