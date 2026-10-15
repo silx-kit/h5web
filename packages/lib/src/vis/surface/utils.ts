@@ -1,6 +1,10 @@
-import { type Domain, type NumArray } from '@h5web/shared/vis-models';
+import {
+  type Domain,
+  type NumArray,
+  ScaleType,
+} from '@h5web/shared/vis-models';
 
-import { getAxisDomain } from '../utils';
+import { createScale, getAxisDomain, getIntegerTicks } from '../utils';
 
 /**
  * Coordinates of the centers of the data cells along a dimension of size `count`:
@@ -55,4 +59,17 @@ export function getFootprint(
 
   const ratio = Math.abs((xDomain[1] - xDomain[0]) / (yDomain[1] - yDomain[0]));
   return ratio >= 1 ? [1, 1 / ratio] : [ratio, 1];
+}
+
+/** Nice ticks within domain (ascending or descending); integer ticks only for axes of indices. */
+export function getAxisTicks(
+  domain: Domain,
+  count: number,
+  isIndexAxis: boolean,
+): number[] {
+  if (isIndexAxis) {
+    return getIntegerTicks(domain, count);
+  }
+
+  return createScale(ScaleType.Linear, { domain }).ticks(count);
 }

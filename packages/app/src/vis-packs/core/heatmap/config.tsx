@@ -47,6 +47,9 @@ export interface HeatmapConfig {
 
   surface: boolean;
   setSurface: (surface: boolean) => void;
+
+  heightScale: number;
+  setHeightScale: (heightScale: number) => void;
 }
 
 function createHeatmapConfigStore() {
@@ -82,6 +85,9 @@ function createHeatmapConfigStore() {
 
         surface: false,
         setSurface: (surface) => set({ surface }),
+
+        heightScale: 0.5,
+        setHeightScale: (heightScale) => set({ heightScale }),
       }),
       {
         name: 'h5web:heatmap',

@@ -26,6 +26,7 @@ import {
 
 import { getImageInteractions, SURFACE_INTERACTIONS } from '../utils';
 import { type HeatmapConfig } from './config';
+import HeightScaleSlider from './HeightScaleSlider';
 
 const COMPLEX_VIS_TYPES: ComplexHeatmapVisType[] = [
   ComplexVisType.Amplitude,
@@ -54,6 +55,7 @@ function HeatmapToolbar(props: Props) {
     flipXAxis,
     flipYAxis,
     surface,
+    heightScale,
     setCustomDomain,
     setColorMap,
     setInvertColorMap,
@@ -64,6 +66,7 @@ function HeatmapToolbar(props: Props) {
     setFlipXAxis,
     setFlipYAxis,
     setSurface,
+    setHeightScale,
   } = config;
 
   return (
@@ -137,6 +140,10 @@ function HeatmapToolbar(props: Props) {
           value={surface}
           onToggle={() => setSurface(!surface)}
         />
+      )}
+
+      {!isComplex && surface && (
+        <HeightScaleSlider value={heightScale} onChange={setHeightScale} />
       )}
 
       <ToggleBtn

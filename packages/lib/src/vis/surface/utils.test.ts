@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { getCellCenters, getCoordsDomain, getFootprint } from './utils';
+import {
+  getAxisTicks,
+  getCellCenters,
+  getCoordsDomain,
+  getFootprint,
+} from './utils';
 
 describe('getCellCenters', () => {
   it('should return indices when no axis values', () => {
@@ -39,5 +44,20 @@ describe('getFootprint', () => {
   it('should respect ratio between axis extents with longest side of 1', () => {
     expect(getFootprint([0, 40], [0, 20], true)).toEqual([1, 0.5]);
     expect(getFootprint([0, 10], [-20, 20], true)).toEqual([0.25, 1]);
+  });
+});
+
+describe('getAxisTicks', () => {
+  it('should return nice ticks within domain', () => {
+    expect(getAxisTicks([0, 1], 5, false)).toEqual([0, 0.2, 0.4, 0.6, 0.8, 1]);
+    expect(getAxisTicks([-18, 21], 4, false)).toEqual([-10, 0, 10, 20]);
+  });
+
+  it('should support descending domains', () => {
+    expect(getAxisTicks([21, -18], 4, false)).toEqual([20, 10, 0, -10]);
+  });
+
+  it('should return integer ticks for index axes', () => {
+    expect(getAxisTicks([0, 3], 10, true)).toEqual([0, 1, 2, 3]);
   });
 });

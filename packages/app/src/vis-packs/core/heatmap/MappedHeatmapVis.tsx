@@ -64,6 +64,7 @@ function MappedHeatmapVis(props: Props) {
     flipXAxis,
     flipYAxis,
     surface,
+    heightScale,
   } = config;
 
   const ignoreValue = useIgnoreValue(dataset);
@@ -121,7 +122,13 @@ function MappedHeatmapVis(props: Props) {
         )}
 
       {surface ? (
-        <SurfaceVis {...visProps} keepRatio={keepRatio} />
+        <SurfaceVis
+          {...visProps}
+          valueLabel={title}
+          keepRatio={keepRatio}
+          showGrid={showGrid}
+          heightScale={heightScale}
+        />
       ) : (
         <HeatmapVis
           {...visProps}
