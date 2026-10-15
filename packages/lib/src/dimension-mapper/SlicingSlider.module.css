@@ -29,16 +29,21 @@
   align-items: center;
   min-height: 5rem;
   cursor: pointer;
+  touch-action: pan-x;
 }
 
 .track {
+  position: relative;
   flex: 1;
+  width: var(--track-width);
   margin: calc(var(--thumb-size) / 2) 0;
-  border-left: var(--track-width) solid var(--track-color);
+  background-color: var(--track-color);
   border-radius: var(--track-width);
 }
 
 .thumb {
+  position: absolute;
+  left: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,6 +54,7 @@
   border-radius: calc(var(--thumb-size) / 2);
   height: var(--thumb-size);
   min-width: var(--thumb-size);
+  transform: translate(-50%, 50%);
   cursor: grab;
 }
 
@@ -57,6 +63,8 @@
 }
 
 .mark {
+  position: absolute;
+  left: 50%;
   width: 0.5rem;
   height: 0.5rem;
   background-color: var(
@@ -66,7 +74,7 @@
   border: 2px solid
     var(--h5w-slicingSlider-mark--borderColor, var(--track-color));
   border-radius: 50%;
-  transform: translateY(-100%);
+  transform: translate(-50%, 50%);
 }
 
 .slicingControls {
