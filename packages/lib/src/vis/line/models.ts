@@ -24,6 +24,7 @@ export interface AuxiliaryParams {
   array: NdArray<NumArray>;
   label?: string;
   errors?: NdArray<NumArray>;
+  color?: string;
   visible?: boolean;
 }
 

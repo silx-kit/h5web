@@ -3,6 +3,7 @@ import { type HTMLAttributes } from 'react';
 
 import AxisMapper from './AxisMapper';
 import styles from './DimensionMapper.module.css';
+import InertBox from './InertBox';
 import SlicingSlider from './SlicingSlider';
 
 interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -12,6 +13,9 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   withSlicingControls?: boolean;
   canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
+  multiDim?: number;
+  maxMultiDimLength?: number;
+  onMultiDimChange?: (dim: number | undefined) => void; // shows multi-plotting checkboxes when provided
 }
 
 function DimensionMapper(props: Props) {
@@ -23,6 +27,9 @@ function DimensionMapper(props: Props) {
     withSlicingControls = false,
     canSliceFast,
     onChange,
+    multiDim,
+    maxMultiDimLength = 20,
+    onMultiDimChange,
     ...htmlProps
   } = props;
   if (dims.length !== dimMapping.length) {
@@ -31,6 +38,15 @@ function DimensionMapper(props: Props) {
 
   if (dimMapping.length === 0) {
     return null;
+  }
+
+  function handleAxisChange(newMapping: DimensionMapping) {
+    onChange(newMapping);
+
+    // Reset multi-plotting dimension if it gets mapped to an axis
+    if (multiDim !== undefined && typeof newMapping[multiDim] !== 'number') {
+      onMultiDimChange?.(undefined);
+    }
   }
 
   return (
@@ -52,18 +68,22 @@ function DimensionMapper(props: Props) {
           axis="x"
           dimHints={dimHints}
           dimMapping={dimMapping}
-          onChange={onChange}
+          onChange={handleAxisChange}
         />
         <AxisMapper
           axis="y"
           dimHints={dimHints}
           dimMapping={dimMapping}
-          onChange={onChange}
+          onChange={handleAxisChange}
         />
       </div>
       <div className={styles.sliders}>
-        {dimMapping.map((val, index) =>
-          typeof val === 'number' ? (
+        {dimMapping.map((val, index) => {
+          if (typeof val !== 'number') {
+            return undefined;
+          }
+
+          const slider = (
             <SlicingSlider
               key={index} // eslint-disable-line react/no-array-index-key
               dimension={index}
@@ -84,8 +104,50 @@ function DimensionMapper(props: Props) {
                 onChange(newMapping);
               }}
             />
-          ) : undefined,
-        )}
+          );
+
+          if (!onMultiDimChange) {
+            return slider;
+          }
+
+          const isMultiDim = multiDim === index;
+          const isTooLong = dims[index] > maxMultiDimLength;
+
+          return (
+            <div
+              key={index} // eslint-disable-line react/no-array-index-key
+              className={styles.sliderWrapper}
+            >
+              {/* Disable slider of multi-plotting dimension */}
+              <InertBox className={styles.sliderBox} inert={isMultiDim}>
+                {slider}
+              </InertBox>
+              <label
+                className={styles.multiToggle}
+                title={
+                  isTooLong
+                    ? `Too many slices to plot at once (max ${maxMultiDimLength})`
+                    : `Plot all D${index} slices`
+                }
+              >
+                <input
+                  type="checkbox"
+                  aria-label={`Plot all D${index} slices`}
+                  checked={isMultiDim}
+                  disabled={
+                    (multiDim !== undefined && !isMultiDim) || // only one multi-plotting dimension at a time
+                    dims[index] <= 1 ||
+                    isTooLong
+                  }
+                  onChange={() => {
+                    onMultiDimChange(isMultiDim ? undefined : index);
+                  }}
+                />
+                all
+              </label>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
