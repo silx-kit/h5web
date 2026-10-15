@@ -1,20 +1,12 @@
-import {
-  assertDataset,
-  assertEnvVar,
-  assertGroup,
-  assertGroupWithChildren,
-  hasNonNullShape,
-} from '@h5web/shared/guards';
+import { assertEnvVar } from '@h5web/shared/guards';
 import { beforeAll, expect, test } from 'vitest';
 
-import { getValueOrError } from '../utils';
+import { getGroupSnapshot } from '../test-utils';
 import { H5GroveApi } from './h5grove-api';
 
 const SKIP = import.meta.env.VITE_H5GROVE_SKIP === 'true';
 const H5GROVE_URL = import.meta.env.VITE_H5GROVE_URL;
-const H5GROVE_TEST_FILE = import.meta.env.VITE_H5GROVE_TEST_FILE;
 assertEnvVar(H5GROVE_URL, 'VITE_H5GROVE_URL');
-assertEnvVar(H5GROVE_TEST_FILE, 'VITE_H5GROVE_TEST_FILE');
 
 beforeAll(async () => {
   try {
@@ -26,25 +18,11 @@ beforeAll(async () => {
   }
 });
 
-test.skipIf(SKIP)('test file matches snapshot', async () => {
-  const api = new H5GroveApi(H5GROVE_URL, H5GROVE_TEST_FILE);
-
-  const root = await api.getEntity('/');
-  assertGroup(root);
-  assertGroupWithChildren(root);
-
-  const children = await Promise.all(
-    root.children.map(async (child) => {
-      assertDataset(child);
-      const { name, shape, type, rawType } = child;
-
-      const value = hasNonNullShape(child)
-        ? await getValueOrError(api, child)
-        : null;
-
-      return { name, shape, type, rawType, value };
-    }),
-  );
-
-  expect(children).toMatchSnapshot();
-});
+test.skipIf(SKIP).each(['sample.h5', 'links.h5'])(
+  'test file `%s` matches snapshot',
+  async (filename) => {
+    const api = new H5GroveApi(H5GROVE_URL, filename);
+    const root = await getGroupSnapshot(api, '/');
+    expect(root.children).toMatchSnapshot();
+  },
+);

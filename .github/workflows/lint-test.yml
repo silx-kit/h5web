@@ -81,8 +81,8 @@ jobs:
       - name: Create Poetry environments 📜
         run: pnpm support:setup
 
-      - name: Create sample HDF5 files 🎨
-        run: pnpm support:sample && pnpm support:sample --hsds
+      - name: Create test files 🎨
+        run: pnpm support:files && pnpm support:files --hsds
 
       - name: Start h5grove support server 🔌
         run: pnpm support:h5grove & pnpm wait-on http://localhost:8888 -t 1m
@@ -90,7 +90,7 @@ jobs:
       - name: Start HSDS support server 🔌
         run: pnpm support:hsds & pnpm wait-on http-get://localhost:5101 -t 1m
 
-      - name: Load HSDS sample file 📥
+      - name: Load HSDS test files 📥
         run: pnpm support:hsds:load
 
       - name: Test 👓

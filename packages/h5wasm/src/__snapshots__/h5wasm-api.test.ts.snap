@@ -1,17 +1,338 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`test file matches snapshot 1`] = `
+exports[`test file \`links.h5\` matches snapshot 1`] = `
 [
   {
+    "children": [
+      {
+        "kind": "dataset",
+        "name": "dataset",
+        "path": "/group/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
+      },
+      {
+        "kind": "dataset",
+        "name": "virtual",
+        "path": "/group/virtual",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            2,
+            1,
+            1,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
+        "virtualSources": [
+          {
+            "file": ".",
+            "path": "/group/dataset",
+          },
+          {
+            "file": ".",
+            "path": "/group/dataset",
+          },
+        ],
+      },
+    ],
+    "kind": "group",
+    "name": "group",
+    "path": "/group",
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "kind": "dataset",
+            "name": "dataset",
+            "path": "/hard/group/dataset",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                1,
+                2,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+          },
+          {
+            "kind": "dataset",
+            "name": "virtual",
+            "path": "/hard/group/virtual",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                2,
+                1,
+                1,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+            "virtualSources": [
+              {
+                "file": ".",
+                "path": "/group/dataset",
+              },
+              {
+                "file": ".",
+                "path": "/group/dataset",
+              },
+            ],
+          },
+        ],
+        "kind": "group",
+        "name": "group",
+        "path": "/hard/group",
+      },
+      {
+        "kind": "dataset",
+        "name": "dataset",
+        "path": "/hard/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
+      },
+    ],
+    "kind": "group",
+    "name": "hard",
+    "path": "/hard",
+  },
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "kind": "dataset",
+            "name": "dataset",
+            "path": "/soft/group/dataset",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                1,
+                2,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+          },
+          {
+            "kind": "dataset",
+            "name": "virtual",
+            "path": "/soft/group/virtual",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                2,
+                1,
+                1,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": BigInt64Array {
+              "0": 0n,
+              "1": 1n,
+            },
+            "virtualSources": [
+              {
+                "file": ".",
+                "path": "/group/dataset",
+              },
+              {
+                "file": ".",
+                "path": "/group/dataset",
+              },
+            ],
+          },
+        ],
+        "kind": "group",
+        "name": "group",
+        "path": "/soft/group",
+      },
+      {
+        "kind": "dataset",
+        "name": "dataset",
+        "path": "/soft/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
+      },
+      {
+        "kind": "dataset",
+        "name": "relative",
+        "path": "/soft/relative",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": BigInt64Array {
+          "0": 0n,
+          "1": 1n,
+        },
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "Soft",
+          "path": "foo",
+        },
+        "name": "broken",
+        "path": "/soft/broken",
+      },
+    ],
+    "kind": "group",
+    "name": "soft",
+    "path": "/soft",
+  },
+  {
+    "children": [
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "links.h5",
+          "path": "/group",
+        },
+        "name": "group_self",
+        "path": "/external/group_self",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "sample.h5",
+          "path": "/int8_2D",
+        },
+        "name": "dataset",
+        "path": "/external/dataset",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "foo.h5",
+          "path": "/foo",
+        },
+        "name": "broken_file",
+        "path": "/external/broken_file",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "sample.h5",
+          "path": "/foo",
+        },
+        "name": "broken_path",
+        "path": "/external/broken_path",
+      },
+    ],
+    "kind": "group",
+    "name": "external",
+    "path": "/external",
+  },
+]
+`;
+
+exports[`test file \`sample.h5\` matches snapshot 1`] = `
+[
+  {
+    "kind": "dataset",
     "name": "int8_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 1,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -25,15 +346,9 @@ exports[`test file matches snapshot 1`] = `
     "value": -128,
   },
   {
+    "kind": "dataset",
     "name": "int8_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 1,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int8_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -57,15 +372,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "int16_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 2,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int16_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -79,15 +388,9 @@ exports[`test file matches snapshot 1`] = `
     "value": -32768,
   },
   {
+    "kind": "dataset",
     "name": "int16_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 2,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int16_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -111,15 +414,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "int32_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 4,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -133,15 +430,9 @@ exports[`test file matches snapshot 1`] = `
     "value": -2147483648,
   },
   {
+    "kind": "dataset",
     "name": "int32_BE_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "signed": true,
-      "size": 4,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int32_BE_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -155,15 +446,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "kind": "dataset",
     "name": "int32_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 4,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int32_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -187,15 +472,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "int64_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 8,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -209,15 +488,9 @@ exports[`test file matches snapshot 1`] = `
     "value": -9223372036854775808n,
   },
   {
+    "kind": "dataset",
     "name": "int64_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 8,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/int64_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -241,15 +514,9 @@ exports[`test file matches snapshot 1`] = `
     },
   },
   {
+    "kind": "dataset",
     "name": "uint8_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 1,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -263,15 +530,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 255,
   },
   {
+    "kind": "dataset",
     "name": "uint8_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 1,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint8_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -295,15 +556,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "uint16_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 2,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint16_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -317,15 +572,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 65535,
   },
   {
+    "kind": "dataset",
     "name": "uint16_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 2,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint16_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -349,15 +598,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "uint32_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -371,15 +614,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 4294967295,
   },
   {
+    "kind": "dataset",
     "name": "uint32_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "total_size": 6,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint32_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -403,15 +640,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "uint64_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -425,15 +656,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 18446744073709551615n,
   },
   {
+    "kind": "dataset",
     "name": "uint64_3D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 8,
-      "type": 0,
-      "vlen": false,
-    },
+    "path": "/uint64_3D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -459,61 +684,12 @@ exports[`test file matches snapshot 1`] = `
       "7": 18446744073709551615n,
     },
   },
+  "Float16 not supported",
+  "Float16 not supported",
   {
-    "name": "float16_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 2,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Scalar",
-      "dims": [],
-    },
-    "type": {
-      "class": "Float",
-      "endianness": "little-endian",
-      "size": 16,
-    },
-    "value": [Error: Float16 not supported],
-  },
-  {
-    "name": "float16_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 2,
-      "total_size": 6,
-      "type": 1,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Array",
-      "dims": [
-        2,
-        3,
-      ],
-    },
-    "type": {
-      "class": "Float",
-      "endianness": "little-endian",
-      "size": 16,
-    },
-    "value": [Error: Float16 not supported],
-  },
-  {
+    "kind": "dataset",
     "name": "float32_empty",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "total_size": 0,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float32_empty",
     "shape": {
       "class": "Null",
     },
@@ -525,15 +701,9 @@ exports[`test file matches snapshot 1`] = `
     "value": null,
   },
   {
+    "kind": "dataset",
     "name": "float32_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -546,15 +716,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 1.1754943508222875e-38,
   },
   {
+    "kind": "dataset",
     "name": "float32_BE_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "signed": false,
-      "size": 4,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float32_BE_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -567,15 +731,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "kind": "dataset",
     "name": "float32_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "total_size": 6,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float32_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -598,15 +756,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "float64_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -619,15 +771,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 2.2250738585072014e-308,
   },
   {
+    "kind": "dataset",
     "name": "float64_nan_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_nan_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -640,15 +786,9 @@ exports[`test file matches snapshot 1`] = `
     "value": NaN,
   },
   {
+    "kind": "dataset",
     "name": "float64_inf_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_inf_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -661,15 +801,9 @@ exports[`test file matches snapshot 1`] = `
     "value": Infinity,
   },
   {
+    "kind": "dataset",
     "name": "float64_ninf_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_ninf_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -682,15 +816,9 @@ exports[`test file matches snapshot 1`] = `
     "value": -Infinity,
   },
   {
+    "kind": "dataset",
     "name": "float64_zero_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_zero_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -703,15 +831,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "kind": "dataset",
     "name": "float64_nzero_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_nzero_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -724,15 +846,9 @@ exports[`test file matches snapshot 1`] = `
     "value": -0,
   },
   {
+    "kind": "dataset",
     "name": "float64_pi_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_pi_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -745,15 +861,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 3.141592653589793,
   },
   {
+    "kind": "dataset",
     "name": "float64_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 15,
-      "type": 1,
-      "vlen": false,
-    },
+    "path": "/float64_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -784,63 +894,12 @@ exports[`test file matches snapshot 1`] = `
       10,
     ],
   },
+  "Float128 not supported",
+  "Float128 not supported",
   {
-    "name": "float128_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 16,
-      "total_size": 1,
-      "type": 1,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Scalar",
-      "dims": [],
-    },
-    "type": {
-      "class": "Float",
-      "endianness": "little-endian",
-      "size": 128,
-    },
-    "value": [Error: Float128 not supported],
-  },
-  {
-    "name": "float128_2D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 16,
-      "total_size": 6,
-      "type": 1,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Array",
-      "dims": [
-        2,
-        3,
-      ],
-    },
-    "type": {
-      "class": "Float",
-      "endianness": "little-endian",
-      "size": 128,
-    },
-    "value": [Error: Float128 not supported],
-  },
-  {
+    "kind": "dataset",
     "name": "ascii_vlen_empty",
-    "rawType": {
-      "cset": 0,
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "strpad": 0,
-      "total_size": 0,
-      "type": 3,
-      "vlen": true,
-    },
+    "path": "/ascii_vlen_empty",
     "shape": {
       "class": "Null",
     },
@@ -852,17 +911,9 @@ exports[`test file matches snapshot 1`] = `
     "value": null,
   },
   {
+    "kind": "dataset",
     "name": "ascii_vlen_scalar",
-    "rawType": {
-      "cset": 0,
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "strpad": 0,
-      "total_size": 1,
-      "type": 3,
-      "vlen": true,
-    },
+    "path": "/ascii_vlen_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -875,17 +926,9 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "kind": "dataset",
     "name": "ascii_fixed_scalar",
-    "rawType": {
-      "cset": 0,
-      "littleEndian": false,
-      "signed": false,
-      "size": 9,
-      "strpad": 1,
-      "total_size": 1,
-      "type": 3,
-      "vlen": false,
-    },
+    "path": "/ascii_fixed_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -899,17 +942,9 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "kind": "dataset",
     "name": "utf8_vlen_scalar",
-    "rawType": {
-      "cset": 1,
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "strpad": 0,
-      "total_size": 1,
-      "type": 3,
-      "vlen": true,
-    },
+    "path": "/utf8_vlen_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -922,17 +957,9 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "kind": "dataset",
     "name": "utf8_vlen_1D",
-    "rawType": {
-      "cset": 1,
-      "littleEndian": true,
-      "signed": false,
-      "size": 4,
-      "strpad": 0,
-      "total_size": 3,
-      "type": 3,
-      "vlen": true,
-    },
+    "path": "/utf8_vlen_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -951,17 +978,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "utf8_fixed_scalar",
-    "rawType": {
-      "cset": 1,
-      "littleEndian": false,
-      "signed": false,
-      "size": 9,
-      "strpad": 1,
-      "total_size": 1,
-      "type": 3,
-      "vlen": false,
-    },
+    "path": "/utf8_fixed_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -975,15 +994,9 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "kind": "dataset",
     "name": "byte_string_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "signed": false,
-      "size": 3,
-      "total_size": 1,
-      "type": 5,
-      "vlen": false,
-    },
+    "path": "/byte_string_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -999,15 +1012,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "byte_string_1D",
-    "rawType": {
-      "littleEndian": false,
-      "signed": false,
-      "size": 1,
-      "total_size": 3,
-      "type": 5,
-      "vlen": false,
-    },
+    "path": "/byte_string_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1025,15 +1032,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "datetime64_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 5,
-      "vlen": false,
-    },
+    "path": "/datetime64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1054,15 +1055,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "datetime64_not-a-time_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 5,
-      "vlen": false,
-    },
+    "path": "/datetime64_not-a-time_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1083,40 +1078,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "complex64_scalar",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "i",
-            "offset": 4,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/complex64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1140,40 +1104,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "complex64_2D",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "i",
-            "offset": 4,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 4,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/complex64_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1214,40 +1147,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "complex128_scalar",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "i",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 16,
-      "total_size": 1,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/complex128_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1271,40 +1173,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "complex128_BE_scalar",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": false,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": false,
-            "name": "i",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": false,
-      "signed": false,
-      "size": 16,
-      "total_size": 1,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/complex128_BE_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1328,40 +1199,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "complex128_2D",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "i",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 16,
-      "total_size": 4,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/complex128_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1401,164 +1241,12 @@ exports[`test file matches snapshot 1`] = `
       ],
     ],
   },
+  "Float128 not supported",
+  "Float128 not supported",
   {
-    "name": "complex256_scalar",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 16,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "i",
-            "offset": 16,
-            "shape": [],
-            "signed": false,
-            "size": 16,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 32,
-      "total_size": 1,
-      "type": 6,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Scalar",
-      "dims": [],
-    },
-    "type": {
-      "class": "Complex",
-      "imagType": {
-        "class": "Float",
-        "endianness": "little-endian",
-        "size": 128,
-      },
-      "realType": {
-        "class": "Float",
-        "endianness": "little-endian",
-        "size": 128,
-      },
-    },
-    "value": [Error: Float128 not supported],
-  },
-  {
-    "name": "complex256_2D",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "r",
-            "offset": 0,
-            "shape": [],
-            "signed": false,
-            "size": 16,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "i",
-            "offset": 16,
-            "shape": [],
-            "signed": false,
-            "size": 16,
-            "type": 1,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 2,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 32,
-      "total_size": 4,
-      "type": 6,
-      "vlen": false,
-    },
-    "shape": {
-      "class": "Array",
-      "dims": [
-        2,
-        2,
-      ],
-    },
-    "type": {
-      "class": "Complex",
-      "imagType": {
-        "class": "Float",
-        "endianness": "little-endian",
-        "size": 128,
-      },
-      "realType": {
-        "class": "Float",
-        "endianness": "little-endian",
-        "size": 128,
-      },
-    },
-    "value": [Error: Float128 not supported],
-  },
-  {
+    "kind": "dataset",
     "name": "compound_scalar",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "bigint",
-            "offset": 0,
-            "shape": [],
-            "signed": true,
-            "size": 8,
-            "type": 0,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "double",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "cset": 1,
-            "littleEndian": true,
-            "name": "utf-8",
-            "offset": 16,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "strpad": 0,
-            "type": 3,
-            "vlen": true,
-          },
-        ],
-        "nmembers": 3,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 20,
-      "total_size": 1,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/compound_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1591,60 +1279,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "compound_num_keys_scalar",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "1",
-            "offset": 0,
-            "shape": [],
-            "signed": true,
-            "size": 8,
-            "type": 0,
-            "vlen": false,
-          },
-          {
-            "cset": 1,
-            "littleEndian": true,
-            "name": "2",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "strpad": 0,
-            "type": 3,
-            "vlen": true,
-          },
-          {
-            "enum_type": {
-              "members": {
-                "FALSE": 0,
-                "TRUE": 1,
-              },
-              "nmembers": 2,
-              "type": 0,
-            },
-            "littleEndian": true,
-            "name": "0",
-            "offset": 12,
-            "shape": [],
-            "signed": true,
-            "size": 1,
-            "type": 8,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 3,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 13,
-      "total_size": 1,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/compound_num_keys_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1681,52 +1318,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "compound_1D",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "littleEndian": true,
-            "name": "bigint",
-            "offset": 0,
-            "shape": [],
-            "signed": true,
-            "size": 8,
-            "type": 0,
-            "vlen": false,
-          },
-          {
-            "littleEndian": true,
-            "name": "double",
-            "offset": 8,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 1,
-            "vlen": false,
-          },
-          {
-            "cset": 1,
-            "littleEndian": true,
-            "name": "utf-8",
-            "offset": 16,
-            "shape": [],
-            "signed": false,
-            "size": 4,
-            "strpad": 0,
-            "type": 3,
-            "vlen": true,
-          },
-        ],
-        "nmembers": 3,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 20,
-      "total_size": 3,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/compound_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1773,136 +1367,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "compound_mixed_1D",
-    "rawType": {
-      "compound_type": {
-        "members": [
-          {
-            "enum_type": {
-              "members": {
-                "FALSE": 0,
-                "TRUE": 1,
-              },
-              "nmembers": 2,
-              "type": 0,
-            },
-            "littleEndian": true,
-            "name": "bool",
-            "offset": 0,
-            "shape": [],
-            "signed": true,
-            "size": 1,
-            "type": 8,
-            "vlen": false,
-          },
-          {
-            "array_type": {
-              "littleEndian": true,
-              "shape": [
-                2,
-              ],
-              "signed": false,
-              "size": 4,
-              "total_size": 2,
-              "type": 1,
-              "vlen": false,
-            },
-            "littleEndian": true,
-            "name": "arr",
-            "offset": 1,
-            "shape": [],
-            "signed": false,
-            "size": 8,
-            "type": 10,
-            "vlen": false,
-          },
-          {
-            "compound_type": {
-              "members": [
-                {
-                  "compound_type": {
-                    "members": [
-                      {
-                        "littleEndian": true,
-                        "name": "r",
-                        "offset": 0,
-                        "shape": [],
-                        "signed": false,
-                        "size": 4,
-                        "type": 1,
-                        "vlen": false,
-                      },
-                      {
-                        "littleEndian": true,
-                        "name": "i",
-                        "offset": 4,
-                        "shape": [],
-                        "signed": false,
-                        "size": 4,
-                        "type": 1,
-                        "vlen": false,
-                      },
-                    ],
-                    "nmembers": 2,
-                  },
-                  "littleEndian": true,
-                  "name": "cplx",
-                  "offset": 0,
-                  "shape": [],
-                  "signed": false,
-                  "size": 8,
-                  "type": 6,
-                  "vlen": false,
-                },
-                {
-                  "littleEndian": true,
-                  "name": "bigint",
-                  "offset": 8,
-                  "shape": [],
-                  "signed": true,
-                  "size": 8,
-                  "type": 0,
-                  "vlen": false,
-                },
-                {
-                  "littleEndian": true,
-                  "name": "vlen",
-                  "offset": 16,
-                  "shape": [],
-                  "signed": false,
-                  "size": 8,
-                  "type": 9,
-                  "vlen": false,
-                  "vlen_type": {
-                    "littleEndian": true,
-                    "signed": false,
-                    "size": 8,
-                    "type": 0,
-                    "vlen": false,
-                  },
-                },
-              ],
-              "nmembers": 3,
-            },
-            "littleEndian": true,
-            "name": "nested",
-            "offset": 9,
-            "shape": [],
-            "signed": false,
-            "size": 24,
-            "type": 6,
-            "vlen": false,
-          },
-        ],
-        "nmembers": 3,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 33,
-      "total_size": 2,
-      "type": 6,
-      "vlen": false,
-    },
+    "path": "/compound_mixed_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -2003,16 +1470,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "reference_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "ref_type": "object",
-      "signed": false,
-      "size": 8,
-      "total_size": 1,
-      "type": 7,
-      "vlen": false,
-    },
+    "path": "/reference_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2023,16 +1483,9 @@ exports[`test file matches snapshot 1`] = `
     "value": "Uint8Array (unstable)",
   },
   {
+    "kind": "dataset",
     "name": "reference_region_scalar",
-    "rawType": {
-      "littleEndian": false,
-      "ref_type": "region",
-      "signed": false,
-      "size": 12,
-      "total_size": 1,
-      "type": 7,
-      "vlen": false,
-    },
+    "path": "/reference_region_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2043,23 +1496,9 @@ exports[`test file matches snapshot 1`] = `
     "value": "Uint8Array (unstable)",
   },
   {
+    "kind": "dataset",
     "name": "bool_empty",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "FALSE": 0,
-          "TRUE": 1,
-        },
-        "nmembers": 2,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 1,
-      "total_size": 0,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/bool_empty",
     "shape": {
       "class": "Null",
     },
@@ -2075,23 +1514,9 @@ exports[`test file matches snapshot 1`] = `
     "value": null,
   },
   {
+    "kind": "dataset",
     "name": "bool_false_scalar",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "FALSE": 0,
-          "TRUE": 1,
-        },
-        "nmembers": 2,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": true,
-      "size": 1,
-      "total_size": 1,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/bool_false_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2108,23 +1533,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "kind": "dataset",
     "name": "bool_true_scalar",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "FALSE": 0,
-          "TRUE": 1,
-        },
-        "nmembers": 2,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": true,
-      "size": 1,
-      "total_size": 1,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/bool_true_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2141,23 +1552,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 1,
   },
   {
+    "kind": "dataset",
     "name": "bool_2D",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "FALSE": 0,
-          "TRUE": 1,
-        },
-        "nmembers": 2,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": true,
-      "size": 1,
-      "total_size": 8,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/bool_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -2186,23 +1583,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "enum_uint8_scalar",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "A": 0,
-          "B": 1,
-        },
-        "nmembers": 2,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 1,
-      "total_size": 1,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/enum_uint8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2223,23 +1606,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 1,
   },
   {
+    "kind": "dataset",
     "name": "enum_int32_scalar",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "A": 256,
-          "B": 257,
-        },
-        "nmembers": 2,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": true,
-      "size": 4,
-      "total_size": 1,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/enum_int32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2260,24 +1629,9 @@ exports[`test file matches snapshot 1`] = `
     "value": 256,
   },
   {
+    "kind": "dataset",
     "name": "enum_1D",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "A": 0,
-          "B": 1,
-          "C": 2,
-        },
-        "nmembers": 3,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 1,
-      "total_size": 10,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/enum_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -2312,24 +1666,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "enum_2D",
-    "rawType": {
-      "enum_type": {
-        "members": {
-          "A": 0,
-          "B": 1,
-          "C": 2,
-        },
-        "nmembers": 3,
-        "type": 0,
-      },
-      "littleEndian": true,
-      "signed": false,
-      "size": 1,
-      "total_size": 20,
-      "type": 8,
-      "vlen": false,
-    },
+    "path": "/enum_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -2375,22 +1714,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "vlen_int8_scalar",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 8,
-      "total_size": 1,
-      "type": 9,
-      "vlen": false,
-      "vlen_type": {
-        "littleEndian": true,
-        "signed": true,
-        "size": 1,
-        "type": 0,
-        "vlen": false,
-      },
-    },
+    "path": "/vlen_int8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -2410,22 +1736,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "vlen_float32_1D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 2,
-      "type": 9,
-      "vlen": false,
-      "vlen_type": {
-        "littleEndian": true,
-        "signed": false,
-        "size": 4,
-        "type": 1,
-        "vlen": false,
-      },
-    },
+    "path": "/vlen_float32_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -2448,22 +1761,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "vlen_int64_1D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": true,
-      "size": 8,
-      "total_size": 3,
-      "type": 9,
-      "vlen": false,
-      "vlen_type": {
-        "littleEndian": true,
-        "signed": true,
-        "size": 8,
-        "type": 0,
-        "vlen": false,
-      },
-    },
+    "path": "/vlen_int64_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -2495,24 +1795,9 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "kind": "dataset",
     "name": "vlen_utf8_1D",
-    "rawType": {
-      "littleEndian": true,
-      "signed": false,
-      "size": 8,
-      "total_size": 3,
-      "type": 9,
-      "vlen": false,
-      "vlen_type": {
-        "cset": 1,
-        "littleEndian": true,
-        "signed": false,
-        "size": 4,
-        "strpad": 0,
-        "type": 3,
-        "vlen": true,
-      },
-    },
+    "path": "/vlen_utf8_1D",
     "shape": {
       "class": "Array",
       "dims": [

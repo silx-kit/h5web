@@ -202,7 +202,7 @@ export {
 // Undocumented
 export { default as DataProvider } from './providers/DataProvider';
 export { DataProviderApi } from './providers/api';
-export { getValueOrError } from './providers/utils';
+export { getGroupSnapshot } from './providers/test-utils';
 export { useValuesInCache } from './hooks';
 export { arrayDef, scalarDef, parseShape } from '@h5web/shared/hdf5-utils';
 

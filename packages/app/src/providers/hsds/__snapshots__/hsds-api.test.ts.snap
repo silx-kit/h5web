@@ -1,15 +1,254 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`test file matches snapshot 1`] = `
+exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
 [
   {
+    "children": [
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "foo.h5",
+          "path": "/foo",
+        },
+        "name": "broken_file",
+        "path": "/external/broken_file",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "/sample-hsds.h5",
+          "path": "/foo",
+        },
+        "name": "broken_path",
+        "path": "/external/broken_path",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "/sample-hsds.h5",
+          "path": "/int8_2D",
+        },
+        "name": "dataset",
+        "path": "/external/dataset",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "External",
+          "file": "/links-hsds.h5",
+          "path": "/group",
+        },
+        "name": "group_self",
+        "path": "/external/group_self",
+      },
+    ],
+    "collection": "groups",
+    "kind": "group",
+    "name": "external",
+    "path": "/external",
+  },
+  {
+    "children": [
+      {
+        "collection": "datasets",
+        "kind": "dataset",
+        "name": "dataset",
+        "path": "/group/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": [
+          0,
+          1,
+        ],
+      },
+      {
+        "collection": "datasets",
+        "kind": "dataset",
+        "name": "virtual",
+        "path": "/group/virtual",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            2,
+            1,
+            1,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": [
+          0,
+          1,
+        ],
+      },
+    ],
+    "collection": "groups",
+    "kind": "group",
+    "name": "group",
+    "path": "/group",
+  },
+  {
+    "children": [
+      {
+        "collection": "datasets",
+        "kind": "dataset",
+        "name": "dataset",
+        "path": "/hard/dataset",
+        "shape": {
+          "class": "Array",
+          "dims": [
+            1,
+            2,
+          ],
+        },
+        "type": {
+          "class": "Integer",
+          "endianness": "little-endian",
+          "signed": true,
+          "size": 64,
+        },
+        "value": [
+          0,
+          1,
+        ],
+      },
+      {
+        "children": [
+          {
+            "collection": "datasets",
+            "kind": "dataset",
+            "name": "dataset",
+            "path": "/hard/group/dataset",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                1,
+                2,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": [
+              0,
+              1,
+            ],
+          },
+          {
+            "collection": "datasets",
+            "kind": "dataset",
+            "name": "virtual",
+            "path": "/hard/group/virtual",
+            "shape": {
+              "class": "Array",
+              "dims": [
+                2,
+                1,
+                1,
+              ],
+            },
+            "type": {
+              "class": "Integer",
+              "endianness": "little-endian",
+              "signed": true,
+              "size": 64,
+            },
+            "value": [
+              0,
+              1,
+            ],
+          },
+        ],
+        "collection": "groups",
+        "kind": "group",
+        "name": "group",
+        "path": "/hard/group",
+      },
+    ],
+    "collection": "groups",
+    "kind": "group",
+    "name": "hard",
+    "path": "/hard",
+  },
+  {
+    "children": [
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "Soft",
+          "file": undefined,
+          "path": "foo",
+        },
+        "name": "broken",
+        "path": "/soft/broken",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "Soft",
+          "file": undefined,
+          "path": "/group/dataset",
+        },
+        "name": "dataset",
+        "path": "/soft/dataset",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "Soft",
+          "file": undefined,
+          "path": "/group",
+        },
+        "name": "group",
+        "path": "/soft/group",
+      },
+      {
+        "kind": "unresolved",
+        "link": {
+          "class": "Soft",
+          "file": undefined,
+          "path": "dataset",
+        },
+        "name": "relative",
+        "path": "/soft/relative",
+      },
+    ],
+    "collection": "groups",
+    "kind": "group",
+    "name": "soft",
+    "path": "/soft",
+  },
+]
+`;
+
+exports[`test file \`/sample-hsds.h5\` matches snapshot 1`] = `
+[
+  {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "ascii_fixed_scalar",
-    "rawType": {
-      "charSet": "H5T_CSET_ASCII",
-      "class": "H5T_STRING",
-      "length": 9,
-      "strPad": "H5T_STR_NULLPAD",
-    },
+    "path": "/ascii_fixed_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -23,13 +262,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "ascii_vlen_empty",
-    "rawType": {
-      "charSet": "H5T_CSET_ASCII",
-      "class": "H5T_STRING",
-      "length": "H5T_VARIABLE",
-      "strPad": "H5T_STR_NULLTERM",
-    },
+    "path": "/ascii_vlen_empty",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -42,13 +278,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "ascii_vlen_scalar",
-    "rawType": {
-      "charSet": "H5T_CSET_ASCII",
-      "class": "H5T_STRING",
-      "length": "H5T_VARIABLE",
-      "strPad": "H5T_STR_NULLTERM",
-    },
+    "path": "/ascii_vlen_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -61,24 +294,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "bool_2D",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "FALSE",
-          "value": 0,
-        },
-        {
-          "name": "TRUE",
-          "value": 1,
-        },
-      ],
-    },
+    "path": "/bool_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -107,24 +326,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "bool_empty",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "FALSE",
-          "value": 0,
-        },
-        {
-          "name": "TRUE",
-          "value": 1,
-        },
-      ],
-    },
+    "path": "/bool_empty",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -141,24 +346,10 @@ exports[`test file matches snapshot 1`] = `
     "value": false,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "bool_false_scalar",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "FALSE",
-          "value": 0,
-        },
-        {
-          "name": "TRUE",
-          "value": 1,
-        },
-      ],
-    },
+    "path": "/bool_false_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -175,24 +366,10 @@ exports[`test file matches snapshot 1`] = `
     "value": false,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "bool_true_scalar",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "FALSE",
-          "value": 0,
-        },
-        {
-          "name": "TRUE",
-          "value": 1,
-        },
-      ],
-    },
+    "path": "/bool_true_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -209,11 +386,10 @@ exports[`test file matches snapshot 1`] = `
     "value": true,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "byte_string_1D",
-    "rawType": {
-      "class": "H5T_OPAQUE",
-      "size": 1,
-    },
+    "path": "/byte_string_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -230,11 +406,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "byte_string_scalar",
-    "rawType": {
-      "class": "H5T_OPAQUE",
-      "size": 3,
-    },
+    "path": "/byte_string_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -245,26 +420,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "ABEi",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "complex128_2D",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "r",
-          "type": {
-            "base": "H5T_IEEE_F64LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "i",
-          "type": {
-            "base": "H5T_IEEE_F64LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-      ],
-    },
+    "path": "/complex128_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -305,26 +464,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "complex128_BE_scalar",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "r",
-          "type": {
-            "base": "H5T_IEEE_F64BE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "i",
-          "type": {
-            "base": "H5T_IEEE_F64BE",
-            "class": "H5T_FLOAT",
-          },
-        },
-      ],
-    },
+    "path": "/complex128_BE_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -348,26 +491,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "complex128_scalar",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "r",
-          "type": {
-            "base": "H5T_IEEE_F64LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "i",
-          "type": {
-            "base": "H5T_IEEE_F64LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-      ],
-    },
+    "path": "/complex128_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -391,26 +518,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "complex64_2D",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "r",
-          "type": {
-            "base": "H5T_IEEE_F32LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "i",
-          "type": {
-            "base": "H5T_IEEE_F32LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-      ],
-    },
+    "path": "/complex64_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -451,26 +562,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "complex64_scalar",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "r",
-          "type": {
-            "base": "H5T_IEEE_F32LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "i",
-          "type": {
-            "base": "H5T_IEEE_F32LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-      ],
-    },
+    "path": "/complex64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -494,35 +589,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "compound_1D",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "bigint",
-          "type": {
-            "base": "H5T_STD_I64LE",
-            "class": "H5T_INTEGER",
-          },
-        },
-        {
-          "name": "double",
-          "type": {
-            "base": "H5T_IEEE_F64LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "utf-8",
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM",
-          },
-        },
-      ],
-    },
+    "path": "/compound_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -569,48 +639,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "compound_num_keys_scalar",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "1",
-          "type": {
-            "base": "H5T_STD_I64LE",
-            "class": "H5T_INTEGER",
-          },
-        },
-        {
-          "name": "2",
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM",
-          },
-        },
-        {
-          "name": "0",
-          "type": {
-            "base": {
-              "base": "H5T_STD_I8LE",
-              "class": "H5T_INTEGER",
-            },
-            "class": "H5T_ENUM",
-            "members": [
-              {
-                "name": "FALSE",
-                "value": 0,
-              },
-              {
-                "name": "TRUE",
-                "value": 1,
-              },
-            ],
-          },
-        },
-      ],
-    },
+    "path": "/compound_num_keys_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -647,35 +679,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "compound_scalar",
-    "rawType": {
-      "class": "H5T_COMPOUND",
-      "fields": [
-        {
-          "name": "bigint",
-          "type": {
-            "base": "H5T_STD_I64LE",
-            "class": "H5T_INTEGER",
-          },
-        },
-        {
-          "name": "double",
-          "type": {
-            "base": "H5T_IEEE_F64LE",
-            "class": "H5T_FLOAT",
-          },
-        },
-        {
-          "name": "utf-8",
-          "type": {
-            "charSet": "H5T_CSET_UTF8",
-            "class": "H5T_STRING",
-            "length": "H5T_VARIABLE",
-            "strPad": "H5T_STR_NULLTERM",
-          },
-        },
-      ],
-    },
+    "path": "/compound_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -708,11 +715,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "datetime64_not-a-time_scalar",
-    "rawType": {
-      "class": "H5T_OPAQUE",
-      "size": 8,
-    },
+    "path": "/datetime64_not-a-time_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -723,11 +729,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "AAAAAAAAAIA=",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "datetime64_scalar",
-    "rawType": {
-      "class": "H5T_OPAQUE",
-      "size": 8,
-    },
+    "path": "/datetime64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -738,28 +743,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "lrGHXQAAAAA=",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "enum_1D",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_U8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "A",
-          "value": 0,
-        },
-        {
-          "name": "B",
-          "value": 1,
-        },
-        {
-          "name": "C",
-          "value": 2,
-        },
-      ],
-    },
+    "path": "/enum_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -794,28 +781,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "enum_2D",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_U8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "A",
-          "value": 0,
-        },
-        {
-          "name": "B",
-          "value": 1,
-        },
-        {
-          "name": "C",
-          "value": 2,
-        },
-      ],
-    },
+    "path": "/enum_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -861,24 +830,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "enum_int32_scalar",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I32LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "A",
-          "value": 256,
-        },
-        {
-          "name": "B",
-          "value": 257,
-        },
-      ],
-    },
+    "path": "/enum_int32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -899,24 +854,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 256,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "enum_uint8_scalar",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_U8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_ENUM",
-      "members": [
-        {
-          "name": "A",
-          "value": 0,
-        },
-        {
-          "name": "B",
-          "value": 1,
-        },
-      ],
-    },
+    "path": "/enum_uint8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -937,11 +878,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 1,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float16_2D",
-    "rawType": {
-      "base": "H5T_IEEE_F16LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float16_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -964,11 +904,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float16_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F16LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float16_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -981,11 +920,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0.00006103515625,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float32_2D",
-    "rawType": {
-      "base": "H5T_IEEE_F32LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float32_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1008,11 +946,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float32_BE_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F32BE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float32_BE_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1025,11 +962,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float32_empty",
-    "rawType": {
-      "base": "H5T_IEEE_F32LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float32_empty",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1042,11 +978,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float32_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F32LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1059,11 +994,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 1.1754943508222875e-38,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_2D",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1095,11 +1029,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_inf_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_inf_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1112,11 +1045,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "Infinity",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_nan_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_nan_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1129,11 +1061,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "NaN",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_ninf_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_ninf_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1146,11 +1077,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "-Infinity",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_nzero_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_nzero_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1163,11 +1093,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_pi_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_pi_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1180,11 +1109,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 3.141592653589793,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1197,11 +1125,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 2.2250738585072014e-308,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "float64_zero_scalar",
-    "rawType": {
-      "base": "H5T_IEEE_F64LE",
-      "class": "H5T_FLOAT",
-    },
+    "path": "/float64_zero_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1214,11 +1141,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int16_2D",
-    "rawType": {
-      "base": "H5T_STD_I16LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int16_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1242,11 +1168,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int16_scalar",
-    "rawType": {
-      "base": "H5T_STD_I16LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int16_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1260,11 +1185,10 @@ exports[`test file matches snapshot 1`] = `
     "value": -32768,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int32_2D",
-    "rawType": {
-      "base": "H5T_STD_I32LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int32_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1288,11 +1212,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int32_BE_scalar",
-    "rawType": {
-      "base": "H5T_STD_I32BE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int32_BE_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1306,11 +1229,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 0,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int32_scalar",
-    "rawType": {
-      "base": "H5T_STD_I32LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1324,11 +1246,10 @@ exports[`test file matches snapshot 1`] = `
     "value": -2147483648,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int64_2D",
-    "rawType": {
-      "base": "H5T_STD_I64LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int64_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1352,11 +1273,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int64_scalar",
-    "rawType": {
-      "base": "H5T_STD_I64LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1370,11 +1290,10 @@ exports[`test file matches snapshot 1`] = `
     "value": -9223372036854776000,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int8_2D",
-    "rawType": {
-      "base": "H5T_STD_I8LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int8_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1398,11 +1317,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "int8_scalar",
-    "rawType": {
-      "base": "H5T_STD_I8LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/int8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1416,14 +1334,10 @@ exports[`test file matches snapshot 1`] = `
     "value": -128,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "reference_scalar",
-    "rawType": {
-      "base": "H5T_STD_REF_OBJ",
-      "charSet": "H5T_CSET_ASCII",
-      "class": "H5T_REFERENCE",
-      "length": 48,
-      "strPad": "H5T_STR_NULLPAD",
-    },
+    "path": "/reference_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1434,11 +1348,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "<HDF5 object reference>",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint16_2D",
-    "rawType": {
-      "base": "H5T_STD_U16LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint16_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1462,11 +1375,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint16_scalar",
-    "rawType": {
-      "base": "H5T_STD_U16LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint16_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1480,11 +1392,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 65535,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint32_2D",
-    "rawType": {
-      "base": "H5T_STD_U32LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint32_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1508,11 +1419,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint32_scalar",
-    "rawType": {
-      "base": "H5T_STD_U32LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint32_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1526,11 +1436,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 4294967295,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint64_3D",
-    "rawType": {
-      "base": "H5T_STD_U64LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint64_3D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1557,11 +1466,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint64_scalar",
-    "rawType": {
-      "base": "H5T_STD_U64LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint64_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1575,11 +1483,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 18446744073709552000,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint8_2D",
-    "rawType": {
-      "base": "H5T_STD_U8LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint8_2D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1603,11 +1510,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "uint8_scalar",
-    "rawType": {
-      "base": "H5T_STD_U8LE",
-      "class": "H5T_INTEGER",
-    },
+    "path": "/uint8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1621,13 +1527,10 @@ exports[`test file matches snapshot 1`] = `
     "value": 255,
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "utf8_fixed_scalar",
-    "rawType": {
-      "charSet": "H5T_CSET_UTF8",
-      "class": "H5T_STRING",
-      "length": 9,
-      "strPad": "H5T_STR_NULLPAD",
-    },
+    "path": "/utf8_fixed_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1641,13 +1544,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "utf8_vlen_1D",
-    "rawType": {
-      "charSet": "H5T_CSET_UTF8",
-      "class": "H5T_STRING",
-      "length": "H5T_VARIABLE",
-      "strPad": "H5T_STR_NULLTERM",
-    },
+    "path": "/utf8_vlen_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1666,13 +1566,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "utf8_vlen_scalar",
-    "rawType": {
-      "charSet": "H5T_CSET_UTF8",
-      "class": "H5T_STRING",
-      "length": "H5T_VARIABLE",
-      "strPad": "H5T_STR_NULLTERM",
-    },
+    "path": "/utf8_vlen_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],
@@ -1685,15 +1582,10 @@ exports[`test file matches snapshot 1`] = `
     "value": "Some text",
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "vlen_float32_1D",
-    "rawType": {
-      "base": {
-        "base": "H5T_IEEE_F32LE",
-        "class": "H5T_FLOAT",
-      },
-      "class": "H5T_VLEN",
-      "size": "H5T_VARIABLE",
-    },
+    "path": "/vlen_float32_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1716,15 +1608,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "vlen_int64_1D",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I64LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_VLEN",
-      "size": "H5T_VARIABLE",
-    },
+    "path": "/vlen_int64_1D",
     "shape": {
       "class": "Array",
       "dims": [
@@ -1756,15 +1643,10 @@ exports[`test file matches snapshot 1`] = `
     ],
   },
   {
+    "collection": "datasets",
+    "kind": "dataset",
     "name": "vlen_int8_scalar",
-    "rawType": {
-      "base": {
-        "base": "H5T_STD_I8LE",
-        "class": "H5T_INTEGER",
-      },
-      "class": "H5T_VLEN",
-      "size": "H5T_VARIABLE",
-    },
+    "path": "/vlen_int8_scalar",
     "shape": {
       "class": "Scalar",
       "dims": [],

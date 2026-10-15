@@ -9,7 +9,7 @@ interface Props {
   url: string;
   filepath: string;
   resetKeys?: unknown[];
-  fetcher: Fetcher;
+  fetcher?: Fetcher;
   getExportURL?: DataProviderApi['getExportURL'];
 }
 

@@ -4,19 +4,13 @@ import {
   isFloatType,
   isIntegerType,
 } from '@h5web/shared/guards';
-import {
-  type ArrayShape,
-  type Dataset,
-  type DType,
-  type ScalarShape,
-} from '@h5web/shared/hdf5-models';
+import { type DType } from '@h5web/shared/hdf5-models';
 import {
   type BigIntTypedArrayConstructor,
   type TypedArrayConstructor,
 } from '@h5web/shared/vis-models';
 import { type AxiosError, type AxiosInstance } from 'axios';
 
-import { type DataProviderApi } from './api';
 import { type Fetcher, type FetcherOptions, type OnProgress } from './models';
 
 // eslint-disable-next-line complexity
@@ -79,17 +73,6 @@ export function bigIntTypedArrayFromDType(
   }
 
   return dtype.signed ? BigInt64Array : BigUint64Array;
-}
-
-export async function getValueOrError(
-  api: DataProviderApi,
-  dataset: Dataset<ArrayShape | ScalarShape>,
-): Promise<unknown> {
-  try {
-    return await api.getValue(dataset);
-  } catch (error) {
-    return isAxiosError(error) ? error.message : error;
-  }
 }
 
 export function toJSON(buffer: ArrayBuffer): unknown {
