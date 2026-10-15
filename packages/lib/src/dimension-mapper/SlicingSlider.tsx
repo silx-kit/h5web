@@ -15,8 +15,9 @@ const LONG_DELAY = 250;
 interface Props {
   dimension: number;
   length: number;
-  initialValue: number;
+  value: number;
   withControls: boolean;
+  defaultStride?: number;
   isFastSlice?: (value: number) => boolean;
   onChange: (value: number) => void;
 }
@@ -25,8 +26,9 @@ function SlicingSlider(props: Props) {
   const {
     dimension,
     length,
-    initialValue,
+    value,
     withControls,
+    defaultStride = 1,
     isFastSlice,
     onChange,
   } = props;
@@ -35,15 +37,22 @@ function SlicingSlider(props: Props) {
     throw new Error('Expected non-empty dimension');
   }
 
-  const [stride, setStride] = useState(1);
+  const [stride, setStride] = useState(defaultStride);
   const strideInputId = useId();
 
-  const [value, setValue] = useState(initialValue);
+  const [localValue, setLocalValue] = useState(value);
   const onDebouncedChange = useDynamicDebouncedCallback(
     onChange,
     [onChange],
     (val) => (isFastSlice?.(val) ? SHORT_DELAY : LONG_DELAY),
   );
+
+  // When the controlled value changes, adopt it during render
+  const [prevValue, setPrevValue] = useState(value);
+  if (value !== prevValue) {
+    setPrevValue(value);
+    setLocalValue(value);
+  }
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const sliderLabelId = `${ID}-${dimension}-label`;
@@ -69,9 +78,9 @@ function SlicingSlider(props: Props) {
             markClassName={styles.mark}
             orientation="vertical"
             invert
-            value={value}
+            value={localValue}
             onChange={(newValue) => {
-              setValue(newValue);
+              setLocalValue(newValue);
               onDebouncedChange(newValue);
             }}
             /* When slicing in E2E tests, `onChange` is called with the old value.
@@ -79,7 +88,7 @@ function SlicingSlider(props: Props) {
              https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
              Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
             onAfterChange={(newValue) => {
-              setValue(newValue);
+              setLocalValue(newValue);
               onDebouncedChange(newValue);
             }}
             renderThumb={({ key, ...thumbProps }, state) => (
@@ -100,8 +109,8 @@ function SlicingSlider(props: Props) {
                 iconOnly
                 small
                 onClick={() => {
-                  const newValue = Math.min(value + stride, length - 1);
-                  setValue(newValue);
+                  const newValue = Math.min(localValue + stride, length - 1);
+                  setLocalValue(newValue);
                   onDebouncedChange(newValue);
                 }}
               />
@@ -111,8 +120,8 @@ function SlicingSlider(props: Props) {
                 iconOnly
                 small
                 onClick={() => {
-                  const newValue = Math.max(value - stride, 0);
-                  setValue(newValue);
+                  const newValue = Math.max(localValue - stride, 0);
+                  setLocalValue(newValue);
                   onDebouncedChange(newValue);
                 }}
               />

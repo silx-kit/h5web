@@ -10,6 +10,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   dimHints?: (string | undefined)[];
   dimMapping: DimensionMapping;
   withSlicingControls?: boolean;
+  defaultStride?: number;
   canSliceFast?: (nextMapping: DimensionMapping) => boolean;
   onChange: (d: DimensionMapping) => void;
 }
@@ -21,6 +22,7 @@ function DimensionMapper(props: Props) {
     dimHints,
     dimMapping,
     withSlicingControls = false,
+    defaultStride,
     canSliceFast,
     onChange,
     ...htmlProps
@@ -68,8 +70,9 @@ function DimensionMapper(props: Props) {
               key={index} // eslint-disable-line react/no-array-index-key
               dimension={index}
               length={dims[index]}
-              initialValue={val}
+              value={val}
               withControls={withSlicingControls}
+              defaultStride={defaultStride}
               isFastSlice={
                 canSliceFast &&
                 ((newVal) => {
