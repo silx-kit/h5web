@@ -1,9 +1,9 @@
 import { useMeasure } from '@react-hookz/web';
 import { useId, useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import Btn from '../toolbar/controls/Btn';
+import Slider from '../toolbar/controls/Slider';
 import { useDynamicDebouncedCallback } from './hooks';
 import styles from './SlicingSlider.module.css';
 
@@ -65,41 +65,38 @@ function SlicingSlider(props: Props) {
       <span className={styles.sublabel}>0:{length - 1}</span>
       {length > 1 && (
         <>
-          <ReactSlider
+          <Slider
             className={styles.slider}
-            ariaLabelledby={sliderLabelId}
+            trackClassName={styles.track}
             min={0}
             max={length - 1}
-            step={1}
-            marks={
-              containerSize &&
-              containerSize.height / length >= MIN_HEIGHT_PER_MARK
-            }
-            markClassName={styles.mark}
-            orientation="vertical"
-            invert
-            value={localValue}
-            onChange={(newValue) => {
+            vertical
+            value={[localValue]}
+            onChange={([newValue]) => {
               setLocalValue(newValue);
               onDebouncedChange(newValue);
             }}
-            /* When slicing in E2E tests, `onChange` is called with the old value.
-             The `onChange` event is fired via a `setState` callback in `ReactSlider`:
-             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
-             Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
-            onAfterChange={(newValue) => {
-              setLocalValue(newValue);
-              onDebouncedChange(newValue);
-            }}
-            renderThumb={({ key, ...thumbProps }, state) => (
-              <div key={key} {...thumbProps} className={styles.thumb}>
-                <span className={styles.thumbValue}>{state.valueNow}</span>
+            renderThumb={(index, thumbProps) => (
+              <div
+                key={index}
+                {...thumbProps}
+                className={styles.thumb}
+                aria-labelledby={sliderLabelId}
+              >
+                <span className={styles.thumbValue}>{localValue}</span>
               </div>
             )}
-            renderTrack={({ key }, { index }) =>
-              index === 0 ? <div key={key} className={styles.track} /> : null
-            }
-          />
+          >
+            {containerSize &&
+              containerSize.height / length >= MIN_HEIGHT_PER_MARK &&
+              Array.from({ length }, (_, index) => (
+                <span
+                  key={index}
+                  className={styles.mark}
+                  style={{ bottom: `${(index / (length - 1)) * 100}%` }}
+                />
+              ))}
+          </Slider>
 
           {withControls && (
             <div className={styles.slicingControls}>
