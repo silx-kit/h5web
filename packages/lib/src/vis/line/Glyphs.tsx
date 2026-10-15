@@ -1,5 +1,5 @@
 import { type IgnoreValue, type NumArray } from '@h5web/shared/vis-models';
-import { type PointsProps } from '@react-three/fiber';
+import { type ThreeElements } from '@react-three/fiber';
 import { useMemo } from 'react';
 
 import { useUpdateGeometry } from '../hooks';
@@ -9,7 +9,7 @@ import GlyphMaterial from './GlyphMaterial';
 import GlyphsGeometry from './glyphsGeometry';
 import { GlyphType } from './models';
 
-interface Props extends PointsProps {
+interface Props {
   abscissas: NumArray;
   ordinates: NumArray;
   glyphType?: GlyphType;
@@ -19,7 +19,7 @@ interface Props extends PointsProps {
   ignoreValue?: IgnoreValue;
 }
 
-function Glyphs(props: Props) {
+function Glyphs(props: Props & ThreeElements['points']) {
   const {
     abscissas,
     ordinates,

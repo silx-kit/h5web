@@ -1,5 +1,5 @@
 import { isDefined } from '@h5web/shared/guards';
-import { useId } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
 import { type ClassStyleAttrs } from '../../vis/models';
 import styles from './Checkbox.module.css';
@@ -24,6 +24,14 @@ function Checkbox(props: Props) {
   } = props;
   const labelId = useId();
   const inputId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Re-apply on `checked` change, since toggling the input resets its `indeterminate` state
+    if (inputRef.current && isDefined(indeterminate)) {
+      inputRef.current.indeterminate = indeterminate;
+    }
+  }, [checked, indeterminate]);
 
   return (
     <label
@@ -34,11 +42,7 @@ function Checkbox(props: Props) {
       aria-disabled={disabled}
     >
       <input
-        ref={
-          isDefined(indeterminate)
-            ? (el) => el && (el.indeterminate = indeterminate) // eslint-disable-line no-param-reassign
-            : undefined
-        }
+        ref={inputRef}
         id={inputId}
         type="checkbox"
         checked={checked}

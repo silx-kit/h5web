@@ -137,7 +137,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DataContext.Provider value={value}>{children}</DataContext.Provider>
+      <DataContext value={value}>{children}</DataContext>
     </QueryClientProvider>
   );
 }

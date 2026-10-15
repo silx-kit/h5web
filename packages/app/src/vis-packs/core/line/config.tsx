@@ -3,7 +3,6 @@ import {
   type AxisScaleType,
   type ComplexLineVisType,
   ComplexVisType,
-  type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
 import {
@@ -79,14 +78,12 @@ function createLineConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<LineConfig>);
 
-export function LineConfigProvider(props: PropsWithChildren<NoProps>) {
+export function LineConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createLineConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useLineConfig(

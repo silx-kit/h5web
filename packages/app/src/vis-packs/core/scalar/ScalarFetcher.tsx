@@ -22,7 +22,7 @@ interface Props<D extends Dataset> {
 
 function ScalarFetcher<D extends Dataset<ScalarShape | ArrayShape>>(
   props: Props<D>,
-) {
+): ReactNode {
   const { dataset, selection, render } = props;
   const { queries } = useDataContext();
 
