@@ -136,7 +136,7 @@ export const IgnoreValue = {
   },
 } satisfies Story;
 
-export const IgnoreColor = {
+export const IgnoredColor = {
   args: {
     ignoreValue: (val) => val >= 0 && val <= 100,
     ignoredColor: 'lightblue',
