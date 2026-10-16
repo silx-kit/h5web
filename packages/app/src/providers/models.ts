@@ -15,7 +15,8 @@ export type Fetcher = (
   opts?: FetcherOptions,
 ) => Promise<ArrayBuffer>;
 
-export interface FetcherOptions extends RequestInit {
+export interface FetcherOptions extends Pick<RequestInit, 'method' | 'body'> {
+  headers?: Record<string, string>;
   abortSignal?: AbortSignal;
   onProgress?: OnProgress;
 }
