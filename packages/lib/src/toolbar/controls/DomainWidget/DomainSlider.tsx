@@ -1,12 +1,12 @@
 import { type ColorScaleType, type Domain } from '@h5web/shared/vis-models';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
 import { type DomainErrors } from '../../../vis/models';
 import { clampBound, createScale, extendDomain } from '../../../vis/utils';
+import Slider from '../Slider';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
@@ -52,16 +52,17 @@ function DomainSlider(props: Props) {
   const [safeValue] = getSafeDomain(value, dataDomain, scaleType);
   const scaledValue = safeValue.map(scale).map(Math.round) as Domain;
 
-  const [beforeChangeValue, setBeforeChangeValue] = useState(scaledValue);
+  const beforeChangeRef = useRef([value, scaledValue]); // updated when interaction starts
 
   function handleChange(newScaledValue: Domain, done = false) {
+    const [beforeValue, beforeChangeValue] = beforeChangeRef.current;
     const [newScaledMin, newScaledMax] = newScaledValue;
     const hasMinChanged = newScaledMin !== beforeChangeValue[0];
     const hasMaxChanged = newScaledMax !== beforeChangeValue[1];
 
     const newValue: Domain = [
-      hasMinChanged ? scale.invert(newScaledMin) : value[0],
-      hasMaxChanged ? scale.invert(newScaledMax) : value[1],
+      hasMinChanged ? scale.invert(newScaledMin) : beforeValue[0],
+      hasMaxChanged ? scale.invert(newScaledMax) : beforeValue[1],
     ];
 
     if (done) {
@@ -72,19 +73,21 @@ function DomainSlider(props: Props) {
   }
 
   return (
-    <ReactSlider
+    <Slider
       className={styles.slider}
-      pearling
+      trackClassName={styles.track}
       min={SLIDER_RANGE[0]}
       max={SLIDER_RANGE[1]}
       value={scaledValue}
       disabled={disabled}
-      onBeforeChange={setBeforeChangeValue}
+      onBeforeChange={() => {
+        beforeChangeRef.current = [value, scaledValue];
+      }}
       onChange={(bounds) => handleChange(bounds)}
       onAfterChange={(bounds) => handleChange(bounds, true)}
-      renderThumb={({ key, ...thumbProps }, { index }) => (
+      renderThumb={(index, thumbProps) => (
         <Thumb
-          key={key}
+          key={index}
           bound={index === 0 ? 'min' : 'max'}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
@@ -93,12 +96,9 @@ function DomainSlider(props: Props) {
           {...thumbProps}
         />
       )}
-      renderTrack={({ key }, { index }) =>
-        index === 0 ? (
-          <Track key={key} scale={scale} dataDomain={dataDomain} />
-        ) : null
-      }
-    />
+    >
+      <Track scale={scale} dataDomain={dataDomain} />
+    </Slider>
   );
 }
 

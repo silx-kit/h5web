@@ -1,10 +1,9 @@
 .thumb {
-  top: 0;
-  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   width: var(--thumb-size); /*  fixed size regardless of autoscale */
+  height: 100%; /* fill toolbar height to expand touch/focus area */
   cursor: ew-resize;
 }
 
