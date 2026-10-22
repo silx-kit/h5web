@@ -1,5 +1,5 @@
 import { DataProvider, type DataProviderApi } from '@h5web/app';
-import { type PropsWithChildren, useMemo, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
 import { type Plugin } from './models';
@@ -12,16 +12,19 @@ interface Props {
   getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>;
 }
 
+interface State extends Props {
+  api: H5WasmApi;
+}
+
 function H5WasmBufferProvider(props: PropsWithChildren<Props>) {
   const { filename, buffer, getExportURL, getPlugin, children } = props;
+  const [state, setState] = useState<State>();
 
-  const prevApiRef = useRef<H5WasmApi>();
-
-  const api = useMemo(() => {
+  useEffect(() => {
     const remote = getH5WasmRemote();
     const fileId = remote.openFileBuffer(buffer);
 
-    const newApi = new H5WasmApi(
+    const api = new H5WasmApi(
       remote,
       filename,
       fileId,
@@ -29,13 +32,25 @@ function H5WasmBufferProvider(props: PropsWithChildren<Props>) {
       getPlugin,
     );
 
-    void prevApiRef.current?.cleanUp();
-    prevApiRef.current = newApi;
+    setState({ api, buffer, filename, getExportURL, getPlugin });
 
-    return newApi;
+    return () => {
+      void api.cleanUp();
+    };
   }, [buffer, filename, getExportURL, getPlugin]);
 
-  return <DataProvider api={api}>{children}</DataProvider>;
+  const isCurrent =
+    state?.buffer === buffer &&
+    state.filename === filename &&
+    state.getExportURL === getExportURL &&
+    state.getPlugin === getPlugin;
+
+  // Don't render with a stale API instance, which is about to be disposed
+  if (!isCurrent) {
+    return null;
+  }
+
+  return <DataProvider api={state.api}>{children}</DataProvider>;
 }
 
 export default H5WasmBufferProvider;

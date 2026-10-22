@@ -14,6 +14,7 @@ export default mergeConfig(
       name: '@h5web/app (browser)',
       include: ['src/**/*.browser.test.{ts,tsx}'],
       setupFiles: 'src/setupTests.ts',
+      clearMocks: true,
       restoreMocks: true,
       pool: 'threads',
       testTimeout: 10_000,

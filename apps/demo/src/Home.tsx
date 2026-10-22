@@ -150,7 +150,7 @@ function Home() {
               {[
                 'water_224.h5',
                 'epics.h5',
-                'filters.h5 ',
+                'filters.h5',
                 'grove.h5',
                 'links.h5',
                 'sample.h5',
