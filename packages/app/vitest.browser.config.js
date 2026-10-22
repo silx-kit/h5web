@@ -11,8 +11,8 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      name: 'Browser tests',
-      include: ['src/**/*.browser.test.ts'],
+      name: '@h5web/app (browser)',
+      include: ['src/**/*.browser.test.{ts,tsx}'],
       setupFiles: 'src/setupTests.ts',
       restoreMocks: true,
       pool: 'threads',

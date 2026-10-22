@@ -8,7 +8,7 @@ export default mergeConfig(
     test: {
       name: '@h5web/app',
       include: ['src/**/*.test.ts'],
-      exclude: [...configDefaults.exclude, 'src/**/*.browser.test.ts'],
+      exclude: [...configDefaults.exclude, 'src/**/*.browser.test.{ts,tsx}'],
       restoreMocks: true,
       pool: 'threads',
     },
