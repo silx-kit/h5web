@@ -296,10 +296,11 @@ install the recommended extensions.
 > For the browser tests to work (`*.browser.test.ts`), a browser must first be
 > installed with Playwright; see [_Browser tests_](#browser-tests) section.
 
-> For the providers tests to work (`h5grove-api.test.ts` and
-> `h5wasm-api.test.ts`), the test files must first be created and the h5grove
-> support server must be running in a separate terminal; see `pnpm support:*`
-> scripts and [_Providers tests_](#providers-tests) section.
+> For the providers tests to work (`h5grove-api.test.ts`,
+> `H5GroveProvider.browser.test.tsx`, etc.), the test files must first be
+> created and the h5grove support server must be running in a separate terminal;
+> see `pnpm support:*` scripts and [_Providers tests_](#providers-tests)
+> section.
 
 - `pnpm test:headless` - use headless mode for browser tests, typically in the
   CI
@@ -331,10 +332,10 @@ We also use Cypress to run end-to-end and visual regression testing:
 
 ### Browser tests
 
-The `@h5web/app` package includes tests written for Vitest's
+The `@h5web/app` and `@h5web/h5wasm` packages include tests written for Vitest's
 [Browser Mode](https://vitest.dev/guide/browser/). They are located under
-`src/__tests__` and are suffixed with `*.browser.test.ts`. Each file covers a
-particular subtree of components of H5Web.
+`src/__tests__` and are suffixed with `*.browser.test.{ts,tsx}`. Each file
+covers a particular subtree of components of H5Web.
 
 For the browser tests to work, you must first install the browser specified in
 environment variable `VITE_TEST_BROWSER` with Playwright:
@@ -394,10 +395,10 @@ when calling `pnpm test` (cf. `.env.test` and your own `.env.test.local`).
 
 ### Providers
 
-The data providers are tested through their respective APIs: `H5GroveApi`,
-`HsdsApi` and `H5WasmApi`. Each provider's API test (`<provider>-api.test.ts`)
-loops over its assigned test files `support/files/dist` and does the following
-for each file:
+The data providers are tested via [browser tests](#browser-tests) but also
+through their respective APIs: `H5GroveApi`, `HsdsApi` and `H5WasmApi`. Each
+provider's API test (`<provider>-api.test.ts`) loops over its assigned test
+files `support/files/dist` and does the following for each file:
 
 1. It instanciates the API with the given test file.
 1. It generates a metadata tree of the entire file and retrieves the values of

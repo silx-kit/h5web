@@ -611,6 +611,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: 6.1.2
         version: 6.1.2(vite@8.3.4(@types/node@24.13.2)(esbuild@0.28.2))
+      '@vitest/browser-playwright':
+        specifier: 4.1.9
+        version: 4.1.9(playwright@1.61.1)(vite@8.3.4(@types/node@24.13.2)(esbuild@0.28.2))(vitest@4.1.9)
       dot-json:
         specifier: 1.3.0
         version: 1.3.0
@@ -638,6 +641,12 @@ importers:
       vitest:
         specifier: 4.1.9
         version: 4.1.9(@types/node@24.13.2)(@vitest/browser-playwright@4.1.9)(@vitest/coverage-v8@4.1.9)(@vitest/ui@4.1.9)(esbuild@0.28.2)
+      vitest-browser-react:
+        specifier: 2.2.0
+        version: 2.2.0(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vitest@4.1.9)
+      vitest-fail-on-console:
+        specifier: 0.10.1
+        version: 0.10.1(@vitest/utils@4.1.9)(vite@8.3.4(@types/node@24.13.2)(esbuild@0.28.2))(vitest@4.1.9)
 
   packages/lib:
     dependencies:
