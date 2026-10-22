@@ -1,7 +1,7 @@
 import { type Remote, wrap } from 'comlink';
 
-import { type H5WasmWorkerAPI } from './worker';
 import LocalWorker from './worker?worker&inline';
+import { type H5WasmWorkerAPI } from './worker-api';
 
 let remote: Remote<H5WasmWorkerAPI> | undefined;
 
