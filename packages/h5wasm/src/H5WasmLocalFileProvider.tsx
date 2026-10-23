@@ -1,5 +1,5 @@
 import { DataProvider, type DataProviderApi } from '@h5web/app';
-import { type PropsWithChildren, useMemo, useRef } from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
 import { H5WasmApi } from './h5wasm-api';
 import { type Plugin } from './models';
@@ -12,16 +12,20 @@ interface Props {
   getPlugin?: (name: Plugin) => Promise<ArrayBuffer | undefined>;
 }
 
+interface State extends Props {
+  api: H5WasmApi;
+  resetKeys: unknown[]; // defaults to `[]`
+}
+
 function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
   const { file, resetKeys = [], getExportURL, getPlugin, children } = props;
 
-  const prevApiRef = useRef<H5WasmApi>();
+  const [state, setState] = useState<State>();
 
-  const api = useMemo(() => {
+  useEffect(() => {
     const remote = getH5WasmRemote();
     const fileId = remote.openLocalFile(file);
-
-    const newApi = new H5WasmApi(
+    const api = new H5WasmApi(
       remote,
       file.name,
       fileId,
@@ -29,13 +33,26 @@ function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
       getPlugin,
     );
 
-    void prevApiRef.current?.cleanUp();
-    prevApiRef.current = newApi;
+    setState({ api, file, resetKeys, getExportURL, getPlugin });
 
-    return newApi;
+    return () => {
+      void api.cleanUp();
+    };
   }, [file, ...resetKeys, getExportURL, getPlugin]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <DataProvider api={api}>{children}</DataProvider>;
+  const isCurrent =
+    state?.file === file &&
+    state.resetKeys.length === resetKeys.length &&
+    state.resetKeys.every((val, i) => Object.is(val, resetKeys[i])) &&
+    state.getExportURL === getExportURL &&
+    state.getPlugin === getPlugin;
+
+  // Don't render with a stale API instance, which is about to be disposed
+  if (!isCurrent) {
+    return null;
+  }
+
+  return <DataProvider api={state.api}>{children}</DataProvider>;
 }
 
 export default H5WasmLocalFileProvider;
