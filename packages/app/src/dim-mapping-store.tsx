@@ -1,5 +1,4 @@
 import { type DimensionMapping, initDimMapping } from '@h5web/lib';
-import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -31,14 +30,12 @@ function createDimMappingStore() {
 
 const StoreContext = createContext({} as StoreApi<DimMappingState>);
 
-export function DimMappingProvider(props: PropsWithChildren<NoProps>) {
+export function DimMappingProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createDimMappingStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useDimMappingState(opts: {

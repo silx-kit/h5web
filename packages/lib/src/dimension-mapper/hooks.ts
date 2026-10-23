@@ -14,10 +14,10 @@ export function useDynamicDebouncedCallback<
   deps: DependencyList,
   getDelay: (...args: Parameters<Fn>) => number,
 ): (...args: Parameters<Fn>) => void {
-  const timeout = useRef<ReturnType<typeof setTimeout>>();
+  const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const cb = useRef(callback);
   const getDelayRef = useSyncedRef(getDelay);
-  const lastCallArgs = useRef<Parameters<Fn>>();
+  const lastCallArgs = useRef<Parameters<Fn>>(undefined);
 
   function clear() {
     if (timeout.current) {

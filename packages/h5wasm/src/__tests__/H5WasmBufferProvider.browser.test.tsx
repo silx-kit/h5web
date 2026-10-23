@@ -1,4 +1,5 @@
 import { App } from '@h5web/app';
+import { StrictMode } from 'react';
 import { expect, test, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-react';
@@ -49,6 +50,32 @@ test.skipIf(SKIP)('render viewer and change file', async () => {
 
   await expect
     .element(page.getByRole('treeitem', { name: 'group', exact: true }))
+    .toBeVisible();
+
+  // Two clean-ups
+  await unmount();
+  expect(H5WasmApi.prototype.cleanUp).toHaveBeenCalledTimes(2);
+});
+
+test.skipIf(SKIP)('support strict mode', async () => {
+  const buffer = await readFileAsBuffer('sample.h5');
+
+  const { unmount } = await render(
+    <StrictMode>
+      <div style={{ height: '100vh' }}>
+        <H5WasmBufferProvider filename="sample.h5" buffer={buffer}>
+          <App />
+        </H5WasmBufferProvider>
+      </div>
+    </StrictMode>,
+  );
+
+  // Two instanciations, one clean-up
+  expect(H5WasmApi).toHaveBeenCalledTimes(2);
+  expect(H5WasmApi.prototype.cleanUp).toHaveBeenCalledOnce();
+
+  await expect
+    .element(page.getByRole('treeitem', { name: 'int8_scalar', exact: true }))
     .toBeVisible();
 
   // Two clean-ups

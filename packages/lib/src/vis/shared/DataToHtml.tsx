@@ -10,7 +10,7 @@ interface Props<T extends Vector3[]> {
   children: (...points: MappedTuple<T>) => ReactNode;
 }
 
-function DataToHtml<T extends Vector3[]>(props: Props<T>) {
+function DataToHtml<T extends Vector3[]>(props: Props<T>): ReactNode {
   const { points, children } = props;
 
   const { dataToHtml } = useVisCanvasContext();

@@ -1,4 +1,9 @@
-import { type PropsWithChildren, useLayoutEffect, useState } from 'react';
+import {
+  type PropsWithChildren,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { createPortal } from 'react-dom';
 import { createRoot, type Root } from 'react-dom/client';
 
@@ -20,22 +25,26 @@ function Html(props: PropsWithChildren<Props>) {
     return div;
   });
 
-  const [reactRoot] = useState<Root>(() => createRoot(reactRootContainer));
-
-  useLayoutEffect(() => {
-    reactRoot.render(createPortal(children, portalContainer));
-  }, [children, portalContainer, reactRoot]);
+  const rootRef = useRef<Root>(null);
 
   useLayoutEffect(() => {
     /* Since the children are rendered in a portal, it doesn't technically matter
        which element `reactRootContainer` is appended to, as long as it stays in the DOM. */
     r3fRoot.append(reactRootContainer);
 
+    const root = createRoot(reactRootContainer);
+    rootRef.current = root;
+
     return () => {
-      reactRoot.unmount();
+      rootRef.current = null;
+      root.unmount();
       reactRootContainer.remove();
     };
-  }, [r3fRoot, reactRoot, reactRootContainer]);
+  }, [r3fRoot, reactRootContainer]);
+
+  useLayoutEffect(() => {
+    rootRef.current?.render(createPortal(children, portalContainer));
+  }, [children, portalContainer]);
 
   return null;
 }

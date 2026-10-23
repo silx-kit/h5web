@@ -32,7 +32,7 @@ test('inspect scalar datasets', async () => {
   expect(pathRow).toHaveTextContent(/\/scalars\/number$/);
   expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian$/);
   expect(shapeRow).toHaveTextContent(/Scalar$/);
-  expect(attrRow).toHaveTextContent(/0$/);
+  await expect.element(attrRow).toHaveTextContent(/0$/);
 
   await selectExplorerNode('bigint');
   expect(typeRow).toHaveTextContent(
@@ -145,6 +145,6 @@ test("show error when attribute values can't be fetched", async () => {
   runAll();
 
   await page.getByRole('tab', { name: 'Inspect' }).click();
-  expect(page.getByText('some error')).toBeVisible();
+  await expect.element(page.getByText('some error')).toBeVisible();
   errorSpy.mockRestore();
 });

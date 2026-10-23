@@ -13,6 +13,9 @@ pmOnFail: ignore
 strictPeerDependencies: true
 autoInstallPeers: false
 resolvePeersFromWorkspaceRoot: false
+peerDependencyRules:
+  allowedVersions:
+    'react-slider>react': '19'
 
 # Approve specific build scripts
 allowBuilds:

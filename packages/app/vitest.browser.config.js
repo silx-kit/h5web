@@ -1,4 +1,5 @@
 import { playwright } from '@vitest/browser-playwright';
+import reactFallbackThrottlePlugin from 'vite-plugin-react-fallback-throttle';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 import viteConfig from './vite.config';
@@ -10,6 +11,7 @@ const browser = process.env.CI
 export default mergeConfig(
   viteConfig,
   defineConfig({
+    plugins: [reactFallbackThrottlePlugin()], // remove React 19's 300ms `Suspense` fallback delay
     test: {
       name: '@h5web/app (browser)',
       include: ['src/**/*.browser.test.{ts,tsx}'],

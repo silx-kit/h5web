@@ -139,7 +139,7 @@ interface PointerTrackerProps {
   children: (x: number, y: number) => ReactNode;
 }
 
-function PointerTracker(props: PointerTrackerProps) {
+function PointerTracker(props: PointerTrackerProps): ReactNode {
   const { children } = props;
   const [coords, setCoords] = useRafState<[number, number]>();
 
