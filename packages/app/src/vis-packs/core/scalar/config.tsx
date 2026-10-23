@@ -1,4 +1,3 @@
-import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -30,14 +29,12 @@ function createScalarConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<ScalarConfig>);
 
-export function ScalarConfigProvider(props: PropsWithChildren<NoProps>) {
+export function ScalarConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createScalarConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useScalarConfig(): ScalarConfig {

@@ -2,7 +2,6 @@ import { type CustomDomain } from '@h5web/lib';
 import {
   type AxisScaleType,
   type ColorScaleType,
-  type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
 import {
@@ -73,14 +72,12 @@ function createScatterConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<ScatterConfig>);
 
-export function ScatterConfigProvider(props: PropsWithChildren<NoProps>) {
+export function ScatterConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createScatterConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useScatterConfig(

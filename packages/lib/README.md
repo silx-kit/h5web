@@ -23,22 +23,18 @@ For more information, visit the
 ## Prerequisites
 
 The `react` and `react-dom` dependencies must be installed in your project. Note
-that as of version 10, `@h5web/lib` requires **React 18**.
+that as of version 19, `@h5web/lib` requires **React 19**.
 
 This package supports TypeScript out of the box without the need to install a
 separate `@types/` package.
 
 ## Getting started 🚀
 
-> [!WARNING]
->
-> `@h5web/lib` requires the following peer deps:
->
-> - React v18.*
-> - React-three-fiber v8.*
-
 ```bash
-npm install @h5web/lib three @react-three/fiber@8 ndarray
+npm install @h5web/lib @react-three/fiber@9 three ndarray
+
+# If you use typescript, also install `@types/three`
+npm install --save-dev @types/three
 ```
 
 ```tsx

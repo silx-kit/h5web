@@ -1,5 +1,4 @@
 import { ImageType } from '@h5web/lib';
-import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -55,14 +54,12 @@ function createRgbConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<RgbVisConfig>);
 
-export function RgbConfigProvider(props: PropsWithChildren<NoProps>) {
+export function RgbConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createRgbConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useRgbConfig(): RgbVisConfig {

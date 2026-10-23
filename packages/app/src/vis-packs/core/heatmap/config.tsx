@@ -3,7 +3,6 @@ import {
   type ColorScaleType,
   type ComplexHeatmapVisType,
   ComplexVisType,
-  type NoProps,
   ScaleType,
 } from '@h5web/shared/vis-models';
 import {
@@ -88,14 +87,12 @@ function createHeatmapConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<HeatmapConfig>);
 
-export function HeatmapConfigProvider(props: PropsWithChildren<NoProps>) {
+export function HeatmapConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createHeatmapConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useHeatmapConfig(

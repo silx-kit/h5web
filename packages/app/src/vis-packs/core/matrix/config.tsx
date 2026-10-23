@@ -1,5 +1,4 @@
 import { Notation } from '@h5web/lib';
-import { type NoProps } from '@h5web/shared/vis-models';
 import {
   createContext,
   type PropsWithChildren,
@@ -37,14 +36,12 @@ function createMatrixConfigStore() {
 
 const StoreContext = createContext({} as StoreApi<MatrixVisConfig>);
 
-export function MatrixConfigProvider(props: PropsWithChildren<NoProps>) {
+export function MatrixConfigProvider(props: PropsWithChildren) {
   const { children } = props;
 
   const [store] = useState(createMatrixConfigStore);
 
-  return (
-    <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-  );
+  return <StoreContext value={store}>{children}</StoreContext>;
 }
 
 export function useMatrixConfig(): MatrixVisConfig {

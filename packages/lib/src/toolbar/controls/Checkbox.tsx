@@ -34,11 +34,11 @@ function Checkbox(props: Props) {
       aria-disabled={disabled}
     >
       <input
-        ref={
-          isDefined(indeterminate)
-            ? (el) => el && (el.indeterminate = indeterminate) // eslint-disable-line no-param-reassign
-            : undefined
-        }
+        ref={(el) => {
+          if (el && isDefined(indeterminate)) {
+            el.indeterminate = indeterminate; // eslint-disable-line no-param-reassign
+          }
+        }}
         id={inputId}
         type="checkbox"
         checked={checked}
