@@ -1,0 +1,112 @@
+import { isTypedArray } from '@h5web/shared/guards';
+import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
+import { transfer } from 'comlink';
+import { Attribute, Dataset, File as H5WasmFile } from 'h5wasm';
+
+import {
+  getAvailableFileName,
+  initH5Wasm,
+  mountWorkerFS,
+  parseEntity,
+  PLUGINS_FOLDER,
+  readSelectedValue,
+  WORKERFS_FOLDER,
+} from './worker-utils';
+
+const h5wasmReady = initH5Wasm();
+
+async function openFileBuffer(buffer: ArrayBuffer): Promise<bigint> {
+  const h5wasm = await h5wasmReady;
+
+  const { FS } = h5wasm;
+  const fileName = getAvailableFileName(FS);
+
+  FS.writeFile(fileName, new Uint8Array(buffer), { flags: 'w+' });
+
+  const { file_id } = new H5WasmFile(fileName);
+  return file_id;
+}
+
+async function openLocalFile(file: File): Promise<bigint> {
+  const h5wasm = await h5wasmReady;
+  const rootNode = await mountWorkerFS(h5wasm);
+
+  const { FS } = h5wasm;
+  const fileName = getAvailableFileName(FS, WORKERFS_FOLDER);
+
+  const { WORKERFS } = FS.filesystems;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  WORKERFS.createNode(rootNode, fileName, WORKERFS.FILE_MODE, 0, file);
+
+  const { file_id } = new H5WasmFile(`${WORKERFS_FOLDER}/${fileName}`, 'Sr'); // SWMR in case file is opened for writing in a concurrent process
+  return file_id;
+}
+
+async function closeFile(fileId: bigint): Promise<number> {
+  const h5wasm = await h5wasmReady;
+  return h5wasm.close_file(fileId);
+}
+
+async function getEntity(
+  fileId: bigint,
+  path: string,
+): Promise<ProvidedEntity> {
+  const h5wasm = await h5wasmReady;
+  return parseEntity(h5wasm, fileId, path);
+}
+
+async function getValue(
+  fileId: bigint,
+  path: string,
+  selection?: string,
+): Promise<unknown> {
+  const value = readSelectedValue(new Dataset(fileId, path), selection);
+  return isTypedArray(value) ? transfer(value, [value.buffer]) : value;
+}
+
+async function getAttrValue(
+  fileId: bigint,
+  path: string,
+  attrName: string,
+): Promise<unknown> {
+  return new Attribute(fileId, path, attrName).json_value;
+}
+
+async function getDescendantPaths(
+  fileId: bigint,
+  rootPath: string,
+): Promise<string[]> {
+  const h5wasm = await h5wasmReady;
+  return h5wasm
+    .get_names(fileId, rootPath, true)
+    .map((path) => `${rootPath}${path}`);
+}
+
+async function isPluginLoaded(plugin: string): Promise<boolean> {
+  const pluginPath = `/${PLUGINS_FOLDER}/libH5Z${plugin}.so`;
+
+  const { FS } = await h5wasmReady;
+  return FS.analyzePath(pluginPath).exists;
+}
+
+async function loadPlugin(plugin: string, buffer: ArrayBuffer): Promise<void> {
+  const pluginPath = `/${PLUGINS_FOLDER}/libH5Z${plugin}.so`;
+
+  const { FS } = await h5wasmReady;
+  FS.writeFile(pluginPath, new Uint8Array(buffer));
+}
+
+const api = {
+  openFileBuffer,
+  openLocalFile,
+  closeFile,
+  getEntity,
+  getValue,
+  getAttrValue,
+  getDescendantPaths,
+  isPluginLoaded,
+  loadPlugin,
+};
+
+export default api;
+export type H5WasmWorkerAPI = typeof api;

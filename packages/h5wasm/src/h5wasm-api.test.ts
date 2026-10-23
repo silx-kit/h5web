@@ -7,7 +7,7 @@ import { type Dataset, DTypeClass } from '@h5web/shared/hdf5-models';
 import { expect, test } from 'vitest';
 
 import { H5WasmApi } from './h5wasm-api';
-import remote from './worker';
+import remote from './worker-api';
 
 const SKIP = import.meta.env.VITE_H5WASM_SKIP === 'true';
 

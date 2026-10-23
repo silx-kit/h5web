@@ -17,7 +17,7 @@ import { transfer } from 'comlink';
 
 import { type Plugin } from './models';
 import { getEnhancedError, PLUGINS_BY_FILTER_ID } from './utils';
-import { type H5WasmWorkerAPI } from './worker';
+import { type H5WasmWorkerAPI } from './worker-api';
 
 export class H5WasmApi extends DataProviderApi {
   public constructor(
