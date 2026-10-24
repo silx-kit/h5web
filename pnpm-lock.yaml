@@ -492,9 +492,6 @@ importers:
       ndarray:
         specifier: 1.1.1
         version: 1.1.1
-      ndarray-ops:
-        specifier: 1.2.2
-        version: 1.2.2
       react-error-boundary:
         specifier: 6.1.2
         version: 6.1.2(react@19.3.0)
@@ -728,9 +725,6 @@ importers:
       ndarray:
         specifier: 1.1.1
         version: 1.1.1
-      ndarray-ops:
-        specifier: 1.2.2
-        version: 1.2.2
       react-icons:
         specifier: 5.7.0
         version: 5.7.0(react@19.3.0)
@@ -825,9 +819,6 @@ importers:
       '@types/ndarray':
         specifier: 1.1.0
         version: 1.1.0
-      '@types/ndarray-ops':
-        specifier: ~1.2.7
-        version: 1.2.7
       '@types/node':
         specifier: ^24.13.2
         version: 24.13.2
@@ -846,9 +837,6 @@ importers:
       ndarray:
         specifier: 1.1.1
         version: 1.1.1
-      ndarray-ops:
-        specifier: 1.2.2
-        version: 1.2.2
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -2179,9 +2167,6 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/ndarray-ops@1.2.7':
-    resolution: {integrity: sha512-dQKT1Kfpw83LhzuJp6N7nO03m8Bjv84E1cew3poHK5DgojCXppJPLONQafVzOK3gQNW5sZfjRQgOZG2aSZdQJg==}
-
   '@types/ndarray@1.1.0':
     resolution: {integrity: sha512-go+C6vHBUuO9jH6Tj6qEZ63JEGoMSxFdmd+6QAtthGD6xumBfIz3RbNDDs2aoRVLf9naH8lk5jnWy2UHHKgYQQ==}
 
@@ -3019,9 +3004,6 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
-
-  cwise-compiler@1.1.3:
-    resolution: {integrity: sha512-WXlK/m+Di8DMMcCjcWr4i+XzcQra9eCdXIJrgh4TUgh0pIS/yJduLxS9JgefsHJ/YVLdgPtXm9r62W92MvanEQ==}
 
   cypress-wait-for-stable-dom@0.1.0:
     resolution: {integrity: sha512-iVJc6CDzlu1xUnTcZph+zbkOlImaDelpvRv4G+3naugvjkF6b9EFpDmRCC/16xL1pqpkFq4rFyfhuNw4C3PQjw==}
@@ -4443,9 +4425,6 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  ndarray-ops@1.2.2:
-    resolution: {integrity: sha512-BppWAFRjMYF7N/r6Ie51q6D4fs0iiGmeXIACKY66fLpnwIui3Wc3CXiD/30mgLbDjPpSLrsqcp3Z62+IcHZsDw==}
-
   ndarray@1.1.1:
     resolution: {integrity: sha512-AsE8w/M2MS+0pD3nP5qbRRtJFeJJJaJ+qXZaZr0XjVGXhy6LIj2TERTlkpdK2AI3WufoOP+pwPk3q2ilAJcZ9g==}
 
@@ -5304,9 +5283,6 @@ packages:
 
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
-
-  uniq@1.0.1:
-    resolution: {integrity: sha512-Gw+zz50YNKPDKXs+9d+aKAjVwpjNwqzvNpLigIruT4HA9lMZNdMqs9x07kKHB/L9WRzqp4+DlTU5s4wG2esdoA==}
 
   unist-util-is@6.0.1:
     resolution: {integrity: sha512-LsiILbtBETkDz8I9p1dQ0uyRUWuaQzd/cuEeS1hoRSyW5E5XGmTzlwY1OrNzzakGowI9Dr/I8HVaw4hTtnxy8g==}
@@ -6769,10 +6745,6 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/ndarray-ops@1.2.7':
-    dependencies:
-      '@types/ndarray': 1.1.0
-
   '@types/ndarray@1.1.0': {}
 
   '@types/node@24.13.2':
@@ -7660,10 +7632,6 @@ snapshots:
   cssesc@3.0.0: {}
 
   csstype@3.2.3: {}
-
-  cwise-compiler@1.1.3:
-    dependencies:
-      uniq: 1.0.1
 
   cypress-wait-for-stable-dom@0.1.0: {}
 
@@ -9346,10 +9314,6 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  ndarray-ops@1.2.2:
-    dependencies:
-      cwise-compiler: 1.1.3
-
   ndarray@1.1.1:
     dependencies:
       iota-array: 1.0.0
@@ -10368,8 +10332,6 @@ snapshots:
       is-plain-obj: 4.1.0
       trough: 2.2.0
       vfile: 6.0.3
-
-  uniq@1.0.1: {}
 
   unist-util-is@6.0.1:
     dependencies:
