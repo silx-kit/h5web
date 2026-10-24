@@ -86,6 +86,28 @@ const threeD = () => {
   );
 };
 
+// Electron density of hydrogen 4f orbitals, |ψ|² with ψ ∝ e^(-r/4) (5z³ - 3zr² + 9xyz)
+const threeD_volume = () => {
+  const size = 64;
+  const coords = range(size).map((i) => ((2 * i) / (size - 1) - 1) * 20);
+  return ndarray(
+    Float32Array.from(
+      coords.flatMap((z) =>
+        coords.flatMap((y) =>
+          coords.map((x) => {
+            const r2 = x * x + y * y + z * z;
+            const psi =
+              Math.exp(-Math.sqrt(r2) / 4) *
+              (5 * z ** 3 - 3 * z * r2 + 9 * x * y * z);
+            return psi * psi;
+          }),
+        ),
+      ),
+    ),
+    [size, size, size],
+  );
+};
+
 const threeD_rgb = () =>
   ndarray(
     [
@@ -233,6 +255,7 @@ export const mockValues = {
     ),
   threeD_rgb,
   threeD_rgba,
+  threeD_volume,
   fourD: () => {
     const { data: dataThreeD } = threeD();
     return ndarray(

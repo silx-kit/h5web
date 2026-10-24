@@ -4,6 +4,7 @@ import {
   hasCompoundType,
   hasMinDims,
   hasNonNullShape,
+  hasNumDims,
   hasNumericLikeType,
   hasNumericType,
   hasPrintableCompoundType,
@@ -12,6 +13,7 @@ import {
 import { type Dataset } from '@h5web/shared/hdf5-models';
 import {
   FiActivity,
+  FiBox,
   FiCode,
   FiGrid,
   FiImage,
@@ -41,6 +43,8 @@ import {
 } from './containers';
 import { SurfaceConfigProvider } from './surface/config';
 import SurfaceVisContainer from './surface/SurfaceVisContainer';
+import { VolumeConfigProvider } from './volume/config';
+import VolumeVisContainer from './volume/VolumeVisContainer';
 
 export enum Vis {
   Scalar = 'Scalar',
@@ -52,6 +56,7 @@ export enum Vis {
   RGB = 'RGB',
   Compound = 'Compound',
   Surface = 'Surface',
+  Volume = 'Volume',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -97,6 +102,36 @@ export const CORE_VIS = {
     ConfigProvider: LineConfigProvider,
     supportsDataset: async (dataset) => {
       return hasArrayShape(dataset) && hasComplexType(dataset);
+    },
+  },
+
+  [Vis.Volume]: {
+    name: Vis.Volume,
+    Icon: FiBox,
+    Container: VolumeVisContainer,
+    ConfigProvider: VolumeConfigProvider,
+    supportsDataset: async (dataset, dataContext) => {
+      if (
+        !hasArrayShape(dataset) ||
+        !hasNumDims(dataset, 3) ||
+        !hasNumericType(dataset)
+      ) {
+        return false;
+      }
+
+      // Skip empty datasets and stacks of a single 2D image
+      if (dataset.shape.dims.some((dim) => dim < 2)) {
+        return false;
+      }
+
+      // Leave images to the RGB vis
+      const h5ClassAttr = findScalarStrAttr(dataset, 'CLASS');
+      const h5Class = await getAttributeValue(
+        dataset,
+        h5ClassAttr,
+        dataContext,
+      );
+      return h5Class !== 'IMAGE';
     },
   },
 

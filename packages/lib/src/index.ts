@@ -3,10 +3,13 @@ export { default as MatrixVis } from './vis/matrix/MatrixVis';
 export { default as LineVis } from './vis/line/LineVis';
 export { default as HeatmapVis } from './vis/heatmap/HeatmapVis';
 export { default as ScatterVis } from './vis/scatter/ScatterVis';
+export { default as VolumeVis } from './vis/volume/VolumeVis';
 export type { MatrixVisProps } from './vis/matrix/MatrixVis';
 export type { LineVisProps } from './vis/line/LineVis';
 export type { HeatmapVisProps } from './vis/heatmap/HeatmapVis';
 export type { ScatterVisProps } from './vis/scatter/ScatterVis';
+export type { VolumeVisProps } from './vis/volume/VolumeVis';
+export { VolumeQuality, VolumeRenderMode } from './vis/volume/models';
 
 // Toolbar and controls
 export { default as Toolbar } from './toolbar/Toolbar';

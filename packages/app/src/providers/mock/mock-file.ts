@@ -201,6 +201,7 @@ export function makeMockFile(): GroupWithChildren {
         array('threeD_complex'),
         withImageAttr(array('threeD_rgb')),
         withImageAttr(array('threeD_rgba')),
+        array('threeD_volume'),
         array('fourD'),
       ]),
       nxGroup('nexus', 'NXentry', {
