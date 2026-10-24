@@ -1,18 +1,20 @@
 import { type ColorScaleType, type Domain } from '@h5web/shared/vis-models';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import { getSafeDomain } from '../../../vis/heatmap/utils';
 import { useCombinedDomain } from '../../../vis/hooks';
 import { type DomainErrors } from '../../../vis/models';
 import { clampBound, createScale, extendDomain } from '../../../vis/utils';
+import { useSliderDrag } from '../hooks';
+import { handleSliderKey } from '../utils';
 import styles from './DomainSlider.module.css';
 import Thumb from './Thumb';
 import Track from './Track';
 
 const SLIDER_RANGE: Domain = [1, 100];
 const EXTEND_FACTOR = 0.3;
+const SLIDER_SPAN = SLIDER_RANGE[1] - SLIDER_RANGE[0];
 
 interface Props {
   value: Domain;
@@ -52,16 +54,20 @@ function DomainSlider(props: Props) {
   const [safeValue] = getSafeDomain(value, dataDomain, scaleType);
   const scaledValue = safeValue.map(scale).map(Math.round) as Domain;
 
-  const [beforeChangeValue, setBeforeChangeValue] = useState(scaledValue);
+  const beforeChangeRef = useRef<[Domain, Domain]>(undefined); // value and scaled value when interaction started
 
   function handleChange(newScaledValue: Domain, done = false) {
+    const [beforeValue, beforeChangeValue] = beforeChangeRef.current ?? [
+      value,
+      scaledValue,
+    ];
     const [newScaledMin, newScaledMax] = newScaledValue;
     const hasMinChanged = newScaledMin !== beforeChangeValue[0];
     const hasMaxChanged = newScaledMax !== beforeChangeValue[1];
 
     const newValue: Domain = [
-      hasMinChanged ? scale.invert(newScaledMin) : value[0],
-      hasMaxChanged ? scale.invert(newScaledMax) : value[1],
+      hasMinChanged ? scale.invert(newScaledMin) : beforeValue[0],
+      hasMaxChanged ? scale.invert(newScaledMax) : beforeValue[1],
     ];
 
     if (done) {
@@ -71,34 +77,67 @@ function DomainSlider(props: Props) {
     }
   }
 
+  // Move thumb and let it push the other thumb if needed
+  function moveThumb(bound: number, index: number) {
+    const [min, max] = scaledValue;
+    const newScaledValue: Domain =
+      index === 0
+        ? [bound, Math.max(bound, max)]
+        : [Math.min(min, bound), bound];
+
+    if (!disabled && (newScaledValue[0] !== min || newScaledValue[1] !== max)) {
+      beforeChangeRef.current = beforeChangeRef.current ?? [value, scaledValue];
+      handleChange(newScaledValue);
+    }
+  }
+
+  function endChange() {
+    if (beforeChangeRef.current) {
+      handleChange(scaledValue, true);
+      beforeChangeRef.current = undefined;
+    }
+  }
+
+  const { trackRef, dragProps } = useSliderDrag(
+    false,
+    SLIDER_RANGE,
+    (val, pressedIndex) => {
+      const closest = val * 2 < scaledValue[0] + scaledValue[1] ? 0 : 1;
+      return disabled ? undefined : pressedIndex >= 0 ? pressedIndex : closest;
+    },
+    moveThumb,
+    endChange,
+  );
+
   return (
-    <ReactSlider
-      className={styles.slider}
-      pearling
-      min={SLIDER_RANGE[0]}
-      max={SLIDER_RANGE[1]}
-      value={scaledValue}
-      disabled={disabled}
-      onBeforeChange={setBeforeChangeValue}
-      onChange={(bounds) => handleChange(bounds)}
-      onAfterChange={(bounds) => handleChange(bounds, true)}
-      renderThumb={({ key, ...thumbProps }, { index }) => (
+    <div ref={trackRef} className={styles.slider} {...dragProps}>
+      <Track scale={scale} dataDomain={dataDomain} />
+      {scaledValue.map((scaledBound, index) => (
         <Thumb
-          key={key}
+          key={index === 0 ? 'min' : 'max'}
           bound={index === 0 ? 'min' : 'max'}
           isAuto={index === 0 ? isAutoMin : isAutoMax}
           hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
           disabled={disabled}
           AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
-          {...thumbProps}
+          style={{
+            left: `${((scaledBound - SLIDER_RANGE[0]) / SLIDER_SPAN) * 100}%`,
+          }}
+          role="slider"
+          tabIndex={0}
+          aria-valuemin={SLIDER_RANGE[0]}
+          aria-valuemax={SLIDER_RANGE[1]}
+          aria-valuenow={scaledBound}
+          onKeyDown={(evt) =>
+            handleSliderKey(evt, scaledBound, ...SLIDER_RANGE, (newBound) =>
+              moveThumb(newBound, index),
+            )
+          }
+          onKeyUp={endChange}
+          onBlur={endChange}
         />
-      )}
-      renderTrack={({ key }, { index }) =>
-        index === 0 ? (
-          <Track key={key} scale={scale} dataDomain={dataDomain} />
-        ) : null
-      }
-    />
+      ))}
+    </div>
   );
 }
 
