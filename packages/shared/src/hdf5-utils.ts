@@ -103,6 +103,41 @@ export function parseShape(dims: number[] | null | undefined): Shape {
   return arrayShape(dims);
 }
 
+export function getDimsSize(dims: number[]): number {
+  return dims.reduce((acc, dim) => acc * dim, 1);
+}
+
+/**
+ * Compute number of elements in selection - e.g. dims [2, 3, 4] + "0,:,:" => 12
+ * Returns `undefined` if selection contains anything other than indices and `:`.
+ */
+export function getSelectionSize(
+  dims: number[],
+  selection?: string,
+): number | undefined {
+  if (!selection) {
+    return getDimsSize(dims);
+  }
+
+  const slicing = selection.split(',');
+  if (slicing.length > dims.length) {
+    return undefined;
+  }
+
+  let size = 1;
+  for (const [i, dim] of dims.entries()) {
+    const slice = slicing[i] ?? ':'; // missing trailing dimensions are selected in full
+
+    if (slice === ':') {
+      size *= dim;
+    } else if (!/^\d+$/u.test(slice)) {
+      return undefined;
+    }
+  }
+
+  return size;
+}
+
 /* ----------------- */
 /* ----- TYPES ----- */
 
