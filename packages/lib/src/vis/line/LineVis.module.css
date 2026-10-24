@@ -29,8 +29,14 @@
   opacity: 0.3;
 }
 
+.tooltipAuxList {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 0.75rem;
+}
+
 .tooltipValue,
-.tooltipValue + .tooltipAux {
+.tooltipValue + .tooltipAuxList {
   margin-top: 0.25rem;
 }
 

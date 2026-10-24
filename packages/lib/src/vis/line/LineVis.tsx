@@ -29,8 +29,12 @@ import {
   type TooltipData,
 } from './models';
 
+const MAX_TOOLTIP_ROWS = 10; // split auxiliary values into columns beyond this
+
 interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
+  dataLabel?: string;
+  dataColor?: string;
   domain: Domain | undefined;
   scaleType?: AxisScaleType;
   curveType?: CurveType;
@@ -53,6 +57,8 @@ interface Props extends ClassStyleAttrs {
 function LineVis(props: PropsWithChildren<Props>) {
   const {
     dataArray,
+    dataLabel,
+    dataColor,
     domain,
     curveType = CurveType.LineOnly,
     showGrid = true,
@@ -99,12 +105,14 @@ function LineVis(props: PropsWithChildren<Props>) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
-  const [[curveColor, auxColorList], rootRef] = useCssColors([
+  const [[cssCurveColor, auxColorList], rootRef] = useCssColors([
     '--curve-color',
     '--aux-colors',
   ]);
+  const curveColor = dataColor ?? cssCurveColor;
   const auxColors = auxColorList.split(',').map((col) => col.trim()); // support comma-separated list of colors
-  const hasVisibleAux = auxiliaries.some((aux) => aux.visible);
+  const visibleAuxCount = auxiliaries.filter((aux) => aux.visible).length;
+  const hasVisibleAux = visibleAuxCount > 0;
 
   return (
     <figure
@@ -163,26 +171,45 @@ function LineVis(props: PropsWithChildren<Props>) {
                     />
                   )}
                   <span>
+                    {dataLabel && `${dataLabel} = `}
                     <strong>{formatTooltipVal(value)}</strong>
                     {error !== undefined && ` ±${formatTooltipErr(error)}`}
                     {dtype && <em>{` (${dtype})`}</em>}
                   </span>
                 </div>
 
-                {auxiliaries.map(
-                  ({ label, array, errors, visible: auxVisible }, index) =>
-                    auxVisible ? (
-                      <div className={styles.tooltipAux} key={label || index}>
-                        <span
-                          className={styles.mark}
-                          data-keep-colors
-                          style={{ color: auxColors[index % auxColors.length] }}
-                        />
-                        {label ? `${label} = ` : ''}
-                        {formatTooltipVal(array.get(xi))}
-                        {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
-                      </div>
-                    ) : null,
+                {hasVisibleAux && (
+                  <div
+                    className={styles.tooltipAuxList}
+                    style={{
+                      gridTemplateRows: `repeat(${Math.min(visibleAuxCount, MAX_TOOLTIP_ROWS)}, auto)`,
+                    }}
+                  >
+                    {auxiliaries.map(
+                      (
+                        { label, array, errors, color, visible: auxVisible },
+                        index,
+                      ) =>
+                        auxVisible ? (
+                          <div
+                            className={styles.tooltipAux}
+                            key={label || index}
+                          >
+                            <span
+                              className={styles.mark}
+                              data-keep-colors
+                              style={{
+                                color:
+                                  color ?? auxColors[index % auxColors.length],
+                              }}
+                            />
+                            {label ? `${label} = ` : ''}
+                            {formatTooltipVal(array.get(xi))}
+                            {errors && ` ±${formatTooltipErr(errors.get(xi))}`}
+                          </div>
+                        ) : null,
+                    )}
+                  </div>
                 )}
               </>
             );
@@ -201,20 +228,22 @@ function LineVis(props: PropsWithChildren<Props>) {
           visible={visible}
         />
 
-        {auxiliaries.map(({ array, label, errors, visible: auxVisible }, i) => (
-          <DataCurve
-            key={label}
-            abscissas={abscissas}
-            ordinates={array.data}
-            errors={errors?.data}
-            showErrors={showErrors}
-            color={auxColors[i % auxColors.length]}
-            curveType={curveType}
-            ignoreValue={ignoreValue}
-            interpolation={interpolation}
-            visible={auxVisible}
-          />
-        ))}
+        {auxiliaries.map(
+          ({ array, label, errors, color, visible: auxVisible }, i) => (
+            <DataCurve
+              key={label}
+              abscissas={abscissas}
+              ordinates={array.data}
+              errors={errors?.data}
+              showErrors={showErrors}
+              color={color ?? auxColors[i % auxColors.length]}
+              curveType={curveType}
+              ignoreValue={ignoreValue}
+              interpolation={interpolation}
+              visible={auxVisible}
+            />
+          ),
+        )}
 
         {children}
       </VisCanvas>
