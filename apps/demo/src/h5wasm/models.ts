@@ -1,4 +1,3 @@
 export interface RemoteFile {
-  filename: string;
-  buffer: ArrayBuffer;
+  url: string;
 }
