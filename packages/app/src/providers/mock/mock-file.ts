@@ -497,6 +497,31 @@ export function makeMockFile(): GroupWithChildren {
           valueId: 'twoD',
           attributes: [scalar('_FillValue', -9)],
         }),
+        array('scale_factor', {
+          valueId: 'twoD',
+          type: intType(true, 16),
+          attributes: [scalar('scale_factor', 0.5)],
+        }),
+        array('scale_factor_add_offset', {
+          valueId: 'twoD',
+          type: intType(true, 16),
+          attributes: [
+            // NetCDF4 stores numeric attributes as single-element arrays
+            dataset('scale_factor', arrayShape([1]), floatType(32), [0.5]),
+            dataset('add_offset', arrayShape([1]), floatType(32), [10]),
+            dataset('_FillValue', arrayShape([1]), intType(true, 16), [100]),
+          ],
+        }),
+        array('scale_factor_valid_range', {
+          valueId: 'twoD',
+          type: intType(true, 16),
+          attributes: [
+            scalar('scale_factor', 0.5, { type: floatType(32) }),
+            scalar('add_offset', 10, { type: floatType(32) }),
+            // Same type as `scale_factor` and `add_offset`, so in unpacked units
+            dataset('valid_range', arrayShape([2]), floatType(32), [0, 50]),
+          ],
+        }),
       ]),
       group('resilience', [
         scalar('error_value', 0, { attributes: [scalarAttr('attr', 1)] }),

@@ -1,11 +1,11 @@
 import {
   type DimensionMapping,
+  getDomain,
   getSliceSelection,
   KeepZoom,
   LineVis,
   useCombinedDomain,
   useDomain,
-  useDomains,
   useSafeDomain,
   useSlicedDimsAndMapping,
   useVisDomain,
@@ -24,7 +24,12 @@ import { useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useIgnoreValue } from '../../netcdf/hooks';
+import {
+  useIgnoreValues,
+  usePackings,
+  useUnpackedNumArray,
+} from '../../netcdf/hooks';
+import { formatDType, unpackNumArray } from '../../netcdf/utils';
 import {
   useExportEntries,
   useMappedArray,
@@ -32,10 +37,14 @@ import {
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType, toNumArray } from '../utils';
+import { DEFAULT_DOMAIN, toNumArray } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
 import { generateCsv } from './utils';
+
+function ignoreNone(): boolean {
+  return false;
+}
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
@@ -43,9 +52,12 @@ interface Props {
   valueLabel?: string;
   valueVisible?: boolean;
   errors?: ArrayValue<NumericType>;
+  errorsDataset?: Dataset<ArrayShape, NumericType>;
   auxLabels?: string[];
   auxValues?: ArrayValue<NumericLikeType | ComplexType>[];
+  auxDatasets?: Dataset<ArrayShape, NumericLikeType | ComplexType>[];
   auxErrors?: (ArrayValue<NumericType> | undefined)[];
+  auxErrorsDatasets?: (Dataset<ArrayShape, NumericType> | undefined)[];
   auxVisible?: boolean[];
   dimMapping: DimensionMapping;
   axisLabels?: AxisMapping<string>;
@@ -62,9 +74,12 @@ function MappedLineVis(props: Props) {
     valueLabel,
     valueVisible = true,
     errors,
+    errorsDataset,
     auxLabels = [],
     auxValues = [],
+    auxDatasets = [],
     auxErrors = [],
+    auxErrorsDatasets = [],
     auxVisible = [],
     dimMapping,
     axisLabels = [],
@@ -84,26 +99,50 @@ function MappedLineVis(props: Props) {
     interpolation,
   } = config;
 
-  const ignoreValue = useIgnoreValue(dataset);
+  // Each signal is unpacked and checked for invalid values based on its own attributes
+  const [ignoreValue, ...auxIgnoreValues] = useIgnoreValues([
+    dataset,
+    ...auxDatasets,
+  ]);
+  const [packing, errorsPacking, ...otherPackings] = usePackings([
+    dataset,
+    errorsDataset,
+    ...auxDatasets,
+    ...auxErrorsDatasets,
+  ]);
+  const auxPackings = otherPackings.slice(0, auxDatasets.length);
+  const auxErrorsPackings = otherPackings.slice(auxDatasets.length);
 
   const { dims } = dataset.shape;
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);
 
-  const numArray = useToNumArray(value);
+  const numArray = useToNumArray(useUnpackedNumArray(value, packing));
   const numAuxArrays = useMemo(
     () =>
-      auxValues.map((arr) => {
+      auxValues.map((arr, i) => {
         if (isComplexArray(arr)) {
           return arr.map(([real, imag]) => Math.hypot(real, imag)); // amplitude
         }
 
-        return toNumArray(arr);
+        return toNumArray(
+          unpackNumArray<ArrayValue<NumericLikeType>>(arr, auxPackings[i]),
+        );
       }),
-    auxValues, // eslint-disable-line react-hooks/exhaustive-deps
+    [...auxValues, ...auxPackings], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  const numErrorsArray = useToNumArray(errors);
-  const numAuxErrorsArrays = useToNumArrays(auxErrors);
+  const numErrorsArray = useToNumArray(
+    useUnpackedNumArray(errors, errorsPacking),
+  );
+  const numAuxErrorsArrays = useToNumArrays(
+    useMemo(
+      () =>
+        auxErrors.map(
+          (arr, i) => arr && unpackNumArray(arr, auxErrorsPackings[i]),
+        ),
+      [...auxErrors, ...auxErrorsPackings], // eslint-disable-line react-hooks/exhaustive-deps
+    ),
+  );
   const numAxisArrays = useToNumArrays(axisValues);
 
   const dataArray = useMappedArray(numArray, ...mappingArgs);
@@ -118,12 +157,18 @@ function MappedLineVis(props: Props) {
     ignoreValue,
   });
 
-  const auxDomains = useDomains(auxArrays, {
-    errorsArrays: auxErrorsArrays,
-    includeErrors: showErrors,
-    scaleType: yScaleType,
-    ignoreValue,
-  });
+  const auxDomains = useMemo(
+    () =>
+      auxArrays.map((arr, i) =>
+        getDomain(arr, {
+          errors: auxErrorsArrays[i],
+          includeErrors: showErrors,
+          scaleType: yScaleType,
+          ignoreValue: auxIgnoreValues[i],
+        }),
+      ),
+    [auxArrays, auxErrorsArrays, showErrors, yScaleType, ...auxIgnoreValues], // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   const combinedDomain =
     useCombinedDomain([
@@ -148,6 +193,7 @@ function MappedLineVis(props: Props) {
     array,
     errors: auxErrorsArrays[i],
     visible: auxVisible[i],
+    ignoreValue: auxIgnoreValues[i] ?? ignoreNone, // don't fall back to signal's `ignoreValue`
   }));
 
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
@@ -185,7 +231,7 @@ function MappedLineVis(props: Props) {
         abscissaParams={abscissaParams}
         ordinateLabel={valueLabel}
         title={title}
-        dtype={formatNumLikeType(dataset.type)}
+        dtype={formatDType(dataset.type, packing)}
         errorsArray={errorsArray}
         showErrors={showErrors}
         auxiliaries={auxiliaries}
