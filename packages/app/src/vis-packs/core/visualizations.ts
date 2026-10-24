@@ -10,14 +10,7 @@ import {
   hasPrintableType,
 } from '@h5web/shared/guards';
 import { type Dataset } from '@h5web/shared/hdf5-models';
-import {
-  FiActivity,
-  FiCode,
-  FiGrid,
-  FiImage,
-  FiMap,
-  FiPackage,
-} from 'react-icons/fi';
+import { FiActivity, FiCode, FiGrid, FiImage, FiMap } from 'react-icons/fi';
 
 import { type DataContextValue } from '../../providers/DataProvider';
 import { findScalarStrAttr, getAttributeValue } from '../../utils';
@@ -39,8 +32,6 @@ import {
   RgbVisContainer,
   ScalarVisContainer,
 } from './containers';
-import { SurfaceConfigProvider } from './surface/config';
-import SurfaceVisContainer from './surface/SurfaceVisContainer';
 
 export enum Vis {
   Scalar = 'Scalar',
@@ -51,7 +42,6 @@ export enum Vis {
   ComplexLine = 'ComplexLine',
   RGB = 'RGB',
   Compound = 'Compound',
-  Surface = 'Surface',
 }
 
 export interface CoreVisDef extends VisDef {
@@ -169,24 +159,6 @@ export const CORE_VIS = {
         hasNonNullShape(dataset) &&
         hasCompoundType(dataset) &&
         hasPrintableCompoundType(dataset)
-      );
-    },
-  },
-
-  [Vis.Surface]: {
-    name: Vis.Surface,
-    Icon: FiPackage,
-    Container: SurfaceVisContainer,
-    ConfigProvider: SurfaceConfigProvider,
-    supportsDataset: async (dataset) => {
-      // @ts-expect-error - Untyped global flag
-      const enableSurfaceVis = globalThis.H5WEB_EXPERIMENTAL as boolean;
-
-      return (
-        enableSurfaceVis &&
-        hasArrayShape(dataset) &&
-        hasMinDims(dataset, 2) &&
-        hasNumericType(dataset)
       );
     },
   },
