@@ -44,6 +44,12 @@ export interface HeatmapConfig {
 
   flipYAxis: boolean;
   setFlipYAxis: (flipYAxis: boolean) => void;
+
+  surface: boolean;
+  setSurface: (surface: boolean) => void;
+
+  heightScale: number;
+  setHeightScale: (heightScale: number) => void;
 }
 
 function createHeatmapConfigStore() {
@@ -76,10 +82,18 @@ function createHeatmapConfigStore() {
 
         flipXAxis: false,
         setFlipXAxis: (flipXAxis) => set({ flipXAxis }),
+
+        surface: false,
+        setSurface: (surface) => set({ surface }),
+
+        heightScale: 0.5,
+        setHeightScale: (heightScale) => set({ heightScale }),
       }),
       {
         name: 'h5web:heatmap',
         version: 12,
+        // 3D mode is opt-in for the session: don't open datasets in 3D after a reload
+        partialize: ({ surface, ...state }) => state,
       },
     ),
   );
