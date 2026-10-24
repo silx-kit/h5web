@@ -70,6 +70,11 @@ export class MockApi extends DataProviderApi {
     const { value } = dataset;
     assertDefined(value, 'Expected mock dataset to have value');
 
+    if (typeof value === 'function') {
+      // Value generated on demand (e.g. for very large datasets)
+      return (value as (selection?: string) => unknown)(selection);
+    }
+
     if (!selection) {
       return value;
     }

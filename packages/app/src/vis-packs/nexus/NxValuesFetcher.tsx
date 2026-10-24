@@ -7,6 +7,7 @@ import { type ReactNode } from 'react';
 
 import { useValues } from '../../hooks';
 import { type ValueQueryParams } from '../../providers/models';
+import LargeValueGuard from '../LargeValueGuard';
 import { type NxData, type NxValues } from './models';
 
 interface Props<T extends NumericLikeType | ComplexType> {
@@ -43,6 +44,25 @@ function NxValuesFetcher<T extends NumericLikeType | ComplexType>(
       datasets[`axisValues-${i}`] = { dataset: def.dataset };
     }
   });
+
+  return (
+    <LargeValueGuard requests={Object.values(datasets)}>
+      <NxValuesRenderer nxData={nxData} datasets={datasets} render={render} />
+    </LargeValueGuard>
+  );
+}
+
+interface RendererProps<T extends NumericLikeType | ComplexType> {
+  nxData: NxData<T>;
+  datasets: Record<string, ValueQueryParams>;
+  render: (val: NxValues<T>) => ReactNode;
+}
+
+function NxValuesRenderer<T extends NumericLikeType | ComplexType>(
+  props: RendererProps<T>,
+): ReactNode {
+  const { nxData, datasets, render } = props;
+  const { signalDef, axisDefs, auxDefs, titleDataset } = nxData;
 
   // 2. Fetch the values
   const values = useValues(datasets);

@@ -237,3 +237,50 @@ test('cancel fetching dataset slice when changing vis', async () => {
   runAll();
   await expect.element(page.getByRole('figure')).toBeVisible();
 });
+
+test('ask for confirmation before fetching very large dataset value', async () => {
+  const runAll = mockDelay();
+  const { selectVisTab } = await renderApp({
+    initialPath: '/resilience/slow_large_twoD',
+    waitForLoaders: false,
+  });
+
+  // Heatmap requires whole dataset
+  await expect
+    .element(
+      page.getByText('Dataset too large to be loaded automatically (2 GB)'),
+    )
+    .toBeVisible();
+  expect(page.getByText('Loading data...').query()).toBeNull();
+
+  // Fetch once confirmed
+  await page.getByRole('button', { name: 'Load anyway?' }).click();
+  await expect.element(page.getByText('Loading data...')).toBeVisible();
+
+  // Cancel and retry without asking for confirmation again
+  const errorSpy = mockConsoleMethod('error');
+  await page.getByRole('button', { name: 'Cancel?' }).click();
+  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await page.getByRole('button', { name: 'Retry?' }).click();
+  await expect.element(page.getByText('Loading data...')).toBeVisible();
+
+  runAll();
+  await expect
+    .element(page.getByText('Only rows of `slow_large_twoD` can be fetched'))
+    .toBeVisible();
+  errorSpy.mockRestore();
+
+  // Line requires only a slice
+  await selectVisTab(Vis.Line);
+  await expect
+    .element(page.getByText('Loading current slice...'))
+    .toBeVisible();
+  runAll();
+  await expect.element(page.getByRole('figure')).toBeVisible();
+
+  // Confirmation is specific to each visualization
+  await selectVisTab(Vis.Matrix);
+  await expect
+    .element(page.getByText(/too large to be loaded automatically/u))
+    .toBeVisible();
+});
