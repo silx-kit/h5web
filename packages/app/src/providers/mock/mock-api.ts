@@ -23,6 +23,7 @@ import {
 } from '@h5web/shared/vis-models';
 
 import { DataProviderApi } from '../api';
+import { FetcherError } from '../utils';
 import { makeMockFile } from './mock-file';
 import { delay, findMockEntity, getChildrenPaths, sliceValue } from './utils';
 
@@ -61,6 +62,10 @@ export class MockApi extends DataProviderApi {
 
     if (dataset.name === 'error_value') {
       throw new Error('error');
+    }
+
+    if (dataset.name === 'fetcher_error_value') {
+      throw new FetcherError(502, 'Bad Gateway', new ArrayBuffer(0));
     }
 
     if (dataset.name.startsWith('slow') && abortSignal) {
@@ -127,5 +132,12 @@ export class MockApi extends DataProviderApi {
 
   public override async getSearchablePaths(path: string): Promise<string[]> {
     return getChildrenPaths(this.mockFile, path);
+  }
+
+  public override async getDimensionScales(
+    dataset: Dataset<ArrayShape>,
+  ): Promise<string[][]> {
+    assertMockDataset(dataset);
+    return dataset.dimScales || [];
   }
 }

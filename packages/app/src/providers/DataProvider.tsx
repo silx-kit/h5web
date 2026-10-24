@@ -84,6 +84,7 @@ export interface DataContextValue {
   // Undocumented
   getExportURL?: DataProviderApi['getExportURL'];
   getSearchablePaths?: DataProviderApi['getSearchablePaths'];
+  getDimensionScales?: DataProviderApi['getDimensionScales'];
 }
 
 const DataContext = createContext({} as DataContextValue);
@@ -132,6 +133,7 @@ function DataProvider(props: PropsWithChildren<Props>) {
       progressStore,
       getExportURL: api.getExportURL?.bind(api),
       getSearchablePaths: api.getSearchablePaths?.bind(api),
+      getDimensionScales: api.getDimensionScales?.bind(api),
     };
   }, [api, queryClient, progressStore]);
 

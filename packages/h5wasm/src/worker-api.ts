@@ -72,6 +72,25 @@ async function getAttrValue(
   return new Attribute(fileId, path, attrName).json_value;
 }
 
+/* h5wasm dereferences the object references in `DIMENSION_LIST` for us; the raw
+ * attribute value is not usable directly. Names and labels are plain attributes
+ * (`NAME`, `DIMENSION_LABELS`) that the app reads itself. */
+async function getDimensionScales(
+  fileId: bigint,
+  path: string,
+): Promise<string[][]> {
+  const dataset = new Dataset(fileId, path);
+
+  return (dataset.shape || []).map((_, index) => {
+    try {
+      return dataset.get_attached_scales(index);
+    } catch {
+      // Reference to an unlinked object, say; the app falls back to the index axis
+      return [];
+    }
+  });
+}
+
 async function getDescendantPaths(
   fileId: bigint,
   rootPath: string,
@@ -103,6 +122,7 @@ const api = {
   getEntity,
   getValue,
   getAttrValue,
+  getDimensionScales,
   getDescendantPaths,
   isPluginLoaded,
   loadPlugin,

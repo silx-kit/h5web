@@ -99,6 +99,18 @@ export class H5WasmApi extends DataProviderApi {
     return this.remote.getDescendantPaths(fileId, root);
   }
 
+  public override async getDimensionScales(
+    dataset: Dataset<ArrayShape>,
+  ): Promise<string[][]> {
+    const fileId = await this.fileId;
+
+    try {
+      return await this.remote.getDimensionScales(fileId, dataset.path);
+    } catch (error) {
+      throw getEnhancedError(error);
+    }
+  }
+
   public async cleanUp(): Promise<number> {
     return this.remote.closeFile(await this.fileId);
   }

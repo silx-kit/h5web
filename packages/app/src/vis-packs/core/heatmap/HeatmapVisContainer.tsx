@@ -9,8 +9,10 @@ import {
 import { useDimMappingState } from '../../../dim-mapping-store';
 import { useValuesInCache } from '../../../hooks';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { useDimScales } from '../../dimscales/hooks';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
+import { guessKeepRatio } from '../utils';
 import ValueFetcher from '../ValueFetcher';
 import { useHeatmapConfig } from './config';
 import MappedHeatmapVis from './MappedHeatmapVis';
@@ -28,7 +30,15 @@ function HeatmapVisContainer(props: VisContainerProps) {
     axesCount: 2,
   });
 
-  const config = useHeatmapConfig();
+  const { axisLabels, axisValues, axisUnits } = useDimScales(entity);
+
+  // Suggest keeping the ratio only when the mapped axes share a unit, as NeXus does
+  const config = useHeatmapConfig({
+    keepRatio: guessKeepRatio(
+      { unit: axisUnits[dimMapping.indexOf('x')] },
+      { unit: axisUnits[dimMapping.indexOf('y')] },
+    ),
+  });
   const selection = getSliceSelection(dimMapping);
 
   return (
@@ -36,6 +46,7 @@ function HeatmapVisContainer(props: VisContainerProps) {
       <DimensionMapper
         className={visualizerStyles.dimMapper}
         dims={dims}
+        dimHints={axisLabels}
         dimMapping={dimMapping}
         canSliceFast={useValuesInCache(entity)}
         onChange={setDimMapping}
@@ -49,6 +60,8 @@ function HeatmapVisContainer(props: VisContainerProps) {
               dataset={entity}
               value={value}
               dimMapping={dimMapping}
+              axisLabels={axisLabels}
+              axisValues={axisValues}
               title={entity.name}
               toolbarContainer={toolbarContainer}
               config={config}

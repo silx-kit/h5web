@@ -91,6 +91,19 @@ export function getImageInteractions(keepRatio: boolean): InteractionInfo[] {
   return keepRatio ? BASE_INTERACTIONS : INTERACTIONS_WITH_AXIAL_ZOOM;
 }
 
+/* Keep the ratio when both axes share a unit, as when plotting two lengths,
+ * but not when they differ, as when plotting energy against time. */
+export function guessKeepRatio(
+  xAxis: { unit?: string } | undefined,
+  yAxis: { unit?: string } | undefined,
+): boolean | undefined {
+  if (!xAxis?.unit && !yAxis?.unit) {
+    return undefined;
+  }
+
+  return xAxis?.unit === yAxis?.unit;
+}
+
 function isBigIntArray(val: ArrayValue<NumericLikeType>): val is bigint[] {
   return Array.isArray(val) && typeof val[0] === 'bigint';
 }
