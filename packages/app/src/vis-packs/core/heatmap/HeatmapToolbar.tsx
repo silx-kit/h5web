@@ -23,6 +23,7 @@ import {
   MdSwapVert,
 } from 'react-icons/md';
 
+import { useVisArea } from '../../../visualizer/vis-area';
 import { getImageInteractions } from '../utils';
 import { type HeatmapConfig } from './config';
 
@@ -41,6 +42,7 @@ interface Props {
 }
 
 function HeatmapToolbar(props: Props) {
+  const visArea = useVisArea();
   const { dataDomain, isSlice, isComplex, config, exportEntries } = props;
   const {
     customDomain,
@@ -133,7 +135,7 @@ function HeatmapToolbar(props: Props) {
         <ExportMenu isSlice={isSlice} entries={exportEntries} />
       )}
 
-      <SnapshotBtn />
+      <SnapshotBtn target={visArea} />
     </Toolbar>
   );
 }

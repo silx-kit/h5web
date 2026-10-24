@@ -88,7 +88,11 @@ function VisCanvas(props: PropsWithChildren<Props>) {
         />
       </div>
 
-      <div ref={setFloatingToolbar} className={styles.floatingToolbar} />
+      <div
+        ref={setFloatingToolbar}
+        className={styles.floatingToolbar}
+        data-snapshot-ignore
+      />
     </div>
   );
 }
