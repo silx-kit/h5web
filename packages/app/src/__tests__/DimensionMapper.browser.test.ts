@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { page } from 'vitest/browser';
+import { commands, page } from 'vitest/browser';
 
 import { getDimMappingBtn, renderApp } from '../test-utils';
 import { Vis } from '../vis-packs/core/visualizations';
@@ -106,6 +106,28 @@ test('slice through 2D dataset', async () => {
   await user.type(d0Slider, '{ArrowUp}');
 
   expect(d0Slider).toHaveValue(1);
+});
+
+test('slice through 2D dataset by dragging slider thumb', async () => {
+  await renderApp({ initialPath: '/arrays/twoD', preferredVis: Vis.Line });
+
+  const d0Slider = page.getByRole('slider', { name: 'D0' });
+  const { left, top, width } = d0Slider.element().getBoundingClientRect();
+  const [x, y] = [left + width / 2, top + 2]; // grab thumb above its centre
+
+  // Thumb doesn't jump when grabbed off-centre
+  await commands.mouseDrag([
+    [x, y],
+    [x, y - 1],
+  ]);
+  await expect.element(d0Slider).toHaveValue(0);
+
+  // Drag thumb to top of slider
+  await commands.mouseDrag([
+    [x, y],
+    [x, y - 1000],
+  ]);
+  await expect.element(d0Slider).toHaveValue(19);
 });
 
 test('slice through 2D opaque dataset', async () => {

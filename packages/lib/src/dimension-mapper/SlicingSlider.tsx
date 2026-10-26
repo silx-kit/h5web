@@ -1,7 +1,14 @@
+import { assertNonNull } from '@h5web/shared/guards';
 import { useMeasure } from '@react-hookz/web';
-import { useId, useState } from 'react';
+import {
+  type KeyboardEvent,
+  type PointerEvent,
+  useId,
+  useRef,
+  useState,
+} from 'react';
+import { flushSync } from 'react-dom';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import ReactSlider from 'react-slider';
 
 import Btn from '../toolbar/controls/Btn';
 import { useDynamicDebouncedCallback } from './hooks';
@@ -11,6 +18,17 @@ const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;
 const SHORT_DELAY = 20;
 const LONG_DELAY = 250;
+
+const KEY_STEPS: Partial<Record<string, number>> = {
+  ArrowDown: -1,
+  ArrowLeft: -1,
+  ArrowUp: 1,
+  ArrowRight: 1,
+  PageDown: -10,
+  PageUp: 10,
+  Home: -Infinity,
+  End: Infinity,
+};
 
 interface Props {
   dimension: number;
@@ -54,8 +72,60 @@ function SlicingSlider(props: Props) {
     setLocalValue(value);
   }
 
+  function handleChange(newValue: number) {
+    if (newValue !== localValue) {
+      setLocalValue(newValue);
+      onDebouncedChange(newValue);
+    }
+  }
+
+  const trackRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ pointerId: number; offset: number }>(undefined); // offset between pointer and thumb center
+
+  function getValueAt(clientY: number): number {
+    assertNonNull(trackRef.current);
+    const { bottom, height } = trackRef.current.getBoundingClientRect();
+    const ratio = Math.min(Math.max((bottom - clientY) / height, 0), 1);
+    return Math.round(ratio * (length - 1));
+  }
+
+  function handlePointerDown(evt: PointerEvent<HTMLDivElement>) {
+    assertNonNull(thumbRef.current);
+    if (evt.button !== 0 || dragRef.current) {
+      return;
+    }
+
+    const { top, height } = thumbRef.current.getBoundingClientRect();
+    const offset = thumbRef.current.contains(evt.target as Node)
+      ? evt.clientY - (top + height / 2) // grabbed thumb doesn't jump
+      : 0;
+
+    evt.preventDefault(); // prevent text selection
+    thumbRef.current.focus({ preventScroll: true });
+    evt.currentTarget.setPointerCapture(evt.pointerId);
+    dragRef.current = { pointerId: evt.pointerId, offset };
+    handleChange(getValueAt(evt.clientY - offset));
+  }
+
+  function handlePointerMove(evt: PointerEvent) {
+    if (dragRef.current?.pointerId === evt.pointerId) {
+      const { offset } = dragRef.current;
+      flushSync(() => handleChange(getValueAt(evt.clientY - offset))); // render before next move so `localValue` is up to date
+    }
+  }
+
+  function handleKeyDown(evt: KeyboardEvent) {
+    const step = KEY_STEPS[evt.key];
+    if (step !== undefined) {
+      evt.preventDefault();
+      handleChange(Math.min(Math.max(localValue + step, 0), length - 1));
+    }
+  }
+
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const sliderLabelId = `${ID}-${dimension}-label`;
+  const thumbValue = Math.min(Math.max(localValue, 0), length - 1);
 
   return (
     <div key={dimension} ref={containerRef} className={styles.container}>
@@ -65,41 +135,43 @@ function SlicingSlider(props: Props) {
       <span className={styles.sublabel}>0:{length - 1}</span>
       {length > 1 && (
         <>
-          <ReactSlider
+          <div
             className={styles.slider}
-            ariaLabelledby={sliderLabelId}
-            min={0}
-            max={length - 1}
-            step={1}
-            marks={
-              containerSize &&
-              containerSize.height / length >= MIN_HEIGHT_PER_MARK
-            }
-            markClassName={styles.mark}
-            orientation="vertical"
-            invert
-            value={localValue}
-            onChange={(newValue) => {
-              setLocalValue(newValue);
-              onDebouncedChange(newValue);
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onLostPointerCapture={(evt) => {
+              if (dragRef.current?.pointerId === evt.pointerId) {
+                dragRef.current = undefined;
+              }
             }}
-            /* When slicing in E2E tests, `onChange` is called with the old value.
-             The `onChange` event is fired via a `setState` callback in `ReactSlider`:
-             https://github.com/zillow/react-slider/blob/master/src/components/ReactSlider/ReactSlider.jsx#L908
-             Adding `onAfterChange` fixes the issue for now with react-slider@2.0.4, but not with react-slider@2.0.5+ */
-            onAfterChange={(newValue) => {
-              setLocalValue(newValue);
-              onDebouncedChange(newValue);
-            }}
-            renderThumb={({ key, ...thumbProps }, state) => (
-              <div key={key} {...thumbProps} className={styles.thumb}>
-                <span className={styles.thumbValue}>{state.valueNow}</span>
+          >
+            <div ref={trackRef} className={styles.track}>
+              {containerSize &&
+                containerSize.height / length >= MIN_HEIGHT_PER_MARK &&
+                Array.from({ length }, (_, index) => (
+                  <span
+                    key={index}
+                    className={styles.mark}
+                    style={{ bottom: `${(index / (length - 1)) * 100}%` }}
+                  />
+                ))}
+              <div
+                ref={thumbRef}
+                className={styles.thumb}
+                style={{ bottom: `${(thumbValue / (length - 1)) * 100}%` }}
+                role="slider"
+                tabIndex={0}
+                aria-labelledby={sliderLabelId}
+                aria-valuemin={0}
+                aria-valuemax={length - 1}
+                aria-valuenow={thumbValue}
+                aria-orientation="vertical"
+                onKeyDown={handleKeyDown}
+              >
+                <span className={styles.thumbValue}>{localValue}</span>
               </div>
-            )}
-            renderTrack={({ key }, { index }) =>
-              index === 0 ? <div key={key} className={styles.track} /> : null
-            }
-          />
+            </div>
+          </div>
 
           {withControls && (
             <div className={styles.slicingControls}>
