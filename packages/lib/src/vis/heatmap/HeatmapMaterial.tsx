@@ -4,10 +4,11 @@ import { type NdArray } from 'ndarray';
 import { memo, useMemo } from 'react';
 import {
   DataTexture,
-  DoubleSide,
+  FrontSide,
   type MagnificationTextureFilter,
   type MinificationTextureFilter,
   RGBAFormat,
+  type Side,
   UnsignedByteType,
   Vector4,
 } from 'three';
@@ -31,6 +32,7 @@ interface Props extends VisMeshProps {
   magFilter?: MagnificationTextureFilter;
   minFilter?: MinificationTextureFilter;
   mask?: NdArray<Uint8Array>;
+  side?: Side;
 }
 
 const DEFAULT_BAD_COLOR = rgb(255, 255, 255, 0);
@@ -61,6 +63,7 @@ function HeatmapMaterial(props: Props) {
     magFilter,
     minFilter,
     mask,
+    side = FrontSide,
   } = props;
 
   const dataTexture = useDataTexture(values, magFilter, minFilter);
@@ -95,77 +98,79 @@ function HeatmapMaterial(props: Props) {
 
   const badColorAsRgb = typeof badColor === 'string' ? rgb(badColor) : badColor;
 
-  const shader = {
-    uniforms: getUniforms({
-      data: dataTexture,
-      mask: maskTexture,
-      colorMap: colorMapTexture,
-      min: scaledDomain[0],
-      oneOverRange: 1 / (scaledDomain[1] - scaledDomain[0]),
-      gammaExponent,
-      normRevertFactor: values.dtype === 'uint8' ? 255 : 1, // revert WebGL's automatic normalization of UNSIGNED_BYTE with RED format
-      alpha: alphaTexture,
-      withAlpha: alphaValues ? 1 : 0,
-      alphaMin: alphaDomain[0],
-      oneOverAlphaRange: 1 / (alphaDomain[1] - alphaDomain[0]),
-      badColor: new Vector4(
-        badColorAsRgb.r / 255,
-        badColorAsRgb.g / 255,
-        badColorAsRgb.b / 255,
-        badColorAsRgb.opacity,
-      ),
-    }),
-    vertexShader: VERTEX_SHADER,
-    fragmentShader: `
-      uniform sampler2D data;
-      uniform sampler2D colorMap;
+  return (
+    <shaderMaterial
+      key={scaleType} // force recreation when fragment shader changes
+      side={side}
+      uniforms={getUniforms({
+        data: dataTexture,
+        mask: maskTexture,
+        colorMap: colorMapTexture,
+        min: scaledDomain[0],
+        oneOverRange: 1 / (scaledDomain[1] - scaledDomain[0]),
+        gammaExponent,
+        normRevertFactor: values.dtype === 'uint8' ? 255 : 1, // revert WebGL's automatic normalization of UNSIGNED_BYTE with RED format
+        alpha: alphaTexture,
+        withAlpha: alphaValues ? 1 : 0,
+        alphaMin: alphaDomain[0],
+        oneOverAlphaRange: 1 / (alphaDomain[1] - alphaDomain[0]),
+        badColor: new Vector4(
+          badColorAsRgb.r / 255,
+          badColorAsRgb.g / 255,
+          badColorAsRgb.b / 255,
+          badColorAsRgb.opacity,
+        ),
+      })}
+      vertexShader={VERTEX_SHADER}
+      fragmentShader={`
+        uniform sampler2D data;
+        uniform sampler2D colorMap;
 
-      uniform float min;
-      uniform float oneOverRange;
-      uniform float gammaExponent;
-      uniform float normRevertFactor;
+        uniform float min;
+        uniform float oneOverRange;
+        uniform float gammaExponent;
+        uniform float normRevertFactor;
 
-      uniform sampler2D alpha;
-      uniform float alphaMin;
-      uniform float oneOverAlphaRange;
-      uniform int withAlpha;
-      uniform vec4 badColor;
+        uniform sampler2D alpha;
+        uniform float alphaMin;
+        uniform float oneOverAlphaRange;
+        uniform int withAlpha;
+        uniform vec4 badColor;
 
-      uniform sampler2D mask;
+        uniform sampler2D mask;
 
-      const float oneOverLog10 = 0.43429448190325176;
+        const float oneOverLog10 = 0.43429448190325176;
 
-      varying vec2 coords;
+        varying vec2 coords;
 
-      bool isSupported(float value) {
-        return ${IMPL_IS_SUPPORTED[scaleType] || 'true'};
-      }
+        bool isSupported(float value) {
+          return ${IMPL_IS_SUPPORTED[scaleType] || 'true'};
+        }
 
-      float scale(float value) {
-        return ${IMPL_SCALE[scaleType] || 'value'};
-      }
+        float scale(float value) {
+          return ${IMPL_SCALE[scaleType] || 'value'};
+        }
 
-      void main() {
-        float value = texture2D(data, coords).r * normRevertFactor;
-        float maskValue = texture2D(mask, coords).r;
+        void main() {
+          float value = texture2D(data, coords).r * normRevertFactor;
+          float maskValue = texture2D(mask, coords).r;
 
-        if (isnan(value) || !isSupported(value) || maskValue == 1.) {
-            gl_FragColor = badColor;
-        } else {
-          float scaledValue = scale(value);
-          float normalizedValue = clamp(oneOverRange * (scaledValue - min), 0., 1.);
+          if (isnan(value) || !isSupported(value) || maskValue == 1.) {
+              gl_FragColor = badColor;
+          } else {
+            float scaledValue = scale(value);
+            float normalizedValue = clamp(oneOverRange * (scaledValue - min), 0., 1.);
 
-          gl_FragColor = texture2D(colorMap, vec2(pow(normalizedValue, gammaExponent), 0.5));
+            gl_FragColor = texture2D(colorMap, vec2(pow(normalizedValue, gammaExponent), 0.5));
 
-          if (withAlpha == 1) {
-            gl_FragColor.a = oneOverAlphaRange * (texture2D(alpha, coords).r - alphaMin);
+            if (withAlpha == 1) {
+              gl_FragColor.a = oneOverAlphaRange * (texture2D(alpha, coords).r - alphaMin);
+            }
           }
         }
-      }
-    `,
-  };
-
-  return <shaderMaterial args={[shader]} side={DoubleSide} />;
+      `}
+    />
+  );
 }
 
 export default memo(HeatmapMaterial);

@@ -55,37 +55,39 @@ function GlyphMaterial(props: Props) {
   // If no `color` given, use vertex colors (i.e. buffer attribute on geometry)
   const withVertexColor = !color;
 
-  const shader = {
-    uniforms: getUniforms({ size, color: new Color(color) }),
-    vertexShader: `
-      ${color ? 'uniform vec3 color;' : ''}
-      uniform float size;
-      varying vec3 vertexColor;
+  return (
+    <shaderMaterial
+      key={`${withVertexColor}_${glyphType}`} // force recreation when vertex or fragment shaders change
+      uniforms={getUniforms({ size, color: new Color(color) })}
+      vertexColors={withVertexColor}
+      vertexShader={`
+        ${withVertexColor ? '' : 'uniform vec3 color;'}
+        uniform float size;
+        varying vec3 vertexColor;
 
-      void main() {
-        gl_PointSize = size;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-        vertexColor = color;
-      }
-    `,
-    fragmentShader: `
-      uniform float size;
-      varying vec3 vertexColor;
-
-      ${GLYPH_SHADERS[glyphType]}
-
-      void main() {
-        float alpha = alphaSymbol(gl_PointCoord, size);
-        if (alpha <= 0.0) {
-            discard;
-        } else {
-            gl_FragColor = vec4(vertexColor.rgb, alpha);
+        void main() {
+          gl_PointSize = size;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+          vertexColor = color;
         }
-      }
-    `,
-  };
+      `}
+      fragmentShader={`
+        uniform float size;
+        varying vec3 vertexColor;
 
-  return <shaderMaterial args={[shader]} vertexColors={withVertexColor} />;
+        ${GLYPH_SHADERS[glyphType]}
+
+        void main() {
+          float alpha = alphaSymbol(gl_PointCoord, size);
+          if (alpha <= 0.0) {
+              discard;
+          } else {
+              gl_FragColor = vec4(vertexColor.rgb, alpha);
+          }
+        }
+      `}
+    />
+  );
 }
 
 export default GlyphMaterial;
