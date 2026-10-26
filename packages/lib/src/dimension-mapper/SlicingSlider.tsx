@@ -1,7 +1,6 @@
 import { useMeasure } from '@react-hookz/web';
 import { useId, useState } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import { MathUtils } from 'three';
 
 import Btn from '../toolbar/controls/Btn';
 import { useSliderDrag } from '../toolbar/controls/hooks';
@@ -72,7 +71,7 @@ function SlicingSlider(props: Props) {
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const sliderLabelId = `${ID}-${dimension}-label`;
-  const thumbValue = MathUtils.clamp(localValue, 0, length - 1);
+  const thumbValue = Math.min(Math.max(localValue, 0), length - 1);
 
   return (
     <div key={dimension} ref={containerRef} className={styles.container}>

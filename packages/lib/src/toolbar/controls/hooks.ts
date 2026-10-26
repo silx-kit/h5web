@@ -21,7 +21,6 @@ import {
   useRef,
 } from 'react';
 import { flushSync } from 'react-dom';
-import { MathUtils } from 'three';
 
 export const POPOVER_CLEARANCE = 6;
 
@@ -117,7 +116,7 @@ export function useSliderDrag(
     const ratio = vertical
       ? (bottom - evt.clientY - delta) / height
       : (evt.clientX - left - delta) / width;
-    return Math.round(min + MathUtils.clamp(ratio, 0, 1) * (max - min));
+    return Math.round(min + Math.min(Math.max(ratio, 0), 1) * (max - min));
   }
 
   const dragProps: DOMAttributes<HTMLElement> = {
