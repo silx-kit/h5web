@@ -1,5 +1,3 @@
-import { type KeyboardEvent } from 'react';
-
 export async function download(
   url: URL | (() => Promise<URL | Blob>),
   filename: string,
@@ -20,30 +18,4 @@ export async function download(
 
 export function getAllOptions<T>(options: Record<string, T[]> | T[]): T[] {
   return Array.isArray(options) ? options : Object.values(options).flat();
-}
-
-const SLIDER_KEY_STEPS: Partial<Record<string, number>> = {
-  ArrowLeft: -1,
-  ArrowDown: -1,
-  ArrowRight: 1,
-  ArrowUp: 1,
-  PageDown: -10,
-  PageUp: 10,
-  Home: -Infinity,
-  End: Infinity,
-};
-
-// Move slider thumb with arrow keys, PageUp/PageDown, Home/End
-export function handleSliderKey(
-  evt: KeyboardEvent,
-  value: number,
-  min: number,
-  max: number,
-  onChange: (newValue: number) => void,
-): void {
-  const step = SLIDER_KEY_STEPS[evt.key];
-  if (step !== undefined) {
-    evt.preventDefault();
-    onChange(Math.min(Math.max(value + step, min), max));
-  }
 }
