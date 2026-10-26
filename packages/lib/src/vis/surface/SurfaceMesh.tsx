@@ -5,7 +5,7 @@ import {
 } from '@h5web/shared/vis-models';
 import { type NdArray } from 'ndarray';
 import { useMemo } from 'react';
-import { LinearFilter } from 'three';
+import { DoubleSide, LinearFilter } from 'three';
 
 import HeatmapMaterial from '../heatmap/HeatmapMaterial';
 import { useTextureSafeNdArray } from '../heatmap/hooks';
@@ -48,6 +48,7 @@ function SurfaceMesh(props: Props) {
           scaleType={scaleType}
           invertColorMap={invertColorMap}
           magFilter={LinearFilter}
+          side={DoubleSide}
         />
       </mesh>
       <points geometry={geometry} visible={showPoints}>
