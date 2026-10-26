@@ -106,8 +106,14 @@ export type { SvgRectProps } from './interactions/svg/SvgRect';
 export type { SvgCircleProps } from './interactions/svg/SvgCircle';
 
 // Contexts
-export { useVisCanvasContext } from './vis/shared/VisCanvasProvider';
-export { useInteractionsContext } from './interactions/InteractionsProvider';
+export {
+  useVisCanvasContext,
+  VisCanvasContext,
+} from './vis/shared/VisCanvasProvider';
+export {
+  useInteractionsContext,
+  InteractionsContext,
+} from './interactions/InteractionsProvider';
 export type { VisCanvasContextValue } from './vis/shared/VisCanvasProvider';
 export type { InteractionsContextValue } from './interactions/InteractionsProvider';
 

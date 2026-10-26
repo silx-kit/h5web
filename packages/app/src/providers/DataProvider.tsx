@@ -86,7 +86,7 @@ export interface DataContextValue {
   getSearchablePaths?: DataProviderApi['getSearchablePaths'];
 }
 
-const DataContext = createContext({} as DataContextValue);
+export const DataContext = createContext({} as DataContextValue);
 
 export function useDataContext() {
   return useContext(DataContext);
