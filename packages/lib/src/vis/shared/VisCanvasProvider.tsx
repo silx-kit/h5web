@@ -42,7 +42,7 @@ export interface VisCanvasContextValue {
   floatingToolbar: HTMLDivElement | null;
 }
 
-const VisCanvasContext = createContext({} as VisCanvasContextValue);
+export const VisCanvasContext = createContext({} as VisCanvasContextValue);
 
 export function useVisCanvasContext() {
   return useContext(VisCanvasContext);
