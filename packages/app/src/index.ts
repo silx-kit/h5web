@@ -34,7 +34,7 @@ export type {
 } from '@h5web/shared/vis-models';
 
 // Context
-export { useDataContext } from './providers/DataProvider';
+export { useDataContext, DataContext } from './providers/DataProvider';
 export type { DataContextValue } from './providers/DataProvider';
 export type {
   ValueQueryParams,
