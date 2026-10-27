@@ -1,0 +1,22 @@
+.root {
+  display: flex;
+  align-items: center;
+  padding: 0 0.25rem;
+  white-space: nowrap;
+}
+
+.label {
+  margin-right: 0.375rem;
+  color: var(--h5w-toolbar-label--color, royalblue);
+}
+
+.input {
+  width: 5rem;
+  accent-color: var(--h5w-toolbar-label--color, royalblue);
+}
+
+.value {
+  min-width: 2.5rem;
+  margin-left: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}

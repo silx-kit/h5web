@@ -300,6 +300,24 @@ describe('/mock', () => {
     }
   });
 
+  it('visualize heatmap as 3D surface', () => {
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('twoD');
+
+    cy.findByRole('button', { name: 'More controls' }).click();
+
+    cy.findByRole('button', { name: 'Show as 3D surface' })
+      .click()
+      .should('have.attr', 'aria-pressed', 'true');
+
+    cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
+    cy.waitForStableDOM();
+
+    if (takeSnapshots) {
+      cy.matchImageSnapshot('heatmap_surface');
+    }
+  });
+
   it('visualize image dataset as RGB/BGR or RGBA/BGRA', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('threeD_rgb');
