@@ -28,9 +28,7 @@ test.skipIf(SKIP)('render viewer and change file', async () => {
   expect(H5WasmApi).toHaveBeenCalledOnce();
   expect(H5WasmApi.prototype.cleanUp).not.toHaveBeenCalled();
 
-  await user.click(
-    page.getByRole('treeitem', { name: 'int8_scalar', exact: true }),
-  );
+  await user.click(page.getByRole('treeitem', { name: 'int8_scalar' }));
   await expect.element(page.getByText('-128')).toBeVisible();
 
   // Re-render with another file
@@ -49,7 +47,7 @@ test.skipIf(SKIP)('render viewer and change file', async () => {
   expect(H5WasmApi.prototype.cleanUp).toHaveBeenCalledOnce();
 
   await expect
-    .element(page.getByRole('treeitem', { name: 'group', exact: true }))
+    .element(page.getByRole('treeitem', { name: 'group' }))
     .toBeVisible();
 
   // Two clean-ups
@@ -75,7 +73,7 @@ test.skipIf(SKIP)('support strict mode', async () => {
   expect(H5WasmApi.prototype.cleanUp).toHaveBeenCalledOnce();
 
   await expect
-    .element(page.getByRole('treeitem', { name: 'int8_scalar', exact: true }))
+    .element(page.getByRole('treeitem', { name: 'int8_scalar' }))
     .toBeVisible();
 
   // Two clean-ups

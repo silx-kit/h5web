@@ -295,7 +295,7 @@ test('cancel and retry slow fetch of NxLine', async () => {
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Retry all fetches at once
@@ -319,7 +319,7 @@ test('cancel and retry slow fetch of NxHeatmap', async () => {
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Retry all fetches at once
@@ -343,7 +343,7 @@ test('retry fetching automatically when re-selecting NxLine', async () => {
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Switch to other entity with no visualization
@@ -371,7 +371,7 @@ test('retry fetching automatically when selecting other NxHeatmap slice', async 
   // Cancel all fetches at once
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Move to other slice to retry fetching automatically
@@ -394,5 +394,5 @@ test('retry fetching automatically when selecting other NxHeatmap slice', async 
 
 test('visualize NXnote group', async () => {
   await renderApp('/nexus/NXnote');
-  expect(page.getByText('"energy": 10.2')).toBeVisible();
+  expect(page.getByText(/"energy": 10.2/)).toBeVisible();
 });

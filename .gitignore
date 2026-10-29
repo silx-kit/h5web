@@ -3,14 +3,13 @@ node_modules/
 build/
 dist*/
 .sonda/
-.vitest-attachments/
+.vitest/
 
 /cypress/debug/
 /cypress/snapshots/**/__diff_output__
 /cypress/snapshots/**/__received_output__
 
 /coverage/
-/packages/*/src/__tests__/__screenshots__/
 /support/h5grove/__pycache__/
 /support/hsds/hsdstest/
 

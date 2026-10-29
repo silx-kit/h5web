@@ -43,14 +43,14 @@ test('show min/max and data range in popup', async () => {
   await page.getByRole('button', { name: 'Edit domain' }).hover();
   expect(page.getByRole('dialog', { name: 'Edit domain' })).toBeVisible();
 
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
   expect(minInput).toHaveValue('−9.5e+1');
   expect(maxInput).toHaveValue('4e+2');
   expect(minInput).toHaveAttribute('title', '-95');
   expect(maxInput).toHaveAttribute('title', '400');
 
-  const range = page.getByText('Data range');
+  const range = page.getByText(/Data range/);
   expect(range).toBeVisible();
   expect(range.getByTitle('-95')).toHaveTextContent('−9.5e+1');
   expect(range.getByTitle('400')).toHaveTextContent('4e+2');
@@ -63,8 +63,8 @@ test('move thumbs with keyboard to update domain', async () => {
   const minThumb = page.getByRole('slider', { name: /min/ });
   await minThumb.hover();
 
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
 
   // Move min thumb one step to the left with keyboard
   await user.type(minThumb, '{ArrowLeft}');
@@ -104,8 +104,8 @@ test('edit bounds manually', async () => {
   await editBtn.click();
   expect(editBtn).toHaveAttribute('aria-pressed', 'true');
   expect(editBtn).toHaveAttribute('aria-expanded', 'true');
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
   const applyMinBtn = page.getByRole('button', { name: 'Apply min' });
   const cancelMinBtn = page.getByRole('button', { name: 'Cancel min' });
   expect(applyMinBtn).toBeEnabled();
@@ -143,8 +143,8 @@ test('clamp domain in symlog scale', async () => {
   await page.getByRole('button', { name: 'Edit domain' }).click();
   const minThumb = page.getByRole('slider', { name: /min/ });
   const maxThumb = page.getByRole('slider', { name: /max/ });
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
 
   await minInput.fill('-1e+1000');
   await page.getByRole('button', { name: 'Apply min' }).click();
@@ -169,7 +169,7 @@ test('control min/max autoscale behaviour', async () => {
 
   const minBtn = page.getByRole('button', { name: 'Min', exact: true });
   const maxBtn = page.getByRole('button', { name: 'Max', exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const maxInput = page.getByLabelText('max');
 
   // Autoscale is enabled for both min and max by default
   expect(minBtn).toHaveAttribute('aria-pressed', 'true');
@@ -197,8 +197,8 @@ test('handle empty domain', async () => {
   const { user } = await renderApp('/nexus/NXdata');
 
   await page.getByRole('button', { name: 'Edit domain' }).click();
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
   const minThumb = page.getByRole('slider', { name: /min/ });
   const maxThumb = page.getByRole('slider', { name: /max/ });
 
@@ -228,14 +228,14 @@ test('handle min > max', async () => {
   await renderApp('/nexus/NXdata');
 
   await page.getByRole('button', { name: 'Edit domain' }).click();
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
 
   await minInput.fill('500');
   await page.getByRole('button', { name: 'Apply min' }).click();
   expect(minInput).toHaveValue('5e+2');
   expect(maxInput).toHaveValue('4e+2');
-  expect(page.getByText('Min greater than max')).toHaveTextContent(
+  expect(page.getByText(/Min greater than max/)).toMatchTextContent(
     'falling back to data range',
   );
 
@@ -244,7 +244,7 @@ test('handle min > max', async () => {
 
   // Autoscaling min hides the error
   await page.getByRole('button', { name: 'Min', exact: true }).click();
-  expect(page.getByText('Min greater than max')).not.toBeInTheDocument();
+  expect(page.getByText(/Min greater than max/)).not.toBeInTheDocument();
 });
 
 test('handle min or max <= 0 in log scale', async () => {
@@ -255,13 +255,13 @@ test('handle min or max <= 0 in log scale', async () => {
 
   const editBtn = page.getByRole('button', { name: 'Edit domain' });
   await editBtn.click();
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
 
   await minInput.fill('-5');
   await page.getByRole('button', { name: 'Apply min' }).click();
   expect(minInput).toHaveValue('−5e+0');
-  expect(page.getByText('Custom min invalid')).toHaveTextContent(
+  expect(page.getByText(/Custom min invalid/)).toMatchTextContent(
     'falling back to data min',
   );
   expect(page.getByLabelText('Max: 9.996e-1')).toBeVisible(); // data max
@@ -269,9 +269,9 @@ test('handle min or max <= 0 in log scale', async () => {
   // If min and max are negative and min > max, min > max error and fallback take over
   await maxInput.fill('-10');
   await page.getByRole('button', { name: 'Apply max' }).click();
-  expect(page.getByText('Custom min invalid')).not.toBeInTheDocument();
-  expect(page.getByText('Custom max invalid')).not.toBeInTheDocument();
-  expect(page.getByText('Min greater than max')).toHaveTextContent(
+  expect(page.getByText(/Custom min invalid/)).not.toBeInTheDocument();
+  expect(page.getByText(/Custom max invalid/)).not.toBeInTheDocument();
+  expect(page.getByText(/Min greater than max/)).toMatchTextContent(
     'falling back to data range',
   );
 });
@@ -283,8 +283,8 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   expect(page.getByRole('combobox', { name: 'Log' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Edit domain' }).click();
-  const minInput = page.getByLabelText('min', { exact: true });
-  const maxInput = page.getByLabelText('max', { exact: true });
+  const minInput = page.getByLabelText('min');
+  const maxInput = page.getByLabelText('max');
 
   await minInput.fill('-5');
   await page.getByRole('button', { name: 'Apply min' }).click();
@@ -292,7 +292,7 @@ test('handle min <= 0 with custom max fallback in log scale', async () => {
   await maxInput.fill('1e-4'); // lower than data min
   await page.getByRole('button', { name: 'Apply max' }).click();
 
-  expect(page.getByText('Custom min invalid')).toHaveTextContent(
+  expect(page.getByText(/Custom min invalid/)).toMatchTextContent(
     'falling back to custom max',
   );
 

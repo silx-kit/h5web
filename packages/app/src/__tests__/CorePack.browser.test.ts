@@ -9,7 +9,7 @@ test('visualize unknown dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
-  expect(page.getByText('"int": 42')).toBeVisible();
+  expect(page.getByText(/"int": 42/)).toBeVisible();
 
   await selectExplorerNode('unknown_large');
   expect(page.getByText('Too big to display')).toBeVisible();
@@ -101,7 +101,7 @@ test('visualize 1D mixed compound dataset', async () => {
 
   expect(getVisTabs()).toEqual([Vis.Scalar]);
   expect(getSelectedVisTab()).toBe(Vis.Scalar);
-  expect(page.getByText('"int": 42')).toBeVisible();
+  expect(page.getByText(/"int": 42/)).toBeVisible();
 });
 
 test('visualize 1D opaque dataset', async () => {
@@ -204,7 +204,7 @@ test('show interactions help for heatmap according to "keep ratio"', async () =>
 
   expect(page.getByText('Pan')).toBeVisible();
   expect(page.getByText('Select to zoom')).toBeVisible();
-  expect(page.getByText('Zoom', { exact: true })).toBeVisible();
+  expect(page.getByText('Zoom')).toBeVisible();
 
   expect(page.getByText('Zoom in X')).not.toBeInTheDocument();
   expect(page.getByText('Zoom in Y')).not.toBeInTheDocument();
@@ -213,8 +213,8 @@ test('show interactions help for heatmap according to "keep ratio"', async () =>
   await keepRatioBtn.click();
   await helpBtn.click();
 
-  expect(page.getByText('Zoom in X', { exact: true })).toBeVisible();
-  expect(page.getByText('Zoom in Y', { exact: true })).toBeVisible();
+  expect(page.getByText('Zoom in X')).toBeVisible();
+  expect(page.getByText('Zoom in Y')).toBeVisible();
   expect(page.getByText('Select to zoom in X')).toBeVisible();
   expect(page.getByText('Select to zoom in Y')).toBeVisible();
 });

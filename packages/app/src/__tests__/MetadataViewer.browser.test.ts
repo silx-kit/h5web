@@ -12,8 +12,8 @@ test('inspect group', async () => {
   const pathRow = page.getByRole('row', { name: /^Path/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/entities$/);
-  expect(pathRow).toHaveTextContent(/\/entities$/);
+  expect(nameRow).toMatchTextContent(/entities$/);
+  expect(pathRow).toMatchTextContent(/\/entities$/);
 });
 
 test('inspect scalar datasets', async () => {
@@ -28,25 +28,25 @@ test('inspect scalar datasets', async () => {
   const attrRow = page.getByRole('row', { name: /^attr/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/number$/);
-  expect(pathRow).toHaveTextContent(/\/scalars\/number$/);
-  expect(typeRow).toHaveTextContent(/Float, 64-bit, little-endian$/);
-  expect(shapeRow).toHaveTextContent(/Scalar$/);
-  await expect.element(attrRow).toHaveTextContent(/0$/);
+  expect(nameRow).toMatchTextContent(/number$/);
+  expect(pathRow).toMatchTextContent(/\/scalars\/number$/);
+  expect(typeRow).toMatchTextContent(/Float, 64-bit, little-endian$/);
+  expect(shapeRow).toMatchTextContent(/Scalar$/);
+  await expect.element(attrRow).toMatchTextContent(/0$/);
 
   await selectExplorerNode('bigint');
-  expect(typeRow).toHaveTextContent(
+  expect(typeRow).toMatchTextContent(
     /Integer \(signed\), 64-bit, little-endian$/,
   );
-  expect(attrRow).toHaveTextContent(/"9007199254740992n"$/);
+  expect(attrRow).toMatchTextContent(/"9007199254740992n"$/);
 
   await selectExplorerNode('string');
-  expect(typeRow).toHaveTextContent(/ASCII string, variable length$/);
-  expect(attrRow).toHaveTextContent(/"foo"$/);
+  expect(typeRow).toMatchTextContent(/ASCII string, variable length$/);
+  expect(attrRow).toMatchTextContent(/"foo"$/);
 
   await selectExplorerNode('complex');
-  expect(typeRow).toHaveTextContent(/Complex$/);
-  expect(attrRow).toHaveTextContent(/1 \+ 5 i$/);
+  expect(typeRow).toMatchTextContent(/Complex$/);
+  expect(attrRow).toMatchTextContent(/1 \+ 5 i$/);
 });
 
 test('inspect array dataset', async () => {
@@ -54,13 +54,13 @@ test('inspect array dataset', async () => {
   await page.getByRole('tab', { name: 'Inspect' }).click();
 
   const shapeRow = page.getByRole('row', { name: /^Shape/ });
-  expect(shapeRow).toHaveTextContent(/9 x 20 x 41 = 7380$/);
+  expect(shapeRow).toMatchTextContent(/9 x 20 x 41 = 7380$/);
 
   const chunkRow = page.getByRole('row', { name: /^Chunk shape/ });
-  expect(chunkRow).toHaveTextContent(/1 x 20 x 41 = 820$/);
+  expect(chunkRow).toMatchTextContent(/1 x 20 x 41 = 820$/);
 
   const filterRow = page.getByRole('row', { name: /^12345/ });
-  expect(filterRow).toHaveTextContent(/Some filter$/);
+  expect(filterRow).toMatchTextContent(/Some filter$/);
 });
 
 test('inspect empty dataset', async () => {
@@ -69,8 +69,8 @@ test('inspect empty dataset', async () => {
 
   const shapeRow = page.getByRole('row', { name: /^Shape/ });
   const typeRow = page.getByRole('row', { name: /^Type/ });
-  expect(shapeRow).toHaveTextContent(/None$/);
-  expect(typeRow).toHaveTextContent(/Unknown$/);
+  expect(shapeRow).toMatchTextContent(/None$/);
+  expect(typeRow).toMatchTextContent(/Unknown$/);
 });
 
 test('inspect datatype', async () => {
@@ -83,9 +83,9 @@ test('inspect datatype', async () => {
   const typeRow = page.getByRole('row', { name: /^Type/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/datatype$/);
-  expect(pathRow).toHaveTextContent(/\/entities\/datatype$/);
-  expect(typeRow).toHaveTextContent(/Compound$/);
+  expect(nameRow).toMatchTextContent(/datatype$/);
+  expect(pathRow).toMatchTextContent(/\/entities\/datatype$/);
+  expect(typeRow).toMatchTextContent(/Compound$/);
 });
 
 test('inspect unresolved soft link', async () => {
@@ -98,9 +98,9 @@ test('inspect unresolved soft link', async () => {
   const linkRow = page.getByRole('row', { name: /^Soft link/ });
 
   expect(column).toBeVisible();
-  expect(nameRow).toHaveTextContent(/unresolved_soft_link$/);
-  expect(pathRow).toHaveTextContent(/\/entities\/unresolved_soft_link$/);
-  expect(linkRow).toHaveTextContent(/\/foo$/);
+  expect(nameRow).toMatchTextContent(/unresolved_soft_link$/);
+  expect(pathRow).toMatchTextContent(/\/entities\/unresolved_soft_link$/);
+  expect(linkRow).toMatchTextContent(/\/foo$/);
 });
 
 test('inspect unresolved external link', async () => {
@@ -110,7 +110,7 @@ test('inspect unresolved external link', async () => {
   const column = page.getByRole('columnheader', { name: 'Entity' });
   const linkRow = page.getByRole('row', { name: /^External link/ });
   expect(column).toBeVisible();
-  expect(linkRow).toHaveTextContent(/my_file.h5:entry_000\/dataset$/);
+  expect(linkRow).toMatchTextContent(/my_file.h5:entry_000\/dataset$/);
 });
 
 test('follow path attributes', async () => {

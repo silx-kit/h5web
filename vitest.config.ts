@@ -2,10 +2,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    projects: [
-      'packages/!(app|h5wasm)',
-      'packages/{app,h5wasm}/vitest.{browser,unit}.config.js',
-    ],
+    projects: ['packages/*'],
     slowTestThreshold: 1000,
     coverage: {
       include: ['packages/*/src/**/*.{ts,tsx}'],
