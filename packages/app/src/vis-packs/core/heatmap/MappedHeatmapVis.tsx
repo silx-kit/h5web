@@ -3,6 +3,7 @@ import {
   getSliceSelection,
   HeatmapVis,
   KeepZoom,
+  SurfaceVis,
   useDomain,
   useSafeDomain,
   useSlicedDimsAndMapping,
@@ -62,6 +63,7 @@ function MappedHeatmapVis(props: Props) {
     invertColorMap,
     flipXAxis,
     flipYAxis,
+    surface,
   } = config;
 
   const ignoreValue = useIgnoreValue(dataset);
@@ -82,6 +84,27 @@ function MappedHeatmapVis(props: Props) {
   const xDimIndex = dimMapping.indexOf('x');
   const yDimIndex = dimMapping.indexOf('y');
 
+  const visProps = {
+    className: visualizerStyles.vis,
+    dataArray,
+    title,
+    domain: safeDomain,
+    colorMap,
+    scaleType,
+    invertColorMap,
+    abscissaParams: {
+      label: axisLabels[xDimIndex],
+      value: numAxisArrays[xDimIndex],
+    },
+    ordinateParams: {
+      label: axisLabels[yDimIndex],
+      value: numAxisArrays[yDimIndex],
+    },
+    flipXAxis,
+    flipYAxis,
+    ignoreValue,
+  };
+
   const exportEntries = useExportEntries(['tiff', 'npy'], dataset, selection);
 
   return (
@@ -97,31 +120,18 @@ function MappedHeatmapVis(props: Props) {
           toolbarContainer,
         )}
 
-      <HeatmapVis
-        className={visualizerStyles.vis}
-        dataArray={dataArray}
-        title={title}
-        dtype={formatNumLikeType(dataset.type)}
-        domain={safeDomain}
-        colorMap={colorMap}
-        scaleType={scaleType}
-        aspect={keepRatio ? 'equal' : 'auto'}
-        showGrid={showGrid}
-        invertColorMap={invertColorMap}
-        abscissaParams={{
-          label: axisLabels[xDimIndex],
-          value: numAxisArrays[xDimIndex],
-        }}
-        ordinateParams={{
-          label: axisLabels[yDimIndex],
-          value: numAxisArrays[yDimIndex],
-        }}
-        flipXAxis={flipXAxis}
-        flipYAxis={flipYAxis}
-        ignoreValue={ignoreValue}
-      >
-        <KeepZoom visKey="heatmap" />
-      </HeatmapVis>
+      {surface ? (
+        <SurfaceVis {...visProps} keepRatio={keepRatio} />
+      ) : (
+        <HeatmapVis
+          {...visProps}
+          dtype={formatNumLikeType(dataset.type)}
+          aspect={keepRatio ? 'equal' : 'auto'}
+          showGrid={showGrid}
+        >
+          <KeepZoom visKey="heatmap" />
+        </HeatmapVis>
+      )}
     </>
   );
 }
