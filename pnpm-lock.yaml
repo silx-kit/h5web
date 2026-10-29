@@ -744,8 +744,8 @@ importers:
         specifier: 2.0.6
         version: 2.0.6(react@19.3.1)
       react-window:
-        specifier: 2.2.7
-        version: 2.2.7(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 2.5.1
+        version: 2.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       zustand:
         specifier: 5.0.16
         version: 5.0.16(@types/react@19.3.0)(react@19.3.1)(use-sync-external-store@1.7.0(react@19.3.1))
@@ -4592,8 +4592,8 @@ packages:
       react-dom:
         optional: true
 
-  react-window@2.2.7:
-    resolution: {integrity: sha512-SH5nvfUQwGHYyriDUAOt7wfPsfG9Qxd6OdzQxl5oQ4dsSsUicqQvjV7dR+NqZ4coY0fUn3w1jnC5PwzIUWEg5w==}
+  react-window@2.5.1:
+    resolution: {integrity: sha512-UgN90PCLkLshBXyMCmcpI4fOmcCwFnyYSN2/3/m/DDAzxCQInMwmVuEtJZE1+Wy060KjA1XH6ASaxb2aAxwsfw==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -9339,7 +9339,7 @@ snapshots:
     optionalDependencies:
       react-dom: 19.3.1(react@19.3.1)
 
-  react-window@2.2.7(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+  react-window@2.5.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
