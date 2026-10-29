@@ -14,7 +14,7 @@
   "dependencies": {
     "@h5web/app": "workspace:*",
     "@h5web/h5wasm": "workspace:*",
-    "@tanstack/react-query-devtools": "5.102.8",
+    "@tanstack/react-query-devtools": "5.105.0",
     "h5wasm-plugins": "0.3.0",
     "modern-normalize": "3.0.1",
     "react": "19.3.1",
