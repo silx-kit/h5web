@@ -21,28 +21,28 @@
     "greenlet": "1.1.0",
     "modern-normalize": "3.0.1",
     "ndarray": "1.1.1",
-    "react": "19.3.0",
-    "react-dom": "19.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
     "react-icons": "5.7.0",
-    "three": "0.185.1"
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@esrf/eslint-config": "3.1.0",
-    "@storybook/addon-docs": "10.6.2",
-    "@storybook/addon-links": "10.6.2",
-    "@storybook/react-vite": "10.6.2",
+    "@storybook/addon-docs": "10.6.5",
+    "@storybook/addon-links": "10.6.5",
+    "@storybook/react-vite": "10.6.5",
     "@types/d3-array": "~3.2.2",
     "@types/d3-format": "~3.0.4",
     "@types/ndarray": "1.1.0",
-    "@types/node": "^24.13.2",
+    "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@types/three": "0.185.3",
+    "@types/three": "0.186.0",
     "eslint": "9.39.4",
     "remark-gfm": "4.0.1",
-    "storybook": "10.6.2",
+    "storybook": "10.6.5",
     "typescript": "6.0.3",
-    "vite": "8.3.4"
+    "vite": "8.3.5"
   },
   "browserslist": {
     "production": [
