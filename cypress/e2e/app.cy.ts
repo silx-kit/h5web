@@ -14,16 +14,16 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
 
-    cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'oneD' }).should('be.visible');
-    cy.findByRole('heading', { name: 'arrays / oneD' }).should('be.visible');
+    cy.getByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
+    cy.getByRole('figure', { name: 'oneD' }).should('be.visible');
+    cy.getByRole('heading', { name: 'arrays / oneD' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('line_1D');
     }
 
-    cy.findByRole('button', { name: 'More controls' }).click();
-    cy.findByRole('button', { name: 'Aspect' }).click();
+    cy.getByRole('button', { name: 'More controls' }).click();
+    cy.getByRole('button', { name: 'Aspect' }).click();
     cy.findByLabelText('Points').click();
     cy.waitForStableDOM();
 
@@ -36,9 +36,9 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD_complex');
 
-    cy.findByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'oneD_complex' }).should('be.visible');
-    cy.findByRole('heading', { name: 'arrays / oneD_complex' }).should(
+    cy.getByRole('tab', { name: 'Line' }).should(...BE_SELECTED);
+    cy.getByRole('figure', { name: 'oneD_complex' }).should('be.visible');
+    cy.getByRole('heading', { name: 'arrays / oneD_complex' }).should(
       'be.visible',
     );
 
@@ -52,9 +52,9 @@ describe('/mock', () => {
     cy.selectExplorerNode('oneD');
     cy.selectVisTab('Matrix');
 
-    cy.findByRole('tab', { name: 'Matrix' }).should(...BE_SELECTED);
-    cy.findByRole('grid').should('be.visible');
-    cy.findAllByRole('gridcell')
+    cy.getByRole('tab', { name: 'Matrix' }).should(...BE_SELECTED);
+    cy.getByRole('grid').should('be.visible');
+    cy.getByRole('gridcell', { native: false })
       .first()
       .should('have.attr', 'aria-colindex', 1)
       .and('have.text', '4.000e+2')
@@ -72,9 +72,9 @@ describe('/mock', () => {
     cy.selectExplorerNode('oneD_compound');
     cy.selectVisTab('Compound');
 
-    cy.findByRole('tab', { name: 'Compound' }).should(...BE_SELECTED);
-    cy.findByRole('grid').should('be.visible');
-    cy.findAllByRole('gridcell')
+    cy.getByRole('tab', { name: 'Compound' }).should(...BE_SELECTED);
+    cy.getByRole('grid').should('be.visible');
+    cy.getByRole('gridcell', { native: false })
       .first()
       .should('have.attr', 'aria-colindex', 1)
       .and('have.text', 'Hydrogen')
@@ -82,7 +82,7 @@ describe('/mock', () => {
       .should('have.attr', 'role', 'row')
       .and('have.attr', 'aria-rowindex', 1);
 
-    cy.findAllByRole('columnheader')
+    cy.getByRole('columnheader', { native: false })
       .first()
       .should('have.attr', 'aria-colindex', 1)
       .and('have.text', 'string');
@@ -96,16 +96,16 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
 
-    cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
-    cy.findByRole('heading', { name: 'arrays / twoD' }).should('be.visible');
+    cy.getByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
+    cy.getByRole('figure', { name: 'twoD' }).should('be.visible');
+    cy.getByRole('heading', { name: 'arrays / twoD' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('heatmap_2D');
     }
 
-    cy.findByRole('button', { name: 'More controls' }).click();
-    cy.findByRole('button', { name: 'Invert' }).click();
+    cy.getByRole('button', { name: 'More controls' }).click();
+    cy.getByRole('button', { name: 'Invert' }).click();
     cy.waitForStableDOM();
 
     if (takeSnapshots) {
@@ -117,11 +117,11 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD_complex');
 
-    cy.findByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'twoD_complex (amplitude)' }).should(
+    cy.getByRole('tab', { name: 'Heatmap' }).should(...BE_SELECTED);
+    cy.getByRole('figure', { name: 'twoD_complex (amplitude)' }).should(
       'be.visible',
     );
-    cy.findByRole('heading', { name: 'arrays / twoD_complex' }).should(
+    cy.getByRole('heading', { name: 'arrays / twoD_complex' }).should(
       'be.visible',
     );
 
@@ -134,7 +134,7 @@ describe('/mock', () => {
     cy.selectExplorerNode('netcdf');
 
     cy.selectExplorerNode('_FillValue');
-    cy.findByRole('figure', { name: '_FillValue' }).should('be.visible');
+    cy.getByRole('figure', { name: '_FillValue' }).should('be.visible');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('fillvalue_2D');
@@ -157,17 +157,21 @@ describe('/mock', () => {
       .parent()
       .should('have.text', 'n 3 9 20 41');
 
-    cy.findByRole('radiogroup', { name: /x axis/u }).as('xRadioGroup');
-    cy.findByRole('radiogroup', { name: /y axis/u }).as('yRadioGroup');
+    cy.getByRole('radiogroup', { name: /x axis/u }).as('xRadioGroup');
+    cy.getByRole('radiogroup', { name: /y axis/u }).as('yRadioGroup');
     cy.get('svg[data-type="abscissa"]').as('xAxis');
     cy.get('svg[data-type="ordinate"]').as('yAxis');
 
     // Check default dimension mapping
     cy.get('@xRadioGroup').within(() => {
-      cy.findByRole('radio', { name: 'D3' }).should(...BE_CHECKED);
+      cy.getByRole('radio', { name: 'D3', native: false }).should(
+        ...BE_CHECKED,
+      );
     });
     cy.get('@yRadioGroup').within(() => {
-      cy.findByRole('radio', { name: 'D2' }).should(...BE_CHECKED);
+      cy.getByRole('radio', { name: 'D2', native: false }).should(
+        ...BE_CHECKED,
+      );
     });
 
     // Check axes ticks
@@ -180,12 +184,14 @@ describe('/mock', () => {
 
     // Change ordinate mapping
     cy.get('@yRadioGroup').within(() => {
-      cy.findByRole('radio', { name: 'D1' }).click();
+      cy.getByRole('radio', { name: 'D1', native: false }).click();
     });
     cy.waitForStableDOM();
 
     cy.get('@yRadioGroup').within(() => {
-      cy.findByRole('radio', { name: 'D1' }).should(...BE_CHECKED);
+      cy.getByRole('radio', { name: 'D1', native: false }).should(
+        ...BE_CHECKED,
+      );
     });
 
     if (takeSnapshots) {
@@ -197,9 +203,12 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('fourD');
 
-    cy.findByRole('figure', { name: 'fourD' }).as('vis').should('be.visible');
-    cy.findAllByRole('slider', { name: /D\d/u }).should('have.length', 2);
-    cy.findByRole('slider', { name: 'D1' })
+    cy.getByRole('figure', { name: 'fourD' }).as('vis').should('be.visible');
+    cy.getByRole('slider', { name: /D\d/u, native: false }).should(
+      'have.length',
+      2,
+    );
+    cy.getByRole('slider', { name: 'D1', native: false })
       .as('d1Slider')
       .should('have.attr', 'aria-valuenow', 0)
       .and('have.attr', 'aria-valuemin', 0)
@@ -238,8 +247,8 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('oneD');
 
-    cy.findByRole('button', { name: 'More controls' }).click();
-    cy.findByRole('button', { name: 'Aspect' }).click();
+    cy.getByRole('button', { name: 'More controls' }).click();
+    cy.getByRole('button', { name: 'Aspect' }).click();
     cy.findByLabelText('Constant').click();
     cy.waitForStableDOM();
 
@@ -259,16 +268,16 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
 
-    cy.findByRole('button', { name: 'Edit domain' })
+    cy.getByRole('button', { name: 'Edit domain' })
       .click()
       .should('have.attr', 'aria-pressed', 'true');
 
     cy.findByLabelText('min').clear().type('50').as('min');
-    cy.findByRole('button', { name: 'Apply min' }).click();
+    cy.getByRole('button', { name: 'Apply min' }).click();
     cy.waitForStableDOM();
 
     cy.get('@min').should('have.value', '5e+1');
-    cy.findByRole('figure', { name: 'twoD' }).within(() => {
+    cy.getByRole('figure', { name: 'twoD' }).within(() => {
       cy.findByText('5e+1').should('be.visible');
       cy.findByText('4e+2').should('be.visible');
     });
@@ -283,13 +292,13 @@ describe('/mock', () => {
     cy.selectExplorerNode('typed');
     cy.selectExplorerNode('uint8');
 
-    cy.findByRole('button', { name: 'More controls' }).click();
+    cy.getByRole('button', { name: 'More controls' }).click();
 
-    cy.findByRole('button', { name: 'Flip X' })
+    cy.getByRole('button', { name: 'Flip X' })
       .click()
       .should('have.attr', 'aria-pressed', 'true');
 
-    cy.findByRole('button', { name: 'Flip Y' })
+    cy.getByRole('button', { name: 'Flip Y' })
       .click()
       .should('have.attr', 'aria-pressed', 'true');
 
@@ -304,9 +313,9 @@ describe('/mock', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('threeD_rgb');
 
-    cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'threeD_rgb' }).should('be.visible');
-    cy.findByRole('heading', { name: 'arrays / threeD_rgb' }).should(
+    cy.getByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
+    cy.getByRole('figure', { name: 'threeD_rgb' }).should('be.visible');
+    cy.getByRole('heading', { name: 'arrays / threeD_rgb' }).should(
       'be.visible',
     );
 
@@ -314,7 +323,7 @@ describe('/mock', () => {
       cy.matchImageSnapshot('rgb_image');
     }
 
-    cy.findByRole('radio', { name: 'BGR' }).click();
+    cy.getByRole('radio', { name: 'BGR', native: false }).click();
     cy.waitForStableDOM();
 
     if (takeSnapshots) {
@@ -322,9 +331,9 @@ describe('/mock', () => {
     }
 
     cy.selectExplorerNode('threeD_rgba');
-    cy.findByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
-    cy.findByRole('figure', { name: 'threeD_rgba' }).should('be.visible');
-    cy.findByRole('heading', { name: 'arrays / threeD_rgba' }).should(
+    cy.getByRole('tab', { name: 'RGB' }).should(...BE_SELECTED);
+    cy.getByRole('figure', { name: 'threeD_rgba' }).should('be.visible');
+    cy.getByRole('heading', { name: 'arrays / threeD_rgba' }).should(
       'be.visible',
     );
 
@@ -332,7 +341,7 @@ describe('/mock', () => {
       cy.matchImageSnapshot('bgra_image');
     }
 
-    cy.findByRole('radio', { name: 'RGB' }).click();
+    cy.getByRole('radio', { name: 'RGB', native: false }).click();
     cy.waitForStableDOM();
 
     if (takeSnapshots) {
@@ -341,28 +350,28 @@ describe('/mock', () => {
   });
 
   it('search items in the file', () => {
-    cy.findByRole('tab', { name: 'Search' }).click();
+    cy.getByRole('tab', { name: 'Search' }).click();
 
-    cy.findByRole('textbox', { name: 'Path to search' }).type('scatter');
+    cy.getByRole('textbox', { name: 'Path to search' }).type('scatter');
 
-    cy.findAllByRole('treeitem')
+    cy.getByRole('treeitem')
       .should('have.length', 3)
       .each((e) => expect(e).to.contain('scatter'));
 
-    cy.findByRole('treeitem', { name: '/nexus/scatter' }).click();
+    cy.getByRole('treeitem', { name: '/nexus/scatter' }).click();
     cy.waitForStableDOM();
 
-    cy.findByRole('figure', { name: 'scatter_data' }).should('be.visible');
+    cy.getByRole('figure', { name: 'scatter_data' }).should('be.visible');
 
     // Check that the selected node is kept when tabbing in Explorer
-    cy.findByRole('tab', { name: 'Explorer' }).click();
-    cy.findExplorerNode('scatter').should('have.attr', 'aria-selected', 'true');
+    cy.getByRole('tab', { name: 'Explorer' }).click();
+    cy.getExplorerNode('scatter').should('have.attr', 'aria-selected', 'true');
     // And has focus
-    cy.findExplorerNode('scatter').should('have.focus');
+    cy.getExplorerNode('scatter').should('have.focus');
 
     // Check that the search value is kept when tabbing back from Explorer
-    cy.findByRole('tab', { name: 'Search' }).click();
-    cy.findByRole('textbox', { name: 'Path to search' }).should(
+    cy.getByRole('tab', { name: 'Search' }).click();
+    cy.getByRole('textbox', { name: 'Path to search' }).should(
       'have.value',
       'scatter',
     );
@@ -372,20 +381,20 @@ describe('/mock', () => {
     it('visualize default NXdata group as NxHeatmap', () => {
       cy.selectExplorerNode('source.h5');
 
-      cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'source.h5' }).should('be.visible');
-      cy.findByRole('figure', { name: 'NeXus 2D' }).should('be.visible');
+      cy.getByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
+      cy.getByRole('heading', { name: 'source.h5' }).should('be.visible');
+      cy.getByRole('figure', { name: 'NeXus 2D' }).should('be.visible');
     });
 
     it('visualize dataset with "spectrum" interpretation as NxLine', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('spectrum');
 
-      cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus / spectrum' }).should(
+      cy.getByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
+      cy.getByRole('heading', { name: 'nexus / spectrum' }).should(
         'be.visible',
       );
-      cy.findByRole('figure', { name: 'twoD (arb. units)' }).should(
+      cy.getByRole('figure', { name: 'twoD (arb. units)' }).should(
         'be.visible',
       );
 
@@ -400,9 +409,9 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('image');
 
-      cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus / image' }).should('be.visible');
-      cy.findByRole('figure', { name: 'Interference fringes' }).should(
+      cy.getByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
+      cy.getByRole('heading', { name: 'nexus / image' }).should('be.visible');
+      cy.getByRole('figure', { name: 'Interference fringes' }).should(
         'be.visible',
       );
 
@@ -430,18 +439,21 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('default_slice');
 
-      cy.findByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus / default_slice' }).should(
+      cy.getByRole('tab', { name: 'NX Heatmap' }).should(...BE_SELECTED);
+      cy.getByRole('heading', { name: 'nexus / default_slice' }).should(
         'be.visible',
       );
 
-      cy.findAllByRole('slider', { name: /D\d/u }).should('have.length', 2);
-      cy.findByRole('slider', { name: 'D0' }).should(
+      cy.getByRole('slider', { name: /D\d/u, native: false }).should(
+        'have.length',
+        2,
+      );
+      cy.getByRole('slider', { name: 'D0', native: false }).should(
         'have.attr',
         'aria-valuenow',
         1,
       );
-      cy.findByRole('slider', { name: 'D2' }).should(
+      cy.getByRole('slider', { name: 'D2', native: false }).should(
         'have.attr',
         'aria-valuenow',
         2,
@@ -456,12 +468,15 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('spectrum_log');
 
-      cy.findByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
-      cy.findByRole('heading', { name: 'nexus / spectrum_log' }).should(
+      cy.getByRole('tab', { name: 'NX Line' }).should(...BE_SELECTED);
+      cy.getByRole('heading', { name: 'nexus / spectrum_log' }).should(
         'be.visible',
       );
 
-      cy.findAllByRole('combobox', { name: /Log/u }).should('have.length', 2);
+      cy.getByRole('combobox', { name: /Log/u, native: false }).should(
+        'have.length',
+        2,
+      );
 
       if (takeSnapshots) {
         cy.waitForStableDOM();
@@ -473,7 +488,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('spectrum_with_aux');
 
-      cy.findByRole('heading', {
+      cy.getByRole('heading', {
         name: 'nexus / spectrum_with_aux',
       }).should('be.visible');
 
@@ -486,15 +501,15 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('image_with_aux');
 
-      cy.findByRole('heading', {
+      cy.getByRole('heading', {
         name: 'nexus / image_with_aux',
       }).should('be.visible');
-      cy.findByRole('figure', { name: 'twoD' }).should('be.visible');
+      cy.getByRole('figure', { name: 'twoD' }).should('be.visible');
 
-      cy.findByRole('button', { name: 'Signals' }).click();
-      cy.findByRole('radio', { name: 'tertiary' }).click();
+      cy.getByRole('button', { name: 'Signals' }).click();
+      cy.getByRole('radio', { name: 'tertiary' }).click();
 
-      cy.findByRole('figure', { name: 'tertiary' })
+      cy.getByRole('figure', { name: 'tertiary' })
         .should('be.visible')
         .and('contain.text', '−4.75e+1'); // color bar min
 
@@ -507,7 +522,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('spectrum_complex');
 
-      cy.findByRole('heading', {
+      cy.getByRole('heading', {
         name: 'nexus / spectrum_complex',
       }).should('be.visible');
 
@@ -520,7 +535,7 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('image_complex');
 
-      cy.findByRole('heading', {
+      cy.getByRole('heading', {
         name: 'nexus / image_complex',
       }).should('be.visible');
 
@@ -529,10 +544,10 @@ describe('/mock', () => {
       }
 
       // Select float auxiliary signal
-      cy.findByRole('button', { name: 'Signals' }).click();
-      cy.findByRole('radio', { name: 'tertiary_float' }).click();
+      cy.getByRole('button', { name: 'Signals' }).click();
+      cy.getByRole('radio', { name: 'tertiary_float' }).click();
 
-      cy.findByRole('figure', { name: 'tertiary_float' }).should('be.visible');
+      cy.getByRole('figure', { name: 'tertiary_float' }).should('be.visible');
       cy.waitForStableDOM();
 
       if (takeSnapshots) {
@@ -544,9 +559,9 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('rgb-image');
 
-      cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
-      cy.findByRole('figure', { name: 'RGB' }).should('be.visible');
-      cy.findByRole('heading', { name: 'nexus / rgb-image' }).should(
+      cy.getByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
+      cy.getByRole('figure', { name: 'RGB' }).should('be.visible');
+      cy.getByRole('heading', { name: 'nexus / rgb-image' }).should(
         'be.visible',
       );
       cy.waitForStableDOM();
@@ -556,9 +571,9 @@ describe('/mock', () => {
       }
 
       cy.selectExplorerNode('rgba-image');
-      cy.findByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
-      cy.findByRole('figure', { name: 'RGBA' }).should('be.visible');
-      cy.findByRole('heading', { name: 'nexus / rgba-image' }).should(
+      cy.getByRole('tab', { name: 'NX RGB' }).should(...BE_SELECTED);
+      cy.getByRole('figure', { name: 'RGBA' }).should('be.visible');
+      cy.getByRole('heading', { name: 'nexus / rgba-image' }).should(
         'be.visible',
       );
       cy.waitForStableDOM();
@@ -572,11 +587,9 @@ describe('/mock', () => {
       cy.selectExplorerNode('nexus');
       cy.selectExplorerNode('scatter');
 
-      cy.findByRole('tab', { name: 'NX Scatter' }).should(...BE_SELECTED);
-      cy.findByRole('figure', { name: 'scatter_data' }).should('be.visible');
-      cy.findByRole('heading', { name: 'nexus / scatter' }).should(
-        'be.visible',
-      );
+      cy.getByRole('tab', { name: 'NX Scatter' }).should(...BE_SELECTED);
+      cy.getByRole('figure', { name: 'scatter_data' }).should('be.visible');
+      cy.getByRole('heading', { name: 'nexus / scatter' }).should('be.visible');
 
       if (takeSnapshots) {
         cy.matchImageSnapshot('nxscatter');
@@ -592,7 +605,7 @@ describe('/mock?wide', () => {
   });
 
   it('start with sidebar closed', () => {
-    cy.findByRole('tree').should('not.exist');
+    cy.getByRole('tree').should('not.exist');
 
     if (takeSnapshots) {
       cy.matchImageSnapshot('wide');
