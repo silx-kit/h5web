@@ -309,7 +309,7 @@ install the recommended extensions.
 - `pnpm test[:headless] --project <project-name>` - run Vitest on a specific
   project
 - `pnpm test[:headless] --coverage` measure coverage (environment variable
-  `VITE_TEST_BROWSER` must be set to `chromium` in `.env.test.local` and this
+  `VITE_TEST_WITH_CHROMIUM` must be set to `true` in `.env.test.local` and this
   browser must be installed with Playwright)
 - `pnpm test[:headless] --ui [--coverage]` - run tests in Vitest UI (with or
   without coverage)
@@ -337,11 +337,12 @@ The `@h5web/app` and `@h5web/h5wasm` packages include tests written for Vitest's
 `src/__tests__` and are suffixed with `*.browser.test.{ts,tsx}`. Each file
 covers a particular subtree of components of H5Web.
 
-For the browser tests to work, you must first install the browser specified in
-environment variable `VITE_TEST_BROWSER` with Playwright:
+For the browser tests to work, you must first install Firefox with Playwright
+(or Chromimum if environment variable `VITE_TEST_WITH_CHROMIUM` is set to `true`
+in `.env.test.local`):
 
 ```bash
-pnpm exec playwright install <firefox,chromium,...>
+pnpm exec playwright install <firefox,chromium>
 ```
 
 H5Web's browser tests typically consist in rendering the entire app with mock

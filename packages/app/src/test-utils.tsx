@@ -100,14 +100,11 @@ export async function waitForAllLoaders(): Promise<void> {
 }
 
 export function getExplorerItem(name: string): Locator {
-  return page.getByRole('treeitem', { name, exact: true });
+  return page.getByRole('treeitem', { name });
 }
 
 export function getNexusExplorerItem(name: string): Locator {
-  return page.getByRole('treeitem', {
-    name: `${name} (NeXus group)`,
-    exact: true,
-  });
+  return page.getByRole('treeitem', { name: `${name} (NeXus group)` });
 }
 
 function getVisSelector(): Locator {

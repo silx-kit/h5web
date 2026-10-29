@@ -95,6 +95,8 @@ jobs:
 
       - name: Test 👓
         run: pnpm test:headless
+        env:
+          VITE_TEST_WITH_CHROMIMUM: true
 
       - name: Upload debug screenshots and logs on failure 🖼️
         uses: actions/upload-artifact@v7

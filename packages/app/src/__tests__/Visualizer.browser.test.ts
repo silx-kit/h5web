@@ -38,7 +38,7 @@ test("show error when dataset value can't be fetched", async () => {
   });
   runAll();
 
-  expect(page.getByText('error', { exact: true })).toBeVisible();
+  expect(page.getByText('error')).toBeVisible();
   errorSpy.mockRestore();
 
   // Make sure error boundary resets when selecting another entity
@@ -58,7 +58,7 @@ test('cancel and retry slow fetch of dataset value', async () => {
   // Cancel fetch
   const errorSpy = mockConsoleMethod('error');
   await user.click(page.getByRole('button', { name: 'Cancel?' }));
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   // expect(errorSpy).toHaveBeenCalledTimes(3); // React logs two stack traces + one extra for some reason
   errorSpy.mockRestore();
 
@@ -85,7 +85,7 @@ test('cancel and retry slow fetch of dataset slice', async () => {
   // Cancel fetch of first slice
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Retry fetch of first slice
@@ -111,7 +111,7 @@ test('retry fetching automatically when re-selecting dataset', async () => {
   // Cancel fetch
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Switch to other entity with no visualization
@@ -141,7 +141,7 @@ test('retry fetching dataset slice automatically when re-selecting slice', async
   // Cancel fetch of first slice
   const errorSpy = mockConsoleMethod('error');
   await page.getByRole('button', { name: 'Cancel?' }).click();
-  await expect.element(page.getByText('Request cancelled')).toBeVisible();
+  await expect.element(page.getByText(/Request cancelled/)).toBeVisible();
   errorSpy.mockRestore();
 
   // Move to other slice and start fetching

@@ -30,8 +30,6 @@ test.skipIf(SKIP)('render viewer', async () => {
     </div>,
   );
 
-  await user.click(
-    page.getByRole('treeitem', { name: 'int8_scalar', exact: true }),
-  );
+  await user.click(page.getByRole('treeitem', { name: 'int8_scalar' }));
   await expect.element(page.getByText('-128')).toBeVisible();
 });

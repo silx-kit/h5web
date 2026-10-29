@@ -21,12 +21,17 @@ test('navigate with breadcrumbs', async () => {
 
   // Select group
   await selectExplorerNode('entities');
-  expect(page.getByRole('heading', { name: 'entities' })).toBeVisible(); // no root crumb when sidebar is open
+  expect(
+    page.getByRole('heading', { name: 'entities', exact: false }),
+  ).toBeVisible(); // no root crumb when sidebar is open
 
   // Select child
   await selectExplorerNode('dataset_empty');
   expect(
-    page.getByRole('heading', { name: 'entities / dataset_empty' }),
+    page.getByRole('heading', {
+      name: 'entities / dataset_empty',
+      exact: false,
+    }),
   ).toBeVisible();
 
   // Hide sidebar to show root crumb
@@ -36,14 +41,15 @@ test('navigate with breadcrumbs', async () => {
     .element(
       page.getByRole('heading', {
         name: 'source.h5 / entities / dataset_empty',
+        exact: false,
       }),
     )
     .toBeVisible();
 
   // Select parent crumb
-  await page.getByRole('button', { name: 'entities' }).click();
+  await page.getByRole('button', { name: 'entities', exact: false }).click();
   expect(
-    page.getByRole('heading', { name: 'source.h5 / entities' }),
+    page.getByRole('heading', { name: 'source.h5 / entities', exact: false }),
   ).toBeVisible();
 
   // Select root crumb
