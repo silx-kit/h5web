@@ -211,11 +211,11 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(@typescript-eslint/eslint-plugin@8.59.0(@typescript-eslint/parser@8.59.0(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(@typescript-eslint/utils@8.72.1(eslint@9.39.4(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3))(eslint@9.39.4(supports-color@8.1.1))(storybook@10.6.5(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.1))(supports-color@8.1.1)(typescript@6.0.3)(vitest@4.1.9)
       '@simonsmith/cypress-image-snapshot':
-        specifier: 10.0.4
-        version: 10.0.4(cypress@15.18.0)
+        specifier: 11.0.0
+        version: 11.0.0(cypress@16.2.0)
       '@testing-library/cypress':
         specifier: 10.1.3
-        version: 10.1.3(cypress@15.18.0)
+        version: 10.1.3(cypress@16.2.0)
       '@types/node':
         specifier: ^24.19.2
         version: 24.19.2
@@ -226,8 +226,8 @@ importers:
         specifier: 4.1.9
         version: 4.1.9(vitest@4.1.9)
       cypress:
-        specifier: 15.18.0
-        version: 15.18.0
+        specifier: 16.2.0
+        version: 16.2.0
       cypress-wait-for-stable-dom:
         specifier: 0.1.0
         version: 0.1.0
@@ -1842,10 +1842,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@simonsmith/cypress-image-snapshot@10.0.4':
-    resolution: {integrity: sha512-DIxnlRLnicyCVf6QXvdj72FTvKWX1u3dmAPRPBWmTq5or/BDLcOJYwxEkt0CsXTAIOyCi1SdQHFlzWbWok5e4g==}
+  '@simonsmith/cypress-image-snapshot@11.0.0':
+    resolution: {integrity: sha512-fqiH4/0DARt4vR8U4d7mMyrWAdKlirG+0dNksZbMbP6a4zRPo6q7EmOSvRuse8kShbmrg7UogvlApjE9mN+crQ==}
     peerDependencies:
-      cypress: '>13.0.0'
+      cypress: '>=15.10.0'
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
@@ -2615,8 +2615,8 @@ packages:
     resolution: {integrity: sha512-HqZ5rWlFjGiV0tDm3UxxgNRqsOTniqoKZu0pIAfh7TZQMGuZK+hH0drySty0si0QXj1ieop4+SkSfPZBPPkHig==}
     engines: {node: '>=14'}
 
-  arch@2.2.0:
-    resolution: {integrity: sha512-Of/R0wqp83cgHozfIYLbBMnej79U/SVGOOyuB3VVFv1NRM/PSFMK12x9KVtiYzJqmnU5WR2qp0Z5rHb7sWGnFQ==}
+  arch@3.0.0:
+    resolution: {integrity: sha512-AmIAC+Wtm2AU8lGfTtHsw0Y9Qtftx2YXEEtiBP10xFUtMOA+sHHx6OAddyL52mUKh1vsXQ6/w1mVDptZCyUt4Q==}
 
   argparse@2.0.1:
     resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
@@ -2828,6 +2828,10 @@ packages:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
 
+  chrome-remote-interface@0.33.3:
+    resolution: {integrity: sha512-zNnn0prUL86Teru6UCAZ1yU1XeXljHl3gj7OrfPcarEfU62OUU4IujDPdTDW3dAWwRqN3ZMG/Chhkh2gPL/wiw==}
+    hasBin: true
+
   ci-info@4.4.0:
     resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
     engines: {node: '>=8'}
@@ -2874,6 +2878,9 @@ packages:
 
   comlink@4.4.2:
     resolution: {integrity: sha512-OxGdvBmJuNKSCMO4NTl1L47VRp6xn2wG4F/2hYzB6tiCb709otOxtEYCSvK80PtjODfXXZu8ds+Nw5kVCjqd2g==}
+
+  commander@2.11.0:
+    resolution: {integrity: sha512-b0553uYA5YAEGgyYIGYROzKQ7X5RAqedkfjiZxwi0kL1g3bOaBNNZfYkzt/CL0umgD5wc9Jec2FbB98CjkMRvQ==}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -2935,9 +2942,9 @@ packages:
   cypress-wait-for-stable-dom@0.1.0:
     resolution: {integrity: sha512-iVJc6CDzlu1xUnTcZph+zbkOlImaDelpvRv4G+3naugvjkF6b9EFpDmRCC/16xL1pqpkFq4rFyfhuNw4C3PQjw==}
 
-  cypress@15.18.0:
-    resolution: {integrity: sha512-aLfOYSLlVt1b6QSoVUjbCY27taZlYAT8ST47xQbwd9pvQrY/g5gXi12yItZTB+kxkkj+ZcvUYmRLUC95SlCJsw==}
-    engines: {node: ^20.1.0 || ^22.0.0 || >=24.0.0}
+  cypress@16.2.0:
+    resolution: {integrity: sha512-qWW9RTldmGDmrWHL6UnsFxuOB3bJ3Kh9Ix7nb5mggI/d2IMPbl7ROd6+iy+zLIBp7ujQOQ8a5JQ6eODUJYsXVQ==}
+    engines: {node: ^22.0.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
 
   d3-array@3.2.1:
@@ -5031,9 +5038,6 @@ packages:
     resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
     engines: {node: '>=6'}
 
-  tslib@1.14.1:
-    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
-
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -5367,6 +5371,18 @@ packages:
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  ws@7.5.13:
+    resolution: {integrity: sha512-rsKI6xDBFVf4r/x8XyChGK04QR/XHroxs/jUcoWvtEZM8TPU/X/uIY9B1CsSzYws9ZJb/6bbBu7dPhFW00CAoA==}
+    engines: {node: '>=8.3.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
 
   ws@8.22.0:
     resolution: {integrity: sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==}
@@ -6183,11 +6199,11 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.65.1':
     optional: true
 
-  '@simonsmith/cypress-image-snapshot@10.0.4(cypress@15.18.0)':
+  '@simonsmith/cypress-image-snapshot@11.0.0(cypress@16.2.0)':
     dependencies:
       '@types/pixelmatch': 5.2.6
       chalk: 4.1.2
-      cypress: 15.18.0
+      cypress: 16.2.0
       jest-image-snapshot: 6.5.2
       ssim.js: 3.5.0
     transitivePeerDependencies:
@@ -6303,11 +6319,11 @@ snapshots:
       '@tanstack/query-core': 5.102.8
       react: 19.3.1
 
-  '@testing-library/cypress@10.1.3(cypress@15.18.0)':
+  '@testing-library/cypress@10.1.3(cypress@16.2.0)':
     dependencies:
       '@babel/runtime': 7.29.10
       '@testing-library/dom': 10.4.2
-      cypress: 15.18.0
+      cypress: 16.2.0
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -7028,7 +7044,7 @@ snapshots:
 
   ansis@4.2.0: {}
 
-  arch@2.2.0: {}
+  arch@3.0.0: {}
 
   argparse@2.0.1: {}
 
@@ -7252,6 +7268,14 @@ snapshots:
     dependencies:
       readdirp: 5.1.1
 
+  chrome-remote-interface@0.33.3:
+    dependencies:
+      commander: 2.11.0
+      ws: 7.5.13
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   ci-info@4.4.0: {}
 
   classnames@2.5.1: {}
@@ -7298,6 +7322,8 @@ snapshots:
 
   comlink@4.4.2: {}
 
+  commander@2.11.0: {}
+
   commander@2.20.3: {}
 
   commander@6.2.1: {}
@@ -7342,19 +7368,20 @@ snapshots:
 
   cypress-wait-for-stable-dom@0.1.0: {}
 
-  cypress@15.18.0:
+  cypress@16.2.0:
     dependencies:
       '@cypress/request': 4.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
       '@types/sinonjs__fake-timers': 8.1.1
       '@types/sizzle': 2.3.10
       '@types/tmp': 0.2.6
-      arch: 2.2.0
+      arch: 3.0.0
       blob-util: 2.0.2
       bluebird: 3.7.2
       buffer: 5.7.1
       cachedir: 2.4.0
       chalk: 4.1.2
+      chrome-remote-interface: 0.33.3
       ci-info: 4.4.0
       cli-table3: 0.6.1
       commander: 6.2.1
@@ -7380,9 +7407,11 @@ snapshots:
       systeminformation: 5.33.17
       tmp: 0.2.7
       tree-kill: 1.2.2
-      tslib: 1.14.1
       untildify: 4.0.0
       yauzl: 3.4.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   d3-array@3.2.1:
     dependencies:
@@ -9853,8 +9882,6 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tslib@1.14.1: {}
-
   tslib@2.8.1: {}
 
   tunnel-agent@0.6.0:
@@ -10232,6 +10259,8 @@ snapshots:
       strip-ansi: 7.2.0
 
   wrappy@1.0.2: {}
+
+  ws@7.5.13: {}
 
   ws@8.22.0: {}
 

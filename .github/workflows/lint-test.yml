@@ -139,7 +139,7 @@ jobs:
         run: pnpm serve & pnpm wait-on http://localhost:5173 -t 1m
 
       - name: Run Cypress 🌳
-        run: pnpm cypress:run --env ${{ inputs.updateSnapshots && 'updateSnapshots=true' || 'requireSnapshots=true' }}  --expose takeSnapshots=true
+        run: pnpm cypress:run --expose takeSnapshots=true,${{ inputs.updateSnapshots && 'updateSnapshots=true' || 'requireSnapshots=true' }}
 
       - name: Upload debug screenshots and diffs on failure 🖼️
         uses: actions/upload-artifact@v7
