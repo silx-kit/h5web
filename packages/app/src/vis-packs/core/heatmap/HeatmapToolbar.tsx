@@ -21,10 +21,12 @@ import {
   MdGridOn,
   MdSwapHoriz,
   MdSwapVert,
+  MdViewInAr,
 } from 'react-icons/md';
 
-import { getImageInteractions } from '../utils';
+import { getImageInteractions, SURFACE_INTERACTIONS } from '../utils';
 import { type HeatmapConfig } from './config';
+import HeightScaleSlider from './HeightScaleSlider';
 
 const COMPLEX_VIS_TYPES: ComplexHeatmapVisType[] = [
   ComplexVisType.Amplitude,
@@ -52,6 +54,8 @@ function HeatmapToolbar(props: Props) {
     keepRatio,
     flipXAxis,
     flipYAxis,
+    surface,
+    heightScale,
     setCustomDomain,
     setColorMap,
     setInvertColorMap,
@@ -61,10 +65,18 @@ function HeatmapToolbar(props: Props) {
     setKeepRatio,
     setFlipXAxis,
     setFlipYAxis,
+    setSurface,
+    setHeightScale,
   } = config;
 
   return (
-    <Toolbar interactions={getImageInteractions(keepRatio)}>
+    <Toolbar
+      interactions={
+        !isComplex && surface
+          ? SURFACE_INTERACTIONS
+          : getImageInteractions(keepRatio)
+      }
+    >
       <DomainWidget
         dataDomain={dataDomain}
         customDomain={customDomain}
@@ -119,6 +131,20 @@ function HeatmapToolbar(props: Props) {
         value={keepRatio}
         onToggle={() => setKeepRatio(!keepRatio)}
       />
+
+      {!isComplex && (
+        <ToggleBtn
+          label="3D"
+          aria-label="Show as 3D surface"
+          Icon={MdViewInAr}
+          value={surface}
+          onToggle={() => setSurface(!surface)}
+        />
+      )}
+
+      {!isComplex && surface && (
+        <HeightScaleSlider value={heightScale} onChange={setHeightScale} />
+      )}
 
       <ToggleBtn
         label="Grid"

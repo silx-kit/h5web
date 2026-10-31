@@ -9,10 +9,6 @@ import MockApp from './MockApp';
 // Split H5Wasm demo into its own bundle, and load it only when the demo is first visited
 const H5WasmApp = lazy(async () => import('./h5wasm/H5WasmApp'));
 
-const query = new URLSearchParams(document.location.search);
-// @ts-expect-error - Untyped global flag
-globalThis.H5WEB_EXPERIMENTAL = query.has('experimental');
-
 function DemoApp() {
   return (
     <Suspense fallback={null}>

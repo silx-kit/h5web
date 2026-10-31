@@ -36,6 +36,12 @@ export const INTERACTIONS_WITH_AXIAL_ZOOM = [
   { shortcut: 'Ctrl+Shift+Drag', description: 'Select to zoom in Y' },
 ];
 
+export const SURFACE_INTERACTIONS = [
+  { shortcut: 'Drag', description: 'Pan' },
+  { shortcut: 'Ctrl+Drag', description: 'Rotate' },
+  { shortcut: 'Wheel', description: 'Zoom' },
+];
+
 export const CURVE_TYPE_LABELS: Record<CurveType, string> = {
   [CurveType.LineOnly]: 'Line',
   [CurveType.GlyphsOnly]: 'Points',
