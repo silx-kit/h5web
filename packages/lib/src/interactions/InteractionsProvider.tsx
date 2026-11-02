@@ -20,7 +20,9 @@ export interface InteractionsContextValue {
   shouldInteract: (id: string, event: MouseEvent) => boolean;
 }
 
-const InteractionsContext = createContext({} as InteractionsContextValue);
+export const InteractionsContext = createContext(
+  {} as InteractionsContextValue,
+);
 
 export function useInteractionsContext() {
   return useContext(InteractionsContext);
