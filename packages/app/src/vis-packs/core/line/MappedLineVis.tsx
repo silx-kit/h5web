@@ -99,7 +99,7 @@ function MappedLineVis(props: Props) {
 
         return toNumArray(arr);
       }),
-    auxValues, // eslint-disable-line react-hooks/exhaustive-deps
+    auxValues, // eslint-disable-line @eslint-react/exhaustive-deps
   );
 
   const numErrorsArray = useToNumArray(errors);

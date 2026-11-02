@@ -32,7 +32,7 @@ function Pan(props: Props) {
   const camera = useThree((state) => state.camera);
   const moveCameraTo = useMoveCameraTo();
 
-  const startOffsetPosition = useRef<Vector3>(undefined); // `useRef` to avoid re-renders
+  const startOffsetPositionRef = useRef<Vector3>(undefined); // `useRef` to avoid re-renders
   const isModifierKeyPressed = useModifierKeyPressed(modifierKey);
 
   function handlePointerDown(evt: CanvasEvent<PointerEvent>) {
@@ -41,17 +41,17 @@ function Pan(props: Props) {
 
     if (shouldInteract(sourceEvent)) {
       (target as Element).setPointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
-      startOffsetPosition.current = worldPt.clone();
+      startOffsetPositionRef.current = worldPt.clone();
     }
   }
 
   function handlePointerMove(evt: CanvasEvent<PointerEvent>) {
-    if (!startOffsetPosition.current || !isModifierKeyPressed) {
+    if (!startOffsetPositionRef.current || !isModifierKeyPressed) {
       return;
     }
 
     const { worldPt } = evt;
-    const delta = startOffsetPosition.current.clone().sub(worldPt);
+    const delta = startOffsetPositionRef.current.clone().sub(worldPt);
     moveCameraTo(camera.position.clone().add(delta));
   }
 
@@ -60,7 +60,7 @@ function Pan(props: Props) {
     const { target, pointerId } = sourceEvent;
     (target as Element).releasePointerCapture(pointerId); // https://stackoverflow.com/q/28900077/758806
 
-    startOffsetPosition.current = undefined;
+    startOffsetPositionRef.current = undefined;
   }
 
   useCanvasEvent('pointerdown', handlePointerDown);

@@ -86,7 +86,7 @@ function UrlForm(props: Props) {
           </button>
         </fieldset>
       </form>
-      {error && (
+      {!!error && (
         <p className={styles.hint} role="alert">
           {error instanceof FetcherError
             ? 'Sorry, your file could not be fetched'

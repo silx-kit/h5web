@@ -76,7 +76,7 @@ function Selector<T extends string>(props: Props<T>) {
       )}
 
       <button
-        ref={refs.setReference}
+        ref={refs.setReference} // eslint-disable-line @typescript-eslint/unbound-method
         id={referenceId}
         className={toolbarStyles.btn}
         type="button"
@@ -96,7 +96,7 @@ function Selector<T extends string>(props: Props<T>) {
 
       {isOpen && (
         <div
-          ref={refs.setFloating}
+          ref={refs.setFloating} // eslint-disable-line @typescript-eslint/unbound-method
           id={floatingId}
           className={toolbarStyles.menu}
           style={floatingStyles}

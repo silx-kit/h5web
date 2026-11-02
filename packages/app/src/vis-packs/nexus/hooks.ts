@@ -1,9 +1,5 @@
 import { type DimensionMapping } from '@h5web/lib';
-import {
-  type ComplexType,
-  type GroupWithChildren,
-  type NumericLikeType,
-} from '@h5web/shared/hdf5-models';
+import { type GroupWithChildren } from '@h5web/shared/hdf5-models';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useValuesInCache } from '../../hooks';
@@ -11,7 +7,7 @@ import {
   type DataContextValue,
   useDataContext,
 } from '../../providers/DataProvider';
-import { type FieldDef, type NxData } from './models';
+import { type NxData } from './models';
 import {
   assertNxDataGroup,
   findAuxErrorDataset,
@@ -73,23 +69,6 @@ export async function getNxData(
       dataContext,
     ),
     silxStyle: await getSilxStyle(group, dataContext),
-  };
-}
-
-export function useNxHeatmapDataToFetch<
-  T extends NumericLikeType | ComplexType,
->(nxData: NxData<T>, selectedDef: FieldDef<T>): NxData<T> {
-  const { signalDef, titleDataset } = nxData;
-
-  return {
-    ...nxData,
-    signalDef: selectedDef,
-    auxDefs: [], // fetch selected signal only
-    titleDataset:
-      selectedDef.dataset === signalDef.dataset
-        ? titleDataset
-        : // when auxiliary signal is selected, don't fetch title dataset (i.e. use the auxiliary's label as title)
-          undefined,
   };
 }
 

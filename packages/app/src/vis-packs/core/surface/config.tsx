@@ -51,6 +51,7 @@ function createSurfaceConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<SurfaceConfig>);
+StoreContext.displayName = 'SurfaceConfigStoreContext';
 
 export function SurfaceConfigProvider(props: PropsWithChildren) {
   const { children } = props;

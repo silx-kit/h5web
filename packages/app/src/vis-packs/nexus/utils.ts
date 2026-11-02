@@ -38,7 +38,9 @@ import {
 import {
   type AxisDef,
   type DefaultSlice,
+  type FieldDef,
   type FieldInfo,
+  type NxData,
   type SilxStyle,
 } from './models';
 
@@ -75,6 +77,23 @@ export async function isNxNoteGroup(
   dataContext: DataContextValue,
 ): Promise<boolean> {
   return (await getNxClass(group, dataContext)) === 'NXnote';
+}
+
+export function getNxHeatmapDataToFetch<
+  T extends NumericLikeType | ComplexType,
+>(nxData: NxData<T>, selectedDef: FieldDef<T>): NxData<T> {
+  const { signalDef, titleDataset } = nxData;
+
+  return {
+    ...nxData,
+    signalDef: selectedDef,
+    auxDefs: [], // fetch selected signal only
+    titleDataset:
+      selectedDef.dataset === signalDef.dataset
+        ? titleDataset
+        : // when auxiliary signal is selected, don't fetch title dataset (i.e. use the auxiliary's label as title)
+          undefined,
+  };
 }
 
 function findOldStyleSignalDataset(

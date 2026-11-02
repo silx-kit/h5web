@@ -44,7 +44,7 @@ export const Default = meta.story({
       >
         <p style={{ margin: 0 }}>HTML annotation</p>
       </Annotation>
-      <TooltipMesh guides="both" renderTooltip={() => <>Tooltip</>} />
+      <TooltipMesh guides="both" renderTooltip={() => 'Tooltip'} />
     </VisCanvas>
   ),
 });

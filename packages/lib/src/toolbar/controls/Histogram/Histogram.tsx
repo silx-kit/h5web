@@ -74,7 +74,7 @@ function Histogram(props: Props) {
     rects.push(
       <rect
         className={styles.bar}
-        key={i} // eslint-disable-line react/no-array-index-key
+        key={i} // eslint-disable-line @eslint-react/no-array-index-key
         x={xScale(bins[i])}
         y={height - yScale(d)}
         width={xScale(bins[i + 1]) - xScale(bins[i]) + 0.5} // +0.5 removes the small gap between bars

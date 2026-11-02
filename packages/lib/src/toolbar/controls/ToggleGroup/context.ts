@@ -10,6 +10,7 @@ export interface ToggleGroupContextValue {
 export const ToggleGroupContext = createContext<
   ToggleGroupContextValue | undefined
 >(undefined);
+ToggleGroupContext.displayName = 'ToggleGroupContext';
 
 export function useToggleGroupProps(): ToggleGroupContextValue {
   const context = useContext(ToggleGroupContext);

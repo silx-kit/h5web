@@ -64,7 +64,9 @@ export function createComplexFormatter(
 export function createEnumFormatter(
   mapping: Record<number, string>,
 ): (val: ScalarValue<EnumType>) => string {
-  return (value) => (value in mapping ? mapping[value] : value.toString());
+  return (value) => {
+    return Object.hasOwn(mapping, value) ? mapping[value] : value.toString();
+  };
 }
 
 export function formatRaw(value: unknown): string {

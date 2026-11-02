@@ -14,15 +14,15 @@ export function useDynamicDebouncedCallback<
   deps: DependencyList,
   getDelay: (...args: Parameters<Fn>) => number,
 ): (...args: Parameters<Fn>) => void {
-  const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const cb = useRef(callback);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const cbRef = useRef(callback);
   const getDelayRef = useSyncedRef(getDelay);
-  const lastCallArgs = useRef<Parameters<Fn>>(undefined);
+  const lastCallArgsRef = useRef<Parameters<Fn>>(undefined);
 
   function clear() {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-      timeout.current = undefined;
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
     }
   }
 
@@ -30,32 +30,32 @@ export function useDynamicDebouncedCallback<
   useUnmountEffect(clear);
 
   useEffect(() => {
-    cb.current = callback;
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+    cbRef.current = callback;
+  }, deps); // eslint-disable-line @eslint-react/exhaustive-deps
 
   return useMemo(() => {
     function execute() {
       clear();
 
-      if (!lastCallArgs.current) {
+      if (!lastCallArgsRef.current) {
         return;
       }
 
-      const context = lastCallArgs.current;
-      lastCallArgs.current = undefined;
+      const context = lastCallArgsRef.current;
+      lastCallArgsRef.current = undefined;
 
-      cb.current(...context);
+      cbRef.current(...context);
     }
 
     return (...args) => {
-      if (timeout.current) {
-        clearTimeout(timeout.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
 
-      lastCallArgs.current = args;
+      lastCallArgsRef.current = args;
 
       // Plan regular execution
-      timeout.current = setTimeout(execute, getDelayRef.current(...args));
+      timeoutRef.current = setTimeout(execute, getDelayRef.current(...args));
     };
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+  }, deps); // eslint-disable-line @eslint-react/exhaustive-deps
 }

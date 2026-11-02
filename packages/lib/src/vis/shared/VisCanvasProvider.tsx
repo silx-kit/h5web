@@ -43,6 +43,7 @@ export interface VisCanvasContextValue {
 }
 
 export const VisCanvasContext = createContext({} as VisCanvasContextValue);
+VisCanvasContext.displayName = 'VisCanvasContext';
 
 export function useVisCanvasContext() {
   return useContext(VisCanvasContext);

@@ -42,7 +42,7 @@ function AxisMapper(props: Props) {
       >
         {dimMapping.map((val, i) => (
           <ToggleGroup.Btn
-            key={i} // eslint-disable-line react/no-array-index-key
+            key={i} // eslint-disable-line @eslint-react/no-array-index-key
             label={`D${i}`}
             value={i.toString()}
             disabled={val === null} // locked dimension

@@ -25,7 +25,7 @@ function HsdsProvider(props: PropsWithChildren<Props>) {
 
   const api = useMemo(
     () => new HsdsApi(url, domain, fetcher, getExportURL),
-    [url, domain, ...resetKeys, fetcher, getExportURL], // eslint-disable-line react-hooks/exhaustive-deps
+    [url, domain, ...resetKeys, fetcher, getExportURL], // eslint-disable-line @eslint-react/exhaustive-deps
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;
