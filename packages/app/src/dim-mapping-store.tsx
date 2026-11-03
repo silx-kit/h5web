@@ -17,6 +17,7 @@ interface DimMappingState {
   axesCount: number;
   lockedDimsCount: number;
   mapping: DimensionMapping;
+  multiDim: number | undefined;
 }
 
 function createDimMappingStore() {
@@ -25,6 +26,7 @@ function createDimMappingStore() {
     axesCount: 0,
     lockedDimsCount: 0,
     mapping: [],
+    multiDim: undefined,
   }));
 }
 
@@ -43,7 +45,12 @@ export function useDimMappingState(opts: {
   axesCount: number;
   lockedDimsCount?: number;
   defaultSlice?: DefaultSlice;
-}): [DimensionMapping, (mapping: DimensionMapping) => void] {
+}): [
+  DimensionMapping,
+  (mapping: DimensionMapping) => void,
+  number | undefined,
+  (dim: number | undefined) => void,
+] {
   const { dims, axesCount, lockedDimsCount = 0, defaultSlice } = opts;
 
   const store = useContext(StoreContext);
@@ -58,22 +65,55 @@ export function useDimMappingState(opts: {
       : newMapping;
   }, [dims, axesCount, lockedDimsCount, defaultSlice]);
 
-  const setMapping = useCallback(
-    (newMapping: DimensionMapping) => {
-      store.setState({ dims, axesCount, lockedDimsCount, mapping: newMapping });
-    },
-    [dims, axesCount, lockedDimsCount, store],
+  const isStateValid = useCallback(
+    (st: DimMappingState) =>
+      areSameDims(dims, st.dims) &&
+      axesCount === st.axesCount &&
+      lockedDimsCount === st.lockedDimsCount,
+    [dims, axesCount, lockedDimsCount],
   );
 
-  if (
-    areSameDims(dims, state.dims) &&
-    axesCount === state.axesCount &&
-    lockedDimsCount === state.lockedDimsCount
-  ) {
-    // Previous dimension mapping is still valid, so use it
-    return [state.mapping, setMapping];
-  }
+  // Use previous dimension mapping if it is still valid
+  const currentMapping = isStateValid(state) ? state.mapping : mapping;
+  const currentMultiDim = isStateValid(state) ? state.multiDim : undefined;
 
-  // Return new mapping
-  return [mapping, setMapping];
+  // Read latest store state, as setters can be called asynchronously (e.g. debounced slicing)
+  const setMapping = useCallback(
+    (newMapping: DimensionMapping) => {
+      store.setState((prevState) => {
+        const prevMultiDim = isStateValid(prevState)
+          ? prevState.multiDim
+          : undefined;
+
+        return {
+          dims,
+          axesCount,
+          lockedDimsCount,
+          mapping: newMapping,
+          // Reset multi-plotting dimension if it is no longer sliceable (e.g. mapped to axis)
+          multiDim:
+            prevMultiDim !== undefined &&
+            typeof newMapping[prevMultiDim] === 'number'
+              ? prevMultiDim
+              : undefined,
+        };
+      });
+    },
+    [dims, axesCount, lockedDimsCount, isStateValid, store],
+  );
+
+  const setMultiDim = useCallback(
+    (dim: number | undefined) => {
+      store.setState((prevState) => ({
+        dims,
+        axesCount,
+        lockedDimsCount,
+        mapping: isStateValid(prevState) ? prevState.mapping : mapping,
+        multiDim: dim,
+      }));
+    },
+    [dims, axesCount, lockedDimsCount, mapping, isStateValid, store],
+  );
+
+  return [currentMapping, setMapping, currentMultiDim, setMultiDim];
 }

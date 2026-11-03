@@ -1,6 +1,7 @@
 import {
   type DimensionMapping,
   getSliceSelection,
+  INTERPOLATORS,
   KeepZoom,
   LineVis,
   useCombinedDomain,
@@ -35,7 +36,9 @@ import {
 import { DEFAULT_DOMAIN, formatNumLikeType, toNumArray } from '../utils';
 import { type LineConfig } from './config';
 import LineToolbar from './LineToolbar';
-import { generateCsv } from './utils';
+import { generateCsv, getRows } from './utils';
+
+const interpolateSliceColor = INTERPOLATORS.Viridis;
 
 interface Props {
   dataset: Dataset<ArrayShape, NumericLikeType>;
@@ -106,17 +109,33 @@ function MappedLineVis(props: Props) {
   const numAuxErrorsArrays = useToNumArrays(auxErrors);
   const numAxisArrays = useToNumArrays(axisValues);
 
-  const dataArray = useMappedArray(numArray, ...mappingArgs);
-  const errorsArray = useMappedArray(numErrorsArray, ...mappingArgs);
+  // In multi-plotting mode, the multi-plotting dimension is mapped to `y` and the mapped arrays are 2D
+  const mappedArray = useMappedArray(numArray, ...mappingArgs);
+  const mappedErrorsArray = useMappedArray(numErrorsArray, ...mappingArgs);
   const auxArrays = useMappedArrays(numAuxArrays, ...mappingArgs);
   const auxErrorsArrays = useMappedArrays(numAuxErrorsArrays, ...mappingArgs);
 
-  const dataDomain = useDomain(dataArray, {
-    errors: errorsArray,
+  const dataDomain = useDomain(mappedArray, {
+    errors: mappedErrorsArray,
     includeErrors: showErrors,
     scaleType: yScaleType,
     ignoreValue,
   });
+
+  const multiDim = dimMapping.indexOf('y');
+  const isMultiPlot = multiDim !== -1;
+
+  const [dataArray, ...sliceArrays] = useMemo(
+    () => (isMultiPlot ? getRows(mappedArray) : [mappedArray]),
+    [isMultiPlot, mappedArray],
+  );
+  const [errorsArray, ...sliceErrorsArrays] = useMemo(
+    () =>
+      isMultiPlot && mappedErrorsArray
+        ? getRows(mappedErrorsArray)
+        : [mappedErrorsArray],
+    [isMultiPlot, mappedErrorsArray],
+  );
 
   const auxDomains = useDomains(auxArrays, {
     errorsArrays: auxErrorsArrays,
@@ -143,17 +162,36 @@ function MappedLineVis(props: Props) {
     scaleType: xScaleType,
   };
 
-  const auxiliaries = auxArrays.map((array, i) => ({
-    label: auxLabels[i],
-    array,
-    errors: auxErrorsArrays[i],
-    visible: auxVisible[i],
-  }));
+  function getSliceLabel(index: number) {
+    return `D${multiDim}[${index}]`;
+  }
+
+  // Sample sequential colour scale along multi-plotting dimension (avoiding lightest colours)
+  function getSliceColor(index: number) {
+    return interpolateSliceColor(
+      (0.85 * index) / Math.max(sliceArrays.length, 1),
+    );
+  }
+
+  const auxiliaries = isMultiPlot
+    ? sliceArrays.map((array, i) => ({
+        label: getSliceLabel(i + 1),
+        array,
+        errors: sliceErrorsArrays[i],
+        color: getSliceColor(i + 1),
+        visible: true,
+      }))
+    : auxArrays.map((array, i) => ({
+        label: auxLabels[i],
+        array,
+        errors: auxErrorsArrays[i],
+        visible: auxVisible[i],
+      }));
 
   const exportEntries = useExportEntries(['npy', 'csv'], dataset, selection, {
     csv: () =>
       generateCsv(
-        valueLabel || dataset.name,
+        isMultiPlot ? getSliceLabel(0) : valueLabel || dataset.name,
         dataArray,
         abscissaParams,
         errorsArray,
@@ -178,6 +216,8 @@ function MappedLineVis(props: Props) {
       <LineVis
         className={visualizerStyles.vis}
         dataArray={dataArray}
+        dataLabel={isMultiPlot ? getSliceLabel(0) : undefined}
+        dataColor={isMultiPlot ? getSliceColor(0) : undefined}
         domain={safeDomain}
         scaleType={yScaleType}
         curveType={curveType}

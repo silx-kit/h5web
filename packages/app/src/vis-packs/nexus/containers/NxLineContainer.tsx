@@ -1,11 +1,12 @@
 import { DimensionMapper, getSliceSelection, ScaleType } from '@h5web/lib';
 import { assertGroup, isAxisScaleType } from '@h5web/shared/guards';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useDimMappingState } from '../../../dim-mapping-store';
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
 import { useLineConfig } from '../../core/line/config';
 import MappedLineVis from '../../core/line/MappedLineVis';
+import { getMultiPlotMapping } from '../../core/line/utils';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
 import { assertNumericLikeNxData } from '../guards';
@@ -30,16 +31,22 @@ function NxLineContainer(props: VisContainerProps) {
     throw new Error(`Signal and errors dimensions don't match: ${dimsStr}`);
   }
 
-  const [dimMapping, setDimMapping] = useDimMappingState({
-    dims: signalDims,
-    axesCount: 1,
-    defaultSlice,
-  });
+  const [dimMapping, setDimMapping, storedMultiDim, setMultiDim] =
+    useDimMappingState({ dims: signalDims, axesCount: 1, defaultSlice });
+
+  // Multi-plotting is not supported alongside auxiliary signals
+  const canMultiPlot = auxDefs.length === 0;
+  const multiDim = canMultiPlot ? storedMultiDim : undefined;
+  const lineMapping = useMemo(
+    () => getMultiPlotMapping(dimMapping, multiDim),
+    [dimMapping, multiDim],
+  );
 
   const auxLabels = auxDefs.map((def) => def.label);
   const axisLabels = axisDefs.map((def) => def?.label);
   const xDimIndex = dimMapping.indexOf('x');
 
+  const isCached = useNxValuesCached(nxData);
   const [isSignalVisible, setSignalVisible] = useState(true);
   const [auxVisible, setAuxVisible] = useState(auxDefs.map(() => true));
 
@@ -69,14 +76,16 @@ function NxLineContainer(props: VisContainerProps) {
         dims={signalDims}
         dimHints={axisLabels}
         dimMapping={dimMapping}
-        canSliceFast={useNxValuesCached(nxData)}
+        canSliceFast={(m) => isCached(getMultiPlotMapping(m, multiDim))}
         onChange={setDimMapping}
+        multiDim={multiDim}
+        onMultiDimChange={canMultiPlot ? setMultiDim : undefined}
       />
 
-      <VisBoundary resetKey={dimMapping}>
+      <VisBoundary resetKey={lineMapping}>
         <NxValuesFetcher
           nxData={nxData}
-          selection={getSliceSelection(dimMapping)}
+          selection={getSliceSelection(lineMapping)}
           render={(nxValues) => {
             const { signal, errors, axisValues, auxValues, auxErrors, title } =
               nxValues;
@@ -92,7 +101,7 @@ function NxLineContainer(props: VisContainerProps) {
                 auxValues={auxValues}
                 auxErrors={auxErrors}
                 auxVisible={auxVisible}
-                dimMapping={dimMapping}
+                dimMapping={lineMapping}
                 axisLabels={axisLabels}
                 axisValues={axisValues}
                 title={title}

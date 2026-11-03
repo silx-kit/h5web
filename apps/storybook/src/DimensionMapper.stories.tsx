@@ -88,3 +88,30 @@ export const WithSlicingControls = Default.extend({
     withSlicingControls: true,
   },
 });
+
+export const MultiPlotting = Default.extend({
+  render: (args) => {
+    const { dimMapping: initialMapping, ...otherArgs } = args;
+    const [dimMapping, setDimMapping] = useState(initialMapping);
+    const [multiDim, setMultiDim] = useState<number>();
+
+    return (
+      <div style={{ display: 'flex' }}>
+        <DimensionMapper
+          {...otherArgs}
+          dimMapping={dimMapping}
+          onChange={setDimMapping}
+          multiDim={multiDim}
+          onMultiDimChange={setMultiDim}
+        />
+        <pre style={{ padding: '0 1rem', fontSize: '125%' }}>
+          {JSON.stringify({ dimMapping, multiDim })}
+        </pre>
+      </div>
+    );
+  },
+  args: {
+    dims: [5, 10, 25, 15],
+    dimMapping: [2, 5, 0, 'x'],
+  },
+});
