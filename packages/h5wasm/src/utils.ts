@@ -42,6 +42,36 @@ export function getEnhancedError(error: unknown): unknown {
   return new Error('Error detected in HDF5', opts);
 }
 
+export function resolveUrl(url: string, base: string): string {
+  try {
+    return new URL(url, base).href;
+  } catch {
+    return url; // invalid URL - let request fail
+  }
+}
+
+export function getFilenameFromUrl(url: string): string {
+  let pathname: string;
+  let hostname: string;
+  try {
+    ({ pathname, hostname } = new URL(url));
+  } catch {
+    return url;
+  }
+
+  // Last non-empty path segment, e.g. `foo.h5` in `/data/foo.h5` or `data` in `/data/`
+  const segment = pathname.split('/').findLast(Boolean);
+  if (!segment) {
+    return hostname || url;
+  }
+
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment; // malformed escape sequence, e.g. `100%.h5`
+  }
+}
+
 const MESSAGE_LINE_REGEX = /#\d{3}: (\/.+ line \d+ in .+\(\)): (.+)$/u;
 const MAJOR_LINE_REGEX = /major: (.+)$/u;
 const MINOR_LINE_REGEX = /minor: (.+)$/u;

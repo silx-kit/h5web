@@ -1,12 +1,9 @@
-import { createBasicFetcher, FetcherError } from '@h5web/app';
 import { type SubmitEvent, useCallback, useEffect, useState } from 'react';
 import { FiLoader } from 'react-icons/fi';
 import { useSearchParams } from 'wouter';
 
 import { type RemoteFile } from './models';
 import styles from './UrlForm.module.css';
-
-const fetcher = createBasicFetcher();
 
 interface Props {
   onLoad: (h5File: RemoteFile) => void;
@@ -21,30 +18,38 @@ function UrlForm(props: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  const fetchFile = useCallback(async () => {
-    if (!url) {
-      return;
-    }
+  const checkFile = useCallback(
+    async (signal: AbortSignal) => {
+      if (!url) {
+        return;
+      }
 
-    setLoading(true);
-    setError(undefined);
+      setLoading(true);
+      setError(undefined);
 
-    try {
-      const buffer = await fetcher(url, {});
-      onLoad({
-        filename: url.slice(url.lastIndexOf('/') + 1),
-        buffer,
-      });
-    } catch (error_) {
-      setError(error_);
-    } finally {
-      setLoading(false);
-    }
-  }, [url, onLoad]);
+      try {
+        await checkUrl(url, signal);
+        if (!signal.aborted) {
+          onLoad({ url }); // file is then read lazily with HTTP range requests, when supported
+        }
+      } catch (error_) {
+        if (!signal.aborted) {
+          setError(error_);
+        }
+      } finally {
+        if (!signal.aborted) {
+          setLoading(false);
+        }
+      }
+    },
+    [url, onLoad],
+  );
 
   useEffect(() => {
-    void fetchFile();
-  }, [url, fetchFile]);
+    const controller = new AbortController();
+    void checkFile(controller.signal);
+    return () => controller.abort();
+  }, [checkFile]);
 
   function handleUrlSubmit(evt: SubmitEvent) {
     evt.preventDefault();
@@ -52,7 +57,7 @@ function UrlForm(props: Props) {
     const newUrl = formData.get('url') as string;
 
     if (newUrl === url) {
-      void fetchFile(); // refetch
+      void checkFile(new AbortController().signal); // retry
     } else {
       setSearchParams((prev) => {
         prev.set('url', newUrl);
@@ -88,13 +93,23 @@ function UrlForm(props: Props) {
       </form>
       {error && (
         <p className={styles.hint} role="alert">
-          {error instanceof FetcherError
-            ? 'Sorry, your file could not be fetched'
-            : `An error occured${error instanceof Error ? `: ${error.message}` : ''}`}
+          Sorry, your file could not be fetched
+          {error instanceof Error && `: ${error.message}`}
         </p>
       )}
     </>
   );
+}
+
+/* Check that the file can be fetched before passing its URL to the provider,
+ * so errors can be reported here. Only the response headers are awaited. */
+async function checkUrl(url: string, signal: AbortSignal): Promise<void> {
+  const response = await fetch(url, { signal });
+  await response.body?.cancel();
+
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
 }
 
 export default UrlForm;

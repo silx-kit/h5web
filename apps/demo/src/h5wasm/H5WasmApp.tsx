@@ -1,5 +1,8 @@
 import { App } from '@h5web/app';
-import { H5WasmBufferProvider, H5WasmLocalFileProvider } from '@h5web/h5wasm';
+import {
+  H5WasmLocalFileProvider,
+  H5WasmRemoteFileProvider,
+} from '@h5web/h5wasm';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import { useSearchParams } from 'wouter';
@@ -29,10 +32,10 @@ function H5WasmApp() {
           {DEVTOOLS && <ReactQueryDevtools />}
         </H5WasmLocalFileProvider>
       ) : (
-        <H5WasmBufferProvider {...h5File} getPlugin={getPlugin}>
+        <H5WasmRemoteFileProvider url={h5File.url} getPlugin={getPlugin}>
           <App sidebarOpen={!isWide} getFeedbackURL={getFeedbackURL} />
           {DEVTOOLS && <ReactQueryDevtools />}
-        </H5WasmBufferProvider>
+        </H5WasmRemoteFileProvider>
       )}
     </DropZone>
   );
