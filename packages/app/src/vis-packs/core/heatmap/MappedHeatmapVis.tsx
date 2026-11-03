@@ -19,14 +19,19 @@ import { type AxisMapping } from '@h5web/shared/nexus-models';
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
-import { useIgnoreValue } from '../../netcdf/hooks';
+import {
+  useIgnoreValue,
+  usePacking,
+  useUnpackedNumArray,
+} from '../../netcdf/hooks';
+import { formatDType } from '../../netcdf/utils';
 import {
   useExportEntries,
   useMappedArray,
   useToNumArray,
   useToNumArrays,
 } from '../hooks';
-import { DEFAULT_DOMAIN, formatNumLikeType } from '../utils';
+import { DEFAULT_DOMAIN } from '../utils';
 import { type HeatmapConfig } from './config';
 import HeatmapToolbar from './HeatmapToolbar';
 
@@ -65,8 +70,9 @@ function MappedHeatmapVis(props: Props) {
   } = config;
 
   const ignoreValue = useIgnoreValue(dataset);
+  const packing = usePacking(dataset);
 
-  const numArray = useToNumArray(value);
+  const numArray = useToNumArray(useUnpackedNumArray(value, packing));
   const numAxisArrays = useToNumArrays(axisValues);
 
   const { dims } = dataset.shape;
@@ -101,7 +107,7 @@ function MappedHeatmapVis(props: Props) {
         className={visualizerStyles.vis}
         dataArray={dataArray}
         title={title}
-        dtype={formatNumLikeType(dataset.type)}
+        dtype={formatDType(dataset.type, packing)}
         domain={safeDomain}
         colorMap={colorMap}
         scaleType={scaleType}

@@ -13,6 +13,7 @@ import {
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { usePacking, useUnpackedArray } from '../../netcdf/hooks';
 import { useExportEntries, useMappedArray } from '../hooks';
 import { type MatrixVisConfig } from './config';
 import MatrixToolbar from './MatrixToolbar';
@@ -35,9 +36,12 @@ function MappedMatrixVis(props: Props) {
   const { dataset, value, dimMapping, toolbarContainer, config } = props;
   const { customCellWidth, notation } = config;
 
-  const { shape, type } = dataset;
-  const mappingArgs = useSlicedDimsAndMapping(shape.dims, dimMapping);
-  const mappedArray = useMappedArray(value, ...mappingArgs);
+  const packing = usePacking(dataset);
+  const unpackedValue = useUnpackedArray(value, packing);
+  const type = packing?.type ?? dataset.type;
+
+  const mappingArgs = useSlicedDimsAndMapping(dataset.shape.dims, dimMapping);
+  const mappedArray = useMappedArray(unpackedValue, ...mappingArgs);
 
   const formatter = getFormatter(type, notation);
   const cellWidth = getCellWidth(type);

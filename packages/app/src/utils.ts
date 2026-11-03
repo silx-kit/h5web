@@ -1,5 +1,6 @@
 import {
   assertValue,
+  hasArrayShape,
   hasNumericType,
   hasScalarShape,
   hasStringType,
@@ -35,6 +36,36 @@ export function findScalarNumAttr(
   return attr && hasScalarShape(attr) && hasNumericType(attr)
     ? attr
     : undefined;
+}
+
+/* Like `findScalarNumAttr` but also accepts single-element arrays,
+ * which is how NetCDF4 stores numeric attributes. */
+export function findSingleNumAttr(
+  entity: Entity,
+  attributeName: string,
+): Attribute<ScalarShape | ArrayShape, NumericType> | undefined {
+  const attr = findScalarNumAttr(entity, attributeName);
+  if (attr) {
+    return attr;
+  }
+
+  const arrAttr = findAttribute(entity, attributeName);
+  return arrAttr &&
+    hasArrayShape(arrAttr) &&
+    hasNumericType(arrAttr) &&
+    arrAttr.shape.dims.length === 1 &&
+    arrAttr.shape.dims[0] === 1
+    ? arrAttr
+    : undefined;
+}
+
+export async function getSingleNumAttrValue(
+  entity: Entity,
+  attribute: Attribute<ScalarShape | ArrayShape, NumericType>,
+  dataContext: DataContextValue,
+): Promise<number | bigint> {
+  const value = await getAttributeValue(entity, attribute, dataContext);
+  return typeof value === 'object' ? value[0] : value;
 }
 
 export function findScalarStrAttr(

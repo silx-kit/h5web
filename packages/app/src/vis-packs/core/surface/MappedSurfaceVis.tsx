@@ -15,6 +15,7 @@ import {
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { usePacking, useUnpackedNumArray } from '../../netcdf/hooks';
 import { useMappedArray, useToNumArray } from '../hooks';
 import { DEFAULT_DOMAIN } from '../utils';
 import { type SurfaceConfig } from './config';
@@ -32,7 +33,8 @@ function MappedSurfaceVis(props: Props) {
   const { dataset, value, dimMapping, toolbarContainer, config } = props;
   const { customDomain, colorMap, scaleType, invertColorMap } = config;
 
-  const numArray = useToNumArray(value);
+  const packing = usePacking(dataset);
+  const numArray = useToNumArray(useUnpackedNumArray(value, packing));
 
   const { dims } = dataset.shape;
   const mappingArgs = useSlicedDimsAndMapping(dims, dimMapping);

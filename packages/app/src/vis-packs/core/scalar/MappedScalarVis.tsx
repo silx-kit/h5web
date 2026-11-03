@@ -7,6 +7,8 @@ import {
 import { createPortal } from 'react-dom';
 
 import visualizerStyles from '../../../visualizer/Visualizer.module.css';
+import { usePacking } from '../../netcdf/hooks';
+import { unpackValue } from '../../netcdf/utils';
 import { useExportEntries } from '../hooks';
 import { type ScalarConfig } from './config';
 import ScalarToolbar from './ScalarToolbar';
@@ -20,10 +22,15 @@ interface Props {
 }
 
 function MappedScalarVis(props: Props) {
-  const { dataset, value, toolbarContainer, config } = props;
+  const { dataset, value: rawValue, toolbarContainer, config } = props;
+
+  const packing = usePacking(dataset);
+  const value = packing
+    ? unpackValue(rawValue as number | bigint, packing) // packing is only found on datasets with numeric type
+    : rawValue;
 
   const isImage = value instanceof Uint8Array && isBinaryImage(value);
-  const formatter = getFormatter(dataset.type);
+  const formatter = getFormatter(packing?.type ?? dataset.type);
 
   const exportEntries = useExportEntries(['json'], dataset, undefined, {
     json: () => JSON.stringify(value, null, 2),
