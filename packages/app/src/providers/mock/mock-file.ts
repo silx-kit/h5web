@@ -525,6 +525,18 @@ export function makeMockFile(): GroupWithChildren {
           axesAttr: ['.', 'slow_Y', 'slow_X'],
           title: scalar('title', 'NeXus 2D'),
         }),
+        dataset(
+          'slow_large_twoD', // 2 GB - generate rows on demand
+          arrayShape([10_000_000, 50]),
+          floatType(),
+          (selection?: string) => {
+            const row = selection && /^(\d+),:$/u.exec(selection)?.[1];
+            if (!row) {
+              throw new Error('Only rows of `slow_large_twoD` can be fetched');
+            }
+            return Float32Array.from({ length: 50 }, (_, i) => Number(row) + i);
+          },
+        ),
       ]),
     ],
   });

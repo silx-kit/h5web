@@ -21,6 +21,7 @@ import { useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 
 import { useDataContext } from './providers/DataProvider';
 import { type ValueQueryParams } from './providers/models';
+import { isValueInCache } from './utils';
 
 export function useEntity(path: string): ProvidedEntity {
   const { queries } = useDataContext();
@@ -117,17 +118,16 @@ export function useValues<
 export function useValuesInCache(
   ...datasets: (Dataset<ScalarShape | ArrayShape> | undefined)[]
 ): (dimMapping: DimensionMapping) => boolean {
-  const { queries, queryClient } = useDataContext();
+  const dataContext = useDataContext();
 
   const definedDatasets = datasets.filter(isDefined);
 
   return (nextMapping) => {
     const selection = getSliceSelection(nextMapping);
 
-    return definedDatasets.every((dataset) => {
-      const { queryKey } = queries.value(dataset, selection);
-      return queryClient.getQueryData(queryKey) !== undefined;
-    });
+    return definedDatasets.every((dataset) =>
+      isValueInCache(dataContext, dataset, selection),
+    );
   };
 }
 

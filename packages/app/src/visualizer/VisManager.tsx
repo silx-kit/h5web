@@ -3,6 +3,7 @@ import { type ProvidedEntity } from '@h5web/shared/hdf5-models';
 import { useState } from 'react';
 
 import { useDataContext } from '../providers/DataProvider';
+import { FetchConfirmationProvider } from '../vis-packs/fetch-confirmation';
 import { type VisDef } from '../vis-packs/models';
 import { useActiveVis } from './hooks';
 import VisSelector from './VisSelector';
@@ -52,7 +53,9 @@ function VisManager(props: Props) {
       </div>
 
       <div className={styles.visArea}>
-        <Container entity={entity} toolbarContainer={visBarElem} />
+        <FetchConfirmationProvider scope={activeVis.name}>
+          <Container entity={entity} toolbarContainer={visBarElem} />
+        </FetchConfirmationProvider>
       </div>
     </div>
   );

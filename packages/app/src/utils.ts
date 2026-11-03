@@ -7,6 +7,7 @@ import {
 import {
   type ArrayShape,
   type Attribute,
+  type Dataset,
   type Entity,
   type NumericType,
   type ScalarShape,
@@ -78,6 +79,16 @@ export async function getAttributeValue<
   const value = values[attribute.name];
   assertValue(value, attribute);
   return value;
+}
+
+export function isValueInCache(
+  dataContext: DataContextValue,
+  dataset: Dataset<ScalarShape | ArrayShape>,
+  selection?: string,
+): boolean {
+  const { queries, queryClient } = dataContext;
+  const { queryKey } = queries.value(dataset, selection);
+  return queryClient.getQueryData(queryKey) !== undefined;
 }
 
 export function enableBigIntSerialization(): void {
