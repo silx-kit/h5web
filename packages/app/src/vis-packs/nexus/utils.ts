@@ -132,9 +132,9 @@ export function findErrorDataset(
 
 export function findAuxErrorDataset(
   group: GroupWithChildren,
-  auxSignalName: string,
+  auxSignal: Dataset<ArrayShape>,
 ): Dataset<ArrayShape, NumericType> | undefined {
-  const dataset = getChildEntity(group, `${auxSignalName}_errors`);
+  const dataset = getChildEntity(group, `${auxSignal.name}_errors`);
 
   if (!dataset) {
     return undefined;
@@ -143,7 +143,11 @@ export function findAuxErrorDataset(
   assertDataset(dataset);
   assertArrayShape(dataset);
   assertNumericType(dataset);
-  return dataset;
+
+  // Ignore errors that don't match auxiliary signal, so they can't break the visualization
+  return areSameDims(dataset.shape.dims, auxSignal.shape.dims)
+    ? dataset
+    : undefined;
 }
 
 async function findAssociatedDatasets(
@@ -233,6 +237,7 @@ export async function findAxesDatasets(
 
 export async function findAuxiliaryDatasets(
   group: GroupWithChildren,
+  signal: Dataset<ArrayShape>,
   dataContext: DataContextValue,
 ): Promise<Dataset<ArrayShape, NumericLikeType | ComplexType>[]> {
   const associated = await findAssociatedDatasets(
@@ -241,10 +246,16 @@ export async function findAuxiliaryDatasets(
     dataContext,
   );
 
-  return associated.filter(isDefined).map((dataset) => {
-    assertNumericLikeOrComplexType(dataset);
-    return dataset;
-  });
+  return associated
+    .filter(isDefined)
+    .filter((dataset) => {
+      // Ignore auxiliary signals that don't match signal, so they can't break the visualization
+      return areSameDims(dataset.shape.dims, signal.shape.dims);
+    })
+    .map((dataset) => {
+      assertNumericLikeOrComplexType(dataset);
+      return dataset;
+    });
 }
 
 export function findTitleDataset(
