@@ -4,12 +4,14 @@ import {
   type NumArray,
   ScaleType,
 } from '@h5web/shared/vis-models';
-import { toTypedNdArray } from '@h5web/shared/vis-utils';
+import { createArrayFromView, toTypedNdArray } from '@h5web/shared/vis-utils';
 import { range } from 'd3-array';
 import ndarray, { type NdArray } from 'ndarray';
 import {
+  BufferGeometry,
   ClampToEdgeWrapping,
   DataTexture,
+  Float32BufferAttribute,
   FloatType,
   HalfFloatType,
   type MagnificationTextureFilter,
@@ -20,12 +22,20 @@ import {
   UVMapping,
 } from 'three';
 
-import { type CustomDomain, DomainError, type DomainErrors } from '../models';
+import {
+  type CustomDomain,
+  DomainError,
+  type DomainErrors,
+  type Size,
+} from '../models';
 import { SCALES_VALID_MINS } from '../utils';
 import { INTERPOLATORS } from './interpolators';
 import {
+  type ChunkBounds,
+  type ChunkRange,
   type ColorMap,
   type D3Interpolator,
+  type TextureChunk,
   type TextureSafeTypedArray,
 } from './models';
 
@@ -228,6 +238,119 @@ export function getDataTexture(
   texture.needsUpdate = true;
 
   return texture;
+}
+
+function getChunkRanges(length: number, maxTextureSize: number): ChunkRange[] {
+  if (length <= maxTextureSize) {
+    return [{ start: 0, end: length, texStart: 0, texEnd: length }];
+  }
+
+  // Leave room for one overlapping texel on each side, so linear filtering doesn't show seams
+  const chunkLength = Math.ceil(
+    length / Math.ceil(length / (maxTextureSize - 2)),
+  );
+
+  return range(0, length, chunkLength).map((start) => {
+    const end = Math.min(start + chunkLength, length);
+    return {
+      start,
+      end,
+      texStart: Math.max(start - 1, 0),
+      texEnd: Math.min(end + 1, length),
+    };
+  });
+}
+
+/*
+ * Split a 2D array of the given shape into evenly-sized chunks whose textures
+ * (including overlapping texels) fit within the GPU's `MAX_TEXTURE_SIZE`.
+ */
+export function getTextureChunks(
+  shape: number[],
+  maxTextureSize: number,
+): TextureChunk[] {
+  const [rows, cols] = shape;
+  const colRanges = getChunkRanges(cols, maxTextureSize);
+
+  return getChunkRanges(rows, maxTextureSize).flatMap((rowRange) =>
+    colRanges.map((colRange) => ({ rows: rowRange, cols: colRange })),
+  );
+}
+
+export function sliceTextureChunk<T extends TextureSafeTypedArray>(
+  values: NdArray<T>,
+  chunk: TextureChunk,
+): NdArray<T> {
+  const { rows, cols } = chunk;
+  const view = values
+    .lo(rows.texStart, cols.texStart)
+    .hi(rows.texEnd - rows.texStart, cols.texEnd - cols.texStart);
+
+  // Ranges of full rows in a row-major array are contiguous, so no need to copy
+  const [, totalCols] = values.shape;
+  const [rowStride, colStride] = values.stride;
+  if (
+    colStride === 1 &&
+    rowStride === totalCols &&
+    cols.texStart === 0 &&
+    cols.texEnd === totalCols
+  ) {
+    const data = values.data.subarray(view.offset, view.offset + view.size);
+    return ndarray(data as T, view.shape);
+  }
+
+  return createArrayFromView(view);
+}
+
+/*
+ * Compute the corners of a chunk's quad within a mesh of the given size, and the
+ * texture coordinates of its visible area (i.e. excluding overlapping texels).
+ * Edges are computed from the same expression for adjacent chunks, so they match exactly.
+ */
+export function getChunkBounds(
+  chunk: TextureChunk,
+  shape: number[],
+  size: Size,
+): ChunkBounds {
+  const [rows, cols] = shape;
+  const { width, height } = size;
+  const cellWidth = width / cols;
+  const cellHeight = height / rows;
+
+  const { rows: r, cols: c } = chunk;
+  const texRows = r.texEnd - r.texStart;
+  const texCols = c.texEnd - c.texStart;
+
+  return {
+    x: [c.start * cellWidth - width / 2, c.end * cellWidth - width / 2],
+    y: [r.start * cellHeight - height / 2, r.end * cellHeight - height / 2],
+    u: [(c.start - c.texStart) / texCols, (c.end - c.texStart) / texCols],
+    v: [(r.start - r.texStart) / texRows, (r.end - r.texStart) / texRows],
+  };
+}
+
+export function getChunkGeometry(bounds: ChunkBounds): BufferGeometry {
+  const { x, y, u, v } = bounds;
+
+  // Same vertex order as `PlaneGeometry`: top-left, top-right, bottom-left, bottom-right
+  const geometry = new BufferGeometry();
+  geometry.setIndex([0, 2, 1, 2, 3, 1]);
+  geometry.setAttribute(
+    'position',
+    new Float32BufferAttribute(
+      [x[0], y[1], 0, x[1], y[1], 0, x[0], y[0], 0, x[1], y[0], 0],
+      3,
+    ),
+  );
+  geometry.setAttribute(
+    'uv',
+    new Float32BufferAttribute(
+      [u[0], v[1], u[1], v[1], u[0], v[0], u[1], v[0]],
+      2,
+    ),
+  );
+
+  return geometry;
 }
 
 export function getMask(
