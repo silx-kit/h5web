@@ -1,3 +1,4 @@
+import { isFloat16Array } from '@h5web/shared/guards';
 import {
   type Domain,
   type IgnoreValue,
@@ -166,12 +167,17 @@ export function toTextureSafeNdArray(
     return undefined;
   }
 
-  if (ndArr.dtype === 'float32' || ndArr.dtype.startsWith('uint8')) {
+  if (
+    ndArr.data instanceof Float32Array ||
+    ndArr.data instanceof Uint16Array ||
+    ndArr.data instanceof Uint8Array ||
+    ndArr.data instanceof Uint8ClampedArray
+  ) {
     return ndArr as NdArray<TextureSafeTypedArray>;
   }
 
   // Pass float16 through as uint16 without copying
-  if (ndArr.data instanceof Float16Array) {
+  if (isFloat16Array(ndArr.data)) {
     const { buffer, byteOffset, length } = ndArr.data;
     return ndarray(new Uint16Array(buffer, byteOffset, length), ndArr.shape);
   }
