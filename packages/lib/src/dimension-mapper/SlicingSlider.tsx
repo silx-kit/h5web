@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { flushSync } from 'react-dom';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 import Btn from '../toolbar/controls/Btn';
@@ -79,15 +78,19 @@ function SlicingSlider(props: Props) {
     }
   }
 
+  const maxValue = length - 1;
   const trackRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef<{ pointerId: number; offset: number }>(undefined); // offset between pointer and thumb center
+  const dragRef = useRef<{ pointerId: number; offset: number; rect: DOMRect }>(
+    undefined,
+  ); // offset between pointer and thumb center; track rect measured once per drag
 
-  function getValueAt(clientY: number): number {
-    assertNonNull(trackRef.current);
-    const { bottom, height } = trackRef.current.getBoundingClientRect();
-    const ratio = Math.min(Math.max((bottom - clientY) / height, 0), 1);
-    return Math.round(ratio * (length - 1));
+  function getValueAt(clientY: number, rect: DOMRect): number {
+    const ratio = Math.min(
+      Math.max((rect.bottom - clientY) / rect.height, 0),
+      1,
+    );
+    return Math.round(ratio * maxValue);
   }
 
   function handlePointerDown(evt: PointerEvent<HTMLDivElement>) {
@@ -97,21 +100,24 @@ function SlicingSlider(props: Props) {
     }
 
     const { top, height } = thumbRef.current.getBoundingClientRect();
-    const offset = thumbRef.current.contains(evt.target as Node)
-      ? evt.clientY - (top + height / 2) // grabbed thumb doesn't jump
-      : 0;
+    const offset =
+      evt.target instanceof Node && thumbRef.current.contains(evt.target)
+        ? evt.clientY - (top + height / 2) // grabbed thumb doesn't jump
+        : 0;
 
+    assertNonNull(trackRef.current);
+    const rect = trackRef.current.getBoundingClientRect();
     evt.preventDefault(); // prevent text selection
     thumbRef.current.focus({ preventScroll: true });
     evt.currentTarget.setPointerCapture(evt.pointerId);
-    dragRef.current = { pointerId: evt.pointerId, offset };
-    handleChange(getValueAt(evt.clientY - offset));
+    dragRef.current = { pointerId: evt.pointerId, offset, rect };
+    handleChange(getValueAt(evt.clientY - offset, rect));
   }
 
   function handlePointerMove(evt: PointerEvent) {
     if (dragRef.current?.pointerId === evt.pointerId) {
-      const { offset } = dragRef.current;
-      flushSync(() => handleChange(getValueAt(evt.clientY - offset))); // render before next move so `localValue` is up to date
+      const { offset, rect } = dragRef.current;
+      handleChange(getValueAt(evt.clientY - offset, rect));
     }
   }
 
@@ -119,20 +125,22 @@ function SlicingSlider(props: Props) {
     const step = KEY_STEPS[evt.key];
     if (step !== undefined) {
       evt.preventDefault();
-      handleChange(Math.min(Math.max(localValue + step, 0), length - 1));
+      handleChange(Math.min(Math.max(localValue + step, 0), maxValue));
     }
   }
 
   const [containerSize, containerRef] = useMeasure<HTMLDivElement>();
   const sliderLabelId = `${ID}-${dimension}-label`;
-  const thumbValue = Math.min(Math.max(localValue, 0), length - 1);
+  const thumbValue = Math.min(Math.max(localValue, 0), maxValue);
+  const showMarks =
+    !!containerSize && containerSize.height / length >= MIN_HEIGHT_PER_MARK;
 
   return (
     <div key={dimension} ref={containerRef} className={styles.container}>
       <span id={sliderLabelId} className={styles.label}>
         D{dimension}
       </span>
-      <span className={styles.sublabel}>0:{length - 1}</span>
+      <span className={styles.sublabel}>0:{maxValue}</span>
       {length > 1 && (
         <>
           <div
@@ -146,24 +154,23 @@ function SlicingSlider(props: Props) {
             }}
           >
             <div ref={trackRef} className={styles.track}>
-              {containerSize &&
-                containerSize.height / length >= MIN_HEIGHT_PER_MARK &&
+              {showMarks &&
                 Array.from({ length }, (_, index) => (
                   <span
                     key={index}
                     className={styles.mark}
-                    style={{ bottom: `${(index / (length - 1)) * 100}%` }}
+                    style={{ bottom: `${(index / maxValue) * 100}%` }}
                   />
                 ))}
               <div
                 ref={thumbRef}
                 className={styles.thumb}
-                style={{ bottom: `${(thumbValue / (length - 1)) * 100}%` }}
+                style={{ bottom: `${(thumbValue / maxValue) * 100}%` }}
                 role="slider"
                 tabIndex={0}
                 aria-labelledby={sliderLabelId}
                 aria-valuemin={0}
-                aria-valuemax={length - 1}
+                aria-valuemax={maxValue}
                 aria-valuenow={thumbValue}
                 aria-orientation="vertical"
                 onKeyDown={handleKeyDown}
@@ -181,7 +188,7 @@ function SlicingSlider(props: Props) {
                 iconOnly
                 small
                 onClick={() => {
-                  const newValue = Math.min(localValue + stride, length - 1);
+                  const newValue = Math.min(localValue + stride, maxValue);
                   setLocalValue(newValue);
                   onDebouncedChange(newValue);
                 }}
