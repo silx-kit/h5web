@@ -25,7 +25,6 @@ import { type OnProgress } from '../models';
 import {
   bigIntTypedArrayFromDType,
   createBasicFetcher,
-  FetcherError,
   toJSON,
   typedArrayFromDType,
 } from '../utils';
@@ -40,7 +39,7 @@ import {
 import { assertHsdsEntity, parseEntity, toExtendedJSON } from './utils';
 
 export class HsdsApi extends DataProviderApi {
-  /* API compatible with hsds@1.0.2 */
+  /* API compatible with hsds@1.0.3 */
   public constructor(
     private readonly baseURL: string,
     private readonly domain: string,
@@ -174,35 +173,17 @@ export class HsdsApi extends DataProviderApi {
       (a, b) => a[0].localeCompare(b[0]), // `GET /` with `include_links` doesn't sort links predictably
     );
 
-    const hardLinksEntries = linksEntries.filter(
-      ([_, link]) => link.class === 'H5L_TYPE_HARD',
-    );
-    const symLinksEntries = linksEntries.filter(
-      ([_, link]) => link.class !== 'H5L_TYPE_HARD',
-    );
-
-    const hardLinksResponses = await this.fetchHardLinks(
+    const linksResponses = await this.fetchLinks(
       id,
-      hardLinksEntries.map(([name]) => name),
+      linksEntries.map(([name]) => name),
     );
 
-    // Fetch soft and external links individually so that one broken link doesn't affect the others
-    const symLinksResponses = Object.fromEntries(
-      await Promise.all(
-        symLinksEntries.map(async ([name]) => {
-          const childPath = buildEntityPath(path, name);
-          return [name, await this.fetchSymbolicLink(childPath)] as const;
-        }),
-      ),
-    );
-
-    const childrenResponses = { ...hardLinksResponses, ...symLinksResponses };
     return {
       ...hsdsGroup,
       children: linksEntries.map(([name, hsdsLink]) => {
         const childPath = buildEntityPath(path, name);
-        const childResponse = Object.hasOwn(childrenResponses, name)
-          ? childrenResponses[name]
+        const childResponse = Object.hasOwn(linksResponses, name)
+          ? linksResponses[name]
           : undefined;
 
         return parseEntity(childPath, childResponse, hsdsLink);
@@ -223,7 +204,7 @@ export class HsdsApi extends DataProviderApi {
     return toJSON(buffer) as HsdsEntityResponse;
   }
 
-  private async fetchHardLinks(
+  private async fetchLinks(
     parentId: string,
     names: string[],
   ): Promise<Record<string, HsdsEntityResponse>> {
@@ -233,6 +214,9 @@ export class HsdsApi extends DataProviderApi {
         domain: this.domain,
         parent_id: parentId,
         include_attrs: 'true',
+        follow_external_links: 'true',
+        follow_soft_links: 'true',
+        ignore_unresolved: 'true',
       },
       {
         method: 'POST',
@@ -241,32 +225,6 @@ export class HsdsApi extends DataProviderApi {
     );
 
     return (toJSON(buffer) as HsdsEntitiesResponse).h5paths;
-  }
-
-  private async fetchSymbolicLink(
-    path: string,
-  ): Promise<HsdsEntityResponse | undefined> {
-    try {
-      const buffer = await this.fetcher(`${this.baseURL}/`, {
-        domain: this.domain,
-        h5path: path,
-        include_attrs: 'true',
-        follow_external_links: 'true',
-        follow_soft_links: 'true',
-      });
-
-      return toJSON(buffer) as HsdsEntityResponse;
-    } catch (error) {
-      if (
-        error instanceof FetcherError &&
-        (error.status === 404 || error.status === 500) // 500 with relative domain: https://github.com/HDFGroup/hsds/issues/488
-      ) {
-        // Don't throw on broken soft/external links so they can be shown as unresolved
-        return undefined;
-      }
-
-      throw error;
-    }
   }
 
   private async fetchAttributesWithValues(
