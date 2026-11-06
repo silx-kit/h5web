@@ -248,7 +248,7 @@ export function isGroup(entity: Entity): entity is Group {
 
 export function assertGroup(
   entity: Entity,
-  message = 'Expected group',
+  message = `Expected group at ${entity.path}`,
 ): asserts entity is Group {
   if (!isGroup(entity)) {
     throw new Error(message);
@@ -261,7 +261,7 @@ export function hasChildren(group: Group): group is GroupWithChildren {
 
 export function assertGroupWithChildren(
   group: Group,
-  message = 'Expected group with children',
+  message = `Expected group with children`,
 ): asserts group is GroupWithChildren {
   if (!hasChildren(group)) {
     throw new Error(message);
@@ -274,7 +274,7 @@ export function isDataset(entity: Entity): entity is Dataset {
 
 export function assertDataset(
   entity: Entity,
-  message = 'Expected dataset',
+  message = `Expected dataset at ${entity.path}`,
 ): asserts entity is Dataset {
   if (!isDataset(entity)) {
     throw new Error(message);
@@ -287,7 +287,7 @@ export function isDatatype(entity: Entity): entity is Datatype {
 
 export function assertDatatype(
   entity: Entity,
-  message = 'Expected datatype',
+  message = `Expected datatype at ${entity.path}`,
 ): asserts entity is Datatype {
   if (!isDatatype(entity)) {
     throw new Error(message);
