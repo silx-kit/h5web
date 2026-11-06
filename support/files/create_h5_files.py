@@ -338,9 +338,8 @@ with h5py.File(os.path.join(DIST_PATH, get_filename("links")), "w") as h5:
     group_soft["relative"] = h5py.SoftLink("dataset")
     group_soft["broken"] = h5py.SoftLink("foo")
 
-    # HSDS expects external "domains" to be absolute paths - https://github.com/HDFGroup/hsds/issues/488
     group_ext = h5.create_group("external")
-    group_ext["group_self"] = h5py.ExternalLink("/links-hsds.h5" if args.hsds else "links.h5", "/group")
-    group_ext["dataset"] = h5py.ExternalLink("/sample-hsds.h5" if args.hsds else "sample.h5", "/int8_2D")
+    group_ext["group_self"] = h5py.ExternalLink("links-hsds.h5" if args.hsds else "links.h5", "/group")
+    group_ext["dataset"] = h5py.ExternalLink("sample-hsds.h5" if args.hsds else "sample.h5", "/int8_2D")
     group_ext["broken_file"] = h5py.ExternalLink("foo.h5", "/foo")
-    group_ext["broken_path"] = h5py.ExternalLink("/sample-hsds.h5" if args.hsds else "sample.h5", "/foo")
+    group_ext["broken_path"] = h5py.ExternalLink("sample-hsds.h5" if args.hsds else "sample.h5", "/foo")
