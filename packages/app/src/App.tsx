@@ -62,9 +62,7 @@ function App(props: Props) {
 
   const sidebarPanelRef = usePanelRef();
   const [isSidebarOpen, setSidebarOpen] = useState(
-    initialSidebarOpen
-      ? !defaultLayout || defaultLayout[SIDEBAR_ID] > 0
-      : false,
+    initialSidebarOpen && (!defaultLayout || defaultLayout[SIDEBAR_ID] > 0),
   );
 
   return (

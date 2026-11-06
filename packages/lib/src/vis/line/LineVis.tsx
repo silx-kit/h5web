@@ -99,7 +99,7 @@ function LineVis(props: PropsWithChildren<Props>) {
     return domain ? extendDomain(domain, 0.05, scaleType) : DEFAULT_DOMAIN;
   }, [scaleType, domain]);
 
-  const [[curveColor, auxColorList], rootRef] = useCssColors([
+  const [[curveColor, auxColorList], setRootElem] = useCssColors([
     '--curve-color',
     '--aux-colors',
   ]);
@@ -108,7 +108,7 @@ function LineVis(props: PropsWithChildren<Props>) {
 
   return (
     <figure
-      ref={rootRef}
+      ref={setRootElem}
       className={`${styles.root} ${className}`}
       style={style}
       aria-label={title}
@@ -172,6 +172,7 @@ function LineVis(props: PropsWithChildren<Props>) {
                 {auxiliaries.map(
                   ({ label, array, errors, visible: auxVisible }, index) =>
                     auxVisible ? (
+                      // eslint-disable-next-line @eslint-react/no-array-index-key
                       <div className={styles.tooltipAux} key={label || index}>
                         <span
                           className={styles.mark}

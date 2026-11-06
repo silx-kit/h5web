@@ -102,7 +102,7 @@ function EntityItem(props: Props) {
     [entity, isExpanded, toggleExpanded],
   );
 
-  const Icon = getIcon(entity, isExpanded);
+  const Icon = getIcon(entity, isExpanded); // eslint-disable-line @eslint-react/static-components -- false positive
 
   return (
     <li
@@ -128,6 +128,7 @@ function EntityItem(props: Props) {
         }}
         onKeyDown={handleKeyDown}
       >
+        {/* eslint-disable-next-line @eslint-react/static-components  -- false positive */}
         <Icon className={styles.icon} />
         <span className={styles.name}>{entity.name}</span>
 

@@ -353,7 +353,7 @@ export function getAxisOffsets(
 }
 
 function isDescending(array: NumArray): boolean {
-  return array[array.length - 1] - array[0] < 0;
+  return array[array.length - 1] < array[0];
 }
 
 export function getAxisDomain(

@@ -7,26 +7,26 @@ import { useVisCanvasContext } from './VisCanvasProvider';
 
 function ViewportCenterer() {
   const { dataToWorld, worldToData } = useVisCanvasContext();
-  const viewportCenter = useRef<Vector3>(undefined);
+  const viewportCenterRef = useRef<Vector3>(undefined);
   const camera = useThree((state) => state.camera);
 
   const moveCameraTo = useMoveCameraTo();
 
   useFrame(() => {
-    viewportCenter.current = worldToData(camera.position);
+    viewportCenterRef.current = worldToData(camera.position);
   });
 
   useEffect(() => {
     // On resize, move camera to the latest saved viewport center coordinates
-    if (viewportCenter.current) {
-      const newPos = dataToWorld(viewportCenter.current);
+    if (viewportCenterRef.current) {
+      const newPos = dataToWorld(viewportCenterRef.current);
 
       // Ignore previous center if no longer valid with current scale
       if (Number.isFinite(newPos.x) && Number.isFinite(newPos.y)) {
         moveCameraTo(newPos);
       }
     }
-  }, [viewportCenter, moveCameraTo, dataToWorld, camera]);
+  }, [moveCameraTo, dataToWorld, camera]);
 
   return null;
 }

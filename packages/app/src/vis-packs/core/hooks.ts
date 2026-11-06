@@ -32,7 +32,7 @@ export function useToNumArrays(
 export function useToNumArrays(
   arrays: (ArrayValue<NumericLikeType> | undefined)[],
 ): (NumArray | undefined)[] {
-  return useMemo(() => arrays.map(toNumArray), arrays); // eslint-disable-line react-hooks/exhaustive-deps
+  return useMemo(() => arrays.map(toNumArray), arrays); // eslint-disable-line @eslint-react/exhaustive-deps
 }
 
 export function useBaseArray<T extends ArrayValue | undefined>(
@@ -82,7 +82,7 @@ export function useMappedArrays(
 ): (NdArray<ArrayValue> | undefined)[] {
   const baseArrays = useMemo(
     () => values.map((arr) => getBaseArray(arr, dims)),
-    [dims, ...values], // eslint-disable-line react-hooks/exhaustive-deps
+    [dims, ...values], // eslint-disable-line @eslint-react/exhaustive-deps
   );
 
   return useMemo(

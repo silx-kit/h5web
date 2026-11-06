@@ -71,6 +71,7 @@ function createScatterConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<ScatterConfig>);
+StoreContext.displayName = 'ScatterConfigStoreContext';
 
 export function ScatterConfigProvider(props: PropsWithChildren) {
   const { children } = props;

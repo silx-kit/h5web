@@ -77,6 +77,7 @@ function createLineConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<LineConfig>);
+StoreContext.displayName = 'LineConfigStoreContext';
 
 export function LineConfigProvider(props: PropsWithChildren) {
   const { children } = props;

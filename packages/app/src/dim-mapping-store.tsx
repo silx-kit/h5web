@@ -29,6 +29,7 @@ function createDimMappingStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<DimMappingState>);
+StoreContext.displayName = 'DimMappingStoreContext';
 
 export function DimMappingProvider(props: PropsWithChildren) {
   const { children } = props;

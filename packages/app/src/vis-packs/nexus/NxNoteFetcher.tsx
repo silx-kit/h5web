@@ -13,7 +13,7 @@ interface Props {
   render: (value: string, mimeType: string) => ReactNode;
 }
 
-function NxNoteFetcher(props: Props) {
+function NxNoteFetcher(props: Props): ReactNode {
   const { dataDataset, typeDataset, render } = props;
 
   const { value, mimeType } = useValues({
@@ -21,7 +21,7 @@ function NxNoteFetcher(props: Props) {
     mimeType: typeDataset,
   });
 
-  return <>{render(value, mimeType)}</>;
+  return render(value, mimeType);
 }
 
 export default NxNoteFetcher;

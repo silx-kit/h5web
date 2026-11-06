@@ -37,11 +37,9 @@ function ValueLoader(props: Props) {
             <div />
           </div>
           <div className={styles.progressBars}>
-            {[...ongoing.entries()]
-              .slice(0, MAX_PROGRESS_BARS)
-              .map(([key, val]) => (
-                <progress key={key} className={styles.progress} value={val} />
-              ))}
+            {[...ongoing].slice(0, MAX_PROGRESS_BARS).map(([key, val]) => (
+              <progress key={key} className={styles.progress} value={val} />
+            ))}
           </div>
           <p>{isSlice ? 'Loading current slice' : 'Loading data'}...</p>
           <p>

@@ -38,7 +38,7 @@ function H5WasmLocalFileProvider(props: PropsWithChildren<Props>) {
     return () => {
       void api.cleanUp();
     };
-  }, [file, ...resetKeys, getExportURL, getPlugin]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [file, ...resetKeys, getExportURL, getPlugin]); // eslint-disable-line @eslint-react/exhaustive-deps
 
   const isCurrent =
     state?.file === file &&

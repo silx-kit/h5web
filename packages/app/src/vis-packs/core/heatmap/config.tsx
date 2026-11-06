@@ -86,6 +86,7 @@ function createHeatmapConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<HeatmapConfig>);
+StoreContext.displayName = 'HeatmapConfigStoreContext';
 
 export function HeatmapConfigProvider(props: PropsWithChildren) {
   const { children } = props;

@@ -16,7 +16,7 @@ function AttributeLink(props: Props) {
       <div className={styles.attrValueWrapper}>
         <span>[</span>
         {value.map((val, i) => (
-          // eslint-disable-next-line react/no-array-index-key
+          // eslint-disable-next-line @eslint-react/no-array-index-key
           <Fragment key={i}>
             <AttributeLink onFollowPath={onFollowPath} value={val} />
             {i < value.length - 1 && <span>,</span>}
