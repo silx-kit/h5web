@@ -8,6 +8,12 @@
   background-color: var(--h5w-domainSlider-track--bgColor, lightgray);
   box-shadow: 1px 1px 2px inset var(--h5w-domainSlider-track--shadowColor, gray);
   border-radius: calc(var(--track-height) / 2);
+}
+
+.crop {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   overflow: hidden; /* crop data track to root track's border radius */
 }
 
