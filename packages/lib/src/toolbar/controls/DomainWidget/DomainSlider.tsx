@@ -1,7 +1,6 @@
 import { assertNonNull } from '@h5web/shared/guards';
 import { type ColorScaleType, type Domain } from '@h5web/shared/vis-models';
-import { type KeyboardEvent, type PointerEvent, useRef } from 'react';
-import { flushSync } from 'react-dom';
+import { type PointerEvent, useRef } from 'react';
 import { FiSkipBack, FiSkipForward } from 'react-icons/fi';
 
 import { getSafeDomain } from '../../../vis/heatmap/utils';
@@ -15,17 +14,6 @@ import Track from './Track';
 const SLIDER_RANGE: Domain = [1, 100];
 const EXTEND_FACTOR = 0.3;
 const SLIDER_SPAN = SLIDER_RANGE[1] - SLIDER_RANGE[0];
-
-const KEY_STEPS: Partial<Record<string, number>> = {
-  ArrowLeft: -1,
-  ArrowDown: -1,
-  ArrowRight: 1,
-  ArrowUp: 1,
-  PageDown: -10,
-  PageUp: 10,
-  Home: -Infinity,
-  End: Infinity,
-};
 
 interface Props {
   value: Domain;
@@ -109,16 +97,17 @@ function DomainSlider(props: Props) {
     }
   }
 
-  const sliderRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const thumbsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const dragRef = useRef<{ pointerId: number; index: number; offset: number }>(
-    undefined,
-  ); // offset between pointer and thumb center
+  const dragRef = useRef<{
+    pointerId: number;
+    index: number;
+    offset: number;
+    rect: DOMRect;
+  }>(undefined); // offset between pointer and thumb center; track rect measured once per drag
 
-  function getBoundAt(clientX: number): number {
-    assertNonNull(sliderRef.current);
-    const { left, width } = sliderRef.current.getBoundingClientRect();
-    const ratio = Math.min(Math.max((clientX - left) / width, 0), 1);
+  function getValueAt(clientX: number, rect: DOMRect): number {
+    const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
     return Math.round(SLIDER_RANGE[0] + ratio * SLIDER_SPAN);
   }
 
@@ -128,9 +117,12 @@ function DomainSlider(props: Props) {
     }
 
     // Grab pressed thumb without making it jump, or else move closest thumb
-    const pressedThumb = thumbsRef.current.find((thumb) =>
-      thumb?.contains(evt.target as Node),
+    const { target } = evt;
+    const pressedThumb = thumbsRef.current.find(
+      (thumb) => target instanceof Node && thumb?.contains(target),
     );
+    assertNonNull(trackRef.current);
+    const rect = trackRef.current.getBoundingClientRect();
     let index: number;
     let offset = 0;
     if (pressedThumb) {
@@ -139,38 +131,25 @@ function DomainSlider(props: Props) {
       offset = evt.clientX - (left + width / 2);
     } else {
       const [min, max] = scaledValue;
-      index = getBoundAt(evt.clientX) * 2 < min + max ? 0 : 1;
+      index = getValueAt(evt.clientX, rect) * 2 < min + max ? 0 : 1;
     }
 
     evt.preventDefault(); // prevent text selection
     thumbsRef.current[index]?.focus({ preventScroll: true });
     evt.currentTarget.setPointerCapture(evt.pointerId);
-    dragRef.current = { pointerId: evt.pointerId, index, offset };
-    moveThumb(getBoundAt(evt.clientX - offset), index);
+    dragRef.current = { pointerId: evt.pointerId, index, offset, rect };
+    moveThumb(getValueAt(evt.clientX - offset, rect), index);
   }
 
   function handlePointerMove(evt: PointerEvent) {
     if (dragRef.current?.pointerId === evt.pointerId) {
-      const { index, offset } = dragRef.current;
-      flushSync(() => moveThumb(getBoundAt(evt.clientX - offset), index)); // render before next move so `scaledValue` is up to date
-    }
-  }
-
-  function handleKeyDown(evt: KeyboardEvent, index: number) {
-    const step = KEY_STEPS[evt.key];
-    if (step !== undefined) {
-      evt.preventDefault();
-      const bound = scaledValue[index] + step;
-      moveThumb(
-        Math.min(Math.max(bound, SLIDER_RANGE[0]), SLIDER_RANGE[1]),
-        index,
-      );
+      const { index, offset, rect } = dragRef.current;
+      moveThumb(getValueAt(evt.clientX - offset, rect), index);
     }
   }
 
   return (
     <div
-      ref={sliderRef}
       className={styles.slider}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
@@ -181,31 +160,25 @@ function DomainSlider(props: Props) {
         }
       }}
     >
-      <Track scale={scale} dataDomain={dataDomain} />
-      {scaledValue.map((scaledBound, index) => (
-        <Thumb
-          key={index === 0 ? 'min' : 'max'}
-          ref={(thumb) => {
-            thumbsRef.current[index] = thumb;
-          }}
-          bound={index === 0 ? 'min' : 'max'}
-          isAuto={index === 0 ? isAutoMin : isAutoMax}
-          hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
-          disabled={disabled}
-          AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
-          style={{
-            left: `${((scaledBound - SLIDER_RANGE[0]) / SLIDER_SPAN) * 100}%`,
-          }}
-          role="slider"
-          tabIndex={0}
-          aria-valuemin={SLIDER_RANGE[0]}
-          aria-valuemax={SLIDER_RANGE[1]}
-          aria-valuenow={scaledBound}
-          onKeyDown={(evt) => handleKeyDown(evt, index)}
-          onKeyUp={endChange}
-          onBlur={endChange}
-        />
-      ))}
+      <Track ref={trackRef} scale={scale} dataDomain={dataDomain}>
+        {scaledValue.map((scaledBound, index) => (
+          <Thumb
+            key={index === 0 ? 'min' : 'max'}
+            ref={(thumb) => {
+              thumbsRef.current[index] = thumb;
+            }}
+            bound={index === 0 ? 'min' : 'max'}
+            value={scaledBound}
+            range={SLIDER_RANGE}
+            isAuto={index === 0 ? isAutoMin : isAutoMax}
+            hasError={minGreater || (index === 0 ? !!minError : !!maxError)}
+            disabled={disabled}
+            AutoIcon={index === 0 ? FiSkipBack : FiSkipForward}
+            onChange={(newBound) => moveThumb(newBound, index)}
+            onEnd={endChange}
+          />
+        ))}
+      </Track>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 .slider {
-  position: relative;
   display: flex;
-  margin: 0 calc(var(--thumb-size) / 2 - 0.25rem) 0 calc(var(--thumb-size) / 2); /* leave room for thumbs at ends of track */
+  margin-right: -0.25rem;
   font-size: 0.75rem;
   cursor: pointer;
 
@@ -9,5 +8,5 @@
   --track-height: var(--h5w-domainSlider-track--height, 0.625rem);
   --thumb-size: calc(var(--track-height) * 2.5);
   --thumb-size-auto: calc(var(--thumb-size) * 0.9);
-  touch-action: pan-y;
+  touch-action: pan-y; /* horizontal drags move thumbs instead of scrolling */
 }
