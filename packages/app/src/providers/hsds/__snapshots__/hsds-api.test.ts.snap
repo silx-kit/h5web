@@ -18,7 +18,7 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
         "kind": "unresolved",
         "link": {
           "class": "External",
-          "file": "/sample-hsds.h5",
+          "file": "sample-hsds.h5",
           "path": "/foo",
         },
         "name": "broken_path",
@@ -29,7 +29,7 @@ exports[`test file \`/links-hsds.h5\` matches snapshot 1`] = `
         "kind": "dataset",
         "link": {
           "class": "External",
-          "file": "/sample-hsds.h5",
+          "file": "sample-hsds.h5",
           "path": "/int8_2D",
         },
         "name": "dataset",
