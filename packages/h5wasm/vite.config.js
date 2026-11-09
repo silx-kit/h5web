@@ -4,6 +4,7 @@ import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vite';
+import { patchCssModules } from 'vite-css-modules';
 import { configDefaults } from 'vitest/config';
 
 const withChromium = !!process.env.CI || process.argv.includes('--coverage');
@@ -21,7 +22,7 @@ export const externals = new Set([
 ]);
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), patchCssModules()],
   build: {
     lib: {
       entry: path.resolve('src/index.ts'),
