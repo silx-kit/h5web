@@ -55,7 +55,7 @@
   height: var(--thumb-size);
   min-width: var(--thumb-size);
   transform: translate(-50%, 50%);
-  cursor: grab;
+  cursor: ns-resize;
 }
 
 .thumbValue {
