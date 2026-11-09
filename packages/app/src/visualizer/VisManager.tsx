@@ -24,7 +24,7 @@ function VisManager(props: Props) {
     );
   }
 
-  const [activeVis, setActiveVis] = useActiveVis(supportedVis, primaryVis);
+  const [activeVis, setActiveVis] = useActiveVis(supportedVis, primaryVis); // eslint-disable-line @eslint-react/static-components -- false positive
   const { Container } = activeVis;
 
   const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
@@ -52,6 +52,7 @@ function VisManager(props: Props) {
       </div>
 
       <div className={styles.visArea}>
+        {/* eslint-disable-next-line @eslint-react/static-components */}
         <Container entity={entity} toolbarContainer={visBarElem} />
       </div>
     </div>

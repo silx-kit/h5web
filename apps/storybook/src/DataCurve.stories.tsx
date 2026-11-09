@@ -169,7 +169,7 @@ export const Interactive = meta.story({
           onDataPointEnter={(i) => setHoveredIndex(i)}
           onDataPointLeave={() => setHoveredIndex(undefined)}
         />
-        {hoveredIndex && (
+        {hoveredIndex !== undefined && (
           <Annotation
             x={abscissas[hoveredIndex]}
             y={ordinates[hoveredIndex]}

@@ -44,7 +44,7 @@ function ExportMenu(props: Props) {
   return (
     <>
       <Btn
-        ref={refs.setReference}
+        ref={refs.setReference} // eslint-disable-line @typescript-eslint/unbound-method
         id={referenceId}
         label={`Export${isSlice ? ' slice' : ''}`}
         Icon={FiDownload}
@@ -58,7 +58,7 @@ function ExportMenu(props: Props) {
 
       {isOpen && (
         <div
-          ref={refs.setFloating}
+          ref={refs.setFloating} // eslint-disable-line @typescript-eslint/unbound-method
           id={floatingId}
           className={toolbarStyles.menu}
           style={floatingStyles}

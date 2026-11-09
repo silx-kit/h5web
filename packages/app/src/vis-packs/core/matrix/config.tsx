@@ -35,6 +35,7 @@ function createMatrixConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<MatrixVisConfig>);
+StoreContext.displayName = 'MatrixConfigStoreContext';
 
 export function MatrixConfigProvider(props: PropsWithChildren) {
   const { children } = props;

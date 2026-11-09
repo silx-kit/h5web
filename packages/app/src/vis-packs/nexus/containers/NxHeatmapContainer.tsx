@@ -15,14 +15,10 @@ import { useHeatmapConfig } from '../../core/heatmap/config';
 import MappedHeatmapVis from '../../core/heatmap/MappedHeatmapVis';
 import { type VisContainerProps } from '../../models';
 import VisBoundary from '../../VisBoundary';
-import {
-  useNxData,
-  useNxHeatmapDataToFetch,
-  useNxValuesCached,
-} from '../hooks';
+import { useNxData, useNxValuesCached } from '../hooks';
 import NxHeatmapSignalPicker from '../NxHeatmapSignalPicker';
 import NxValuesFetcher from '../NxValuesFetcher';
-import { guessKeepRatio } from '../utils';
+import { getNxHeatmapDataToFetch, guessKeepRatio } from '../utils';
 
 function NxHeatmapContainer(props: VisContainerProps) {
   const { entity, toolbarContainer } = props;
@@ -51,7 +47,7 @@ function NxHeatmapContainer(props: VisContainerProps) {
     keepRatio: guessKeepRatio(xAxisDef, yAxisDef),
   });
 
-  const nxDataToFetch = useNxHeatmapDataToFetch(nxData, selectedDef);
+  const nxDataToFetch = getNxHeatmapDataToFetch(nxData, selectedDef);
 
   return (
     <>

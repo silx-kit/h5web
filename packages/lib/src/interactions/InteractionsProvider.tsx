@@ -23,6 +23,7 @@ export interface InteractionsContextValue {
 export const InteractionsContext = createContext(
   {} as InteractionsContextValue,
 );
+InteractionsContext.displayName = 'InteractionsContext';
 
 export function useInteractionsContext() {
   return useContext(InteractionsContext);

@@ -45,6 +45,7 @@ function createKeepZoomStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<KeepZoomState>);
+StoreContext.displayName = 'StoreContext';
 
 export function KeepZoomProvider(props: PropsWithChildren) {
   const { children } = props;

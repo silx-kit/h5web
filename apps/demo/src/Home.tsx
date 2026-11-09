@@ -122,7 +122,7 @@ function Home() {
               </a>{' '}
               is a WebAssembly-powered library, based on the{' '}
               <a
-                href="http://portal.hdfgroup.org/pages/viewpage.action?pageId=50073943"
+                href="https://support.hdfgroup.org/documentation/hdf5/latest/_l_b_a_p_i.html"
                 target="_blank"
                 rel="noreferrer"
               >
@@ -140,7 +140,7 @@ function Home() {
               <strong>static server</strong>. For instance, try these files
               hosted on{' '}
               <a
-                href="http://www.silx.org/pub/h5web/"
+                href="https://www.silx.org/pub/h5web/"
                 target="_blank"
                 rel="noreferrer"
               >

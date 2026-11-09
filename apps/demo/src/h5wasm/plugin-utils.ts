@@ -30,7 +30,7 @@ const PLUGINS: Record<Plugin, string> = {
 export async function getPlugin(
   name: Plugin,
 ): Promise<ArrayBuffer | undefined> {
-  if (!PLUGINS[name]) {
+  if (!Object.hasOwn(PLUGINS, name)) {
     return undefined;
   }
 

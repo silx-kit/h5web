@@ -9,15 +9,9 @@ import {
   getBoundsWithErrors,
   getValidDomainForScale,
 } from '@h5web/shared/vis-utils';
-import { useMediaQuery, useRerender, useSyncedRef } from '@react-hookz/web';
+import { useMediaQuery, useSyncedRef } from '@react-hookz/web';
 import { type Camera, useFrame, useThree } from '@react-three/fiber';
-import {
-  type RefCallback,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { type RefCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { type BufferGeometry } from 'three';
 
 import {
@@ -133,39 +127,48 @@ export function useCanvasAxisScale(
 export function useCameraState<T>(
   factory: (camera: Camera) => T,
   deps: unknown[],
-  equalityFn = (prev: T, next: T) => Object.is(prev, next),
+  isEqual: (prev: T, next: T) => boolean = Object.is,
 ): T {
   const camera = useThree((state) => state.camera);
-  const rerender = useRerender();
 
-  const stateRef = useRef<T>(undefined); // ref instead of state to avoid re-render when deps change
-  const factoryRef = useSyncedRef(factory); // ensure `useMemo` always sees latest `factory` reference
+  const factoryRef = useSyncedRef(factory);
+  const isEqualRef = useSyncedRef(isEqual);
 
-  useMemo(() => {
-    // Compute state synchronously when deps change
-    stateRef.current = factoryRef.current(camera);
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+  /* Baseline value computed synchronously whenever `deps` (or the camera) change.
+   * Wrapped in an object so each recomputation has a unique identity. */
+  const baseline = useMemo(
+    () => ({ value: factory(camera) }),
+    [camera, ...deps], // eslint-disable-line @eslint-react/exhaustive-deps
+  );
+
+  // Latest value from the frame loop, tagged with the baseline it was computed under
+  const [live, setLive] = useState({ baseline, value: baseline.value });
+
+  /* A live value is only valid for the baseline it was tagged with.
+   * If deps changed since, it's stale, so fall back to the new baseline. */
+  const value = live.baseline === baseline ? live.value : baseline.value;
 
   useFrame(() => {
-    // Recompute state and re-render on every frame
     const next = factoryRef.current(camera);
-
-    // ... unless state hasn't changed
-    if (equalityFn(stateRef.current as T, next)) {
+    if (isEqualRef.current(value, next)) {
       return;
     }
 
-    stateRef.current = next;
-    rerender();
+    setLive({ baseline, value: next });
   });
 
-  return stateRef.current as T; // synchronous update in `useMemo` guarantees `T` (which can include `undefined`)
+  return value;
 }
 
 export function useCssColors(
   colorProperties: string[],
 ): [string[], RefCallback<HTMLElement>] {
   const [elem, refCallback] = useState<HTMLElement | null>(null);
+
+  /* Re-render when color scheme changes to read the CSS color values again (see below).
+   * Note that a consumer app may change the specified CSS properties dynamically, and there's
+   * no easy and efficient way to detect these changes. In the worst case, color changes are
+   * applied the next time the visualization re-renders for any other reason. */
   useMediaQuery('(prefers-color-scheme: dark)');
 
   if (!elem) {
@@ -173,7 +176,8 @@ export function useCssColors(
     return [colorProperties.map(() => 'transparent'), refCallback];
   }
 
-  const styles = globalThis.getComputedStyle(elem);
+  // Read CSS color values during render
+  const styles = globalThis.getComputedStyle(elem); // eslint-disable-line @eslint-react/purity
   const colors = colorProperties.map((p) => styles.getPropertyValue(p).trim());
 
   return [colors, refCallback];

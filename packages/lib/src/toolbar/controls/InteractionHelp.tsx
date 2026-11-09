@@ -45,7 +45,7 @@ function InteractionHelp(props: Props) {
   return (
     <>
       <Btn
-        ref={refs.setReference}
+        ref={refs.setReference} // eslint-disable-line @typescript-eslint/unbound-method
         id={referenceId}
         label="Show help"
         Icon={FiHelpCircle}
@@ -58,7 +58,7 @@ function InteractionHelp(props: Props) {
 
       {isOpen && (
         <div
-          ref={refs.setFloating}
+          ref={refs.setFloating} // eslint-disable-line @typescript-eslint/unbound-method
           id={context.floatingId}
           className={toolbarStyles.popup}
           style={floatingStyles}
