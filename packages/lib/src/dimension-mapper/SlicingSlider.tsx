@@ -10,9 +10,9 @@ import {
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 
 import Btn from '../toolbar/controls/Btn';
+import { SLIDER_KEY_STEPS } from '../toolbar/controls/utils';
 import { useDynamicDebouncedCallback } from './hooks';
 import styles from './SlicingSlider.module.css';
-import { SLIDER_KEY_STEPS } from '../toolbar/controls/utils';
 
 const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;

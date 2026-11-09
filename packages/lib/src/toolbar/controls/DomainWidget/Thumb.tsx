@@ -4,8 +4,8 @@ import { FiAlertCircle } from 'react-icons/fi';
 import { type IconType } from 'react-icons/lib';
 
 import { type Bound } from '../../../vis/models';
-import styles from './Thumb.module.css';
 import { SLIDER_KEY_STEPS } from '../utils';
+import styles from './Thumb.module.css';
 
 interface Props {
   ref?: Ref<HTMLDivElement | null>;

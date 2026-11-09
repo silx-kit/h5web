@@ -63,14 +63,6 @@ export async function renderApp(
     await waitForAllLoaders();
   }
 
-  /* Force Playwright to initialise pointer state, making sure to restore focus afterwards.
-   * https://github.com/vitest-dev/vitest/issues/9559 */
-  const active = document.activeElement;
-  await page.elementLocator(document.body).click();
-  if (active instanceof HTMLElement) {
-    active.focus();
-  }
-
   return {
     user,
     ...renderResult,

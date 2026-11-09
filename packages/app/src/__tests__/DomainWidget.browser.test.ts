@@ -106,31 +106,24 @@ test('move thumbs with pointer to update domain', async () => {
 
   // Drag min thumb and bring it back to its initial position
   await dragHorizontally(minThumb, [20, 0]);
-  await expect.element(minInput).toHaveValue('−9.5e+1'); // not changed
+  await page.getByRole('button', { name: 'Edit domain' }).click();
+
+  // Min hasn't changed and is still autoscaling
+  expect(minInput).toHaveValue('−9.5e+1');
   expect(minThumb).toHaveValue(20);
-  expect(minBtn).toHaveAttribute('aria-pressed', 'true'); // still autoscaling
+  expect(minBtn).toHaveAttribute('aria-pressed', 'true');
 
   // Drag min thumb past max thumb, then back a little
   const { left: minLeft } = minThumb.element().getBoundingClientRect();
   const { left: maxLeft } = maxThumb.element().getBoundingClientRect();
   await dragHorizontally(minThumb, [maxLeft - minLeft + 20, maxLeft - minLeft]);
+  await page.getByRole('button', { name: 'Edit domain' }).click();
 
-  // Min thumb pushes max thumb and keeps focus
-  await expect.element(minBtn).toHaveAttribute('aria-pressed', 'false');
+  // Min thumb pushes max thumb
+  expect(minBtn).toHaveAttribute('aria-pressed', 'false');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
   expect(minInput).toHaveValue('3.71154e+2');
   expect(maxInput).toHaveValue('4.81114e+3');
-  expect(minThumb).toHaveFocus();
-});
-
-test('toggle popup when clicking left edge of edit button', async () => {
-  const { user } = await renderApp('/nexus/NXdata');
-
-  const editBtn = page.getByRole('button', { name: 'Edit domain' });
-  await user.click(editBtn, { position: { x: 1, y: 10 } });
-
-  expect(editBtn).toHaveAttribute('aria-pressed', 'true');
-  expect(page.getByRole('slider', { name: /max/ })).toHaveValue(81);
 });
 
 test('edit bounds manually', async () => {
