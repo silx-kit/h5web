@@ -1,5 +1,4 @@
 import { type KeyboardEvent } from 'react';
-import { MathUtils } from 'three';
 
 export async function download(
   url: URL | (() => Promise<URL | Blob>),
@@ -45,6 +44,6 @@ export function handleSliderKey(
   const step = SLIDER_KEY_STEPS[evt.key];
   if (step !== undefined) {
     evt.preventDefault();
-    onChange(MathUtils.clamp(value + step, min, max));
+    onChange(Math.min(Math.max(value + step, min), max));
   }
 }
