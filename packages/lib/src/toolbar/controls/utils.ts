@@ -1,3 +1,14 @@
+export const SLIDER_KEY_STEPS: Partial<Record<string, number>> = {
+  ArrowLeft: -1,
+  ArrowDown: -1,
+  ArrowRight: 1,
+  ArrowUp: 1,
+  PageDown: -10,
+  PageUp: 10,
+  Home: -Infinity,
+  End: Infinity,
+};
+
 export async function download(
   url: URL | (() => Promise<URL | Blob>),
   filename: string,

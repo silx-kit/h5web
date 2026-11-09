@@ -5,17 +5,7 @@ import { type IconType } from 'react-icons/lib';
 
 import { type Bound } from '../../../vis/models';
 import styles from './Thumb.module.css';
-
-const KEY_STEPS: Partial<Record<string, number>> = {
-  ArrowLeft: -1,
-  ArrowDown: -1,
-  ArrowRight: 1,
-  ArrowUp: 1,
-  PageDown: -10,
-  PageUp: 10,
-  Home: -Infinity,
-  End: Infinity,
-};
+import { SLIDER_KEY_STEPS } from '../utils';
 
 interface Props {
   ref?: Ref<HTMLDivElement | null>;
@@ -60,7 +50,7 @@ function Thumb(props: Props) {
       data-auto={isAuto}
       data-error={hasError || undefined}
       onKeyDown={(evt) => {
-        const step = KEY_STEPS[evt.key];
+        const step = SLIDER_KEY_STEPS[evt.key];
         if (step !== undefined) {
           evt.preventDefault();
           onChange(Math.min(Math.max(value + step, min), max));

@@ -12,22 +12,12 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import Btn from '../toolbar/controls/Btn';
 import { useDynamicDebouncedCallback } from './hooks';
 import styles from './SlicingSlider.module.css';
+import { SLIDER_KEY_STEPS } from '../toolbar/controls/utils';
 
 const ID = 'h5w-slider';
 const MIN_HEIGHT_PER_MARK = 25;
 const SHORT_DELAY = 20;
 const LONG_DELAY = 250;
-
-const KEY_STEPS: Partial<Record<string, number>> = {
-  ArrowDown: -1,
-  ArrowLeft: -1,
-  ArrowUp: 1,
-  ArrowRight: 1,
-  PageDown: -10,
-  PageUp: 10,
-  Home: -Infinity,
-  End: Infinity,
-};
 
 interface Props {
   dimension: number;
@@ -122,7 +112,7 @@ function SlicingSlider(props: Props) {
   }
 
   function handleKeyDown(evt: KeyboardEvent) {
-    const step = KEY_STEPS[evt.key];
+    const step = SLIDER_KEY_STEPS[evt.key];
     if (step !== undefined) {
       evt.preventDefault();
       handleChange(Math.min(Math.max(localValue + step, 0), maxValue));
