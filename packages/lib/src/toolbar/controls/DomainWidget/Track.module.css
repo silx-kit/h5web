@@ -4,7 +4,6 @@
   align-self: center;
   width: var(--track-width);
   height: var(--track-height);
-  margin: 0 calc(var(--thumb-size) / 2); /* make track end in middle of thumbs */
   background-color: var(--h5w-domainSlider-track--bgColor, lightgray);
   box-shadow: 1px 1px 2px inset var(--h5w-domainSlider-track--shadowColor, gray);
   border-radius: calc(var(--track-height) / 2);

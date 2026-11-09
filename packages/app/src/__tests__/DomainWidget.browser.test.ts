@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { renderApp } from '../test-utils';
+import { dragHorizontally, renderApp } from '../test-utils';
 
 test('show slider with two thumbs and reveal popup on hover', async () => {
   const { user } = await renderApp('/nexus/NXdata');
@@ -92,6 +92,45 @@ test('move thumbs with keyboard to update domain', async () => {
 
   expect(maxThumb).toHaveValue(81); // still at original position
   expect(minInput).toHaveValue('−2.30818e+2'); // unaffected
+});
+
+test('move thumbs with pointer to update domain', async () => {
+  await renderApp('/nexus/NXdata');
+
+  const minThumb = page.getByRole('slider', { name: /min/ });
+  const maxThumb = page.getByRole('slider', { name: /max/ });
+  const minInput = page.getByLabelText('min', { exact: true });
+  const maxInput = page.getByLabelText('max', { exact: true });
+  const minBtn = page.getByRole('button', { name: 'Min', exact: true });
+  const maxBtn = page.getByRole('button', { name: 'Max', exact: true });
+
+  // Drag min thumb and bring it back to its initial position
+  await dragHorizontally(minThumb, [20, 0]);
+  await expect.element(minInput).toHaveValue('−9.5e+1'); // not changed
+  expect(minThumb).toHaveValue(20);
+  expect(minBtn).toHaveAttribute('aria-pressed', 'true'); // still autoscaling
+
+  // Drag min thumb past max thumb, then back a little
+  const { left: minLeft } = minThumb.element().getBoundingClientRect();
+  const { left: maxLeft } = maxThumb.element().getBoundingClientRect();
+  await dragHorizontally(minThumb, [maxLeft - minLeft + 20, maxLeft - minLeft]);
+
+  // Min thumb pushes max thumb and keeps focus
+  await expect.element(minBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(minInput).toHaveValue('3.71154e+2');
+  expect(maxInput).toHaveValue('4.81114e+3');
+  expect(minThumb).toHaveFocus();
+});
+
+test('toggle popup when clicking left edge of edit button', async () => {
+  const { user } = await renderApp('/nexus/NXdata');
+
+  const editBtn = page.getByRole('button', { name: 'Edit domain' });
+  await user.click(editBtn, { position: { x: 1, y: 10 } });
+
+  expect(editBtn).toHaveAttribute('aria-pressed', 'true');
+  expect(page.getByRole('slider', { name: /max/ })).toHaveValue(81);
 });
 
 test('edit bounds manually', async () => {
