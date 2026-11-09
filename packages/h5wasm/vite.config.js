@@ -36,6 +36,10 @@ export default defineConfig({
     },
     sourcemap: true,
   },
+  optimizeDeps: {
+    // List dependencies that Vite can't detect ahead of time to avoid unexpected page reloads
+    include: ['h5wasm', 'nanoid'],
+  },
   test: {
     name: '@h5web/h5wasm',
     projects: [
