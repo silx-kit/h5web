@@ -87,6 +87,7 @@ export interface DataContextValue {
 }
 
 export const DataContext = createContext({} as DataContextValue);
+DataContext.displayName = 'DataContext';
 
 export function useDataContext() {
   return useContext(DataContext);

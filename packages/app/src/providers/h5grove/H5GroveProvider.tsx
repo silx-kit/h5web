@@ -25,7 +25,7 @@ function H5GroveProvider(props: PropsWithChildren<Props>) {
 
   const api = useMemo(
     () => new H5GroveApi(url, filepath, fetcher, getExportURL),
-    [filepath, url, ...resetKeys, fetcher, getExportURL], // eslint-disable-line react-hooks/exhaustive-deps
+    [filepath, url, ...resetKeys, fetcher, getExportURL], // eslint-disable-line @eslint-react/exhaustive-deps
   );
 
   return <DataProvider api={api}>{children}</DataProvider>;

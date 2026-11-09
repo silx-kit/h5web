@@ -95,7 +95,7 @@ function MyHtml({ children }: PropsWithChildren<object>) {
   );
 }
 
-// eslint-disable-next-line react/no-multi-comp
+// eslint-disable-next-line @eslint-react/kit/no-multi-comp
 function MyDiv() {
   return (
     <div

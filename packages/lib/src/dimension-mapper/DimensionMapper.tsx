@@ -43,7 +43,7 @@ function DimensionMapper(props: Props) {
             <abbr title="Number of elements in each dimension">n</abbr>
           </span>
           {dims.map((d, i) => (
-            // eslint-disable-next-line react/no-array-index-key
+            // eslint-disable-next-line @eslint-react/no-array-index-key
             <span key={i} className={styles.dimSize}>
               {' '}
               {d}
@@ -67,7 +67,7 @@ function DimensionMapper(props: Props) {
         {dimMapping.map((val, index) =>
           typeof val === 'number' ? (
             <SlicingSlider
-              key={index} // eslint-disable-line react/no-array-index-key
+              key={index} // eslint-disable-line @eslint-react/no-array-index-key
               dimension={index}
               length={dims[index]}
               value={val}

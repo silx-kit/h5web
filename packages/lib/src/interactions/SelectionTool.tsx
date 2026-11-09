@@ -157,13 +157,13 @@ function SelectionTool(props: Props): ReactNode {
 
   // Compute effective selection
   const selection = useMemo(
-    () => rawSelection && transformRef.current(rawSelection, camera, context),
+    () => rawSelection && transformRef.current(rawSelection, camera, context), // eslint-disable-line @eslint-react/refs -- `transformRef` is a synced ref
     [rawSelection, transformRef, camera, context],
   );
 
   // Determine if effective selection respects the minimum size threshold
   const isValid = useMemo(
-    () => !!selection && validateRef.current(selection),
+    () => !!selection && validateRef.current(selection), // eslint-disable-line @eslint-react/refs -- `validateRef` is a synced ref
     [selection, validateRef],
   );
 

@@ -26,7 +26,7 @@ function Menu(props: PropsWithChildren<Props>) {
   return (
     <>
       <Btn
-        ref={refs.setReference}
+        ref={refs.setReference} // eslint-disable-line @typescript-eslint/unbound-method
         id={referenceId}
         label={label}
         Icon={Icon}
@@ -39,7 +39,7 @@ function Menu(props: PropsWithChildren<Props>) {
 
       {isOpen && (
         <div
-          ref={refs.setFloating}
+          ref={refs.setFloating} // eslint-disable-line @typescript-eslint/unbound-method
           id={floatingId}
           className={styles.menu}
           style={floatingStyles}

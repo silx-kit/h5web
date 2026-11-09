@@ -28,6 +28,7 @@ function createScalarConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<ScalarConfig>);
+StoreContext.displayName = 'ScalarConfigStoreContext';
 
 export function ScalarConfigProvider(props: PropsWithChildren) {
   const { children } = props;

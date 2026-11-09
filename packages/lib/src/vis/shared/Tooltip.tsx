@@ -18,7 +18,7 @@ function Tooltip(props: PropsWithChildren<Props>) {
     <Overlay className={styles.overlay}>
       {show && children !== undefined && children !== false && (
         <TooltipWithBounds
-          key={Math.random()}
+          key={Math.random()} // eslint-disable-line @eslint-react/purity -- cf. @visx/tooltip examples
           className={`${styles.tooltip} ${className}`}
           style={style}
           unstyled={style === undefined}

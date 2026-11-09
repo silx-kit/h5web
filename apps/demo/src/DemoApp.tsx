@@ -11,7 +11,7 @@ const H5WasmApp = lazy(async () => import('./h5wasm/H5WasmApp'));
 
 const query = new URLSearchParams(document.location.search);
 // @ts-expect-error - Untyped global flag
-globalThis.H5WEB_EXPERIMENTAL = query.has('experimental');
+globalThis.H5WEB_EXPERIMENTAL = query.has('experimental'); // eslint-disable-line unicorn/no-top-level-side-effects
 
 function DemoApp() {
   return (

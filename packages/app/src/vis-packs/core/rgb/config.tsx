@@ -53,6 +53,7 @@ function createRgbConfigStore() {
 }
 
 const StoreContext = createContext({} as StoreApi<RgbVisConfig>);
+StoreContext.displayName = 'RgbConfigStoreContext';
 
 export function RgbConfigProvider(props: PropsWithChildren) {
   const { children } = props;

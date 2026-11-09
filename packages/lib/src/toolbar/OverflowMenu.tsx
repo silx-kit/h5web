@@ -7,12 +7,7 @@ import {
   useInteractions,
 } from '@floating-ui/react';
 import { useToggle } from '@react-hookz/web';
-import {
-  cloneElement,
-  isValidElement,
-  type PropsWithChildren,
-  useId,
-} from 'react';
+import { isValidElement, type PropsWithChildren, useId } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import flattenChildren from 'react-keyed-flatten-children';
 
@@ -53,7 +48,7 @@ function OverflowMenu(props: PropsWithChildren) {
       <Separator />
 
       <Btn
-        ref={refs.setReference}
+        ref={refs.setReference} // eslint-disable-line @typescript-eslint/unbound-method
         id={referenceId}
         label="More controls"
         Icon={FiMenu}
@@ -66,7 +61,7 @@ function OverflowMenu(props: PropsWithChildren) {
 
       {isOpen && (
         <div
-          ref={refs.setFloating}
+          ref={refs.setFloating} // eslint-disable-line @typescript-eslint/unbound-method
           id={context.floatingId}
           className={styles.popup}
           style={floatingStyles}
@@ -75,9 +70,8 @@ function OverflowMenu(props: PropsWithChildren) {
           {...getFloatingProps()}
         >
           {validChildren.map((child) => (
-            // Render cloned child (React elements don't like to be moved around)
-            <div className={styles.control} key={child.key}>
-              {cloneElement(child)}
+            <div key={child.key} className={styles.control}>
+              {child}
             </div>
           ))}
         </div>
