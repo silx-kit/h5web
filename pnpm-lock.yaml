@@ -502,8 +502,8 @@ importers:
         specifier: 5.7.0
         version: 5.7.0(react@19.3.1)
       react-resizable-panels:
-        specifier: 4.12.4
-        version: 4.12.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: 4.20.0
+        version: 4.20.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       three:
         specifier: 0.186.1
         version: 0.186.1
@@ -4491,11 +4491,15 @@ packages:
       react: '>=18.0.0'
       react-is: '>=18.0.0'
 
-  react-resizable-panels@4.12.4:
-    resolution: {integrity: sha512-SOsSj4e9U7vxL15MbgTfl35IO4vxSW4Xb0b1gtJVbRPWv7FOezcgOA00Mi0jP8XqC3y7jOQxpsGs/9zLKHPitA==}
+  react-resizable-panels@4.20.0:
+    resolution: {integrity: sha512-8a+cf9i/K0IKmnVPeXP2MqMCrY3vToMJty84kZ9M+wstKLnA/jWvc2Sxl4wEs9cAKnrin7QbPvTT5yKkIeXGeQ==}
     peerDependencies:
+      '@types/react': ^18.2.6 || ^19.0.0
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   react-slider@2.0.6:
     resolution: {integrity: sha512-gJxG1HwmuMTJ+oWIRCmVWvgwotNCbByTwRkFZC6U4MBsHqJBmxwbYRJUmxy4Tke1ef8r9jfXjgkmY/uHOCEvbA==}
@@ -8967,10 +8971,12 @@ snapshots:
       react: 19.3.1
       react-is: 19.3.1
 
-  react-resizable-panels@4.12.4(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
+  react-resizable-panels@4.20.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
+    optionalDependencies:
+      '@types/react': 19.3.0
 
   react-slider@2.0.6(react@19.3.1):
     dependencies:
