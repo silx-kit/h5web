@@ -1,12 +1,12 @@
 .thumb {
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: var(--thumb-size); /*  fixed size regardless of autoscale */
-  transform: translateX(-50%);
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  transform: translate(-50%, -50%);
   cursor: ew-resize;
 }
 
@@ -22,8 +22,8 @@
 }
 
 .thumb[data-auto='false'] > .thumbBtnLike {
-  width: var(--thumb-size);
-  height: var(--thumb-size);
+  width: 100%;
+  height: 100%;
   background-color: var(--h5w-domainSlider-thumb--bgColor, lightgray);
 }
 
