@@ -12,6 +12,7 @@ import {
   type ProvidedEntity,
   type ScalarShape,
 } from '@h5web/shared/hdf5-models';
+import { getSelectionSize } from '@h5web/shared/hdf5-utils';
 import {
   type BuiltInExporter,
   type ExportFormat,
@@ -102,8 +103,15 @@ export class H5GroveApi extends DataProviderApi {
         };
 
         const buffer = await this.fetcher(url, params, opts);
-
         const array = new DTypedArray(buffer);
+
+        const expectedLength = getSelectionSize(dataset.shape.dims, selection);
+        if (expectedLength !== undefined && array.length !== expectedLength) {
+          throw new Error(
+            `Expected ${expectedLength} values instead of ${array.length}`,
+          );
+        }
+
         return hasScalarShape(dataset) ? array[0] : array;
       }
 
@@ -194,7 +202,13 @@ export class H5GroveApi extends DataProviderApi {
       return undefined;
     }
 
-    const payload = toJSON(error.buffer);
+    let payload: unknown;
+    try {
+      payload = toJSON(error.buffer);
+    } catch {
+      return undefined; // e.g. empty or HTML error response
+    }
+
     if (!isH5GroveErrorResponse(payload)) {
       return undefined;
     }

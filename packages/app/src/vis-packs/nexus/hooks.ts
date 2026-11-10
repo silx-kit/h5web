@@ -41,7 +41,11 @@ export async function getNxData(
     signalDataset,
     dataContext,
   );
-  const auxSignals = await findAuxiliaryDatasets(group, dataContext);
+  const auxSignals = await findAuxiliaryDatasets(
+    group,
+    signalDataset,
+    dataContext,
+  );
 
   return {
     titleDataset: findTitleDataset(group),
@@ -53,7 +57,7 @@ export async function getNxData(
     auxDefs: await Promise.all(
       auxSignals.map(async (auxSignal) => ({
         dataset: auxSignal,
-        errorDataset: findAuxErrorDataset(group, auxSignal.name),
+        errorDataset: findAuxErrorDataset(group, auxSignal),
         ...(await getFieldInfo(auxSignal, dataContext)),
       })),
     ),
