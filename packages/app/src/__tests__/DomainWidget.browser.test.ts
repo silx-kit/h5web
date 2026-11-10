@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { page } from 'vitest/browser';
 
-import { dragHorizontally, renderApp } from '../test-utils';
+import { renderApp } from '../test-utils';
 
 test('show slider with two thumbs and reveal popup on hover', async () => {
   const { user } = await renderApp('/nexus/NXdata');
@@ -95,7 +95,7 @@ test('move thumbs with keyboard to update domain', async () => {
 });
 
 test('move thumbs with pointer to update domain', async () => {
-  await renderApp('/nexus/NXdata');
+  const { user } = await renderApp('/nexus/NXdata');
 
   const minThumb = page.getByRole('slider', { name: /min/ });
   const maxThumb = page.getByRole('slider', { name: /max/ });
@@ -104,25 +104,38 @@ test('move thumbs with pointer to update domain', async () => {
   const minBtn = page.getByRole('button', { name: 'Min', exact: true });
   const maxBtn = page.getByRole('button', { name: 'Max', exact: true });
 
-  // Drag min thumb and bring it back to its initial position
-  await dragHorizontally(minThumb, [20, 0]);
-  await page.getByRole('button', { name: 'Edit domain' }).click();
+  const minThumbRect = minThumb.element().getBoundingClientRect();
+  const maxThumbRect = maxThumb.element().getBoundingClientRect();
+  const x = minThumbRect.left + 1;
+  const y = minThumbRect.top + 1;
+
+  // Drag min thumb horizontally and bring it back to its initial position
+  await user.pointer([
+    { keys: '[MouseLeft>]', coords: { x, y } }, // press and hold thumb (from top left corner to check that it doesn't jump)
+    { coords: { x: x + 20, y } }, // drag 20px to the right
+    { coords: { x, y } }, // drag back to initial position
+    { keys: '[/MouseLeft]' }, // release thumb
+  ]);
 
   // Min hasn't changed and is still autoscaling
+  await page.getByRole('button', { name: 'Edit domain' }).hover();
   expect(minInput).toHaveValue('−9.5e+1');
   expect(minThumb).toHaveValue(20);
   expect(minBtn).toHaveAttribute('aria-pressed', 'true');
 
-  // Drag min thumb past max thumb, then back a little
-  const { left: minLeft } = minThumb.element().getBoundingClientRect();
-  const { left: maxLeft } = maxThumb.element().getBoundingClientRect();
-  await dragHorizontally(minThumb, [maxLeft - minLeft + 20, maxLeft - minLeft]);
-  await page.getByRole('button', { name: 'Edit domain' }).click();
+  // Drag min thumb pasxt max thumb, then back a little
+  await user.pointer([
+    { keys: '[MouseLeft>]', coords: { x, y } }, // press and hold thumb
+    { coords: { x: maxThumbRect.left + 20, y } }, // drag 20px past max thumb
+    { coords: { x: maxThumbRect.left, y } }, // drag back to initial max thumb position
+    { keys: '[/MouseLeft]' }, // release thumb
+  ]);
 
   // Min thumb pushes max thumb
+  await page.getByRole('button', { name: 'Edit domain' }).hover();
   expect(minBtn).toHaveAttribute('aria-pressed', 'false');
   expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
-  expect(minInput).toHaveValue('3.71154e+2');
+  expect(minInput).toHaveValue('3.12772e+2');
   expect(maxInput).toHaveValue('4.81114e+3');
 });
 
