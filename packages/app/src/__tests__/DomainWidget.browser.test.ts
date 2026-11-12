@@ -94,6 +94,51 @@ test('move thumbs with keyboard to update domain', async () => {
   expect(minInput).toHaveValue('−2.30818e+2'); // unaffected
 });
 
+test('move thumbs with pointer to update domain', async () => {
+  const { user } = await renderApp('/nexus/NXdata');
+
+  const minThumb = page.getByRole('slider', { name: /min/ });
+  const maxThumb = page.getByRole('slider', { name: /max/ });
+  const minInput = page.getByLabelText('min', { exact: true });
+  const maxInput = page.getByLabelText('max', { exact: true });
+  const minBtn = page.getByRole('button', { name: 'Min', exact: true });
+  const maxBtn = page.getByRole('button', { name: 'Max', exact: true });
+
+  const minThumbRect = minThumb.element().getBoundingClientRect();
+  const maxThumbRect = maxThumb.element().getBoundingClientRect();
+  const x = minThumbRect.left + 1;
+  const y = minThumbRect.top + 1;
+
+  // Drag min thumb horizontally and bring it back to its initial position
+  await user.pointer([
+    { keys: '[MouseLeft>]', coords: { x, y } }, // press and hold thumb (from top left corner to check that it doesn't jump)
+    { coords: { x: x + 20, y } }, // drag 20px to the right
+    { coords: { x, y } }, // drag back to initial position
+    { keys: '[/MouseLeft]' }, // release thumb
+  ]);
+
+  // Min hasn't changed and is still autoscaling
+  await page.getByRole('button', { name: 'Edit domain' }).hover();
+  expect(minInput).toHaveValue('−9.5e+1');
+  expect(minThumb).toHaveValue(20);
+  expect(minBtn).toHaveAttribute('aria-pressed', 'true');
+
+  // Drag min thumb pasxt max thumb, then back a little
+  await user.pointer([
+    { keys: '[MouseLeft>]', coords: { x, y } }, // press and hold thumb
+    { coords: { x: maxThumbRect.left + 20, y } }, // drag 20px past max thumb
+    { coords: { x: maxThumbRect.left, y } }, // drag back to initial max thumb position
+    { keys: '[/MouseLeft]' }, // release thumb
+  ]);
+
+  // Min thumb pushes max thumb
+  await page.getByRole('button', { name: 'Edit domain' }).hover();
+  expect(minBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(maxBtn).toHaveAttribute('aria-pressed', 'false');
+  expect(minInput).toHaveValue('3.12772e+2');
+  expect(maxInput).toHaveValue('4.81114e+3');
+});
+
 test('edit bounds manually', async () => {
   const { user } = await renderApp('/nexus/NXdata');
 

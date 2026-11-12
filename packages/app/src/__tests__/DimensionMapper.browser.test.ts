@@ -104,8 +104,20 @@ test('slice through 2D dataset', async () => {
   // Move to next slice with keyboard
   const d0Slider = page.getByRole('slider', { name: 'D0' });
   await user.type(d0Slider, '{ArrowUp}');
-
   expect(d0Slider).toHaveValue(1);
+
+  // Move to last slice with pointer
+  const { left, top } = d0Slider.element().getBoundingClientRect();
+  const x = left + 1;
+  const y = top + 1;
+
+  await user.pointer([
+    { keys: '[MouseLeft>]', coords: { x, y } }, // press and hold slider thumb (from top left corner to check that it doesn't jump)
+    { coords: { x, y: y - 1000 } }, // drag 1000px upwards
+    { keys: '[/MouseLeft]' }, // release slider thumb
+  ]);
+
+  expect(d0Slider).toHaveValue(19);
 });
 
 test('slice through 2D opaque dataset', async () => {
