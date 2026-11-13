@@ -25,7 +25,7 @@ interface Props {
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
   dimMapping: DimensionMapping;
   title: string;
-  toolbarContainer: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
   config: RgbVisConfig;
 }
 

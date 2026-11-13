@@ -28,7 +28,7 @@ interface Props {
     | ScalarValue<CompoundType<PrintableType>>
     | ArrayValue<CompoundType<PrintableType>>;
   dimMapping: DimensionMapping;
-  toolbarContainer: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
   config: MatrixVisConfig;
 }
 

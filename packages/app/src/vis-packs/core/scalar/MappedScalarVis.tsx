@@ -15,7 +15,7 @@ import { getFormatter, isBinaryImage } from './utils';
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape>;
   value: unknown;
-  toolbarContainer?: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
   config: ScalarConfig;
 }
 

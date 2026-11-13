@@ -24,7 +24,7 @@ interface Props {
   dataset: Dataset<ArrayShape, NumericType>;
   value: ArrayValue<NumericType>;
   dimMapping: DimensionMapping;
-  toolbarContainer: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
   config: SurfaceConfig;
 }
 

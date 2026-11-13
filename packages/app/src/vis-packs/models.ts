@@ -4,7 +4,7 @@ import { type IconType } from 'react-icons';
 
 export interface VisContainerProps {
   entity: ProvidedEntity;
-  toolbarContainer: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
 }
 
 export interface VisDef {

@@ -7,7 +7,7 @@ import styles from './NxHeatmapSignalPicker.module.css';
 
 interface Props {
   definitions: FieldDef[];
-  toolbarContainer: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
   value: FieldDef;
   onChange: (def: FieldDef) => void;
 }

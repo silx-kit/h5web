@@ -21,7 +21,7 @@ interface Props {
   axisLabels: AxisMapping<string>;
   axisValues: AxisMapping<ArrayValue<NumericType>>;
   title: string;
-  toolbarContainer: HTMLDivElement | undefined;
+  toolbarContainer: HTMLDivElement | null;
   config: ScatterConfig;
 }
 
