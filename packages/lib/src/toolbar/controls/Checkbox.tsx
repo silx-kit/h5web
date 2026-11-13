@@ -13,7 +13,7 @@ interface Props extends ClassStyleAttrs {
 
 function Checkbox(props: Props) {
   const {
-    className,
+    className = '',
     style,
     label,
     disabled,

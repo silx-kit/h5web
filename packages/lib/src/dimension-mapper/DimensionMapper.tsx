@@ -17,7 +17,7 @@ interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
 
 function DimensionMapper(props: Props) {
   const {
-    className,
+    className = '',
     dims,
     dimHints,
     dimMapping,
