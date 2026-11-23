@@ -1,7 +1,7 @@
 import { type Domain, ScaleType } from '@h5web/shared/vis-models';
 import { rgb, type RGBColor } from 'd3-color';
 import { type NdArray } from 'ndarray';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   DataTexture,
   FrontSide,
@@ -173,4 +173,4 @@ function HeatmapMaterial(props: Props) {
   );
 }
 
-export default memo(HeatmapMaterial);
+export default HeatmapMaterial;

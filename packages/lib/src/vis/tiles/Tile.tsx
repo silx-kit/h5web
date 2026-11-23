@@ -1,7 +1,6 @@
 import { useThrottledCallback } from '@react-hookz/web';
 import { type ThreeEvent } from '@react-three/fiber';
 import { useQuery } from '@tanstack/react-query';
-import { memo } from 'react';
 import { type MagnificationTextureFilter, Vector2 } from 'three';
 
 import HeatmapMesh from '../heatmap/HeatmapMesh';
@@ -55,4 +54,4 @@ function Tile(props: Props) {
   );
 }
 
-export default memo(Tile);
+export default Tile;
