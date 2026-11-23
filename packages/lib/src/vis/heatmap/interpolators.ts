@@ -41,6 +41,7 @@ import {
 } from 'd3-scale-chromatic';
 
 import { type D3Interpolator } from './models';
+import { interpolateRainbowNDE } from './rainbowNDE';
 
 function interpolateHsl(t: number): string {
   return hsl(t * 360, 1, 0.5).formatRgb();
@@ -98,4 +99,7 @@ export const INTERPOLATORS = {
   RdYlBu: interpolateRdYlBu,
   RdYlGn: interpolateRdYlGn,
   Spectral: interpolateSpectral,
+
+  // NDE
+  RainbowNDE: interpolateRainbowNDE,
 }; // satisfies Record<string, D3Interpolator>;

@@ -38,4 +38,5 @@ export const COLORMAP_GROUPS = {
     'RdYlGn',
     'Spectral',
   ],
+  NDE: ['RainbowNDE'],
 } satisfies Record<string, ColorMap[]>;
