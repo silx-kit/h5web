@@ -100,6 +100,6 @@ export const INTERPOLATORS = {
   RdYlGn: interpolateRdYlGn,
   Spectral: interpolateSpectral,
 
-  // NDE
+  // Special
   RainbowNDE: interpolateRainbowNDE,
-}; // satisfies Record<string, D3Interpolator>;
+} satisfies Record<string, D3Interpolator>;
