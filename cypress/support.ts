@@ -14,6 +14,16 @@ addWaitForStableDomCommand({
   timeout: 10000,
 });
 
+Cypress.on('window:before:load', (win) => {
+  // Hide problematic shadows and outlines that make visual tests flaky
+  const style = win.document.createElement('style');
+  style.textContent = `
+    * { box-shadow: none !important; }
+    input[type="radio"] { outline: none !important; }
+  `;
+  win.document.head.append(style);
+});
+
 Cypress.Commands.add('getExplorerNode', (name: string) => {
   return cy.getByRole('treeitem', {
     name: new RegExp(String.raw`^${name}(?: \(NeXus group\))?$`, 'u'), // account for potential NeXus badge
