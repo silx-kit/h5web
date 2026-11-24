@@ -15,6 +15,7 @@ addWaitForStableDomCommand({
 });
 
 Cypress.on('window:before:load', (win) => {
+  // Hide problematic shadows and outlines that make visual tests flaky
   const style = win.document.createElement('style');
   style.textContent = `
     * { box-shadow: none !important; }
