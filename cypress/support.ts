@@ -7,6 +7,7 @@ import { registerCommand as addWaitForStableDomCommand } from 'cypress-wait-for-
 addMatchImageSnapshotCommand({
   storeReceivedOnFailure: true, // store failing snapshots to allow for manual update
   customReceivedPostfix: '.snap', // match baseline snapshots to simplify manual update
+  blackout: ['input[type="radio"'],
 });
 
 addWaitForStableDomCommand({
