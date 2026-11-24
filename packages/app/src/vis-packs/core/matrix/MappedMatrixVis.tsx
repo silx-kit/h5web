@@ -27,7 +27,7 @@ interface Props {
   dataset: Dataset<ArrayShape, PrintableType>;
   value: ArrayValue<PrintableType>;
   dimMapping: DimensionMapping;
-  toolbarContainer: HTMLDivElement | null;
+  toolbarContainer: HTMLDivElement | undefined;
   config: MatrixVisConfig;
 }
 

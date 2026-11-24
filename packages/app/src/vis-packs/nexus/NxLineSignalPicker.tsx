@@ -11,7 +11,7 @@ interface Props {
   auxChecked: boolean[];
   onSignalChange: (newValue: boolean) => void;
   onAuxChange: (newValue: boolean[]) => void;
-  toolbarContainer: HTMLDivElement | null;
+  toolbarContainer: HTMLDivElement | undefined;
 }
 
 function NxLineSignalPicker(props: Props) {

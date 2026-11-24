@@ -27,7 +27,7 @@ function VisManager(props: Props) {
   const [activeVis, setActiveVis] = useActiveVis(supportedVis, primaryVis); // eslint-disable-line @eslint-react/static-components -- false positive
   const { Container } = activeVis;
 
-  const [visBarElem, setVisBarElem] = useState<HTMLDivElement | null>(null);
+  const [visBarElem, setVisBarElem] = useState<HTMLDivElement>();
 
   const { filepath, queryClient } = useDataContext();
   function onVisChange(index: number) {
@@ -40,7 +40,10 @@ function VisManager(props: Props) {
 
   return (
     <div className={styles.visManager}>
-      <div ref={setVisBarElem} className={styles.visBar}>
+      <div
+        ref={(elem) => setVisBarElem(elem ?? undefined)}
+        className={styles.visBar}
+      >
         <VisSelector
           activeVis={activeVis}
           choices={supportedVis}

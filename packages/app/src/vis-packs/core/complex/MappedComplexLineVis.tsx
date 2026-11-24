@@ -38,7 +38,7 @@ interface Props {
   axisLabels?: AxisMapping<string>;
   axisValues?: AxisMapping<ArrayValue<NumericType>>;
   title: string;
-  toolbarContainer: HTMLDivElement | null;
+  toolbarContainer: HTMLDivElement | undefined;
   config: LineConfig;
 }
 
