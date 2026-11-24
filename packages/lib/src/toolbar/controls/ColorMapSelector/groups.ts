@@ -38,4 +38,5 @@ export const COLORMAP_GROUPS = {
     'RdYlGn',
     'Spectral',
   ],
+  Special: ['RainbowNDE'],
 } satisfies Record<string, ColorMap[]>;
