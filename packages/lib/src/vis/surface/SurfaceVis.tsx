@@ -8,6 +8,7 @@ import { type NdArray } from 'ndarray';
 import { type PropsWithChildren } from 'react';
 
 import ColorBar from '../heatmap/ColorBar';
+import { useInterpolator } from '../heatmap/hooks';
 import { type ColorMap } from '../heatmap/models';
 import { type ClassStyleAttrs } from '../models';
 import R3FCanvas from '../shared/R3FCanvas';
@@ -36,6 +37,8 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
     style,
   } = props;
 
+  const interpolator = useInterpolator(colorMap, invertColorMap);
+
   return (
     <figure
       className={`${styles.root} ${className}`}
@@ -46,9 +49,8 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
         <SurfaceMesh
           dataArray={dataArray}
           domain={domain}
-          colorMap={colorMap}
+          interpolator={interpolator}
           scaleType={scaleType}
-          invertColorMap={invertColorMap}
           showPoints={showPoints}
         />
         {children}
@@ -56,8 +58,7 @@ function SurfaceVis(props: PropsWithChildren<Props>) {
       <ColorBar
         domain={domain}
         scaleType={scaleType}
-        colorMap={colorMap}
-        invertColorMap={invertColorMap}
+        interpolator={interpolator}
         withBounds
       />
     </figure>

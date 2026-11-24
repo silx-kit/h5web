@@ -17,15 +17,14 @@ import { type VisScaleType } from '../models';
 import { type VisMeshProps } from '../shared/VisMesh';
 import { DEFAULT_DOMAIN, getUniforms, VERTEX_SHADER } from '../utils';
 import { useDataTexture } from './hooks';
-import { type ColorMap, type TextureSafeTypedArray } from './models';
-import { getInterpolator, scaleDomain } from './utils';
+import { type D3Interpolator, type TextureSafeTypedArray } from './models';
+import { scaleDomain } from './utils';
 
 interface Props extends VisMeshProps {
   values: NdArray<TextureSafeTypedArray>;
   domain: Domain;
   scaleType: VisScaleType;
-  colorMap: ColorMap;
-  invertColorMap?: boolean;
+  interpolator: D3Interpolator;
   alphaValues?: NdArray<TextureSafeTypedArray>;
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
@@ -55,8 +54,7 @@ function HeatmapMaterial(props: Props) {
     values,
     domain,
     scaleType: visScaleType,
-    colorMap,
-    invertColorMap = false,
+    interpolator,
     alphaValues,
     alphaDomain = DEFAULT_DOMAIN,
     badColor = DEFAULT_BAD_COLOR,
@@ -71,8 +69,6 @@ function HeatmapMaterial(props: Props) {
   const maskTexture = useDataTexture(mask);
 
   const colorMapTexture = useMemo(() => {
-    const interpolator = getInterpolator(colorMap, invertColorMap);
-
     const colors = Array.from({ length: CMAP_SIZE }).flatMap((_, i) => {
       const { r, g, b } = rgb(interpolator(i / (CMAP_SIZE - 1)));
       return [r, g, b, 255];
@@ -88,7 +84,7 @@ function HeatmapMaterial(props: Props) {
     texture.needsUpdate = true;
 
     return texture;
-  }, [colorMap, invertColorMap]);
+  }, [interpolator]);
 
   const [scaleType, gammaExponent] = Array.isArray(visScaleType)
     ? visScaleType

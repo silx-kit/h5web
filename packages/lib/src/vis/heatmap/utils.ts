@@ -138,7 +138,7 @@ export function getPixelEdgeValues(
 
 export function getInterpolator(
   colorMap: ColorMap,
-  reverse: boolean,
+  reverse?: boolean,
 ): D3Interpolator {
   const interpolator = INTERPOLATORS[colorMap];
   return reverse ? (t: number) => interpolator(1 - t) : interpolator;

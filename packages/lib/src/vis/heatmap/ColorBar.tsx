@@ -7,27 +7,19 @@ import { type VisScaleType } from '../models';
 import Tick from '../shared/Tick';
 import { adaptedNumTicks, createScale } from '../utils';
 import styles from './ColorBar.module.css';
-import { type ColorMap } from './models';
-import { getInterpolator, getLinearGradient } from './utils';
+import { type D3Interpolator } from './models';
+import { getLinearGradient } from './utils';
 
 interface Props {
   domain: Domain;
   scaleType: VisScaleType;
-  colorMap: ColorMap;
+  interpolator: D3Interpolator;
   horizontal?: boolean;
   withBounds?: boolean;
-  invertColorMap: boolean;
 }
 
 function ColorBar(props: Props) {
-  const {
-    domain,
-    scaleType,
-    colorMap,
-    horizontal,
-    withBounds,
-    invertColorMap,
-  } = props;
+  const { domain, scaleType, interpolator, horizontal, withBounds } = props;
 
   const [barSize, barRef] = useMeasure<HTMLDivElement>();
   const gradientLength = barSize
@@ -66,7 +58,7 @@ function ColorBar(props: Props) {
           data-keep-colors
           style={{
             backgroundImage: getLinearGradient(
-              getInterpolator(colorMap, invertColorMap),
+              interpolator,
               horizontal ? 'right' : 'top',
               domain[0] === domain[1],
             ),

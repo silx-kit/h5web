@@ -16,6 +16,7 @@ import DefaultInteractions, {
 } from '../../interactions/DefaultInteractions';
 import ResetZoomButton from '../../toolbar/floating/ResetZoomButton';
 import ColorBar from '../heatmap/ColorBar';
+import { useInterpolator } from '../heatmap/hooks';
 import { type ColorMap } from '../heatmap/models';
 import { useAxisDomain } from '../hooks';
 import { type ClassStyleAttrs } from '../models';
@@ -94,6 +95,8 @@ function ScatterVis(props: PropsWithChildren<Props>) {
     hideTooltip,
   } = useTooltip<number>();
 
+  const interpolator = useInterpolator(colorMap, invertColorMap);
+
   return (
     <figure
       className={`${styles.root} ${className}`}
@@ -126,9 +129,8 @@ function ScatterVis(props: PropsWithChildren<Props>) {
           ordinates={ordinates}
           data={dataArray.data}
           domain={domain}
+          interpolator={interpolator}
           scaleType={scaleType}
-          colorMap={colorMap}
-          invertColorMap={invertColorMap}
           size={size}
           onClick={onPointClick}
           onPointerEnter={(index, evt) =>
@@ -161,8 +163,7 @@ function ScatterVis(props: PropsWithChildren<Props>) {
       <ColorBar
         domain={domain}
         scaleType={scaleType}
-        colorMap={colorMap}
-        invertColorMap={invertColorMap}
+        interpolator={interpolator}
         withBounds
       />
     </figure>

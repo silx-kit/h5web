@@ -1,4 +1,9 @@
-import { type CustomDomain, DomainWidget, ScaleType } from '@h5web/lib';
+import {
+  type CustomDomain,
+  DomainWidget,
+  getInterpolator,
+  ScaleType,
+} from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
@@ -79,14 +84,13 @@ export const HistogramBiggerThanDataDomain = {
   },
 } satisfies Story;
 
-export const HistogramWithColorMap = {
+export const HistogramWithInterpolator = {
   ...Default,
   args: {
     ...Histogram.args,
     histogram: {
       ...Histogram.args.histogram,
-      colorMap: 'Blues',
-      invertColorMap: true,
+      interpolator: getInterpolator('Blues', true),
     },
   },
 } satisfies Story;
@@ -94,9 +98,9 @@ export const HistogramWithColorMap = {
 export const HistogramWithoutLeftAxis = {
   ...Default,
   args: {
-    ...HistogramWithColorMap.args,
+    ...HistogramWithInterpolator.args,
     histogram: {
-      ...HistogramWithColorMap.args.histogram,
+      ...HistogramWithInterpolator.args.histogram,
       showLeftAxis: false,
     },
   },

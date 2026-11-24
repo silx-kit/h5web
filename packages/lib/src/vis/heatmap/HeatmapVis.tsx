@@ -31,7 +31,12 @@ import { DEFAULT_DOMAIN } from '../utils';
 import ColorBar from './ColorBar';
 import HeatmapMesh from './HeatmapMesh';
 import styles from './HeatmapVis.module.css';
-import { useMask, usePixelEdgeValues, useTextureSafeNdArray } from './hooks';
+import {
+  useInterpolator,
+  useMask,
+  usePixelEdgeValues,
+  useTextureSafeNdArray,
+} from './hooks';
 import { type ColorMap, type TooltipData } from './models';
 
 interface Props extends ClassStyleAttrs {
@@ -102,6 +107,8 @@ function HeatmapVis(props: PropsWithChildren<Props>) {
   const safeAlphaArray = useTextureSafeNdArray(alpha?.array);
   const maskArray = useMask(dataArray, ignoreValue);
 
+  const interpolator = useInterpolator(colorMap, invertColorMap);
+
   return (
     <figure
       className={`${styles.root} ${className}`}
@@ -159,8 +166,7 @@ function HeatmapVis(props: PropsWithChildren<Props>) {
         <HeatmapMesh
           values={safeDataArray}
           domain={domain}
-          colorMap={colorMap}
-          invertColorMap={invertColorMap}
+          interpolator={interpolator}
           scaleType={scaleType}
           alphaValues={safeAlphaArray}
           alphaDomain={alpha?.domain}
@@ -177,8 +183,7 @@ function HeatmapVis(props: PropsWithChildren<Props>) {
       <ColorBar
         domain={domain}
         scaleType={scaleType}
-        colorMap={colorMap}
-        invertColorMap={invertColorMap}
+        interpolator={interpolator}
         withBounds
       />
     </figure>

@@ -9,7 +9,7 @@ import { DoubleSide, LinearFilter } from 'three';
 
 import HeatmapMaterial from '../heatmap/HeatmapMaterial';
 import { useTextureSafeNdArray } from '../heatmap/hooks';
-import { type ColorMap } from '../heatmap/models';
+import { type D3Interpolator } from '../heatmap/models';
 import { useUpdateGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
@@ -19,14 +19,12 @@ interface Props {
   dataArray: NdArray<NumArray>;
   domain: Domain;
   scaleType: ColorScaleType;
-  colorMap: ColorMap;
-  invertColorMap: boolean;
+  interpolator: D3Interpolator;
   showPoints: boolean;
 }
 
 function SurfaceMesh(props: Props) {
-  const { dataArray, domain, colorMap, invertColorMap, scaleType, showPoints } =
-    props;
+  const { dataArray, domain, interpolator, scaleType, showPoints } = props;
 
   const [rows, cols] = dataArray.shape;
   const safeDataArray = useTextureSafeNdArray(dataArray);
@@ -44,9 +42,8 @@ function SurfaceMesh(props: Props) {
         <HeatmapMaterial
           values={safeDataArray}
           domain={domain}
-          colorMap={colorMap}
+          interpolator={interpolator}
           scaleType={scaleType}
-          invertColorMap={invertColorMap}
           magFilter={LinearFilter}
           side={DoubleSide}
         />

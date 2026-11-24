@@ -9,7 +9,7 @@ import {
 import { type PickD3Scale, type PickScaleConfigWithoutType } from '@visx/scale';
 import { type HTMLAttributes } from 'react';
 
-import { type ColorMap } from './heatmap/models';
+import { type D3Interpolator } from './heatmap/models';
 import { type ScaleGamma } from './scaleGamma';
 
 export interface Size {
@@ -93,8 +93,7 @@ export interface HistogramParams {
   values: NumArray;
   bins: NumArray;
   showLeftAxis?: boolean;
-  colorMap?: ColorMap;
-  invertColorMap?: boolean;
+  interpolator?: D3Interpolator;
 }
 
 export type ClassStyleAttrs = Pick<

@@ -1,4 +1,9 @@
-import { ColorBar, type ColorBarProps, ScaleType } from '@h5web/lib';
+import {
+  ColorBar,
+  type ColorBarProps,
+  getInterpolator,
+  ScaleType,
+} from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
 import { type Meta, type StoryObj } from '@storybook/react-vite';
 
@@ -48,23 +53,23 @@ export const Default = {
     domainMin: 0.1,
     domainMax: 1,
     scaleType: ScaleType.Linear,
-    colorMap: 'Viridis',
+    interpolator: getInterpolator('Viridis'),
   },
 } satisfies Story;
 
-export const InvertColorMap = {
+export const Interpolator = {
   ...Default,
   args: {
     ...Default.args,
-    invertColorMap: true,
+    interpolator: getInterpolator('Blues'),
   },
 } satisfies Story;
 
-export const ColorMap = {
+export const InvertedInterpolator = {
   ...Default,
   args: {
     ...Default.args,
-    colorMap: 'Blues',
+    interpolator: getInterpolator('Viridis', true),
   },
 } satisfies Story;
 

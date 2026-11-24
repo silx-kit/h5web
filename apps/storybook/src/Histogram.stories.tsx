@@ -1,4 +1,4 @@
-import { Histogram, ScaleType } from '@h5web/lib';
+import { getInterpolator, Histogram, ScaleType } from '@h5web/lib';
 import { COLOR_SCALE_TYPES } from '@h5web/shared/vis-models';
 import { useState } from 'react';
 
@@ -64,10 +64,9 @@ export const SmallDataDomain = Default.extend({
   },
 });
 
-export const WithColorMap = Default.extend({
+export const WithInterpolator = Default.extend({
   args: {
-    colorMap: 'Blues',
-    invertColorMap: true,
+    interpolator: getInterpolator('Blues', true),
   },
 });
 

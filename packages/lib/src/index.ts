@@ -149,9 +149,14 @@ export {
   getLinearGradient,
   getVisDomain,
   getSafeDomain,
+  getInterpolator,
 } from './vis/heatmap/utils';
 
-export { useVisDomain, useSafeDomain } from './vis/heatmap/hooks';
+export {
+  useVisDomain,
+  useSafeDomain,
+  useInterpolator,
+} from './vis/heatmap/hooks';
 
 export { scaleGamma } from './vis/scaleGamma';
 
