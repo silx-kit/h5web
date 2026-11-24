@@ -93,6 +93,12 @@ export const InvertColorMap = {
   },
 } satisfies Story;
 
+export const Interpolator = {
+  args: {
+    colorMap: INTERPOLATORS.BuPu,
+  },
+} satisfies Story;
+
 export const AxisValues = {
   args: {
     abscissaParams: {

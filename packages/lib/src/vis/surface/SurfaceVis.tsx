@@ -9,7 +9,7 @@ import { type PropsWithChildren } from 'react';
 
 import ColorBar from '../heatmap/ColorBar';
 import { useInterpolator } from '../heatmap/hooks';
-import { type ColorMap } from '../heatmap/models';
+import { type ColorMap, type D3Interpolator } from '../heatmap/models';
 import { type ClassStyleAttrs } from '../models';
 import R3FCanvas from '../shared/R3FCanvas';
 import SurfaceMesh from './SurfaceMesh';
@@ -19,7 +19,7 @@ interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   domain: Domain;
   scaleType?: ColorScaleType;
-  colorMap?: ColorMap;
+  colorMap?: ColorMap | D3Interpolator;
   invertColorMap?: boolean;
   showPoints?: boolean;
 }

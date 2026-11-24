@@ -47,7 +47,9 @@ function interpolateHsl(t: number): string {
   return hsl(t * 360, 1, 0.5).formatRgb();
 }
 
-function reverseInterpolator(interpolator: D3Interpolator) {
+export function reverseInterpolator(
+  interpolator: D3Interpolator,
+): D3Interpolator {
   return (t: number) => interpolator(1 - t);
 }
 

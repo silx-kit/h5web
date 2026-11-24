@@ -37,12 +37,12 @@ import {
   usePixelEdgeValues,
   useTextureSafeNdArray,
 } from './hooks';
-import { type ColorMap, type TooltipData } from './models';
+import { type ColorMap, type D3Interpolator, type TooltipData } from './models';
 
 interface Props extends ClassStyleAttrs {
   dataArray: NdArray<NumArray>;
   domain: Domain | undefined;
-  colorMap?: ColorMap;
+  colorMap?: ColorMap | D3Interpolator;
   scaleType?: VisScaleType;
   aspect?: Aspect;
   showGrid?: boolean;
