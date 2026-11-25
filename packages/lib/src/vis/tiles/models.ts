@@ -1,14 +1,16 @@
 import { type Domain } from '@h5web/shared/vis-models';
 import { type NdArray } from 'ndarray';
 
-import { type ColorMap, type TextureSafeTypedArray } from '../heatmap/models';
+import {
+  type D3Interpolator,
+  type TextureSafeTypedArray,
+} from '../heatmap/models';
 import { type VisScaleType } from '../models';
 
 export interface ColorMapProps {
   domain: Domain;
   scaleType: VisScaleType;
-  colorMap: ColorMap;
-  invertColorMap?: boolean;
+  interpolator: D3Interpolator;
 }
 
 export type TileArray = NdArray<TextureSafeTypedArray>;

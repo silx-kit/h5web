@@ -6,8 +6,7 @@ import {
 import { type ThreeEvent } from '@react-three/fiber';
 import { useCallback, useMemo } from 'react';
 
-import { useInterpolator } from '../heatmap/hooks';
-import { type ColorMap } from '../heatmap/models';
+import { type D3Interpolator } from '../heatmap/models';
 import { useUpdateGeometry } from '../hooks';
 import GlyphMaterial from '../line/GlyphMaterial';
 import { GlyphType } from '../line/models';
@@ -20,9 +19,8 @@ interface Props {
   ordinates: NumArray;
   data: NumArray;
   domain: Domain;
+  interpolator: D3Interpolator;
   scaleType: ColorScaleType;
-  colorMap: ColorMap;
-  invertColorMap: boolean;
   size: number;
   onClick?: (index: number, evt: ThreeEvent<MouseEvent>) => void;
   onPointerEnter?: (index: number, evt: ThreeEvent<PointerEvent>) => void;
@@ -35,9 +33,8 @@ function ScatterPoints(props: Props) {
     ordinates,
     data,
     domain,
+    interpolator,
     scaleType,
-    colorMap,
-    invertColorMap,
     size,
     onClick,
     onPointerEnter,
@@ -78,7 +75,6 @@ function ScatterPoints(props: Props) {
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
-  const interpolator = useInterpolator(colorMap, invertColorMap);
   const colorScale = useMemo(
     () => createScale(scaleType, { domain, range: [0, 1] }),
     [scaleType, domain],

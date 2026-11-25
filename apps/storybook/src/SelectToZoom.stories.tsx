@@ -7,6 +7,7 @@ import {
   SelectToZoom,
   toTypedNdArray,
   useDomain,
+  useInterpolator,
   VisCanvas,
   Zoom,
 } from '@h5web/lib';
@@ -37,6 +38,8 @@ export const InsideAutoAspectCanvas = meta.story({
     const domain = useDomain(typedTwoD);
     assertDefined(domain);
 
+    const interpolator = useInterpolator('Viridis');
+
     return (
       <VisCanvas
         abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
@@ -50,7 +53,7 @@ export const InsideAutoAspectCanvas = meta.story({
         <HeatmapMesh
           values={typedTwoD}
           domain={domain}
-          colorMap="Viridis"
+          interpolator={interpolator}
           scaleType={ScaleType.Linear}
         />
       </VisCanvas>
@@ -66,6 +69,8 @@ export const InsideEqualAspectCanvas = meta.story({
     const domain = useDomain(typedTwoD);
     assertDefined(domain);
 
+    const interpolator = useInterpolator('Viridis');
+
     return (
       <VisCanvas
         abscissaConfig={{ visDomain: [0, cols], showGrid: true }}
@@ -80,7 +85,7 @@ export const InsideEqualAspectCanvas = meta.story({
         <HeatmapMesh
           values={typedTwoD}
           domain={domain}
-          colorMap="Viridis"
+          interpolator={interpolator}
           scaleType={ScaleType.Linear}
         />
       </VisCanvas>

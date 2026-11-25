@@ -2,6 +2,7 @@ import {
   type AxisConfig,
   DefaultInteractions,
   type Domain,
+  getInterpolator,
   ResetZoomButton,
   TiledHeatmapMesh,
   type TiledHeatmapMeshProps,
@@ -45,9 +46,8 @@ const meta = {
   component: TiledHeatmapMesh,
   decorators: [FillHeight],
   args: {
-    invertColorMap: false,
-    colorMap: 'Viridis',
     domain: [0, 1],
+    interpolator: getInterpolator('Viridis'),
     scaleType: ScaleType.Linear,
     displayLowerResolutions: true,
     qualityFactor: 1,

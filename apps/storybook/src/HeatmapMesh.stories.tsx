@@ -2,6 +2,7 @@ import {
   DefaultInteractions,
   type Domain,
   getDomain,
+  getInterpolator,
   HeatmapMesh,
   mockValues,
   VisCanvas,
@@ -76,7 +77,7 @@ export const Default = meta.story({
     values: toTypedNdArray(twoD, Float32Array),
     domain,
     scaleType: ScaleType.SymLog,
-    colorMap: 'Inferno',
+    interpolator: getInterpolator('Inferno'),
   },
 });
 
@@ -85,7 +86,7 @@ export const HalfFloatTexture = Default.extend({
     values: uint16DataArray,
     domain: uint16Domain,
     scaleType: ScaleType.Linear,
-    colorMap: 'Blues',
+    interpolator: getInterpolator('Blues'),
   },
 });
 

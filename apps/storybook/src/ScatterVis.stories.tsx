@@ -96,6 +96,12 @@ export const ColorScaleType = Default.extend({
   },
 });
 
+export const Interpolator = Default.extend({
+  args: {
+    colorMap: INTERPOLATORS.BuPu,
+  },
+});
+
 export const Labels = Default.extend({
   args: {
     abscissaParams: { value: abscissas, label: 'Latitude' },

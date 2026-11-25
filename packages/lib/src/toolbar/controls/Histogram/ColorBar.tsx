@@ -1,18 +1,16 @@
 import { type SVGProps } from 'react';
 
-import { type ColorMap } from '../../../vis/heatmap/models';
-import { getInterpolator, GRADIENT_RANGE } from '../../../vis/heatmap/utils';
+import { type D3Interpolator } from '../../../vis/heatmap/models';
+import { GRADIENT_RANGE } from '../../../vis/heatmap/utils';
 
 interface Props extends Required<
   Pick<SVGProps<SVGRectElement>, 'x' | 'y' | 'width' | 'height'>
 > {
-  colorMap: ColorMap;
-  invertColorMap?: boolean;
+  interpolator: D3Interpolator;
 }
 
 function ColorBar(props: Props) {
-  const { colorMap, invertColorMap, ...rectProps } = props;
-  const interpolator = getInterpolator(colorMap, !!invertColorMap);
+  const { interpolator, ...rectProps } = props;
 
   return (
     <>

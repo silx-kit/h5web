@@ -23,7 +23,7 @@ import {
 
 import { type CustomDomain, DomainError, type DomainErrors } from '../models';
 import { SCALES_VALID_MINS } from '../utils';
-import { INTERPOLATORS } from './interpolators';
+import { INTERPOLATORS, reverseInterpolator } from './interpolators';
 import {
   type ColorMap,
   type D3Interpolator,
@@ -137,11 +137,15 @@ export function getPixelEdgeValues(
 }
 
 export function getInterpolator(
-  colorMap: ColorMap,
-  reverse: boolean,
+  colorMap: ColorMap | D3Interpolator,
+  reverse?: boolean,
 ): D3Interpolator {
+  if (typeof colorMap !== 'string') {
+    return colorMap;
+  }
+
   const interpolator = INTERPOLATORS[colorMap];
-  return reverse ? (t: number) => interpolator(1 - t) : interpolator;
+  return reverse ? reverseInterpolator(interpolator) : interpolator;
 }
 
 export function scaleDomain(

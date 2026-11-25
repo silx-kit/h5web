@@ -9,14 +9,13 @@ import {
 import { type VisScaleType } from '../models';
 import VisMesh, { type VisMeshProps } from '../shared/VisMesh';
 import HeatmapMaterial from './HeatmapMaterial';
-import { type ColorMap, type TextureSafeTypedArray } from './models';
+import { type D3Interpolator, type TextureSafeTypedArray } from './models';
 
 interface Props extends VisMeshProps {
   values: NdArray<TextureSafeTypedArray>;
   domain: Domain;
   scaleType: VisScaleType;
-  colorMap: ColorMap;
-  invertColorMap?: boolean;
+  interpolator: D3Interpolator;
   alphaValues?: NdArray<TextureSafeTypedArray>;
   alphaDomain?: Domain;
   badColor?: RGBColor | string;
@@ -30,8 +29,7 @@ function HeatmapMesh(props: Props) {
     values,
     domain,
     scaleType,
-    colorMap,
-    invertColorMap,
+    interpolator,
     alphaValues,
     alphaDomain,
     badColor,
@@ -47,8 +45,7 @@ function HeatmapMesh(props: Props) {
         values={values}
         domain={domain}
         scaleType={scaleType}
-        colorMap={colorMap}
-        invertColorMap={invertColorMap}
+        interpolator={interpolator}
         alphaValues={alphaValues}
         alphaDomain={alphaDomain}
         badColor={badColor}

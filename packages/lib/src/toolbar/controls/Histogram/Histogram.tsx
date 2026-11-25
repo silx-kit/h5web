@@ -38,8 +38,8 @@ function Histogram(props: Props) {
     onChangeMin,
     onChangeMax,
     showLeftAxis = true,
+    interpolator,
   } = props;
-  const { colorMap, invertColorMap } = props;
 
   const bins = usePixelEdgeValues(rawBins, values.length);
   const binDomain = useDomain(bins, { scaleType }) || DEFAULT_DOMAIN;
@@ -48,7 +48,7 @@ function Histogram(props: Props) {
 
   const barDomain = useDomain(values);
   const yMax = barDomain ? barDomain[1] : DEFAULT_DOMAIN[1];
-  const yMin = colorMap ? -yMax / 10 : 0;
+  const yMin = interpolator ? -yMax / 10 : 0;
 
   const [size, ref] = useMeasure<HTMLDivElement>();
 
@@ -87,14 +87,13 @@ function Histogram(props: Props) {
     <div ref={ref} className={styles.container}>
       <svg width="100%" height="100%" className={styles.histogram}>
         {rects}
-        {colorMap && (
+        {interpolator && (
           <ColorBar
             x={markerPositions[0]}
             y={height - yScale(0)}
             width={markerPositions[1] - markerPositions[0]}
             height={yScale(0) - yScale(yMin)}
-            colorMap={colorMap}
-            invertColorMap={invertColorMap}
+            interpolator={interpolator}
           />
         )}
         <Markers
