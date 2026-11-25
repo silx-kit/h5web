@@ -110,6 +110,22 @@ const res4 = getSafeDomain([-2, 0], [1, 2], ScaleType.Log); // [[1, 2], { minErr
 const res5 = getSafeDomain([-5, 5], [10, 20], ScaleType.Log); // [[5, 5], { minError: DomainError.CustomMaxFallback }]
 ```
 
+#### getInterpolator
+
+Retrieve one of the built-in interpolator functions, optionally reversing it. If a custom interpolator function is passed, it is returned as is.
+
+> Inside React components, call the memoised `useInterpolator` instead.
+
+```ts
+getInterpolator(colorMap: ColorMap | D3Interpolator, reverse?: boolean): D3Interpolator
+
+const viridis = getInterpolator('Viridis');
+const bluesReversed = getInterpolator('Blues', true);
+
+viridis(0.5) // "#21918c"
+bluesReversed(0.5) // "rgb(109, 174, 213)"
+```
+
 #### scaleGamma
 
 A [@visx/scale](https://airbnb.io/visx/docs/scale)-like power scale that implements gamma correction. With `scaleGamma`, the normalization happens **before** raising to the exponent, contrary to [`scalePower`](https://github.com/d3/d3-scale/blob/main/README.md#scalePow) where it happens **after**.
@@ -336,6 +352,7 @@ getSlicedDimsAndMapping([10, 20, 30], ['x', 10, 'y']); // [[10, 30], ['x', 'y']]
 - **`useValueToIndexScale(...args): ScaleThreshold<number, number>`** - Memoised version of `getValueToIndexScale`.
 - **`useDimMapping(...args): DimensionMapping`** - Memoised version of `getDimMapping`.
 - **`useSlicedDimsAndMapping(...args): [number[], DimensionMapping]`** - Memoised version of `getSlicedDimsAndMapping`.
+- **`useInterpolator(...args): D3Interpolator`** - Memoised version of `getInterpolator`.
 
 #### useCanvasEvent
 
