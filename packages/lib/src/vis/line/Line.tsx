@@ -12,10 +12,17 @@ import { useVisCanvasContext } from '../shared/VisCanvasProvider';
 import { hasR3FEventHandlers } from '../utils';
 import LineConstantGeometry from './lineConstantGeometry';
 import LineGeometry from './lineGeometry';
+import LinePchipGeometry from './linePchipGeometry';
 import { Interpolation } from './models';
 
 const Line2 = extend(ThreeLine2);
 const LineMaterial = extend(ThreeLineMaterial);
+
+const GEOMETRIES = {
+  [Interpolation.Linear]: LineGeometry,
+  [Interpolation.Constant]: LineConstantGeometry,
+  [Interpolation.Pchip]: LinePchipGeometry,
+};
 
 interface Props extends ComponentProps<typeof Line2> {
   abscissas: NumArray;
@@ -33,7 +40,7 @@ function Line(props: Props) {
     abscissas,
     ordinates,
     color,
-    interpolation,
+    interpolation = Interpolation.Linear,
     width = 1,
     materialProps = {},
     visible = true,
@@ -43,10 +50,7 @@ function Line(props: Props) {
 
   const { abscissaScale, ordinateScale } = useVisCanvasContext();
 
-  const Geometry =
-    interpolation === Interpolation.Constant
-      ? LineConstantGeometry
-      : LineGeometry;
+  const Geometry = GEOMETRIES[interpolation];
 
   const geometry = useMemo(
     () =>

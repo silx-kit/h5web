@@ -22,6 +22,10 @@ const meta = preview.meta({
     abscissas: { control: false },
     ordinates: { control: false },
     color: { control: { type: 'color' } },
+    interpolation: {
+      control: { type: 'inline-radio' },
+      options: Object.values(Interpolation),
+    },
   },
 });
 
@@ -74,6 +78,14 @@ export const ConstantWithWidth = Default.extend({
   args: {
     width: 3,
     interpolation: Interpolation.Constant,
+  },
+});
+
+export const PchipInterpolation = Default.extend({
+  args: {
+    abscissas: [0, 1, 1.5, 4, 5, 7, 7.5, 10],
+    ordinates: [0, 2, 1, 1.2, 3, -1, -1, 0.5],
+    interpolation: Interpolation.Pchip,
   },
 });
 
