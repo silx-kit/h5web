@@ -1,8 +1,23 @@
 import {
+  type ArrayValue,
+  type CompoundType,
   type PrintableType,
   type ScalarValue,
 } from '@h5web/shared/hdf5-models';
 import { type NdArray } from 'ndarray';
+
+export function getCompoundFieldValues(
+  value:
+    | ScalarValue<CompoundType<PrintableType>>
+    | ArrayValue<CompoundType<PrintableType>>,
+  isScalar: boolean,
+): ScalarValue<PrintableType>[] {
+  // Scalar value is a single compound (i.e. array of field values) and must not be flattened,
+  // otherwise array-like field values (e.g. complex numbers) would get flattened too
+  return isScalar
+    ? (value as ScalarValue<CompoundType<PrintableType>>)
+    : (value as ArrayValue<CompoundType<PrintableType>>).flat(1);
+}
 
 export function generateCsv(
   names: string[],

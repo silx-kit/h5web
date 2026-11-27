@@ -20,7 +20,7 @@ import { useExportEntries, useMappedArray } from '../hooks';
 import { type MatrixVisConfig } from '../matrix/config';
 import MatrixToolbar from '../matrix/MatrixToolbar';
 import { getCellWidth, getCsvFormatter, getFormatter } from '../matrix/utils';
-import { generateCsv } from './utils';
+import { generateCsv, getCompoundFieldValues } from './utils';
 
 interface Props {
   dataset: Dataset<ScalarShape | ArrayShape, CompoundType<PrintableType>>;
@@ -47,7 +47,7 @@ function MappedCompoundVis(props: Props) {
   );
 
   const mappedArray = useMappedArray(
-    value.flat(1),
+    getCompoundFieldValues(value, shape.dims.length === 0),
     [...slicedDims, fieldNames.length],
     slicedMapping,
   );

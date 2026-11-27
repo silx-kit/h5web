@@ -13,6 +13,7 @@ import {
   DTypeClass,
   type NumericLikeType,
 } from '@h5web/shared/hdf5-models';
+import { getDimsSize } from '@h5web/shared/hdf5-utils';
 import { type Domain, type NumArray } from '@h5web/shared/vis-models';
 import {
   createArrayFromView,
@@ -51,7 +52,19 @@ export function getBaseArray(
   value: ArrayValue | undefined,
   rawDims: number[],
 ): NdArray<ArrayValue> | undefined {
-  return value && ndarray(value, rawDims);
+  if (!value) {
+    return undefined;
+  }
+
+  // Guard against incomplete values, which would otherwise show up as `NaN` (#1650)
+  const size = getDimsSize(rawDims);
+  if (value.length < size) {
+    throw new Error(
+      `Expected value with at least ${size} elements instead of ${value.length}`,
+    );
+  }
+
+  return ndarray(value, rawDims);
 }
 
 export function applyMapping<T extends NdArray<ArrayValue> | undefined>(

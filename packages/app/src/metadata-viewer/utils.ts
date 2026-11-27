@@ -9,6 +9,7 @@ import {
   DTypeClass,
   type H5WebComplex,
 } from '@h5web/shared/hdf5-models';
+import { getDimsSize } from '@h5web/shared/hdf5-utils';
 import { formatScalarComplex } from '@h5web/shared/vis-utils';
 
 export function renderDims(dims: number[]): string {
@@ -20,7 +21,7 @@ export function renderDims(dims: number[]): string {
     return dims.toString();
   }
 
-  return `${dims.join(' x ')} = ${dims.reduce((acc, value) => acc * value)}`;
+  return `${dims.join(' x ')} = ${getDimsSize(dims)}`;
 }
 
 export function renderType(type: DType): string {
