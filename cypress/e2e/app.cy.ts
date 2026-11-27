@@ -264,6 +264,20 @@ describe('/mock', () => {
     }
   });
 
+  it('visualize line with PCHIP interpolation', () => {
+    cy.selectExplorerNode('arrays');
+    cy.selectExplorerNode('oneD');
+
+    cy.getByRole('button', { name: 'More controls' }).click();
+    cy.getByRole('button', { name: 'Aspect' }).click();
+    cy.findByLabelText('PCHIP').click();
+    cy.waitForStableDOM();
+
+    if (takeSnapshots) {
+      cy.matchImageSnapshot('line_pchip');
+    }
+  });
+
   it('edit heatmap color map limits', () => {
     cy.selectExplorerNode('arrays');
     cy.selectExplorerNode('twoD');
